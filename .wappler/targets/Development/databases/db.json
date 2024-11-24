@@ -1,0 +1,1327 @@
+{
+  "direct": true,
+  "type": "postgres",
+  "connection": {
+    "host": "127.0.0.1",
+    "port": 9906,
+    "user": "amazon",
+    "password": "sPJOHihh",
+    "database": "amazon_ingressos"
+  },
+  "schema": {
+    "schemas": [
+      "public"
+    ],
+    "tables": {
+      "organizador": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "organizador_razao_social": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "organizador_cnpj": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "organizador_email": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "organizador_senha_email": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "contato_nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "contato_telefone": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "contato_email": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "organizador_dominio": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "organizador_cidade": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "organizador_estado": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "nome_fantasia": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "logo_url": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "evento_produtos": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "evento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "eventos",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "produto_nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "qtide_cadastrada": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "inicio_vendas": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "final_vendas": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "valor": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "ordem_lista": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "ativo": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "is_mesa": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "qtide_mesa": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "cortesia": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "cupom_ativo": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "codigo_cupom": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "valor_desconto": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "parent": "eventos",
+        "refs": {
+          "carrinho_itens_vendidos": "produto_id"
+        }
+      },
+      "usuarios": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "senha": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_email": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_apelido": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_telefone": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_cpf": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "ativo": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "end_rua": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "end_numero": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "end_bairro": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "end_cidade": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "end_estado": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "end_cep": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "notificacoes_email": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "notificacoes_push": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "notificacoes_whats": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "fcm_token": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "foto": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "data_nascimento": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "role_organizador": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "role_leitor": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "role_cliente": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "role_supergestor": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "refs": {
+          "evento_produtos": "usuario_id",
+          "eventos": "usuario_id",
+          "carrinho": "usuario_id",
+          "carrinho_transacoes": "usuario_id",
+          "notificacoes": "usuario_id"
+        }
+      },
+      "eventos": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "evento_status": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_resumo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_descricao": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_local": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_banner_principal": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_banner_secundario": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "tem_mapa": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "mapa_imagem": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_data_hora": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_destaque": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pode_alterar_ingresso": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pode_devolver_ingresso": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "aceita_pix": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "aceita_cartao": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "qtide_parcelas_cartao": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "mostrar_sobre_evento": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "slug_evento": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "mostrar_whatsapp": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "numero_whatsapp": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "bar_online": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "sub": {
+          "evento_produtos": "evento_id"
+        },
+        "refs": {
+          "carrinho": "evento_id",
+          "carrinho_transacoes": "evento_id"
+        }
+      },
+      "carrinho": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "eventos",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "usuario_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "tipo_transacao_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "tipo_transacao",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "status_pagamento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "status_publicacao",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          }
+        },
+        "sub": {
+          "carrinho_itens_vendidos": "carrinho_id",
+          "carrinho_transacoes": "carrinho_id"
+        }
+      },
+      "tipo_transacao": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "tipo_transacao": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "refs": {
+          "carrinho": "tipo_transacao_id"
+        }
+      },
+      "status_publicacao": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "status_publicacao": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "refs": {
+          "carrinho": "status_pagamento_id",
+          "carrinho_transacoes": "status_pagamento_id"
+        }
+      },
+      "forma_pagamento": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "forma_pagamento": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "refs": {
+          "carrinho_transacoes": "forma_pagamento_id"
+        }
+      },
+      "carrinho_itens_vendidos": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "produto_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "evento_produtos",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "carrinho_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "carrinho",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "item_resgatado": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "data_horario_resgate": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "id_transacao": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pdf": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "trocou_nome": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "nome_anterior": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "cpf_anterior": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "data_troca": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "participante_nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "participante_telefone": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "participante_cpf": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "participante_email": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "parent": "carrinho"
+      },
+      "carrinho_transacoes": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "carrinho_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "carrinho",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "evento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "eventos",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "usuario_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "status_pagamento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "status_publicacao",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "forma_pagamento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "forma_pagamento",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "valor_total_compra": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "valor_liquido_organizador": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pag_key": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pag_qrcode": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pag_json": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "has_error": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "error_description": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "error_code": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "data_update": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pag_id_transaction": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pag_message": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pag_description": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "receita_liquida": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pediu_reembolso": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "data_vencimento": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "desconto": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "valor_desconto": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "parent": "carrinho"
+      },
+      "notificacoes": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "titulo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "conteudo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "imagem_url": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "usuario_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          }
+        }
+      }
+    },
+    "views": {}
+  }
+}

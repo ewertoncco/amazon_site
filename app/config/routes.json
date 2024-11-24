@@ -1,0 +1,24 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page",
+      "layout": "homepage"
+    },
+    {
+      "path": "/login",
+      "page": "login",
+      "layout": "main"
+    },
+    {
+      "path": "/evento",
+      "page": "evento",
+      "layout": "homepage"
+    },
+    {
+      "path": "/teste",
+      "page": "teste"
+    }
+  ]
+}
