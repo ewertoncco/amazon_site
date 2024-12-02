@@ -1,0 +1,187 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "usuario_id"
+      },
+      {
+        "type": "number",
+        "name": "tipo_despesa"
+      },
+      {
+        "type": "text",
+        "name": "titulo"
+      },
+      {
+        "type": "text",
+        "name": "descricao"
+      },
+      {
+        "type": "number",
+        "name": "codigo_evento"
+      },
+      {
+        "type": "number",
+        "name": "valor"
+      },
+      {
+        "type": "boolean",
+        "name": "paga"
+      },
+      {
+        "type": "datetime",
+        "name": "data_pagamento"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "auth"
+        },
+        "meta": []
+      },
+      {
+        "name": "nova_despesa",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "evento_despesas",
+                "column": "data_criacao",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "usuario_id",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "tipo_despesa",
+                "type": "number",
+                "value": "{{$_POST.tipo_despesa}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "titulo",
+                "type": "text",
+                "value": "{{$_POST.titulo}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "descricao",
+                "type": "text",
+                "value": "{{$_POST.descricao}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "codigo_evento",
+                "type": "number",
+                "value": "{{$_POST.codigo_evento}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "valor",
+                "type": "number",
+                "value": "{{$_POST.valor}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "paga",
+                "type": "boolean",
+                "value": "{{$_POST.paga}}"
+              },
+              {
+                "table": "evento_despesas",
+                "column": "data_pagamento",
+                "type": "datetime",
+                "value": "{{$_POST.data_pagamento}}"
+              }
+            ],
+            "table": "evento_despesas",
+            "returning": "id",
+            "query": "insert into \"evento_despesas\" (\"codigo_evento\", \"data_criacao\", \"data_pagamento\", \"descricao\", \"paga\", \"tipo_despesa\", \"titulo\", \"usuario_id\", \"valor\") values (?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.tipo_despesa}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.titulo}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.descricao}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.codigo_evento}}",
+                "test": ""
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST.valor}}",
+                "test": ""
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{$_POST.paga}}",
+                "test": ""
+              },
+              {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.data_pagamento}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

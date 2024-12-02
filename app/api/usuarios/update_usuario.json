@@ -1,0 +1,426 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "usuario_email"
+      },
+      {
+        "type": "text",
+        "name": "usuario_nome"
+      },
+      {
+        "type": "text",
+        "name": "usuario_apelido"
+      },
+      {
+        "type": "text",
+        "name": "usuario_telefone"
+      },
+      {
+        "type": "text",
+        "name": "usuario_cpf"
+      },
+      {
+        "type": "boolean",
+        "name": "ativo"
+      },
+      {
+        "type": "text",
+        "name": "end_rua"
+      },
+      {
+        "type": "text",
+        "name": "end_numero"
+      },
+      {
+        "type": "text",
+        "name": "end_bairro"
+      },
+      {
+        "type": "text",
+        "name": "end_cidade"
+      },
+      {
+        "type": "text",
+        "name": "end_estado"
+      },
+      {
+        "type": "number",
+        "name": "end_cep"
+      },
+      {
+        "type": "boolean",
+        "name": "notificacoes_email"
+      },
+      {
+        "type": "boolean",
+        "name": "notificacoes_push"
+      },
+      {
+        "type": "boolean",
+        "name": "notificacoes_whats"
+      },
+      {
+        "type": "text",
+        "name": "foto"
+      },
+      {
+        "type": "datetime",
+        "name": "data_nascimento"
+      },
+      {
+        "type": "number",
+        "name": "permissao"
+      },
+      {
+        "type": "datetime",
+        "name": "data_criacao"
+      },
+      {
+        "type": "text",
+        "name": "senha"
+      },
+      {
+        "type": "text",
+        "name": "fcm_token"
+      },
+      {
+        "type": "boolean",
+        "name": "atualizar_senha"
+      },
+      {
+        "type": "number",
+        "name": "genero"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "usuarios",
+              "column": "data_criacao",
+              "type": "datetime",
+              "value": "{{$_POST.data_criacao}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "senha",
+              "type": "text",
+              "value": "{{$_POST.senha}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "usuario_email",
+              "type": "text",
+              "value": "{{$_POST.usuario_email}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "usuario_nome",
+              "type": "text",
+              "value": "{{$_POST.usuario_nome}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "usuario_apelido",
+              "type": "text",
+              "value": "{{$_POST.usuario_apelido}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "usuario_telefone",
+              "type": "text",
+              "value": "{{$_POST.usuario_telefone}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "usuario_cpf",
+              "type": "text",
+              "value": "{{$_POST.usuario_cpf}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "ativo",
+              "type": "boolean",
+              "value": "{{$_POST.ativo}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "end_rua",
+              "type": "text",
+              "value": "{{$_POST.end_rua}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "end_numero",
+              "type": "text",
+              "value": "{{$_POST.end_numero}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "end_bairro",
+              "type": "text",
+              "value": "{{$_POST.end_bairro}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "end_cidade",
+              "type": "text",
+              "value": "{{$_POST.end_cidade}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "end_estado",
+              "type": "text",
+              "value": "{{$_POST.end_estado}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "end_cep",
+              "type": "text",
+              "value": "{{$_POST.end_cep}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "notificacoes_email",
+              "type": "boolean",
+              "value": "{{$_POST.notificacoes_email}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "notificacoes_push",
+              "type": "boolean",
+              "value": "{{$_POST.notificacoes_push}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "notificacoes_whats",
+              "type": "boolean",
+              "value": "{{$_POST.notificacoes_whats}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "fcm_token",
+              "type": "text",
+              "value": "{{$_POST.fcm_token}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "foto",
+              "type": "text",
+              "value": "{{$_POST.foto}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "data_nascimento",
+              "type": "text",
+              "value": "{{$_POST.data_nascimento}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "permissao",
+              "type": "number",
+              "value": "{{$_POST.permissao}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "atualizar_senha",
+              "type": "boolean",
+              "value": "{{$_POST.atualizar_senha}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "genero",
+              "type": "number",
+              "value": "{{$_POST.genero}}"
+            }
+          ],
+          "table": "usuarios",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.id}}",
+                "data": {
+                  "column": "id"
+                },
+                "operation": "="
+              }
+            ]
+          },
+          "returning": "id",
+          "query": "update \"usuarios\" set \"data_criacao\" = ?, \"senha\" = ?, \"usuario_email\" = ?, \"usuario_nome\" = ?, \"usuario_apelido\" = ?, \"usuario_telefone\" = ?, \"usuario_cpf\" = ?, \"ativo\" = ?, \"end_rua\" = ?, \"end_numero\" = ?, \"end_bairro\" = ?, \"end_cidade\" = ?, \"end_estado\" = ?, \"end_cep\" = ?, \"notificacoes_email\" = ?, \"notificacoes_push\" = ?, \"notificacoes_whats\" = ?, \"fcm_token\" = ?, \"foto\" = ?, \"data_nascimento\" = ?, \"permissao\" = ?, \"atualizar_senha\" = ?, \"genero\" = ? where \"id\" = ? returning \"id\"",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.data_criacao}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.senha}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.usuario_email}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.usuario_nome}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.usuario_apelido}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.usuario_telefone}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.usuario_cpf}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.ativo}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.end_rua}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.end_numero}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.end_bairro}}",
+              "test": ""
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.end_cidade}}",
+              "test": ""
+            },
+            {
+              "name": ":P13",
+              "type": "expression",
+              "value": "{{$_POST.end_estado}}",
+              "test": ""
+            },
+            {
+              "name": ":P14",
+              "type": "expression",
+              "value": "{{$_POST.end_cep}}",
+              "test": ""
+            },
+            {
+              "name": ":P15",
+              "type": "expression",
+              "value": "{{$_POST.notificacoes_email}}",
+              "test": ""
+            },
+            {
+              "name": ":P16",
+              "type": "expression",
+              "value": "{{$_POST.notificacoes_push}}",
+              "test": ""
+            },
+            {
+              "name": ":P17",
+              "type": "expression",
+              "value": "{{$_POST.notificacoes_whats}}",
+              "test": ""
+            },
+            {
+              "name": ":P18",
+              "type": "expression",
+              "value": "{{$_POST.fcm_token}}",
+              "test": ""
+            },
+            {
+              "name": ":P19",
+              "type": "expression",
+              "value": "{{$_POST.foto}}",
+              "test": ""
+            },
+            {
+              "name": ":P20",
+              "type": "expression",
+              "value": "{{$_POST.data_nascimento}}",
+              "test": ""
+            },
+            {
+              "name": ":P21",
+              "type": "expression",
+              "value": "{{$_POST.permissao}}",
+              "test": ""
+            },
+            {
+              "name": ":P22",
+              "type": "expression",
+              "value": "{{$_POST.atualizar_senha}}",
+              "test": ""
+            },
+            {
+              "name": ":P23",
+              "type": "expression",
+              "value": "{{$_POST.genero}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P24",
+              "value": "{{$_POST.id}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "carrinho_id"
+      },
+      {
+        "type": "number",
+        "name": "evento_id"
+      },
+      {
+        "type": "number",
+        "name": "status_pagamento_id"
+      },
+      {
+        "type": "number",
+        "name": "forma_pagamento_id"
+      },
+      {
+        "type": "number",
+        "name": "valor_total_compra"
+      },
+      {
+        "type": "number",
+        "name": "valor_liquido_organizador"
+      },
+      {
+        "type": "text",
+        "name": "pag_key"
+      },
+      {
+        "type": "text",
+        "name": "pag_qrcode"
+      },
+      {
+        "type": "json",
+        "name": "pag_json"
+      },
+      {
+        "type": "boolean",
+        "name": "has_error"
+      },
+      {
+        "type": "text",
+        "name": "error_description"
+      },
+      {
+        "type": "text",
+        "name": "error_code"
+      },
+      {
+        "type": "datetime",
+        "name": "data_update"
+      },
+      {
+        "type": "number",
+        "name": "pag_id_transaction"
+      },
+      {
+        "type": "text",
+        "name": "pag_message"
+      },
+      {
+        "type": "text",
+        "name": "pag_description"
+      },
+      {
+        "type": "number",
+        "name": "receita_liquida"
+      },
+      {
+        "type": "boolean",
+        "name": "pediu_reembolso"
+      },
+      {
+        "type": "datetime",
+        "name": "data_vencimento"
+      },
+      {
+        "type": "boolean",
+        "name": "desconto"
+      },
+      {
+        "type": "number",
+        "name": "valor_desconto"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "nova_transacao",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "carrinho_transacoes",
+              "column": "data_criacao",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "carrinho_id",
+              "type": "number",
+              "value": "{{$_POST.carrinho_id}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "evento_id",
+              "type": "number",
+              "value": "{{$_POST.evento_id}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "status_pagamento_id",
+              "type": "number",
+              "value": "{{$_POST.status_pagamento_id}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "forma_pagamento_id",
+              "type": "number",
+              "value": "{{$_POST.forma_pagamento_id}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "valor_total_compra",
+              "type": "number",
+              "value": "{{$_POST.valor_total_compra}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "valor_liquido_organizador",
+              "type": "number",
+              "value": "{{$_POST.valor_liquido_organizador}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "pag_key",
+              "type": "text",
+              "value": "{{$_POST.pag_key}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "pag_qrcode",
+              "type": "text",
+              "value": "{{$_POST.pag_qrcode}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "pag_json",
+              "type": "json",
+              "value": "{{$_POST.pag_json}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "has_error",
+              "type": "boolean",
+              "value": "{{$_POST.has_error}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "error_description",
+              "type": "text",
+              "value": "{{$_POST.error_description}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "error_code",
+              "type": "text",
+              "value": "{{$_POST.error_code}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "data_update",
+              "type": "datetime",
+              "value": "{{$_POST.data_update}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "pag_id_transaction",
+              "type": "number",
+              "value": "{{$_POST.pag_id_transaction}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "pag_message",
+              "type": "text",
+              "value": "{{$_POST.pag_message}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "pag_description",
+              "type": "text",
+              "value": "{{$_POST.pag_description}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "receita_liquida",
+              "type": "number",
+              "value": "{{$_POST.receita_liquida}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "pediu_reembolso",
+              "type": "boolean",
+              "value": "{{$_POST.pediu_reembolso}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "data_vencimento",
+              "type": "datetime",
+              "value": "{{$_POST.data_vencimento}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "desconto",
+              "type": "boolean",
+              "value": "{{$_POST.desconto}}"
+            },
+            {
+              "table": "carrinho_transacoes",
+              "column": "valor_desconto",
+              "type": "number",
+              "value": "{{$_POST.valor_desconto}}"
+            }
+          ],
+          "table": "carrinho_transacoes",
+          "returning": "id",
+          "query": "insert into \"carrinho_transacoes\" (\"carrinho_id\", \"data_criacao\", \"data_update\", \"data_vencimento\", \"desconto\", \"error_code\", \"error_description\", \"evento_id\", \"forma_pagamento_id\", \"has_error\", \"pag_description\", \"pag_id_transaction\", \"pag_json\", \"pag_key\", \"pag_message\", \"pag_qrcode\", \"pediu_reembolso\", \"receita_liquida\", \"status_pagamento_id\", \"valor_desconto\", \"valor_liquido_organizador\", \"valor_total_compra\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.carrinho_id}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.evento_id}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.status_pagamento_id}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.forma_pagamento_id}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.valor_total_compra}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.valor_liquido_organizador}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.pag_key}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.pag_qrcode}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.pag_json}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.has_error}}",
+              "test": ""
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.error_description}}",
+              "test": ""
+            },
+            {
+              "name": ":P13",
+              "type": "expression",
+              "value": "{{$_POST.error_code}}",
+              "test": ""
+            },
+            {
+              "name": ":P14",
+              "type": "expression",
+              "value": "{{$_POST.data_update}}",
+              "test": ""
+            },
+            {
+              "name": ":P15",
+              "type": "expression",
+              "value": "{{$_POST.pag_id_transaction}}",
+              "test": ""
+            },
+            {
+              "name": ":P16",
+              "type": "expression",
+              "value": "{{$_POST.pag_message}}",
+              "test": ""
+            },
+            {
+              "name": ":P17",
+              "type": "expression",
+              "value": "{{$_POST.pag_description}}",
+              "test": ""
+            },
+            {
+              "name": ":P18",
+              "type": "expression",
+              "value": "{{$_POST.receita_liquida}}",
+              "test": ""
+            },
+            {
+              "name": ":P19",
+              "type": "expression",
+              "value": "{{$_POST.pediu_reembolso}}",
+              "test": ""
+            },
+            {
+              "name": ":P20",
+              "type": "expression",
+              "value": "{{$_POST.data_vencimento}}",
+              "test": ""
+            },
+            {
+              "name": ":P21",
+              "type": "expression",
+              "value": "{{$_POST.desconto}}",
+              "test": ""
+            },
+            {
+              "name": ":P22",
+              "type": "expression",
+              "value": "{{$_POST.valor_desconto}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

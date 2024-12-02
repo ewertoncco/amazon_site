@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "codigo_usuario"
+      },
+      {
+        "type": "boolean",
+        "name": "ativo"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "auth"
+        },
+        "meta": []
+      },
+      {
+        "name": "novo_associado",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "associados",
+                "column": "data_criacao",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "associados",
+                "column": "codigo_usuario",
+                "type": "number",
+                "value": "{{$_POST.codigo_usuario}}"
+              },
+              {
+                "table": "associados",
+                "column": "ativo",
+                "type": "boolean",
+                "value": "{{$_POST.ativo}}"
+              },
+              {
+                "table": "associados",
+                "column": "criado_por",
+                "type": "number",
+                "value": "{{identity}}"
+              }
+            ],
+            "table": "associados",
+            "returning": "id",
+            "query": "insert into \"associados\" (\"ativo\", \"codigo_usuario\", \"criado_por\", \"data_criacao\") values (?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.codigo_usuario}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.ativo}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

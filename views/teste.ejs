@@ -1,10 +1,11 @@
-<!-- Wappler include fontawesome_5="cdn" is="dmx-app" id="teste" appConnect="local" bootstrap5="local" -->
+<!-- Wappler include fontawesome_5="cdn" is="dmx-app" id="teste" appConnect="local" bootstrap5="local" components="{dmxFormRepeat:{}}" -->
+<dmx-serverconnect id="serverconnect1" url="/api/usuarios/listar_usuarios"></dmx-serverconnect>
 <meta name="ac:route" content="/teste">
 <dmx-datetime id="var1"></dmx-datetime>
 <div class="container">
-    <div class="row">
+    <div class="row" is="dmx-repeat" id="formRepeat1" dmx-bind:items="serverconnect1.data.listar_usuarios.data" dmx-bind:repeat="serverconnect1.data.listar_usuarios.data" key="id">
         <div class="col">
-            <h1 class="text-dark-emphasis">Fancy display heading</h1>
+            <h1>{{usuario_nome}}</h1>
         </div>
     </div>
 </div>

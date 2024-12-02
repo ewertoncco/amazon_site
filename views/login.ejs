@@ -1,9 +1,10 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" is="dmx-app" id="login" appConnect="local" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" is="dmx-app" id="login" appConnect="local" bootstrap5="custom" components="{dmxNotifications:{},dmxValidator:{}}" -->
+<dmx-notifications id="notifies1"></dmx-notifications>
 <meta name="ac:route" content="/login">
 
 <head>
     <meta charset="utf-8" />
-    <title>Log In | Adminox - Responsive Bootstrap 5 Admin Dashboard</title>
+    <title>Login | Amazon</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />
@@ -26,9 +27,6 @@
 
 <body class="authentication-bg bg-primary authentication-bg-pattern d-flex align-items-center pb-0 vh-100">
 
-    <div class="home-btn d-none d-sm-block position-absolute top-0 end-0 m-3">
-        <a href="index.html"><i class="fas fa-home h2 text-white"></i></a>
-    </div>
 
     <div class="account-pages w-100 mt-5 mb-5">
         <div class="container">
@@ -43,58 +41,41 @@
                                 <div class="account-logo-box">
                                     <div class="text-center">
                                         <a href="index.html">
-                                            <img src="assets/images/logo-dark.png" alt="" height="50">
+                                            <img src="assets/images/logo-dark.png" alt="" height="80">
                                         </a>
                                     </div>
-                                    <h5 class="text-uppercase mb-1 mt-4 fw-semibold">Login</h5>
-                                    <p class="mb-0">Faça o login para acessar a sua conta</p>
+                                    <h5 class="text-uppercase mb-1 mt-4 fw-semibold text-center">Login</h5>
                                 </div>
 
                                 <div class="account-content mt-4">
-                                    <form class="form-horizontal" action="#">
-
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <label for="emailaddress">E-mail</label>
-                                                <input class="form-control" type="email" id="emailaddress" required="" placeholder="participante@amazon.com.br" data-msg-required="Preenchimento obrigatório">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <a href="page-recoverpw.html" class="text-muted float-end"><small>Esqueci a senha</small></a>
-                                                <label for="password">Senha</label>
-                                                <input class="form-control" type="password" required="" id="password" placeholder="Digite sua senha" data-msg-required="Preenchimento obrigatório">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-12">
-
-                                                <div class="checkbox form-checkbox-success">
-                                                    <input id="remember" type="checkbox" checked="">
-                                                    <label for="remember">Permanecer conectado</label>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row text-center mt-2">
-                                            <div class="col-12">
-                                                <button class="btn btn-md btn-block btn-primary waves-effect waves-light w-100" type="submit">Entrar</button>
-                                            </div>
-                                        </div>
-
-                                    </form>
 
                                     <div class="row">
                                         <div class="col-sm-12">
+                                            <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Boaa');browser1.goto('/home')">
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_email">E-mail</label>
+                                                    <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_senha">Senha</label>
+                                                    <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="inp_lembre-me" name="lembre-me">
+                                                        <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3 text-end">
+                                                    <button type="submit" class="btn btn-primary width-lg" dmx-bind:disabled="state.executing">Entrar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
 
                                     <div class="row mt-4 pt-2">
                                         <div class="col-sm-12 text-center">
-                                            <p class="text-muted mb-0">Não tem conta? <a href="page-register.html" class="text-dark ms-1"><b>Cadastre-se</b></a></p>
+                                            <p class="text-muted mb-0">Não tem conta? <a href="/cadastro" class="text-dark ms-1"><b>Cadastre-se</b></a></p>
                                         </div>
                                     </div>
 

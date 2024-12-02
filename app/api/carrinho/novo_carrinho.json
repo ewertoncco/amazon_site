@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "evento_id"
+      },
+      {
+        "type": "number",
+        "name": "usuario_id"
+      },
+      {
+        "type": "number",
+        "name": "tipo_transacao"
+      },
+      {
+        "type": "number",
+        "name": "status_pagamento"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "auth"
+        },
+        "meta": []
+      },
+      {
+        "name": "novo_carrinho",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "carrinho",
+                "column": "data_criacao",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "evento_id",
+                "type": "number",
+                "value": "{{$_POST.evento_id}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "usuario_id",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "tipo_transacao",
+                "type": "number",
+                "value": "{{$_POST.tipo_transacao}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "status_pagamento",
+                "type": "number",
+                "value": "{{$_POST.status_pagamento}}"
+              }
+            ],
+            "table": "carrinho",
+            "returning": "id",
+            "query": "insert into \"carrinho\" (\"data_criacao\", \"evento_id\", \"status_pagamento\", \"tipo_transacao\", \"usuario_id\") values (?, ?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.evento_id}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.tipo_transacao}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.status_pagamento}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

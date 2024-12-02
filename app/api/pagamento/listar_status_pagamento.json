@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "listar_status_pagamento",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "status_pagamento",
+              "column": "*"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "status_pagamento"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select * from \"status_pagamento\""
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "status_pagamento"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}

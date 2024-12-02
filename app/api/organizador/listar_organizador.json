@@ -1,0 +1,84 @@
+{
+  "name": "listar_organizador",
+  "module": "dbconnector",
+  "action": "single",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "select",
+      "columns": [
+        {
+          "table": "organizador",
+          "column": "*"
+        }
+      ],
+      "params": [],
+      "table": {
+        "name": "organizador"
+      },
+      "primary": "id",
+      "joins": [],
+      "query": "select * from \"organizador\""
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "type": "number",
+      "name": "id"
+    },
+    {
+      "type": "datetime",
+      "name": "data_criacao"
+    },
+    {
+      "type": "text",
+      "name": "organizador_razao_social"
+    },
+    {
+      "type": "text",
+      "name": "organizador_cnpj"
+    },
+    {
+      "type": "text",
+      "name": "organizador_email"
+    },
+    {
+      "type": "text",
+      "name": "organizador_senha_email"
+    },
+    {
+      "type": "text",
+      "name": "contato_nome"
+    },
+    {
+      "type": "text",
+      "name": "contato_telefone"
+    },
+    {
+      "type": "text",
+      "name": "contato_email"
+    },
+    {
+      "type": "text",
+      "name": "organizador_dominio"
+    },
+    {
+      "type": "text",
+      "name": "organizador_cidade"
+    },
+    {
+      "type": "text",
+      "name": "organizador_estado"
+    },
+    {
+      "type": "text",
+      "name": "nome_fantasia"
+    },
+    {
+      "type": "text",
+      "name": "logo_url"
+    }
+  ],
+  "outputType": "object"
+}

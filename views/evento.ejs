@@ -1,61 +1,47 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" id="index" components="{dmxSlideshow:{}}" is="dmx-app" appConnect="local" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" id="index" components="{dmxSlideshow:{},dmxFormatter:{}}" is="dmx-app" appConnect="local" -->
+<dmx-value id="status_pagamento" dmx-bind:value="0"></dmx-value>
+<dmx-value id="step" dmx-bind:value="1"></dmx-value>
+<dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
 <dmx-datetime id="var1"></dmx-datetime>
 
-<section id="ingressos" class="w-100">
+<section id="ingressos" class="w-100" dmx-show="step.value==1">
     <div class="container">
-        <div class="row justify-content-between">
+        <div class="row justify-content-between gap-3">
             <div class="col-lg-6 col-xxl mt-xxl-0">
                 <div class="title-heading mt-5">
-                    <h2 class="fw-bold mb-3" style="font-size: 40px;">Ingressos</h2>
-                    <div class="row bg-white shadow-sm rounded rounded-2 me-2 pt-3 pb-3 ps-2 pe-2">
-                        <div class="col-8">
-                            <div class="d-flex flex-column">
-                                <div class="d-flex justify-content-between">
-                                    <h4 class="fw-bold">VIP (Promo)</h4>
+                    <h2 class="fw-bold mb-3 text-center text-md-start" style="font-size: 40px;">Compre agora</h2>
+                    <div class="row" is="dmx-repeat" id="itens_venda" dmx-bind:repeat="sc_evento.data.evento_front.produtos">
+                        <div class="col-12">
+                            <div class="card shadow-sm mt-1 mb-1">
+                                <!-- Ajustadas margens menores -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex justify-content-between">
+                                                    <h4 class="fw-bold">{{produto_nome}}</h4>
+                                                </div>
+                                                <h6>{{valor.formatCurrency('R$ ', ',', '.', 2)}}</h6>
+                                                <h6>{{final_vendas.formatDate('dd MMMM yyyy HH:mm')}}</h6>
+                                                <h5 class="text-danger text-start">Quase acabando</h5>
+                                            </div>
+                                        </div>
+                                        <div class="align-self-center col-4">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <button id="btn_plus" class="btn">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input id="inp_qtide" name="inp_qtide" type="number" class="form-control mx-2 text-center" value="0" placeholder="0">
+                                                <button id="btn_minus" class="btn">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
 
+
+
+                                    </div>
                                 </div>
-                                <h6>R$ 100,00</h6>
-                                <h6>Disponível até 20 ago 2024 18:00</h6>
-
-
-                            </div>
-                        </div>
-                        <div class="align-self-center col-4">
-                            <h5 class="text-danger text-center">Quase acabando</h5>
-                            <div class="d-flex">
-                                <button id="btn1" class="btn"><i class="fas fa-minus"></i></button>
-                                <input id="text1" name="text1" type="text" class="form-control" value="0">
-                                <button id="btn2" class="btn"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                        <div class="col-12 shadow-sm rounded">
-                            <div class="d-flex align-items-center justify-content-between bg-light-subtle mt-2 pt-2 pb-2 ps-2 pe-2">
-
-                                <h6 class="mt-0 mb-0 text-secondary" style="font-size: 14px;">João Pedro Oliveira Neto</h6>
-                                <h6 class="mt-0 mb-0 text-secondary" style="font-size: 14px;">CPF: 123.123.123-08</h6>
-                                <h6 class="mt-0 mb-0 text-secondary" style="font-size: 14px;">joao@gmail.com</h6><button id="btn3" class="btn text-danger"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row bg-white shadow-sm rounded rounded-2 mt-1 me-2 pt-3 pb-3 ps-2 pe-2">
-                        <div class="col-8">
-                            <div class="d-flex flex-column">
-                                <div class="d-flex justify-content-between">
-                                    <h4 class="fw-bold">Camarote (1º Lote) 4 lugares</h4>
-
-                                </div>
-                                <h6>R$ 250,00</h6>
-                                <h6>Disponível até 20 ago 2024 18:00</h6>
-
-
-                            </div>
-                        </div>
-                        <div class="align-self-center col-4">
-                            <h5 class="text-danger text-center">Quase acabando</h5>
-                            <div class="d-flex">
-                                <button id="btn4" class="btn"><i class="fas fa-minus"></i></button>
-                                <input id="text2" name="text1" type="text" class="form-control" value="0">
-                                <button id="btn4" class="btn"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -64,54 +50,51 @@
 
 
 
-                    <div class="g-3 mt-3 pt-2">
-                        <a class="btn btn-primary rounded btn-lg mb-2 me-4 text-bg-primary text-light">IR para PAGAMENTO</a>
-                    </div>
+
+
                 </div>
             </div>
             <div class="col-lg-6 col-xxl mt-xxl-0 offset-1">
                 <div class="title-heading mt-5">
-                    <h2 class="fw-bold" style="font-size: 40px;">Victor Lou [longset]</h2>
-                    <div class="d-flex align-items-center gap-3">
-                        <h4 class="sub-title mt-0 mb-0"><i class="fas fa-calendar-alt text-primary"></i>&nbsp; 09 dez 2024&nbsp;</h4>
-                        <h4 class="sub-title mt-0 mb-0"><i class="fas fa-clock text-primary"></i>&nbsp; 22:00</h4>
+                    <h2 class="fw-bold mt-5 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start" style="font-size: 40px;">{{sc_evento.data.evento_front.evento_nome}}</h2>
+                    <div class="d-flex align-items-center gap-3 mt-3 justify-content-center flex-row justify-content-md-start">
+                        <h4 class="sub-title mt-0 mb-0 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start"><i class="fas fa-calendar-alt text-primary"></i>&nbsp; {{sc_evento.data.evento_front.evento_data_hora.formatDate('dd MMM yyyy')}}&nbsp;</h4>
+                        <h4 class="sub-title mt-0 mb-0"><i class="fas fa-clock text-primary"></i>&nbsp; {{sc_evento.data.evento_front.evento_data_hora.formatDate('HH:mm')}}</h4>
                     </div>
 
 
 
-                    <h5 class="fw-bold mt-2">A maior festa do ano no Amazon Club</h5>
-                    <h6 class="text-muted mt-3">
-                        <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">+ 12 horas de festas</span><br></p>
-                        <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Line-up com + de 12 artistas</span><br></p>
-                        <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Novas experiências desbloqueadas</span><br></p>
-                        <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Será uma noite&nbsp;histórica!</span><br></p>
-                    </h6>
+                    <h5 class="fw-bold mt-2 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start">{{sc_evento.data.evento_front.evento_resumo}}</h5>
+                    <h5 class="text-muted text-center text-md-start text-lg-start text-xl-start text-xxl-start mt-3">{{sc_evento.data.evento_front.evento_descricao}}</h5>
 
-                    <div class="row text-center mt-5 gx-2 justify-content-start">
+                    <div class="row text-center mt-5 gx-2 justify-content-center justify-content-md-start justify-content-lg-start">
                         <div class="col-2 border-end">
                             <div class="">
-                                <h2 id="days1" class="text-primary fw-bold">45</h2>
+                                <h2 id="days1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora))/ 86400)%365).floor()}}</h2>
                                 <h6 class="fw-light">Dias</h6>
                             </div>
                         </div>
                         <div class="col-2 border-end">
                             <div class="">
-                                <h2 id="hours1" class="text-primary fw-bold">11</h2>
+                                <h2 id="hours1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora)/3600)%24)).floor()}}</h2>
                                 <h6 class="fw-light">Horas</h6>
                             </div>
                         </div>
                         <div class="col-2 border-end">
                             <div class="">
-                                <h2 id="minutes1" class="text-primary fw-bold">2</h2>
+                                <h2 id="minutes1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora)/60)%60)).floor()}}</h2>
                                 <h6 class="fw-light">Minutos</h6>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="">
-                                <h2 id="seconds1" class="text-primary fw-bold">16</h2>
+                                <h2 id="seconds1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora)%60))).floor()}}</h2>
                                 <h6 class="fw-light">Segundos</h6>
                             </div>
                         </div>
+                    </div>
+                    <div class="row mt-4 justify-content-center justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start">
+                        <button id="btn3" class="btn w-50 btn-primary ms-2" dmx-on:click="step.setValue(2)">IR PARA PAGAMENTO</button>
                     </div>
 
                 </div>
@@ -121,20 +104,20 @@
 
     </div>
 </section>
-<section id="pagamento" class="w-100 mt-5 mb-5">
+<section id="pagamento" class="w-100 mt-5 mb-5" dmx-show="step.value==2">
     <div class="container">
         <div class="row justify-content-between">
-            <div class="col-lg-6 col-xxl mt-xxl-0 bg-secondary-subtle">
+            <div class="col-lg-6 col-xxl mt-xxl-0">
                 <div class="title-heading mt-5 text-center">
                     <h2 class="fw-bold mb-3" style="font-size: 40px;">Método pagamento</h2>
                     <div class="row shadow-sm rounded rounded-2 me-2 pt-3 pb-3 ps-2 pe-2 gap-4 bg-transparent">
-                        <div class="col-12">
+                        <div class="col-4">
                             <div class="d-flex flex-row align-items-center justify-content-start gap-3">
 
                                 <img width="35" height="35" src="/assets/images/pix.png">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="input1" name="input1">
-                                    <label class="form-check-label" for="input1">Pix</label>
+                                    <input class="form-check-input" type="checkbox" value="" id="check_pix" name="check_pix">
+                                    <label class="form-check-label" for="check_pix">Pix</label>
                                 </div>
 
 
@@ -145,8 +128,8 @@
 
                                 <img width="35" height="35" src="/assets/images/cartao.png">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="input3" name="input1">
-                                    <label class="form-check-label" for="input3">Crédito</label>
+                                    <input class="form-check-input" type="checkbox" value="" id="check_credito" name="icheck_credito">
+                                    <label class="form-check-label" for="check_credito">Crédito</label>
                                 </div>
 
 
@@ -157,8 +140,8 @@
 
                                 <img width="35" height="35" src="/assets/images/boleto.png">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="input2" name="input1">
-                                    <label class="form-check-label" for="input2">Boleto</label>
+                                    <input class="form-check-input" type="checkbox" value="" id="check_boleto" name="check_boleto">
+                                    <label class="form-check-label" for="check_boleto">Boleto</label>
                                 </div>
 
 
@@ -172,7 +155,7 @@
 
                 </div>
             </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0 bg-secondary-subtle" id="credito">
+            <div class="col-lg-6 col-xxl mt-xxl-0" id="credito" dmx-show="check_credito.checked">
                 <div class="card bg-transparent">
                     <div class="card-body">
                         <h4 class="card-title">Cartão de Crédito</h4>
@@ -302,7 +285,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0 bg-secondary-subtle" id="pix">
+            <div class="col-lg-6 col-xxl mt-xxl-0" id="pix" dmx-show="check_pix.checked">
                 <div class="card bg-transparent">
                     <div class="card-body text-center">
                         <h4 class="card-title">Pagar com PIX</h4>
@@ -316,7 +299,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0 bg-secondary-subtle" id="processando">
+            <div class="col-lg-6 col-xxl mt-xxl-0" id="processando" dmx-show="status_pagamento.value==1">
                 <div class="card bg-transparent">
                     <h4 class="card-title text-center">Processando</h4><img class="card-img" src="/assets/images/loader.svg" width="150" height="150">
                     <div class="card-body text-center">
@@ -328,7 +311,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0 bg-secondary-subtle" id="sucesso">
+            <div class="col-lg-6 col-xxl mt-xxl-0" id="sucesso" dmx-show="status_pagamento.value==3">
                 <div class="card bg-transparent">
                     <h4 class="card-title text-center">Confirmado</h4><img class="card-img" src="/assets/images/sucesso.svg" width="150" height="150">
                     <div class="card-body text-center">
@@ -340,7 +323,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0 bg-secondary-subtle" id="erro">
+            <div class="col-lg-6 col-xxl mt-xxl-0" id="erro" dmx-show="status_pagamento.value&gt;3">
                 <div class="card bg-transparent">
                     <h4 class="card-title text-center">Falha no pagamento</h4><img class="card-img" src="/assets/images/erro.svg" width="150" height="150">
                     <div class="card-body text-center">
@@ -435,4 +418,4 @@
         <button type="button" class="btn btn-primary waves-effect waves-light mt-2 me-1"><i class="fab fa-whatsapp"></i>&nbsp;Entre em contato</button>
     </div>
 </section>
-<meta name="ac:route" content="/evento">
+<meta name="ac:route" content="/evento/:id_evento">

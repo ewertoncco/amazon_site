@@ -5,7 +5,7 @@
   <script src="/dmxAppConnect/dmxAppConnect.js"></script>
   <base href="/">
   <meta charset="utf-8" />
-  <title>Horizontal Layout | Adminox - Responsive Bootstrap 5 Admin Dashboard</title>
+  <title>Amazon | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
   <meta content="Coderthemes" name="author" />
@@ -29,9 +29,26 @@
   <script src="assets/js/config.js"></script>
   <link rel="stylesheet" href="/fontawesome5/css/all.min.css" />
   <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
+  <script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
+  <script src="/dmxAppConnect/dmxFormatter/dmxFormatter.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+  <script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
+  <script src="/dmxAppConnect/dmxSwiper/dmxSwiper.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxSwiper/swiper.min.css" />
+  <script src="/dmxAppConnect/dmxSwiper/swiper.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxTyped/dmxTyped.js" defer></script>
+  <script src="/dmxAppConnect/dmxTyped/typed.min.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxSlideshow/dmxSlideshow.css" />
+  <script src="/dmxAppConnect/dmxSlideshow/dmxSlideshow.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxSlideshow/themes/default.css" />
+  <script src="/dmxAppConnect/dmxFormRepeat/dmxFormRepeat.js" defer></script>
 </head>
 
 <body is="dmx-app" id="homepage">
+  <dmx-serverconnect id="sc_listar_eventos" url="/api/eventos/listar_eventos"></dmx-serverconnect>
+  <dmx-notifications id="notifies1"></dmx-notifications>
+  <dmx-serverconnect id="sc_usuario_logado" url="/api/usuarios/usuario_logado"></dmx-serverconnect>
+  <div is="dmx-browser" id="browser1"></div>
   <!-- Begin page -->
   <div class="wrapper">
 
@@ -320,11 +337,7 @@
 
                 </li>
 
-                <li class="nav-item dropdown hover-dropdown">
-                  <a class="nav-link dropdown-toggle drop-arrow-none" href="#" id="topnav-layouts" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="menu-icon"><i data-lucide="sidebar"></i></span>
-                    <span class="menu-text">Layouts</span>
-                  </a>
+                <li class="nav-item dropdown hover-dropdown"><a class="nav-link dropdown-toggle drop-arrow-none" href="#" id="topnav-layouts" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">teste</a>
                   <div class="dropdown-menu" aria-labelledby="topnav-layouts">
                     <a href="index.html" class="dropdown-item" target="_blank">Vertical</a>
                     <a href="layouts-horizontal.html" class="dropdown-item" target="_blank">Horizontal</a>
@@ -339,7 +352,8 @@
             </div>
           </nav>
         </nav>
-        <div class="d-flex align-items-center gap-1">
+        <div class="d-flex align-items-center gap-1 me-5">
+
 
           <div class="topbar-item d-none d-sm-flex">
             <button class="topbar-link" id="light-dark-mode" type="button">
@@ -352,214 +366,217 @@
 
           <!-- Notification Dropdown -->
           <div class="topbar-item">
-            <div class="dropdown">
-              <button class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,25" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
-                <i data-lucide="bell" class="font-22"></i>
-                <span class="badge bg-pink rounded-circle noti-icon-badge">4</span>
-              </button>
+            <div class="d-flex gap-3" dmx-show="!sc_usuario_logado.data.query.usuario_email.isEmpty()">
+              <div class="dropdown">
+                <button class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,25" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
+                  <i data-lucide="bell" class="font-22"></i>
+                  <span class="badge bg-pink rounded-circle noti-icon-badge">4</span>
+                </button>
 
-              <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg" style="min-height: 300px;">
-                <div class="p-2 border-bottom bg-primary">
-                  <div class="row align-items-center">
-                    <div class="col">
-                      <h6 class="m-0 font-16 fw-medium text-white">Informações</h6>
-                    </div>
-                    <div class="col-auto">
-                      <div class="dropdown">
-                        <a href="#" class="dropdown-toggle drop-arrow-none link-dark" data-bs-toggle="dropdown" data-bs-offset="0,15" aria-expanded="false">
-                          <i class="mdi mdi-cog-outline font-22 align-middle text-white"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                          <!-- item-->
-                          <a href="javascript:void(0);" class="dropdown-item">Mark as Read</a>
-                          <!-- item-->
-                          <a href="javascript:void(0);" class="dropdown-item">Delete All</a>
-                          <!-- item-->
-                          <a href="javascript:void(0);" class="dropdown-item">Do not Disturb</a>
-                          <!-- item-->
-                          <a href="javascript:void(0);" class="dropdown-item">Other Settings</a>
+                <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg" style="min-height: 300px;">
+                  <div class="p-2 border-bottom bg-primary">
+                    <div class="row align-items-center">
+                      <div class="col">
+                        <h6 class="m-0 font-16 fw-medium text-white">Informações</h6>
+                      </div>
+                      <div class="col-auto">
+                        <div class="dropdown">
+                          <a href="#" class="dropdown-toggle drop-arrow-none link-dark" data-bs-toggle="dropdown" data-bs-offset="0,15" aria-expanded="false">
+                            <i class="mdi mdi-cog-outline font-22 align-middle text-white"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Mark as Read</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Delete All</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Do not Disturb</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Other Settings</a>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <div class="position-relative z-2" style="max-height: 300px;" data-simplebar>
+                    <!-- item-->
+                    <div class="dropdown-item notification-item py-2 text-wrap active" id="notification-1">
+                      <span class="d-flex align-items-center">
+                        <span class="me-3 position-relative flex-shrink-0">
+                          <div class="avatar avatar-md">
+                            <span class="avatar-title bg-success rounded-circle">
+                              <i class="mdi mdi-cog-outline font-20"></i>
+                            </span>
+                          </div>
+                        </span>
+                        <span class="flex-grow-1 text-muted">
+                          <p class="fw-medium mb-0 text-dark">New settings</p>
+                          <span class="font-12">There are new settings available</span>
+                        </span>
+                        <span class="notification-item-close">
+                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
+                            <i class="mdi mdi-close font-16"></i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+
+                    <!-- item-->
+                    <div class="dropdown-item notification-item py-2 text-wrap" id="notification-2">
+                      <span class="d-flex align-items-center">
+                        <span class="me-3 position-relative flex-shrink-0">
+                          <div class="avatar avatar-md">
+                            <span class="avatar-title bg-info rounded-circle">
+                              <i class="mdi mdi-bell-outline font-20"></i>
+                            </span>
+                          </div>
+                        </span>
+                        <span class="flex-grow-1 text-muted">
+                          <p class="fw-medium mb-0 text-dark">Updates</p>
+                          <span class="font-12">There are 2 new updates available</span>
+                        </span>
+                        <span class="notification-item-close">
+                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
+                            <i class="mdi mdi-close font-16"></i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+
+                    <!-- item-->
+                    <div class="dropdown-item notification-item py-2 text-wrap" id="notification-3">
+                      <span class="d-flex align-items-center">
+                        <span class="me-3 position-relative flex-shrink-0">
+                          <div class="avatar avatar-md">
+                            <span class="avatar-title bg-danger rounded-circle">
+                              <i class="mdi mdi-account-plus-outline font-20"></i>
+                            </span>
+                          </div>
+                        </span>
+                        <span class="flex-grow-1 text-muted">
+                          <p class="fw-medium mb-0 text-dark">New Users</p>
+                          <span class="font-12">You have 10 unread messages</span>
+                        </span>
+                        <span class="notification-item-close">
+                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
+                            <i class="mdi mdi-close font-16"></i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+
+                    <!-- item-->
+                    <div class="dropdown-item notification-item py-2 text-wrap" id="notification-4">
+                      <span class="d-flex align-items-center">
+                        <span class="me-3 position-relative flex-shrink-0">
+                          <div class="avatar avatar-md">
+                            <span class="avatar-title bg-primary rounded-circle">
+                              <i class="mdi mdi-comment-account-outline font-20"></i>
+                            </span>
+                          </div>
+                        </span>
+                        <span class="flex-grow-1 text-muted">
+                          <p class="fw-medium mb-0 text-dark">Caleb Flakelar commented on Admin</p>
+                          <span class="font-12">4 days ago</span>
+                        </span>
+                        <span class="notification-item-close">
+                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
+                            <i class="mdi mdi-close font-16"></i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+
+                    <!-- item-->
+                    <div class="dropdown-item notification-item py-2 text-wrap mb-5" id="notification-5">
+                      <span class="d-flex align-items-center">
+                        <span class="me-3 position-relative flex-shrink-0">
+                          <div class="avatar avatar-md">
+                            <span class="avatar-title bg-info rounded-circle">
+                              <i class="mdi mdi-bell-outline font-20"></i>
+                            </span>
+                          </div>
+                        </span>
+                        <span class="flex-grow-1 text-muted">
+                          <p class="fw-medium mb-0 text-dark">Updates</p>
+                          <span class="font-12">There are 2 new updates available</span>
+                        </span>
+                        <span class="notification-item-close">
+                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
+                            <i class="mdi mdi-close font-16"></i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+
+
+                  <!-- All-->
+                  <a href="javascript:void(0);" class="dropdown-item notification-item position-fixed z-2 bottom-0 text-center text-reset text-decoration-underline link-offset-2 fw-bold notify-item border-top border-light py-2">
+                    View All
+                  </a>
                 </div>
-
-                <div class="position-relative z-2" style="max-height: 300px;" data-simplebar>
-                  <!-- item-->
-                  <div class="dropdown-item notification-item py-2 text-wrap active" id="notification-1">
-                    <span class="d-flex align-items-center">
-                      <span class="me-3 position-relative flex-shrink-0">
-                        <div class="avatar avatar-md">
-                          <span class="avatar-title bg-success rounded-circle">
-                            <i class="mdi mdi-cog-outline font-20"></i>
-                          </span>
-                        </div>
-                      </span>
-                      <span class="flex-grow-1 text-muted">
-                        <p class="fw-medium mb-0 text-dark">New settings</p>
-                        <span class="font-12">There are new settings available</span>
-                      </span>
-                      <span class="notification-item-close">
-                        <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                          <i class="mdi mdi-close font-16"></i>
-                        </button>
-                      </span>
-                    </span>
-                  </div>
-
-                  <!-- item-->
-                  <div class="dropdown-item notification-item py-2 text-wrap" id="notification-2">
-                    <span class="d-flex align-items-center">
-                      <span class="me-3 position-relative flex-shrink-0">
-                        <div class="avatar avatar-md">
-                          <span class="avatar-title bg-info rounded-circle">
-                            <i class="mdi mdi-bell-outline font-20"></i>
-                          </span>
-                        </div>
-                      </span>
-                      <span class="flex-grow-1 text-muted">
-                        <p class="fw-medium mb-0 text-dark">Updates</p>
-                        <span class="font-12">There are 2 new updates available</span>
-                      </span>
-                      <span class="notification-item-close">
-                        <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                          <i class="mdi mdi-close font-16"></i>
-                        </button>
-                      </span>
-                    </span>
-                  </div>
-
-                  <!-- item-->
-                  <div class="dropdown-item notification-item py-2 text-wrap" id="notification-3">
-                    <span class="d-flex align-items-center">
-                      <span class="me-3 position-relative flex-shrink-0">
-                        <div class="avatar avatar-md">
-                          <span class="avatar-title bg-danger rounded-circle">
-                            <i class="mdi mdi-account-plus-outline font-20"></i>
-                          </span>
-                        </div>
-                      </span>
-                      <span class="flex-grow-1 text-muted">
-                        <p class="fw-medium mb-0 text-dark">New Users</p>
-                        <span class="font-12">You have 10 unread messages</span>
-                      </span>
-                      <span class="notification-item-close">
-                        <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                          <i class="mdi mdi-close font-16"></i>
-                        </button>
-                      </span>
-                    </span>
-                  </div>
-
-                  <!-- item-->
-                  <div class="dropdown-item notification-item py-2 text-wrap" id="notification-4">
-                    <span class="d-flex align-items-center">
-                      <span class="me-3 position-relative flex-shrink-0">
-                        <div class="avatar avatar-md">
-                          <span class="avatar-title bg-primary rounded-circle">
-                            <i class="mdi mdi-comment-account-outline font-20"></i>
-                          </span>
-                        </div>
-                      </span>
-                      <span class="flex-grow-1 text-muted">
-                        <p class="fw-medium mb-0 text-dark">Caleb Flakelar commented on Admin</p>
-                        <span class="font-12">4 days ago</span>
-                      </span>
-                      <span class="notification-item-close">
-                        <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                          <i class="mdi mdi-close font-16"></i>
-                        </button>
-                      </span>
-                    </span>
-                  </div>
-
-                  <!-- item-->
-                  <div class="dropdown-item notification-item py-2 text-wrap mb-5" id="notification-5">
-                    <span class="d-flex align-items-center">
-                      <span class="me-3 position-relative flex-shrink-0">
-                        <div class="avatar avatar-md">
-                          <span class="avatar-title bg-info rounded-circle">
-                            <i class="mdi mdi-bell-outline font-20"></i>
-                          </span>
-                        </div>
-                      </span>
-                      <span class="flex-grow-1 text-muted">
-                        <p class="fw-medium mb-0 text-dark">Updates</p>
-                        <span class="font-12">There are 2 new updates available</span>
-                      </span>
-                      <span class="notification-item-close">
-                        <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                          <i class="mdi mdi-close font-16"></i>
-                        </button>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-
-
-                <!-- All-->
-                <a href="javascript:void(0);" class="dropdown-item notification-item position-fixed z-2 bottom-0 text-center text-reset text-decoration-underline link-offset-2 fw-bold notify-item border-top border-light py-2">
-                  View All
+              </div>
+              <div class="dropdown">
+                <a class="topbar-link dropdown-toggle drop-arrow-none px-0" data-bs-toggle="dropdown" data-bs-offset="0,19" type="button" aria-haspopup="false" aria-expanded="false">
+                  <img src="/assets/images/users/avatar-6.jpg" width="32" class="rounded-circle me-lg-2 d-flex" alt="user-image">
+                  <span class="d-lg-flex flex-column gap-1 d-none">
+                    <span class="my-0">Ewerton</span>
+                  </span>
+                  <i data-lucide="chevron-down" class="d-none d-sm-flex" height="12"></i>
                 </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <!-- item-->
+                  <div class="dropdown-header noti-title">
+                    <h6 class="text-overflow m-0">Welcome !</h6>
+                  </div>
+
+                  <!-- item-->
+                  <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="mdi mdi-account-circle-outline me-1 font-17 align-middle"></i>
+                    <span class="align-middle">My Account</span>
+                  </a>
+
+                  <!-- item-->
+                  <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="mdi mdi-wallet-outline me-1 font-17 align-middle"></i>
+                    <span class="align-middle">Wallet : <span class="fw-semibold">$985.25</span></span>
+                  </a>
+
+                  <!-- item-->
+                  <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="mdi mdi-cog-outline me-1 font-17 align-middle"></i>
+                    <span class="align-middle">Settings</span>
+                  </a>
+
+                  <!-- item-->
+                  <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="mdi mdi-lifebuoy me-1 font-17 align-middle"></i>
+                    <span class="align-middle">Support</span>
+                  </a>
+
+                  <div class="dropdown-divider"></div>
+
+                  <!-- item-->
+                  <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="mdi mdi-lock-outline me-1 font-17 align-middle"></i>
+                    <span class="align-middle">Lock Screen</span>
+                  </a>
+
+                  <!-- item-->
+                  <a href="javascript:void(0);" class="dropdown-item active fw-semibold text-danger">
+                    <i class="mdi mdi-logout me-1 font-17 align-middle"></i>
+                    <span class="align-middle">Sign Out</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- User Dropdown -->
           <div class="topbar-item nav-user">
-            <div class="dropdown">
-              <a class="topbar-link dropdown-toggle drop-arrow-none px-0" data-bs-toggle="dropdown" data-bs-offset="0,19" type="button" aria-haspopup="false" aria-expanded="false">
-                <img src="/assets/images/users/avatar-6.jpg" width="32" class="rounded-circle me-lg-2 d-flex" alt="user-image">
-                <span class="d-lg-flex flex-column gap-1 d-none">
-                  <span class="my-0">Ewerton</span>
-                </span>
-                <i data-lucide="chevron-down" class="d-none d-sm-flex" height="12"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-end">
-                <!-- item-->
-                <div class="dropdown-header noti-title">
-                  <h6 class="text-overflow m-0">Welcome !</h6>
-                </div>
 
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item">
-                  <i class="mdi mdi-account-circle-outline me-1 font-17 align-middle"></i>
-                  <span class="align-middle">My Account</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item">
-                  <i class="mdi mdi-wallet-outline me-1 font-17 align-middle"></i>
-                  <span class="align-middle">Wallet : <span class="fw-semibold">$985.25</span></span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item">
-                  <i class="mdi mdi-cog-outline me-1 font-17 align-middle"></i>
-                  <span class="align-middle">Settings</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item">
-                  <i class="mdi mdi-lifebuoy me-1 font-17 align-middle"></i>
-                  <span class="align-middle">Support</span>
-                </a>
-
-                <div class="dropdown-divider"></div>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item">
-                  <i class="mdi mdi-lock-outline me-1 font-17 align-middle"></i>
-                  <span class="align-middle">Lock Screen</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item active fw-semibold text-danger">
-                  <i class="mdi mdi-logout me-1 font-17 align-middle"></i>
-                  <span class="align-middle">Sign Out</span>
-                </a>
-              </div>
-            </div>
           </div>
 
           <!-- Button Trigger Customizer Offcanvas -->
@@ -577,47 +594,34 @@
     <!-- ============================================================== -->
     <!-- Start Page Content here -->
     <!-- ============================================================== -->
-    <div class="page-content">
 
+
+    <!-- Footer Start -->
+    <footer class="footer">
       <div class="page-container">
-
-
-        <!-- end row -->
-
-        <!-- end row -->
-
-
-        <!--- end row -->
-
-      </div>
-      <!-- container -->
-
-      <!-- Footer Start -->
-      <footer class="footer">
-        <div class="page-container">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="d-flex flex-row justify-content-between">
-                <div class="d-flex align-items-center">
-                  <h6 class="mt-0 mb-0 "><i class="fas fa-map-marker-alt"></i>&nbsp;Endereço</h6>
-                </div>
-                <div class="d-flex">
-                  <h6 class="mt-0 mb-0"><i class="fas fa-phone-square-alt"></i>&nbsp;49 99978-7984</h6>
-                </div>
-                <div class="d-flex">
-                  <h6 class="mt-0 mb-0"><i class="fas fa-envelope"></i>&nbsp;support@yourmail.com</h6>
-                </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="d-flex flex-row justify-content-between">
+              <div class="d-flex align-items-center">
+                <h6 class="mt-0 mb-0 "><i class="fas fa-map-marker-alt"></i>&nbsp;Endereço</h6>
+              </div>
+              <div class="d-flex">
+                <h6 class="mt-0 mb-0"><i class="fas fa-phone-square-alt"></i>&nbsp;49 99978-7984</h6>
+              </div>
+              <div class="d-flex">
+                <h6 class="mt-0 mb-0"><i class="fas fa-envelope"></i>&nbsp;support@yourmail.com</h6>
               </div>
             </div>
           </div>
         </div>
-      </footer>
-      <!-- end Footer -->
+      </div>
+    </footer>
+    <!-- end Footer -->
 
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Page content -->
+  <!-- ============================================================== -->
 
   </div>
   <!-- END wrapper -->

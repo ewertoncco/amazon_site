@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "produto_nome"
+      },
+      {
+        "type": "number",
+        "name": "qtide_cadastrada"
+      },
+      {
+        "type": "datetime",
+        "name": "inicio_vendas"
+      },
+      {
+        "type": "datetime",
+        "name": "final_vendas"
+      },
+      {
+        "type": "number",
+        "name": "valor"
+      },
+      {
+        "type": "number",
+        "name": "ordem_lista"
+      },
+      {
+        "type": "boolean",
+        "name": "ativo"
+      },
+      {
+        "type": "boolean",
+        "name": "is_mesa"
+      },
+      {
+        "type": "number",
+        "name": "qtide_mesa"
+      },
+      {
+        "type": "boolean",
+        "name": "cortesia"
+      },
+      {
+        "type": "boolean",
+        "name": "cupom_ativo"
+      },
+      {
+        "type": "text",
+        "name": "codigo_cupom"
+      },
+      {
+        "type": "number",
+        "name": "valor_desconto"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "alterar_produto",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "evento_produtos",
+              "column": "produto_nome",
+              "type": "text",
+              "value": "{{$_POST.produto_nome}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "qtide_cadastrada",
+              "type": "number",
+              "value": "{{$_POST.qtide_cadastrada}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "inicio_vendas",
+              "type": "datetime",
+              "value": "{{$_POST.inicio_vendas}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "final_vendas",
+              "type": "datetime",
+              "value": "{{$_POST.final_vendas}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "valor",
+              "type": "number",
+              "value": "{{$_POST.valor}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "ordem_lista",
+              "type": "number",
+              "value": "{{$_POST.ordem_lista}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "ativo",
+              "type": "boolean",
+              "value": "{{$_POST.ativo}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "is_mesa",
+              "type": "boolean",
+              "value": "{{$_POST.is_mesa}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "qtide_mesa",
+              "type": "number",
+              "value": "{{$_POST.qtide_mesa}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "cortesia",
+              "type": "boolean",
+              "value": "{{$_POST.cortesia}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "cupom_ativo",
+              "type": "boolean",
+              "value": "{{$_POST.cupom_ativo}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "codigo_cupom",
+              "type": "text",
+              "value": "{{$_POST.codigo_cupom}}"
+            },
+            {
+              "table": "evento_produtos",
+              "column": "valor_desconto",
+              "type": "number",
+              "value": "{{$_POST.valor_desconto}}"
+            }
+          ],
+          "table": "evento_produtos",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.id}}",
+                "data": {
+                  "column": "id"
+                },
+                "operation": "="
+              }
+            ]
+          },
+          "returning": "id",
+          "query": "update \"evento_produtos\" set \"produto_nome\" = ?, \"qtide_cadastrada\" = ?, \"inicio_vendas\" = ?, \"final_vendas\" = ?, \"valor\" = ?, \"ordem_lista\" = ?, \"ativo\" = ?, \"is_mesa\" = ?, \"qtide_mesa\" = ?, \"cortesia\" = ?, \"cupom_ativo\" = ?, \"codigo_cupom\" = ?, \"valor_desconto\" = ? where \"id\" = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.produto_nome}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.qtide_cadastrada}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.inicio_vendas}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.final_vendas}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.valor}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.ordem_lista}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.ativo}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.is_mesa}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.qtide_mesa}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.cortesia}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.cupom_ativo}}",
+              "test": ""
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.codigo_cupom}}",
+              "test": ""
+            },
+            {
+              "name": ":P13",
+              "type": "expression",
+              "value": "{{$_POST.valor_desconto}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P14",
+              "value": "{{$_POST.id}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "id_item"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "delete_item_vendido",
+      "module": "dbupdater",
+      "action": "delete",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "delete",
+          "table": "carrinho_itens_vendidos",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id",
+                "field": "id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.id_item}}",
+                "data": {
+                  "column": "id"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "id",
+          "query": "delete from \"carrinho_itens_vendidos\" where \"id\" = ?",
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.id_item}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

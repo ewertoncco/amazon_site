@@ -10,6 +10,10 @@
       "user": "amazon",
       "password": "sPJOHihh",
       "database": "amazon_ingressos"
-    }
-  }
+    },
+    "meta": {}
+  },
+  "actionFilePath": "file:///G:/github/amazon_ingressos/app/modules/connections/db.json",
+  "serverType": "node",
+  "fileName": "db.json"
 }

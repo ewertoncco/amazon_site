@@ -1,24 +1,49 @@
 {
   "routes": [
     {
-      "path": "/",
-      "page": "index",
-      "routeType": "page",
-      "layout": "homepage"
-    },
-    {
       "path": "/login",
       "page": "login",
       "layout": "main"
     },
     {
-      "path": "/evento",
+      "path": "/evento/:id_evento",
       "page": "evento",
       "layout": "homepage"
     },
     {
       "path": "/teste",
       "page": "teste"
+    },
+    {
+      "path": "/perfil",
+      "page": "perfil",
+      "layout": "homepage"
+    },
+    {
+      "path": "/home",
+      "page": "home",
+      "layout": "dashboard"
+    },
+    {
+      "path": "/eventos",
+      "page": "eventos",
+      "layout": "dashboard"
+    },
+    {
+      "path": "/adm_evento/:id_evento",
+      "page": "adm_evento",
+      "layout": "dashboard"
+    },
+    {
+      "path": "/cadastro",
+      "page": "cadastro",
+      "layout": "main"
+    },
+    {
+      "path": "/index",
+      "page": "index",
+      "layout": "homepage",
+      "name": ""
     }
   ]
 }

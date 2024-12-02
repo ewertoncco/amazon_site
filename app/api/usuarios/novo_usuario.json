@@ -1,0 +1,545 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "senha"
+      },
+      {
+        "type": "text",
+        "name": "usuario_email"
+      },
+      {
+        "type": "text",
+        "name": "usuario_nome"
+      },
+      {
+        "type": "text",
+        "name": "usuario_apelido"
+      },
+      {
+        "type": "text",
+        "name": "usuario_telefone"
+      },
+      {
+        "type": "text",
+        "name": "usuario_cpf"
+      },
+      {
+        "type": "boolean",
+        "name": "ativo"
+      },
+      {
+        "type": "text",
+        "name": "end_rua"
+      },
+      {
+        "type": "text",
+        "name": "end_numero"
+      },
+      {
+        "type": "text",
+        "name": "end_bairro"
+      },
+      {
+        "type": "text",
+        "name": "end_cidade"
+      },
+      {
+        "type": "text",
+        "name": "end_estado"
+      },
+      {
+        "type": "number",
+        "name": "end_cep"
+      },
+      {
+        "type": "boolean",
+        "name": "notificacoes_email"
+      },
+      {
+        "type": "boolean",
+        "name": "notificacoes_push"
+      },
+      {
+        "type": "boolean",
+        "name": "notificacoes_whats"
+      },
+      {
+        "type": "text",
+        "name": "fcm_token"
+      },
+      {
+        "type": "file",
+        "name": "foto",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "text",
+        "name": "data_nascimento"
+      },
+      {
+        "type": "number",
+        "name": "permissao"
+      },
+      {
+        "type": "number",
+        "name": "genero"
+      },
+      {
+        "type": "boolean",
+        "name": "atualizar_senha"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "consultar_email",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "usuarios",
+                "column": "id",
+                "recid": 1
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.usuario_email}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "usuarios"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "usuarios.usuario_email",
+                  "field": "usuarios.usuario_email",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.usuario_email}}",
+                  "data": {
+                    "table": "usuarios",
+                    "column": "usuario_email",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "text",
+                      "primary": false,
+                      "unique": true,
+                      "nullable": false,
+                      "name": "usuario_email"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "usuarios"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select \"id\" from \"usuarios\" where \"usuarios\".\"usuario_email\" = ?"
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{consultar_email}}",
+          "then": {
+            "steps": {
+              "name": "tem_cadastro",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403,
+                "data": "Você já possui cadastro. E-mail ja cadastrado! Faça login"
+              }
+            }
+          },
+          "else": {
+            "steps": [
+              {
+                "name": "upload",
+                "module": "upload",
+                "action": "upload",
+                "options": {
+                  "fields": "{{$_POST.foto}}",
+                  "path": "/public/assets/uploads/usuarios",
+                  "template": "{guid}{ext}"
+                },
+                "meta": [
+                  {
+                    "name": "name",
+                    "type": "text"
+                  },
+                  {
+                    "name": "path",
+                    "type": "text"
+                  },
+                  {
+                    "name": "url",
+                    "type": "text"
+                  },
+                  {
+                    "name": "type",
+                    "type": "text"
+                  },
+                  {
+                    "name": "size",
+                    "type": "text"
+                  },
+                  {
+                    "name": "error",
+                    "type": "number"
+                  }
+                ],
+                "outputType": "file"
+              },
+              {
+                "name": "hash",
+                "module": "crypto",
+                "action": "passwordHash",
+                "options": {
+                  "password": "{{$_POST.senha}}"
+                },
+                "outputType": "text"
+              },
+              {
+                "name": "nono_usuario",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "usuarios",
+                        "column": "data_criacao",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "senha",
+                        "type": "text",
+                        "value": "{{hash}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "usuario_email",
+                        "type": "text",
+                        "value": "{{$_POST.usuario_email.lowercase()}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "usuario_nome",
+                        "type": "text",
+                        "value": "{{$_POST.usuario_nome}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "usuario_apelido",
+                        "type": "text",
+                        "value": "{{$_POST.usuario_apelido}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "usuario_telefone",
+                        "type": "text",
+                        "value": "{{$_POST.usuario_telefone}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "usuario_cpf",
+                        "type": "text",
+                        "value": "{{$_POST.usuario_cpf}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "ativo",
+                        "type": "boolean",
+                        "value": "1"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "end_rua",
+                        "type": "text",
+                        "value": "{{$_POST.end_rua}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "end_numero",
+                        "type": "text",
+                        "value": "{{$_POST.end_numero}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "end_bairro",
+                        "type": "text",
+                        "value": "{{$_POST.end_bairro}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "end_cidade",
+                        "type": "text",
+                        "value": "{{$_POST.end_cidade}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "end_estado",
+                        "type": "text",
+                        "value": "{{$_POST.end_estado}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "notificacoes_email",
+                        "type": "boolean",
+                        "value": "{{$_POST.notificacoes_email.default(0)}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "notificacoes_push",
+                        "type": "boolean",
+                        "value": "{{$_POST.notificacoes_push.default(0)}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "notificacoes_whats",
+                        "type": "boolean",
+                        "value": "{{$_POST.notificacoes_whats.default(0)}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "fcm_token",
+                        "type": "text",
+                        "value": "{{$_POST.fcm_token}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "foto",
+                        "type": "text",
+                        "value": "{{upload.url}}",
+                        "condition": "{{$_POST.foto}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "permissao",
+                        "type": "number",
+                        "value": "1"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "data_nascimento",
+                        "type": "date",
+                        "value": "{{$_POST.data_nascimento}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "end_cep",
+                        "type": "text",
+                        "value": "{{$_POST.end_cep}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "atualizar_senha",
+                        "type": "boolean",
+                        "value": "0"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "genero",
+                        "type": "number",
+                        "value": "{{$_POST.genero}}"
+                      }
+                    ],
+                    "table": "usuarios",
+                    "returning": "id",
+                    "query": "insert into \"usuarios\" (\"ativo\", \"atualizar_senha\", \"data_criacao\", \"data_nascimento\", \"end_bairro\", \"end_cep\", \"end_cidade\", \"end_estado\", \"end_numero\", \"end_rua\", \"fcm_token\", \"foto\", \"genero\", \"notificacoes_email\", \"notificacoes_push\", \"notificacoes_whats\", \"permissao\", \"senha\", \"usuario_apelido\", \"usuario_cpf\", \"usuario_email\", \"usuario_nome\", \"usuario_telefone\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{NOW}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{hash}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{$_POST.usuario_email.lowercase()}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{$_POST.usuario_nome}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{$_POST.usuario_apelido}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P6",
+                        "type": "expression",
+                        "value": "{{$_POST.usuario_telefone}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P7",
+                        "type": "expression",
+                        "value": "{{$_POST.usuario_cpf}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P8",
+                        "type": "expression",
+                        "value": "{{$_POST.end_rua}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P9",
+                        "type": "expression",
+                        "value": "{{$_POST.end_numero}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P10",
+                        "type": "expression",
+                        "value": "{{$_POST.end_bairro}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P11",
+                        "type": "expression",
+                        "value": "{{$_POST.end_cidade}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P12",
+                        "type": "expression",
+                        "value": "{{$_POST.end_estado}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P13",
+                        "type": "expression",
+                        "value": "{{$_POST.notificacoes_email.default(0)}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P14",
+                        "type": "expression",
+                        "value": "{{$_POST.notificacoes_push.default(0)}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P15",
+                        "type": "expression",
+                        "value": "{{$_POST.notificacoes_whats.default(0)}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P16",
+                        "type": "expression",
+                        "value": "{{$_POST.fcm_token}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P17",
+                        "type": "expression",
+                        "value": "{{upload.url}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P18",
+                        "type": "expression",
+                        "value": "{{$_POST.data_nascimento}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P19",
+                        "type": "expression",
+                        "value": "{{$_POST.end_cep}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P20",
+                        "type": "expression",
+                        "value": "{{$_POST.genero}}",
+                        "test": ""
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  },
+  "usedModules": {
+    "argon2": "^0.30.2"
+  }
+}

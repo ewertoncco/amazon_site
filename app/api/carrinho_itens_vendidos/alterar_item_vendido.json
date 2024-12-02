@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "boolean",
+        "name": "item_resgatado"
+      },
+      {
+        "type": "datetime",
+        "name": "data_horario_resgate"
+      },
+      {
+        "type": "number",
+        "name": "id_transacao"
+      },
+      {
+        "type": "text",
+        "name": "pdf"
+      },
+      {
+        "type": "boolean",
+        "name": "trocou_nome"
+      },
+      {
+        "type": "text",
+        "name": "nome_anterior"
+      },
+      {
+        "type": "text",
+        "name": "cpf_anterior"
+      },
+      {
+        "type": "datetime",
+        "name": "data_troca"
+      },
+      {
+        "type": "text",
+        "name": "participante_nome"
+      },
+      {
+        "type": "text",
+        "name": "participante_telefone"
+      },
+      {
+        "type": "text",
+        "name": "participante_cpf"
+      },
+      {
+        "type": "text",
+        "name": "participante_email"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update_item_vendido",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "item_resgatado",
+              "type": "boolean",
+              "value": "{{$_POST.item_resgatado}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "data_horario_resgate",
+              "type": "datetime",
+              "value": "{{$_POST.data_horario_resgate}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "id_transacao",
+              "type": "number",
+              "value": "{{$_POST.id_transacao}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "pdf",
+              "type": "text",
+              "value": "{{$_POST.pdf}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "trocou_nome",
+              "type": "boolean",
+              "value": "{{$_POST.trocou_nome}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "nome_anterior",
+              "type": "text",
+              "value": "{{$_POST.nome_anterior}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "cpf_anterior",
+              "type": "text",
+              "value": "{{$_POST.cpf_anterior}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "data_troca",
+              "type": "datetime",
+              "value": "{{$_POST.data_troca}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "participante_nome",
+              "type": "text",
+              "value": "{{$_POST.participante_nome}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "participante_telefone",
+              "type": "text",
+              "value": "{{$_POST.participante_telefone}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "participante_cpf",
+              "type": "text",
+              "value": "{{$_POST.participante_cpf}}"
+            },
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "participante_email",
+              "type": "text",
+              "value": "{{$_POST.participante_email}}"
+            }
+          ],
+          "table": "carrinho_itens_vendidos",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id",
+                "field": "id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.id}}",
+                "data": {
+                  "column": "id"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "id",
+          "query": "update \"carrinho_itens_vendidos\" set \"item_resgatado\" = ?, \"data_horario_resgate\" = ?, \"id_transacao\" = ?, \"pdf\" = ?, \"trocou_nome\" = ?, \"nome_anterior\" = ?, \"cpf_anterior\" = ?, \"data_troca\" = ?, \"participante_nome\" = ?, \"participante_telefone\" = ?, \"participante_cpf\" = ?, \"participante_email\" = ? where \"id\" = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.item_resgatado}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.data_horario_resgate}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.id_transacao}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.pdf}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.trocou_nome}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.nome_anterior}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.cpf_anterior}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.data_troca}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.participante_nome}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.participante_telefone}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.participante_cpf}}",
+              "test": ""
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.participante_email}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P13",
+              "value": "{{$_POST.id}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

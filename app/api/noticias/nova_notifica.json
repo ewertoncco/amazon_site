@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "titulo"
+      },
+      {
+        "type": "text",
+        "name": "conteudo"
+      },
+      {
+        "type": "number",
+        "name": "status_publicacao"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "auth"
+        },
+        "meta": []
+      },
+      {
+        "name": "nova_noticia",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "noticias",
+                "column": "data_criacao",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "noticias",
+                "column": "titulo",
+                "type": "text",
+                "value": "{{$_POST.titulo}}"
+              },
+              {
+                "table": "noticias",
+                "column": "conteudo",
+                "type": "text",
+                "value": "{{$_POST.conteudo}}"
+              },
+              {
+                "table": "noticias",
+                "column": "status_publicacao",
+                "type": "number",
+                "value": "{{$_POST.status_publicacao}}"
+              },
+              {
+                "table": "noticias",
+                "column": "criado_por",
+                "type": "number",
+                "value": "{{identity}}"
+              }
+            ],
+            "table": "noticias",
+            "returning": "id",
+            "query": "insert into \"noticias\" (\"conteudo\", \"criado_por\", \"data_criacao\", \"status_publicacao\", \"titulo\") values (?, ?, ?, ?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.titulo}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.conteudo}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.status_publicacao}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

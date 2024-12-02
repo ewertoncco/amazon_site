@@ -1,0 +1,334 @@
+<!-- Wappler include head-page="layouts/dashboard" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="adm_evento" appConnect="local" components="{dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{}}" -->
+<dmx-serverconnect id="sc_dados_evento" url="/api/eventos/dados_evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
+<dmx-notifications id="notifies1"></dmx-notifications>
+<div class="modal" id="novo_item" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">CADASTRAR ITEM</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form is="dmx-serverconnect-form" id="sc_novo_produto" method="post" action="/api/eventos_produtos/novo_produto" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:success="sc_novo_produto.reset();novo_item.hide();notifies1.success('Item inserido com sucesso!');sc_dados_evento.load({})">
+                    <dmx-form-data id="inputData1" name="evento_id" dmx-bind:data="query.id_evento"></dmx-form-data>
+                    <div class="form-group mb-3">
+                        <label for="inp_produto_nome">Nome do item</label>
+                        <input type="text" class="form-control" id="inp_produto_nome" name="produto_nome" aria-describedby="inp_produto_nome_help" placeholder="Enter Nome do item" dmxorgdomid="d488">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="inp_qtide_cadastrada">Qtide cadastrada</label>
+                        <input type="number" class="form-control" id="inp_qtide_cadastrada" name="qtide_cadastrada" aria-describedby="inp_qtide_cadastrada_help" placeholder="Enter Qtide cadastrada" dmxorgdomid="d492">
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <label for="inp_inicio_vendas">Final vendas</label>
+                                <input type="datetime-local" class="form-control" id="inp_inicio_vendas" name="inicio_vendas" aria-describedby="inp_final_vendas_help" placeholder="Enter Final vendas" dmxorgdomid="d500">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-3">
+
+                                <label for="inp_inicio_vendas">Inicio vendas</label>
+                                <input type="datetime-local" class="form-control" id="inp_final_vendas" name="final_vendas" aria-describedby="inp_inicio_vendas_help" placeholder="Enter Inicio vendas" dmxorgdomid="d496">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <label for="inp_valor">Valor</label>
+                                <input type="number" class="form-control" id="inp_valor" name="valor" aria-describedby="inp_valor_help" placeholder="Enter Valor" dmxorgdomid="d504">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <label for="inp_ordem_lista">Ordem lista</label>
+                                <input type="number" class="form-control" id="inp_ordem_lista" name="ordem_lista" aria-describedby="inp_ordem_lista_help" placeholder="Enter Ordem lista" dmxorgdomid="d508">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_cortesia" name="cortesia" dmxorgdomid="d529">
+                                    <label class="form-check-label" for="inp_cortesia">Cortesia</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col align-self-center">
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_ativo" name="ativo" dmxorgdomid="d513" dmx-bind:checked="true">
+                                    <label class="form-check-label" for="inp_ativo">Ativar agora</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_is_mesa" name="is_mesa" dmxorgdomid="d519">
+                                    <label class="form-check-label" for="inp_is_mesa">É mesa/Camarote?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <label for="inp_qtide_mesa">Qtide mesa</label>
+                                <input type="number" class="form-control" id="inp_qtide_mesa" name="qtide_mesa" aria-describedby="inp_qtide_mesa_help" placeholder="Enter Qtide mesa" dmxorgdomid="d524">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_cupom_ativo" name="cupom_ativo" dmxorgdomid="d535">
+                                    <label class="form-check-label" for="inp_cupom_ativo">Tem cupom desconto?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <label for="inp_codigo_cupom">Codigo cupom</label>
+                                <input type="text" class="form-control" id="inp_codigo_cupom" name="codigo_cupom" aria-describedby="inp_codigo_cupom_help" placeholder="Enter Codigo cupom" dmxorgdomid="d540">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <div class="form-group mb-3">
+                        <label for="inp_valor_desconto">Valor desconto</label>
+                        <input type="number" class="form-control" id="inp_valor_desconto" name="valor_desconto" aria-describedby="inp_valor_desconto_help" placeholder="Enter Valor desconto" dmxorgdomid="d544">
+                    </div>
+                    <div class="form-group mb-3 text-end">
+                        <button type="submit" class="btn btn-primary text-end" dmx-bind:disabled="state.executing" dmxorgdomid="d548">Salvar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing" dmxorgdomid="d549"></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/adm_evento/:id_evento">
+
+<div class="d-flex justify-content-between align-items-center mt-1 mb-3">
+    <h4 class="font-18 fw-semibold mb-0">{{sc_dados_evento.data.dados_evento.evento_nome}}</h4>
+    <div class="d-flex"><button type="button" class="btn waves-effect waves-light ms-2 btn-info" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-plus"></i>
+            </span>Editar Evento</button>
+        <button type="button" class="btn waves-effect waves-light ms-2 btn-info" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-plus"></i>
+            </span>Lista Compradores</button>
+        <button type="button" class="btn waves-effect waves-light ms-2 btn-danger" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-plus"></i>
+            </span>&nbsp;Desativar</button>
+    </div>
+
+</div>
+
+<div class="row">
+    <!-- end col -->
+
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-cash-sync avatar-title font-20 text-white"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">TRANSAÇÕES</p>
+                        <h3 class="fw-medium my-2"><span data-plugin="counterup">502</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-cash-multiple avatar-title font-20 text-white"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">VALOR LÍQUIDO</p>
+                        <h3 class="fw-medium my-2">R$ 39.089,30</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-cash-sync avatar-title font-20 text-white"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">transações pix</p>
+                        <h3 class="fw-medium my-2"><span data-plugin="counterup">264</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-cash-multiple avatar-title font-20 text-white"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">valor Total pix</p>
+                        <h3 class="fw-medium my-2">R$ 18.448,20</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-credit-card-settings-outline avatar-title font-20 text-white"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">transações Crédito</p>
+                        <h3 class="fw-medium my-2"><span data-plugin="counterup">242</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-credit-card-settings-outline avatar-title font-20 text-white"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">VALOR TOTAL crédito</p>
+                        <h3 class="fw-medium my-2">R$ 16.732,17</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-gift-open avatar-title font-20 text-white"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">CORTESIAS</p>
+                        <h3 class="fw-medium my-2"><span data-plugin="counterup">1</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body pt-2 pb-2 ps-3 pe-3">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg rounded-circle bg-primary widget-two-icon align-self-center">
+                        <i class="mdi mdi-sync avatar-title font-20"></i>
+                    </div>
+
+                    <div class="wigdet-two-content media-body text-end text-truncate">
+                        <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">DEVOLUÇÕES</p>
+                        <h3 class="fw-medium my-2"><span data-plugin="counterup">11</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+
+    <!-- end col -->
+
+
+</div>
+
+<div class="col-lg-12 col-xl-NaN">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="header-title">Itens CADASTRADOS</h4><button type="button" class="btn waves-effect waves-light ms-2 btn-success" dmx-on:click="novo_item.show()"><span class="btn-label"><i class="mdi mdi-plus"></i>
+                    </span>Novo item</button>
+            </div>
+
+
+        </div>
+        <div class="card-body pt-2">
+            <div class="table-responsive">
+                <table class="table table-hover m-0 table-actions-bar">
+
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Valor</th>
+                            <th>Início Vendas</th>
+                            <th>Final Vendas</th>
+                            <th>Progresso</th>
+                            <th>Vendas</th>
+                            <th>Cortesias</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" id="repeat1" dmx-bind:repeat="sc_dados_evento.data.dados_evento.produtos" key="id">
+                        <tr>
+
+                            <td>
+                                <h5 class="m-0 fw-medium">{{produto_nome}}</h5>
+                            </td>
+
+                            <td><i class="mdi mdi-currency-usd text-warning"></i> {{valor}}</td>
+                            </td>
+
+                            <td><i class="mdi mdi-clock-outline text-success"></i>&nbsp; {{inicio_vendas.formatDate('dd/MM/yy HH:mm')}}</td>
+                            <td><i class="mdi mdi-clock-outline text-danger"></i>{{' '+final_vendas.formatDate('dd/MM/yy HH:mm')}}</td>
+
+
+                            <td>
+                                <i class="mdi mdi-currency-usd text-warning"></i> 3265
+                            </td>
+                            <td><i class="mdi mdi-currency-usd text-warning"></i> 4.070.25</td>
+                            <td class="text-center"><i class="mdi mdi-currency-usd text-warning"></i>1</td>
+
+                            <td class="text-center">
+                                <a href="#" class="table-action-btn"><i class="mdi mdi-pencil"></i></a>
+                                <a href="#" class="table-action-btn"><i class="mdi mdi-close"></i></a>
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

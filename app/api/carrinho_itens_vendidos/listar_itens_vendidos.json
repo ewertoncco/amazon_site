@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "listar_item_vendido",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "carrinho_itens_vendidos",
+              "column": "*"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "carrinho_itens_vendidos"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select * from \"carrinho_itens_vendidos\""
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "id"
+            },
+            {
+              "type": "number",
+              "name": "produto_id"
+            },
+            {
+              "type": "number",
+              "name": "carrinho_id"
+            },
+            {
+              "type": "boolean",
+              "name": "item_resgatado"
+            },
+            {
+              "type": "datetime",
+              "name": "data_horario_resgate"
+            },
+            {
+              "type": "number",
+              "name": "id_transacao"
+            },
+            {
+              "type": "text",
+              "name": "pdf"
+            },
+            {
+              "type": "boolean",
+              "name": "trocou_nome"
+            },
+            {
+              "type": "text",
+              "name": "nome_anterior"
+            },
+            {
+              "type": "text",
+              "name": "cpf_anterior"
+            },
+            {
+              "type": "datetime",
+              "name": "data_troca"
+            },
+            {
+              "type": "text",
+              "name": "participante_nome"
+            },
+            {
+              "type": "text",
+              "name": "participante_telefone"
+            },
+            {
+              "type": "text",
+              "name": "participante_cpf"
+            },
+            {
+              "type": "text",
+              "name": "participante_email"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

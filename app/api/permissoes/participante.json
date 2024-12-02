@@ -1,0 +1,11 @@
+{
+  "name": "",
+  "module": "auth",
+  "action": "restrict",
+  "options": {
+    "provider": "auth",
+    "permissions": [
+      "participante"
+    ]
+  }
+}

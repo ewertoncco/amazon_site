@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "auth"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "listar_nao_lidas",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "usuarios_notificacoes_lidas"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "usuarios_notificacoes_lidas.usuario_id",
+                  "field": "usuarios_notificacoes_lidas.usuario_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "usuarios_notificacoes_lidas",
+                    "column": "usuario_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "references": "id",
+                      "inTable": "usuarios",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "usuario_id"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "usuarios_notificacoes_lidas"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select * from \"usuarios_notificacoes_lidas\" where \"usuarios_notificacoes_lidas\".\"usuario_id\" = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "datetime",
+            "name": "data_criacao"
+          },
+          {
+            "type": "number",
+            "name": "usuario_id"
+          },
+          {
+            "type": "number",
+            "name": "notificacao_id"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

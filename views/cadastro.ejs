@@ -1,0 +1,268 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" is="dmx-app" id="cadastro" appConnect="local" components="{dmxNotifications:{},dmxValidator:{}}" bootstrap5="custom" -->
+<script is="dmx-flow" id="cep" type="text/dmx-flow">[
+  {
+    api.send: {
+      name: "via_cep",
+      output: true,
+      outputType: "object",
+      url: "{{'https://viacep.com.br/ws/'+sc_novo_usuario.inp_end_cep.value+'/json/'}}",
+      schema: [
+        {
+          type: "object",
+          name: "data",
+          sub: [
+            {type: "text", name: "cep"},
+            {type: "text", name: "logradouro"},
+            {type: "text", name: "complemento"},
+            {type: "text", name: "unidade"},
+            {type: "text", name: "bairro"},
+            {type: "text", name: "localidade"},
+            {type: "text", name: "uf"},
+            {type: "text", name: "estado"},
+            {type: "text", name: "regiao"},
+            {type: "text", name: "ibge"},
+            {type: "text", name: "gia"},
+            {type: "text", name: "ddd"},
+            {type: "text", name: "siafi"}
+          ]
+        },
+        {
+          type: "object",
+          name: "headers",
+          sub: [
+            {type: "text", name: "access-control-allow-credentials"},
+            {type: "text", name: "access-control-allow-headers"},
+            {type: "text", name: "access-control-allow-methods"},
+            {type: "text", name: "access-control-allow-origin"},
+            {type: "text", name: "access-control-max-age"},
+            {type: "text", name: "cache-control"},
+            {type: "text", name: "connection"},
+            {type: "text", name: "content-type"},
+            {type: "text", name: "date"},
+            {type: "text", name: "expires"},
+            {type: "text", name: "pragma"},
+            {type: "text", name: "server"},
+            {type: "text", name: "transfer-encoding"}
+          ]
+        }
+      ]
+    }
+  },
+  {
+    run: {
+      outputType: "text",
+      action: "{{sc_novo_usuario.inp_end_rua.setValue(via_cep.data.logradouro);sc_novo_usuario.inp_end_bairro.setValue(via_cep.data.bairro);sc_novo_usuario.inp_end_cidade.setValue(via_cep.data.localidade);sc_novo_usuario.inp_end_estado.setValue(via_cep.data.uf)}}"
+    }
+  }
+]</script>
+<dmx-notifications id="notifies1"></dmx-notifications>
+<meta name="ac:route" content="/cadastro">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Cadastro | A sua plataforma de ingresso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Vendor css -->
+    <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- App css -->
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+    <!-- Icons css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Theme Config Js -->
+    <script src="assets/js/config.js"></script>
+</head>
+
+<body class="authentication-bg bg-primary authentication-bg-pattern d-flex align-items-center pb-0 vh-100">
+
+    <div class="home-btn d-none d-sm-block position-absolute top-0 end-0 m-3">
+        <a href="index.html"></a>
+    </div>
+
+    <div class="account-pages w-100 mt-5 mb-5">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card mb-0">
+
+                        <div class="card-body p-4">
+
+                            <div class="account-box">
+                                <div class="account-logo-box">
+                                    <div class="text-center">
+                                        <a href="index.html">
+                                            <img src="assets/images/logo-dark.png" alt="" height="50">
+                                        </a>
+                                    </div>
+                                    <h5 class="text-uppercase mb-1 mt-4 fw-semibold">Cadastro usuário</h5>
+                                    <div class="row">
+                                        <div class="col">
+                                            <form is="dmx-serverconnect-form" id="sc_novo_usuario" method="post" action="/api/usuarios/novo_usuario" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:success="sc_novo_usuario.reset();notifies1.success('Cadastro realizado com sucesso!');browser1.goto('/index')" dmx-on:forbidden="notifies1.danger(lastError.response)">
+
+
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_usuario_email">E-mail *</label>
+                                                    <input type="email" class="form-control" id="inp_usuario_email" name="usuario_email" aria-describedby="inp_usuario_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="" data-msg-email="Digite um e-mail válido!">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_usuario_nome">Nome Completo *</label>
+                                                    <input type="text" class="form-control" id="inp_usuario_nome" name="usuario_nome" aria-describedby="inp_usuario_nome_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_usuario_apelido">Como quer ser chamado? Apelido *</label>
+                                                    <input type="text" class="form-control" id="inp_usuario_apelido" name="usuario_apelido" aria-describedby="inp_usuario_apelido_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+                                                <div class="form-group mb-3">
+
+                                                    <label for="inp_usuario_apelido1">Gênero *</label>
+                                                    <select id="genero" class="form-select" name="genero" required="" data-msg-required="Preenchimento Obrigatório">
+                                                        <option value="1">Masculino</option>
+                                                        <option value="2">Feminino</option>
+                                                        <option value="3">Outros</option>
+                                                        <option value="4">Não responder</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_usuario_telefone">WhatsApp *</label>
+                                                    <input type="text" data-mask="(99) 9 9999-9999" class="form-control" id="inp_usuario_telefone" name="usuario_telefone" aria-describedby="inp_usuario_telefone_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_usuario_cpf">CPF *</label>
+                                                    <input type="text" data-mask="999.999.999-04" class="form-control" id="inp_usuario_cpf" name="usuario_cpf" aria-describedby="inp_usuario_cpf_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group mb-3">
+                                                            <label for="inp_end_cep">Digite o CEP e clique em buscar</label>
+                                                            <input data-mask="99999-999" class="form-control" id="inp_end_cep" name="end_cep" aria-describedby="inp_end_cep_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 align-self-center">
+                                                        <button id="btn1" class="btn btn-info width-md" dmx-on:click="cep.run()">Buscar&nbsp;</button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_end_rua">Logradouro (Rua, avenida...) *</label>
+                                                    <input type="text" class="form-control" id="inp_end_rua" name="end_rua" aria-describedby="inp_end_rua_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group mb-3">
+                                                            <label for="inp_end_numero">Número *</label>
+                                                            <input type="text" class="form-control" id="inp_end_numero" name="end_numero" aria-describedby="inp_end_numero_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group mb-3">
+                                                            <label for="inp_end_estado">Estado * (UF)</label>
+                                                            <input type="text" class="form-control" id="inp_end_estado" name="end_estado" aria-describedby="inp_end_estado_help" required="" data-msg-required="Preenchimento Obrigatório" maxlength="2" data-msg-maxlength="Máximo 2 caracteres">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_end_bairro">Bairro *</label>
+                                                    <input type="text" class="form-control" id="inp_end_bairro" name="end_bairro" aria-describedby="inp_end_bairro_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_end_cidade">Cidade *</label>
+                                                    <input type="text" class="form-control" id="inp_end_cidade" name="end_cidade" aria-describedby="inp_end_cidade_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+
+
+                                                <div class="form-group mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" checked"true"="" value="1" id="inp_notificacoes_email" name="notificacoes_email" dmx-bind:checked="1">
+                                                        <label class="form-check-label" for="inp_notificacoes_email">Aceitar e-mails com ingresso e informações de eventos</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="1" id="inp_notificacoes_push" name="notificacoes_push" dmx-bind:checked="1">
+                                                        <label class="form-check-label" for="inp_notificacoes_push">Aceitar notificações sobre eventos</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="1" id="inp_notificacoes_whats" name="notificacoes_whats" dmx-bind:checked="1">
+                                                        <label class="form-check-label" for="inp_notificacoes_whats">Receber informações pelo whatsApp</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="rounded-2 border-1 border rounded border-secondary-subtle pt-3 pb-3 col text-center">
+                                                        <input id="foto" name="foto" type="file" class="form-control"><img dmx-bind:src="foto.file.dataUrl" class="mt-3 rounded-circle" width="100" height="100">
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_data_nascimento">Data nascimento *</label>
+                                                    <input data-mask="99/99/9999" class="form-control" id="inp_data_nascimento" name="data_nascimento" aria-describedby="inp_data_nascimento_help">
+                                                    <span class="font-13 text-muted">dd/mm/yyyy</span>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="inp_senha">Senha *</label>
+                                                    <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="confirma_senha">Repita Senha *</label>
+                                                    <input type="password" class="form-control" id="confirma_senha" name="confirma_senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-equalto="senha" data-msg-equalto="As senhas não são iguais">
+                                                </div>
+
+                                                <div class="form-group mb-3 text-end">
+                                                    <button type="submit" class="btn btn-primary width-lg" dmx-bind:disabled="state.executing">Criar minha conta <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="account-content mt-4">
+
+
+                                    <div class="row mt-0 pt-2">
+                                        <div class="col-sm-12 text-center">
+                                            <p class="text-muted">Ja tem uma conta? <a href="/login" class="text-dark ms-1"><b>Faca Login</b></a></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end card-body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+
+
+    <!-- Vendor js -->
+    <script src="assets/js/vendor.min.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/app.js"></script>
+
+    <!-- Bootstrap Wizard Form js -->
+    <script src="assets/vendor/jquery-mask-plugin/jquery.mask.min.js"></script>
+
+    <script src="assets/vendor/autonumeric/autoNumeric.min.js"></script>
+
+    <!-- masks Form Demo js -->
+    <script src="assets/js/pages/form-masks.js"></script>
+
+</body>

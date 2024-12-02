@@ -1,5 +1,8 @@
 {
   "homepage.ejs": {
     "description": ""
+  },
+  "dashboard.ejs": {
+    "description": ""
   }
 }

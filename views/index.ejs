@@ -1,154 +1,100 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" id="index" components="{dmxSlideshow:{},dmxSwiper:{}}" is="dmx-app" appConnect="local" -->
+<!-- Wappler include head-page="layouts/homepage" bootstrap5="custom" is="dmx-app" id="comeco" appConnect="local" components="{dmxSwiper:{},dmxFormatter:{},dmxTyped:{},dmxSlideshow:{},dmxFormRepeat:{}}" fontawesome_6="local" -->
 <dmx-datetime id="var1"></dmx-datetime>
+<meta name="ac:route" content="/index">
+<section id="eventos" class="min-vh-100">
+    <section id="eventos" class="min-vh-100 d-flex align-items-stretch">
+        <div class="container-fluid min-vh-100">
+            <div is="dmx-swiper" id="swiper1" class="h-85" dmx-bind:slides="sc_listar_eventos.data.query.data" autoplay="true" loop="true">
+                <div class="swiper-slide h-100">
+                    <div class="row h-100">
+                        <!-- Coluna Esquerda (Texto e Descrição) -->
+                        <div class="col-lg-8 d-flex flex-column justify-content-between col">
 
-<section id="home" class="w-100">
-    <dmx-slideshow id="slideshow1" show-nav="true" show-paging="true">
-        <dmx-slide id="slide2">
-            <div class="row justify-content-between">
-                <div class="col-lg-6 col-xxl mt-xxl-0">
-                    <div class="title-heading mt-5">
-                        <h4 class="sub-title">09 dez 2024</h4>
-                        <h1 class="Display 1 fw-bold" style="font-size: 60px;">ASDASD</h1>
+                            <!-- Parte Superior (Título, Subtítulo, Data) -->
+                            <div>
+                                <div class="mt-5 text-center">
+                                    <!-- Data do evento -->
+                                    <h4 class="sub-title text-center text-md-start text-lg-start text-xl-start text-xxl-start">{{evento_data_hora.formatDate('dd MMM yyyy')}}</h4>
+
+                                    <!-- Nome do evento -->
+                                    <h1 class="display-1 fw-bold text-center text-md-start text-lg-start text-xl-start text-xxl-start" style="font-size: 60px;">{{evento_nome}}</h1>
+
+                                    <!-- Resumo do evento -->
+                                    <h3 class="text-muted fw-bold text-center text-md-start text-lg-start text-xl-start text-xxl-start">{{evento_resumo}}</h3>
+
+                                    <!-- Descrição com limite de 5 linhas, espaçamento maior entre as linhas e reticências -->
+                                    <div class="d-flex justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start justify-content-center mb-3">
+                                        <h5 class="text-muted text-md-start text-lg-start text-xxl-start mt-3 w-75 fw-light text-xl-start text-sm-center text-center" style="line-height: 1.75; max-height: calc(1.75em * 5); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                            {{evento_descricao}}
+                                        </h5>
+                                    </div>
 
 
-                        <h3 class="text-muted fw-bold">A maior festa do ano no Amazon Club</h3>
-                        <h6 class="text-muted mt-3">
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">+ 12 horas de festas</span><br></p>
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Line-up com + de 12 artistas</span><br></p>
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Novas experiências desbloqueadas</span><br></p>
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Será uma noite&nbsp;histórica!</span><br></p>
-                        </h6>
 
-                        <div class="row text-center mt-5 gx-2 justify-content-start">
-                            <div class="col-2 border-end">
-                                <div class="">
-                                    <h2 id="days1" class="text-primary fw-bold">45</h2>
+                                </div>
+
+                            </div>
+                            <!-- Parte Inferior (Contagem Regressiva e Botões) -->
+                            <div class="row text-center mt-auto mb-4 justify-content-xxl-start justify-content-center justify-content-xl-start justify-content-lg-start justify-content-md-start justify-content-sm-start">
+                                <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
+                                    <h2 id="days2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora))/ 86400)%365).floor()}}</h2>
                                     <h6 class="fw-light">Dias</h6>
                                 </div>
-                            </div>
-                            <div class="col-2 border-end">
-                                <div class="">
-                                    <h2 id="hours1" class="text-primary fw-bold">11</h2>
+                                <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
+                                    <h2 id="hours2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)/3600)%24)).floor()}}</h2>
                                     <h6 class="fw-light">Horas</h6>
                                 </div>
-                            </div>
-                            <div class="col-2 border-end">
-                                <div class="">
-                                    <h2 id="minutes1" class="text-primary fw-bold">2</h2>
+                                <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
+                                    <h2 id="minutes2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)/60)%60)).floor()}}</h2>
                                     <h6 class="fw-light">Minutos</h6>
                                 </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="">
-                                    <h2 id="seconds1" class="text-primary fw-bold">16</h2>
+                                <div class="align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
+                                    <h2 id="seconds2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)%60))).floor()}}</h2>
                                     <h6 class="fw-light">Segundos</h6>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="g-3 mt-3 pt-2">
-                            <a class="btn btn-primary rounded btn-lg mb-2 me-4">Comprar ingressos</a>
-                            <a class="btn btn-outline-primary rounded mb-2 btn-lg">Mais informações</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <img src="/assets/images/banners_eventos/vitorlou.png">
-                </div>
-            </div>
-        </dmx-slide>
-        <dmx-slide id="slide1">
-            <div class="row justify-content-between">
-                <div class="col-lg-6 col-xxl mt-xxl-0">
-                    <div class="title-heading mt-5">
-                        <h4 class="sub-title">09 dez 2024</h4>
-                        <h1 class="Display 1 fw-bold" style="font-size: 60px;">Victor Lou [longset]</h1>
-
-
-                        <h3 class="text-muted fw-bold">A maior festa do ano no Amazon Club</h3>
-                        <h6 class="text-muted mt-3">
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">+ 12 horas de festas</span><br></p>
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Line-up com + de 12 artistas</span><br></p>
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Novas experiências desbloqueadas</span><br></p>
-                            <p><span style="color: var(--bs-secondary-color); font-size: 1rem; background-color: var(--bs-body-bg); font-family: var(--bs-body-font-family); text-align: var(--bs-body-text-align);">Será uma noite&nbsp;histórica!</span><br></p>
-                        </h6>
-
-                        <div class="row text-center mt-5 gx-2 justify-content-start">
-                            <div class="col-2 border-end">
-                                <div class="">
-                                    <h2 id="days" class="text-primary fw-bold">45</h2>
-                                    <h6 class="fw-light">Dias</h6>
-                                </div>
-                            </div>
-                            <div class="col-2 border-end">
-                                <div class="">
-                                    <h2 id="hours" class="text-primary fw-bold">11</h2>
-                                    <h6 class="fw-light">Horas</h6>
-                                </div>
-                            </div>
-                            <div class="col-2 border-end">
-                                <div class="">
-                                    <h2 id="minutes" class="text-primary fw-bold">2</h2>
-                                    <h6 class="fw-light">Minutos</h6>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="">
-                                    <h2 id="seconds" class="text-primary fw-bold">16</h2>
-                                    <h6 class="fw-light">Segundos</h6>
+                                <div class="align-self-center col-xl-2 col-lg-2 col-sm-6 col-6 col-xxl-4">
+                                    <a class="btn btn-primary rounded mt-3 pt-2 pb-2 btn-lg mt-xxl-0" dmx-on:click="browser1.goto('/evento/'+id)">Comprar Ingressos</a>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="g-3 mt-3 pt-2">
-                            <a class="btn btn-primary rounded btn-lg mb-2 me-4">Comprar ingressos</a>
-                            <a class="btn btn-outline-primary rounded mb-2 btn-lg">Mais informações</a>
+                        <!-- Coluna Direita (Imagem) -->
+                        <div class="col-lg-4 d-flex align-items-center justify-content-center col-12 h-100">
+                            <img class="pt-2 pb-2 ps-2 pe-1 img-fluid" style="object-fit: cover;" dmx-bind:src="evento_banner_principal">
                         </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <img src="/assets/images/banners_eventos/vitorlou.png">
-                </div>
-            </div>
-        </dmx-slide>
-    </dmx-slideshow>
-
-</section>
-<section id="eventos" class="w-100">
-    <div class="container mt-4 mb-4">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="card d-flex flex-row">
-                    <!-- Imagem na esquerda -->
-                    <img class="card-img-left img-fluid" style="max-height: 200px; object-fit: contain; width: auto; background-color: #f8f9fa;" alt="Card image cap" src="/assets/images/banners_eventos/vitorlou.png">
-
-                    <!-- Conteúdo na direita -->
-                    <div class="card-body">
-                        <h4 class="card-title">Victor Lou [longset]</h4>
-                        <p class="card-text">A maior festa do ano no Amazon Club</p>
-                        <a href="#" class="btn btn-primary">Ver mais</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card d-flex flex-row mt-1 mb-1">
-                    <!-- Imagem na esquerda -->
-                    <img class="card-img-left img-fluid" style="max-height: 200px; object-fit: contain; width: auto; background-color: #f8f9fa;" alt="Card image cap" src="/assets/images/banners_eventos/vitorlou.png">
-
-                    <!-- Conteúdo na direita -->
-                    <div class="card-body">
-                        <h4 class="card-title">Victor Lou [longset]</h4>
-                        <p class="card-text">A maior festa do ano no Amazon Club</p>
-                        <a href="#" class="btn btn-primary">Ver mais</a>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
 
+</section>
+<section id="lista_eventos">
+    <div class="container mt-4 mb-4">
+        <div class="row" is="dmx-repeat" id="repeat1" dmx-bind:items="1" dmx-bind:repeat="sc_listar_eventos.data.query.data" key="id">
+            <div class="col-sm-4">
+                <div class="card d-flex flex-row">
+                    <!-- Imagem na esquerda -->
+                    <img class="card-img-left img-fluid me-2 pt-1 pb-1 ps-3 pe-3" style="max-height: 200px; object-fit: contain; width: auto; background-color: #f8f9fa;" alt="Card image cap" dmx-bind:src="evento_banner_principal">
 
+                    <!-- Conteúdo na direita -->
+                    <div class="card-body">
+                        <div class="d-flex flex-column justify-content-between h-75">
+                            <div class="d-flex flex-column justify-content-between">
+                                <h4 class="card-title">{{evento_nome}}</h4>
+                                <p class="card-text">{{evento_resumo}}</p>
+                            </div>
+                        </div>
+
+
+                        <a href="#" class="btn btn-primary text-bg-primary">Ver mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
 <section id="informacoes">
     <div class="container">
 
@@ -229,14 +175,12 @@
                 <div class="question-box">
                 </div>
             </div>
-
-
         </div>
-
-
     </div> <!-- end Container -->
 </section>
+
 <section id="faq" class="w-100">
+
     <div class="card-body text-center">
         <div class="row">
             <div class="col-lg-12">
@@ -314,4 +258,3 @@
         <button type="button" class="btn btn-primary waves-effect waves-light mt-2 me-1"><i class="fab fa-whatsapp"></i>&nbsp;Entre em contato</button>
     </div>
 </section>
-<meta name="ac:route" content="/">

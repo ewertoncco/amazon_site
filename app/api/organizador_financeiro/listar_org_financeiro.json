@@ -1,0 +1,96 @@
+{
+  "name": "listar_org_financeiro",
+  "module": "dbconnector",
+  "action": "single",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "select",
+      "columns": [
+        {
+          "table": "organizador_financeiro",
+          "column": "*"
+        }
+      ],
+      "params": [],
+      "table": {
+        "name": "organizador_financeiro"
+      },
+      "primary": "id",
+      "joins": [],
+      "query": "select * from \"organizador_financeiro\""
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "type": "number",
+      "name": "id"
+    },
+    {
+      "type": "datetime",
+      "name": "data_criacao"
+    },
+    {
+      "type": "text",
+      "name": "organizador_banco"
+    },
+    {
+      "type": "number",
+      "name": "organizador_agencia"
+    },
+    {
+      "type": "number",
+      "name": "organizador_agencia_digito"
+    },
+    {
+      "type": "number",
+      "name": "organizador_conta"
+    },
+    {
+      "type": "number",
+      "name": "organizador_conta_digito"
+    },
+    {
+      "type": "number",
+      "name": "juros_parcelamento"
+    },
+    {
+      "type": "boolean",
+      "name": "sandbox"
+    },
+    {
+      "type": "text",
+      "name": "token_sandbox"
+    },
+    {
+      "type": "number",
+      "name": "id_receiver"
+    },
+    {
+      "type": "number",
+      "name": "taxa_pix"
+    },
+    {
+      "type": "number",
+      "name": "porcentagem_repasse_pix"
+    },
+    {
+      "type": "number",
+      "name": "taxa_credito"
+    },
+    {
+      "type": "number",
+      "name": "porcentagem_repasse_credito"
+    },
+    {
+      "type": "number",
+      "name": "taxa_bar"
+    },
+    {
+      "type": "number",
+      "name": "porcentagem_repasse_bar"
+    }
+  ],
+  "outputType": "object"
+}
