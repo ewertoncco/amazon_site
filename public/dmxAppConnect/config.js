@@ -78,6 +78,79 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "data_detail_produto": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "datetime",
+          "name": "data_criacao"
+        },
+        {
+          "type": "number",
+          "name": "usuario_id"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "produto_nome"
+        },
+        {
+          "type": "number",
+          "name": "qtide_cadastrada"
+        },
+        {
+          "type": "datetime",
+          "name": "inicio_vendas"
+        },
+        {
+          "type": "datetime",
+          "name": "final_vendas"
+        },
+        {
+          "type": "number",
+          "name": "valor"
+        },
+        {
+          "type": "number",
+          "name": "ordem_lista"
+        },
+        {
+          "type": "boolean",
+          "name": "ativo"
+        },
+        {
+          "type": "boolean",
+          "name": "is_mesa"
+        },
+        {
+          "type": "number",
+          "name": "qtide_mesa"
+        },
+        {
+          "type": "boolean",
+          "name": "cortesia"
+        },
+        {
+          "type": "boolean",
+          "name": "cupom_ativo"
+        },
+        {
+          "type": "text",
+          "name": "codigo_cupom"
+        },
+        {
+          "type": "number",
+          "name": "valor_desconto"
+        }
+      ],
+      "outputType": "array"
     }
   },
   "eventos": {
@@ -1081,7 +1154,39 @@ dmx.config({
         }
       ],
       "outputType": "array"
-    }
+    },
+    "query": [
+      {
+        "type": "text",
+        "name": "id_evento"
+      }
+    ],
+    "datastore_carrinho": [
+      {
+        "type": "text",
+        "name": "produto_id"
+      },
+      {
+        "type": "number",
+        "name": "qtide"
+      },
+      {
+        "type": "text",
+        "name": "participante_nome"
+      },
+      {
+        "type": "text",
+        "name": "participante_cpf"
+      },
+      {
+        "type": "text",
+        "name": "participante_telefone"
+      },
+      {
+        "type": "text",
+        "name": "participante_email"
+      }
+    ]
   },
   "cadastro": {
     "cep": {

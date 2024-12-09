@@ -113,13 +113,13 @@
                 "table": "evento_produtos",
                 "column": "inicio_vendas",
                 "type": "datetime",
-                "value": "{{$_POST.inicio_vendas}}"
+                "value": "{{$_POST.inicio_vendas.toUTCTime()}}"
               },
               {
                 "table": "evento_produtos",
                 "column": "final_vendas",
                 "type": "datetime",
-                "value": "{{$_POST.final_vendas}}"
+                "value": "{{$_POST.final_vendas.toUTCTime()}}"
               },
               {
                 "table": "evento_produtos",
@@ -167,13 +167,15 @@
                 "table": "evento_produtos",
                 "column": "codigo_cupom",
                 "type": "text",
-                "value": "{{$_POST.codigo_cupom}}"
+                "value": "{{$_POST.codigo_cupom}}",
+                "condition": "{{$_POST.codigo_cupom}}"
               },
               {
                 "table": "evento_produtos",
                 "column": "valor_desconto",
                 "type": "number",
-                "value": "{{$_POST.valor_desconto}}"
+                "value": "{{$_POST.valor_desconto}}",
+                "condition": "{{$_POST.valor_desconto}}"
               }
             ],
             "table": "evento_produtos",
@@ -213,13 +215,13 @@
               {
                 "name": ":P6",
                 "type": "expression",
-                "value": "{{$_POST.inicio_vendas}}",
+                "value": "{{$_POST.inicio_vendas.toUTCTime()}}",
                 "test": ""
               },
               {
                 "name": ":P7",
                 "type": "expression",
-                "value": "{{$_POST.final_vendas}}",
+                "value": "{{$_POST.final_vendas.toUTCTime()}}",
                 "test": ""
               },
               {
@@ -289,6 +291,17 @@
             "type": "number"
           }
         ]
+      },
+      {
+        "name": "emit",
+        "module": "sockets",
+        "action": "emit",
+        "options": {
+          "eventName": "atualizar_evento",
+          "params": {
+            "evento_id": "{{$_POST.evento_id}}"
+          }
+        }
       }
     ]
   }

@@ -1,8 +1,27 @@
-<!-- Wappler include head-page="layouts/dashboard" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="adm_evento" appConnect="local" components="{dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{}}" -->
+<!-- Wappler include head-page="layouts/dashboard" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="adm_evento" appConnect="local" components="{dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxValidator:{},dmxAnimateCSS:{},dmxDataTraversal:{}}" -->
+<dmx-data-detail id="data_detail_produto" dmx-bind:data="sc_dados_evento.data.dados_evento.produtos" key="id"></dmx-data-detail>
+<div class="modal" id="deletar_item" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar {{data_detail_produto.data.produto_nome}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{data_detail_produto.data.id}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" dmx-on:click="run([{serverConnect:{name:'sc_deletar_produto',outputType:'object',url:'/api/eventos_produtos/deletar_produto',site:'amazon_ingressos',params:{id_produto:`data_detail_produto.data.id`,evento_id:`query.id_evento`}}},{run:{outputType:'text',action:`deletar_item.hide();notifies1.success(\'Produto deletado com sucesso!\');sc_dados_evento.load({})`}}])">Deletar produto</button>
+            </div>
+        </div>
+    </div>
+</div>
+<dmx-datetime id="var1" interval="hours"></dmx-datetime>
+<i class="fas fa-flag"></i>
 <dmx-serverconnect id="sc_dados_evento" url="/api/eventos/dados_evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
 <dmx-notifications id="notifies1"></dmx-notifications>
 <div class="modal" id="novo_item" is="dmx-bs5-modal" tabindex="-1">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">CADASTRAR ITEM</h5>
@@ -11,57 +30,69 @@
             <div class="modal-body">
                 <form is="dmx-serverconnect-form" id="sc_novo_produto" method="post" action="/api/eventos_produtos/novo_produto" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:success="sc_novo_produto.reset();novo_item.hide();notifies1.success('Item inserido com sucesso!');sc_dados_evento.load({})">
                     <dmx-form-data id="inputData1" name="evento_id" dmx-bind:data="query.id_evento"></dmx-form-data>
-                    <div class="form-group mb-3">
-                        <label for="inp_produto_nome">Nome do item</label>
-                        <input type="text" class="form-control" id="inp_produto_nome" name="produto_nome" aria-describedby="inp_produto_nome_help" placeholder="Enter Nome do item" dmxorgdomid="d488">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="inp_qtide_cadastrada">Qtide cadastrada</label>
-                        <input type="number" class="form-control" id="inp_qtide_cadastrada" name="qtide_cadastrada" aria-describedby="inp_qtide_cadastrada_help" placeholder="Enter Qtide cadastrada" dmxorgdomid="d492">
+
+
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="form-group mb-3">
+                                <label for="inp_produto_nome">Nome do item</label>
+                                <input type="text" class="form-control" id="inp_produto_nome" name="produto_nome" aria-describedby="inp_produto_nome_help" dmxorgdomid="d488" required="" data-msg-required="Preenchimento Obrigatório!">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group mb-3">
+                                <label for="inp_qtide_cadastrada">Qtide disponível</label>
+                                <input type="number" class="form-control" id="inp_qtide_cadastrada" name="qtide_cadastrada" aria-describedby="inp_qtide_cadastrada_help" dmxorgdomid="d492" required="" data-msg-required="Preenchimento Obrigatório!">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group mb-3">
+                                <label for="inp_valor">Valor</label>
+                                <input id="inp_valor" name="valor" type="hidden" class="form-control">
+                                <input id="inp_valor_formatado1" type="text" class="form-control" placeholder="R$ 0,00" required="" data-msg-required="Preenchimento Obrigatório!">
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <div class="form-group mb-3">
-                                <label for="inp_inicio_vendas">Final vendas</label>
-                                <input type="datetime-local" class="form-control" id="inp_inicio_vendas" name="inicio_vendas" aria-describedby="inp_final_vendas_help" placeholder="Enter Final vendas" dmxorgdomid="d500">
+                                <label for="inp_inicio_vendas">Início vendas</label>
+                                <input type="datetime-local" class="form-control" id="inp_inicio_vendas" name="inicio_vendas" aria-describedby="inp_final_vendas_help" dmxorgdomid="d500" required="" data-msg-required="Preenchimento Obrigatório!" dmx-bind:value="var1.datetime">
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group mb-3">
 
-                                <label for="inp_inicio_vendas">Inicio vendas</label>
-                                <input type="datetime-local" class="form-control" id="inp_final_vendas" name="final_vendas" aria-describedby="inp_inicio_vendas_help" placeholder="Enter Inicio vendas" dmxorgdomid="d496">
+                                <label for="inp_inicio_vendas">Final vendas</label>
+                                <input type="datetime-local" class="form-control" id="inp_final_vendas" name="final_vendas" aria-describedby="inp_inicio_vendas_help" dmxorgdomid="d496" required="" data-msg-required="Preenchimento Obrigatório!" dmx-bind:min="novo_item.sc_novo_produto.inp_inicio_vendas.value">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <div class="form-group mb-3">
-                                <label for="inp_valor">Valor</label>
-                                <input type="number" class="form-control" id="inp_valor" name="valor" aria-describedby="inp_valor_help" placeholder="Enter Valor" dmxorgdomid="d504">
+
+                                <label for="inp_ordem_lista">Ordem de exibição</label>
+                                <select id="ordem_lista" class="form-select" name="ordem_lista">
+                                    <option value="1">Posição 1</option>
+                                    <option value="2">Posição 2</option>
+                                    <option value="3">Posição 3</option>
+                                    <option value="4">Posição 4</option>
+                                    <option value="5">Posição 5</option>
+                                    <option value="6">Posição 6</option>
+                                    <option value="7">Posição 7</option>
+                                    <option value="8">Posição 8</option>
+                                    <option value="9">Posição 9</option>
+                                    <option value="10">Posição 10</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-group mb-3">
-                                <label for="inp_ordem_lista">Ordem lista</label>
-                                <input type="number" class="form-control" id="inp_ordem_lista" name="ordem_lista" aria-describedby="inp_ordem_lista_help" placeholder="Enter Ordem lista" dmxorgdomid="d508">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col align-self-center">
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-0">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="1" id="inp_cortesia" name="cortesia" dmxorgdomid="d529">
                                     <label class="form-check-label" for="inp_cortesia">Cortesia</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col align-self-center">
-                            <div class="form-group mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="1" id="inp_ativo" name="ativo" dmxorgdomid="d513" dmx-bind:checked="true">
-                                    <label class="form-check-label" for="inp_ativo">Ativar agora</label>
                                 </div>
                             </div>
                         </div>
@@ -71,14 +102,15 @@
                             <div class="form-group mb-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="1" id="inp_is_mesa" name="is_mesa" dmxorgdomid="d519">
-                                    <label class="form-check-label" for="inp_is_mesa">É mesa/Camarote?</label>
+                                    <label class="form-check-label" for="inp_is_mesa">É mesa/Camarote/...?</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col" dmx-show="novo_item.sc_novo_produto.inp_is_mesa.checked">
                             <div class="form-group mb-3">
-                                <label for="inp_qtide_mesa">Qtide mesa</label>
-                                <input type="number" class="form-control" id="inp_qtide_mesa" name="qtide_mesa" aria-describedby="inp_qtide_mesa_help" placeholder="Enter Qtide mesa" dmxorgdomid="d524">
+                                <label for="inp_qtide_mesa">Qtide mesa/camarote/...</label>
+                                <input type="number" class="form-control" id="inp_qtide_mesa" name="qtide_mesa" aria-describedby="inp_qtide_mesa_help" dmxorgdomid="d524" dmx-bind:required="novo_item.sc_novo_produto.inp_is_mesa.checked">
+
                             </div>
                         </div>
                     </div>
@@ -91,10 +123,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col" dmx-show="novo_item.sc_novo_produto.inp_cupom_ativo.checked">
                             <div class="form-group mb-3">
                                 <label for="inp_codigo_cupom">Codigo cupom</label>
-                                <input type="text" class="form-control" id="inp_codigo_cupom" name="codigo_cupom" aria-describedby="inp_codigo_cupom_help" placeholder="Enter Codigo cupom" dmxorgdomid="d540">
+                                <input type="text" class="form-control" id="inp_codigo_cupom" name="codigo_cupom" aria-describedby="inp_codigo_cupom_help" dmxorgdomid="d540" dmx-bind:required="novo_item.sc_novo_produto.inp_cupom_ativo.checked">
                             </div>
                         </div>
                     </div>
@@ -107,13 +139,27 @@
 
 
 
-                    <div class="form-group mb-3">
+                    <div class="form-group mb-3" dmx-show="novo_item.sc_novo_produto.inp_cupom_ativo.checked">
                         <label for="inp_valor_desconto">Valor desconto</label>
-                        <input type="number" class="form-control" id="inp_valor_desconto" name="valor_desconto" aria-describedby="inp_valor_desconto_help" placeholder="Enter Valor desconto" dmxorgdomid="d544">
+                        <input id="inp_valor_desconto" name="valor_desconto" type="hidden" class="form-control">
+                        <input id="inp_valor_desconto_formatado" type="text" class="form-control" placeholder="R$ 0,00">
                     </div>
-                    <div class="form-group mb-3 text-end">
-                        <button type="submit" class="btn btn-primary text-end" dmx-bind:disabled="state.executing" dmxorgdomid="d548">Salvar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing" dmxorgdomid="d549"></span></button>
+                    <div class="row justify-content-end">
+                        <div class="offset-5 align-self-center col-auto">
+                            <div class="form-group mt-0 mb-0">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_ativo" name="ativo" dmxorgdomid="d513" dmx-bind:checked="true">
+                                    <label class="form-check-label mb-0" for="inp_ativo">Ativar agora</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group text-end mb-0">
+                                <button type="submit" class="btn btn-primary text-end" dmx-bind:disabled="state.executing" dmxorgdomid="d548">Salvar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing" dmxorgdomid="d549"></span></button>
+                            </div>
+                        </div>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -291,10 +337,10 @@
                             <th>Valor</th>
                             <th>Início Vendas</th>
                             <th>Final Vendas</th>
-                            <th>Progresso</th>
-                            <th>Vendas</th>
-                            <th>Cortesias</th>
-                            <th>Action</th>
+                            <th class="text-center">Progresso</th>
+                            <th class="text-center">Vendas</th>
+                            <th class="text-center">Cortesias</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody is="dmx-repeat" id="repeat1" dmx-bind:repeat="sc_dados_evento.data.dados_evento.produtos" key="id">
@@ -304,7 +350,8 @@
                                 <h5 class="m-0 fw-medium">{{produto_nome}}</h5>
                             </td>
 
-                            <td><i class="mdi mdi-currency-usd text-warning"></i> {{valor}}</td>
+                            <td><span class="text-warning">R$</span>{{valor.toNumber().formatCurrency(' ', ',', '.', 2)}}</td>
+
                             </td>
 
                             <td><i class="mdi mdi-clock-outline text-success"></i>&nbsp; {{inicio_vendas.formatDate('dd/MM/yy HH:mm')}}</td>
@@ -312,14 +359,22 @@
 
 
                             <td>
-                                <i class="mdi mdi-currency-usd text-warning"></i> 3265
+                                <div class="d-flex flex-column">
+                                    <h6 class="text-center">1 de 100</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </td>
-                            <td><i class="mdi mdi-currency-usd text-warning"></i> 4.070.25</td>
-                            <td class="text-center"><i class="mdi mdi-currency-usd text-warning"></i>1</td>
+                            <td class="text-center"><span class="text-warning">R$</span>{{valor.toNumber().formatCurrency(' ', ',', '.', 2)}}</td>
+                            <td class="text-center"></i>1</td>
 
-                            <td class="text-center">
-                                <a href="#" class="table-action-btn"><i class="mdi mdi-pencil"></i></a>
-                                <a href="#" class="table-action-btn"><i class="mdi mdi-close"></i></a>
+                            <td class="text-center"><button id="btn1" class="btn pt-1 pb-1 ps-1 pe-1">
+                                    <i class="fas fa-pen fa-lg"></i></button>
+                                <button id="btn2" class="btn pt-1 pb-1 ps-1 pe-1 text-danger" dmx-on:click="data_detail_produto.select(id);deletar_item.show()">
+                                    <i class="fas fa-trash-alt fa-lg"></i></button>
+                                <a href="#" class="table-action-btn"></a>
+                                <a href="#" class="table-action-btn"></a>
                             </td>
                         </tr>
 
@@ -330,5 +385,56 @@
             </div>
         </div>
     </div>
+    <script src="assets/vendor/jquery-mask-plugin/jquery.mask.min.js"></script>
+    <script src="assets/vendor/autonumeric/autoNumeric.min.js"></script>
+    <script src="assets/js/pages/form-masks.js"></script>
+    <script>
+        // Função para formatar o valor como moeda brasileira
+    function formatToBRL(value) {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(value);
+    }
 
+    // Função para remover caracteres não numéricos e converter para decimal
+    function parseBRL(value) {
+        return parseFloat(value.replace(/[^\d]/g, '').replace(',', '.')) / 100 || 0;
+    }
+
+    // Sincroniza o input visível e o oculto
+    function syncInputs(formattedInput, hiddenInput) {
+        let rawValue = ""; // Armazena o valor bruto para processamento
+
+        formattedInput.addEventListener('input', () => {
+            // Captura apenas os números digitados
+            rawValue = formattedInput.value.replace(/[^\d]/g, '');
+
+            // Calcula o valor em reais e atualiza os inputs
+            const numericValue = parseFloat(rawValue) / 100;
+            formattedInput.value = formatToBRL(numericValue);
+
+            // Remove casas decimais no campo oculto, se não forem necessárias
+            hiddenInput.value = Number.isInteger(numericValue) ? parseInt(numericValue) : numericValue.toFixed(2);
+        });
+
+        formattedInput.addEventListener('blur', () => {
+            // Limpa o campo visível caso o valor seja inválido
+            if (!rawValue) {
+                formattedInput.value = '';
+                hiddenInput.value = '';
+            }
+        });
+    }
+
+    // Referenciando os campos de desconto
+    const inpValorDescontoFormatado = document.getElementById('inp_valor_desconto_formatado');
+    const inpValorDesconto = document.getElementById('inp_valor_desconto');
+    syncInputs(inpValorDescontoFormatado, inpValorDesconto);
+
+    // Referenciando os campos de valor
+    const inpValorFormatado1 = document.getElementById('inp_valor_formatado1');
+    const inpValor = document.getElementById('inp_valor');
+    syncInputs(inpValorFormatado1, inpValor);
+    </script>
 </div>

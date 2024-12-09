@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "$_PARAM": [
+      {
+        "type": "text",
+        "name": "evento_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "emit",
+      "module": "sockets",
+      "action": "emit",
+      "options": {
+        "eventName": "atualizar_evento",
+        "params": {
+          "evento_id": "{{$_PARAM.evento_id}}"
+        }
+      }
+    }
+  }
+}

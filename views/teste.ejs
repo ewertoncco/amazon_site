@@ -1,11 +1,16 @@
 <!-- Wappler include fontawesome_5="cdn" is="dmx-app" id="teste" appConnect="local" bootstrap5="local" components="{dmxFormRepeat:{}}" -->
-<dmx-serverconnect id="serverconnect1" url="/api/usuarios/listar_usuarios"></dmx-serverconnect>
-<meta name="ac:route" content="/teste">
-<dmx-datetime id="var1"></dmx-datetime>
-<div class="container">
-    <div class="row" is="dmx-repeat" id="formRepeat1" dmx-bind:items="serverconnect1.data.listar_usuarios.data" dmx-bind:repeat="serverconnect1.data.listar_usuarios.data" key="id">
+<div class="container wappler-block p-5">
+    <div class="row text-center p-5">
         <div class="col">
-            <h1>{{usuario_nome}}</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="#51c42b" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+            </svg>
+            <h1 class="mt-4">Fancy display heading</h1>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum enim nesciunt vel minus
+                assumenda cumque
+                neque voluptate quidem ea reprehenderit doloremque ut nulla ex, eius aut non sunt rem minima.</p>
+            <a class="btn btn-primary">Button</a>
         </div>
     </div>
 </div>
+<meta name="ac:route" content="/teste">

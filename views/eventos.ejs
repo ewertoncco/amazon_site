@@ -1,8 +1,8 @@
-<!-- Wappler include head-page="layouts/dashboard" bootstrap5="custom" is="dmx-app" id="eventos" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxTyped:{},dmxValidator:{}}" fontawesome_5pro="cdn" -->
+<!-- Wappler include head-page="layouts/dashboard" is="dmx-app" id="eventos" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxTyped:{},dmxValidator:{}}" fontawesome_5pro="cdn" bootstrap5="custom" -->
 <dmx-serverconnect id="sc_eventos" url="/api/eventos/listar_eventos"></dmx-serverconnect>
 <dmx-value id="id_pass" dmx-bind:value="0"></dmx-value>
 <dmx-notifications id="notifies1"></dmx-notifications>
-<dmx-value id="var_step" dmx-bind:value="2"></dmx-value>
+<dmx-value id="var_step" dmx-bind:value="1"></dmx-value>
 <div class="modal" id="novo_evento" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -285,16 +285,43 @@
 
                                                                 <td><i class="mdi mdi-currency-usd text-warning"></i> 500</td>
                                                                 <td class="text-center">
-                                                                    <button id="btn5" class="btn btn-success btn-sm">Sim</button>
+                                                                    <style>
+                                                                        .form-switch .form-check-input {
+                                                                            width: 3em !important;
+                                                                            height: 1.5em !important;
+                                                                        }
 
+                                                                        .form-switch .form-check-input:not(:checked) {
+                                                                            background-color: #e2e2e2 !important;
+                                                                            border-color: #d0d0d0 !important;
+                                                                            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0, 0, 0, 0.25)'/%3e%3c/svg%3e") !important;
+                                                                        }
+                                                                    </style>
+                                                                    <div class="form-check form-switch">
+                                                                        <input class="form-check-input ms-0 me-0" type="checkbox" role="switch" id="flexSwitchCheckDefault" dmx-bind:checked="evento_status==1">
+                                                                    </div>
                                                                 </td>
-                                                                <td class="text-center"><button id="btn8" class="btn btn-success btn-sm">Sim
-                                                                    </button>
-                                                                </td>
-
                                                                 <td class="text-center">
-                                                                    <button id="btn9" class="btn btn-sm" dmx-on:click="browser1.goto('/adm_evento/'+id)">&gt;</button>
+                                                                    <style>
+                                                                        .form-switch .form-check-input {
+                                                                            width: 3em !important;
+                                                                            height: 1.5em !important;
+                                                                        }
+
+                                                                        .form-switch .form-check-input:not(:checked) {
+                                                                            background-color: #e2e2e2 !important;
+                                                                            border-color: #d0d0d0 !important;
+                                                                            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0, 0, 0, 0.25)'/%3e%3c/svg%3e") !important;
+                                                                        }
+                                                                    </style>
+                                                                    <div class="form-check form-switch">
+                                                                        <input class="form-check-input ms-0 me-0" type="checkbox" role="switch" id="flexSwitchCheckDefault" dmx-bind:checked="evento_destaque">
+                                                                    </div>
                                                                 </td>
+
+                                                                <td class="text-center"><button id="btn9" class="btn btn-sm" dmx-on:click="browser1.goto('/adm_evento/'+id)">
+                                                                        <i class="mdi mdi-chevron-right fa-2x"></i>
+                                                                        <br></button></td>
                                                             </tr>
 
 

@@ -1,4 +1,7 @@
 {
   "debug": true,
-  "secret": "6aBQFh3XbspSGdp"
+  "secret": "6aBQFh3XbspSGdp",
+  "env": {
+    "TZ": "America/Sao_Paulo"
+  }
 }

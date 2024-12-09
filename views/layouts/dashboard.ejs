@@ -34,6 +34,9 @@
   <script src="/dmxAppConnect/dmxTyped/typed.min.js" defer></script>
   <link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
   <script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxAnimateCSS/animate.min.css" />
+  <script src="/dmxAppConnect/dmxAnimateCSS/dmxAnimateCSS.js" defer></script>
+  <script src="/dmxAppConnect/dmxDataTraversal/dmxDataTraversal.js" defer></script>
 </head>
 
 <body is="dmx-app" id="dashboard">
@@ -334,7 +337,7 @@
           <div class="topbar-item nav-user">
             <div class="dropdown">
               <a class="topbar-link dropdown-toggle drop-arrow-none px-0" data-bs-toggle="dropdown" data-bs-offset="0,19" type="button" aria-haspopup="false" aria-expanded="false">
-                <img src="assets/images/users/avatar-1.jpg" width="32" class="rounded-circle me-lg-2 d-flex" alt="user-image">
+                <img class="rounded-circle me-lg-2 d-flex" alt="user-image" dmx-bind:src="sc_usuario_logado.data.query.foto" height="35" width="35">
                 <span class="d-lg-flex flex-column gap-1 d-none">
                   <span class="my-0">{{sc_usuario_logado.data.query.usuario_apelido}}</span>
                 </span>
