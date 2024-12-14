@@ -17,7 +17,6 @@
     </div>
 </div>
 <dmx-datetime id="var1" interval="hours"></dmx-datetime>
-<i class="fas fa-flag"></i>
 <dmx-serverconnect id="sc_dados_evento" url="/api/eventos/dados_evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
 <dmx-notifications id="notifies1"></dmx-notifications>
 <div class="modal" id="novo_item" is="dmx-bs5-modal" tabindex="-1">
@@ -49,8 +48,7 @@
                         <div class="col-3">
                             <div class="form-group mb-3">
                                 <label for="inp_valor">Valor</label>
-                                <input id="inp_valor" name="valor" type="hidden" class="form-control">
-                                <input id="inp_valor_formatado1" type="text" class="form-control" placeholder="R$ 0,00" required="" data-msg-required="Preenchimento Obrigatório!">
+                                <input id="inp_valor" name="valor" onkeyup="formatCurrency(this)" class="form-control" placeholder="R$ 0,00">
                             </div>
                         </div>
                     </div>
@@ -141,8 +139,7 @@
 
                     <div class="form-group mb-3" dmx-show="novo_item.sc_novo_produto.inp_cupom_ativo.checked">
                         <label for="inp_valor_desconto">Valor desconto</label>
-                        <input id="inp_valor_desconto" name="valor_desconto" type="hidden" class="form-control">
-                        <input id="inp_valor_desconto_formatado" type="text" class="form-control" placeholder="R$ 0,00">
+                        <input id="inp_valor_desconto" name="valor_desconto" class="form-control">
                     </div>
                     <div class="row justify-content-end">
                         <div class="offset-5 align-self-center col-auto">
@@ -165,16 +162,162 @@
         </div>
     </div>
 </div>
+<div class="modal" id="editar_item" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">EDITAR {{data_detail_produto.data.produto_nome}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form is="dmx-serverconnect-form" id="sc_editar_produto" method="post" action="/api/eventos_produtos/alterar_produto" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:success="sc_editar_produto.reset();editar_item.hide();notifies1.success('Alterado com sucesso!');sc_dados_evento.load({})">
+                    <input id="inp_evento_id" name="evento_id" type="hidden" class="form-control" dmx-bind:value="data_detail_produto.data.evento_id">
+                    <input id="inp_produto_id" name="id" type="hidden" class="form-control" dmx-bind:value="data_detail_produto.data.id">
+
+
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="form-group mb-3">
+                                <label for="inp_produto_nome_edit">Nome do item</label>
+                                <input type="text" class="form-control" id="inp_produto_nome_edit" name="produto_nome_edit" aria-describedby="inp_produto_nome_help" dmxorgdomid="d488" required="" data-msg-required="Preenchimento Obrigatório!" dmx-bind:value="data_detail_produto.data.produto_nome">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group mb-3">
+                                <label for="inp_qtide_cadastrada_edit">Qtide disponível</label>
+                                <input type="number" class="form-control" id="inp_qtide_cadastrada_edit" name="qtide_cadastrada_edit" aria-describedby="inp_qtide_cadastrada_help" dmxorgdomid="d492" required="" data-msg-required="Preenchimento Obrigatório!" dmx-bind:value="data_detail_produto.data.qtide_cadastrada">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group mb-3">
+                                <label for="inp_valor_edit">Valor</label>
+                                <input id="inp_valor_edit" name="valor_edit" onkeyup="formatCurrency(this)" class="form-control" placeholder="R$ 0,00" dmx-bind:value="data_detail_produto.data.valor.formatCurrency('R$ ', ',', '.', 2)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <label for="inp_inicio_vendas_edit">Início vendas</label>
+                                <input type="datetime-local" class="form-control" id="inp_inicio_vendas_edit" name="inicio_vendas_edit" aria-describedby="inp_final_vendas_help" dmxorgdomid="d500" required="" data-msg-required="Preenchimento Obrigatório!" dmx-bind:value="data_detail_produto.data.inicio_vendas.formatDate('yyyy-MM-ddTHH:mm:ss')">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-3">
+
+                                <label for="inp_inicio_vendas_edit">Final vendas</label>
+                                <input type="datetime-local" class="form-control" id="inp_final_vendas_edit" name="final_vendas_edit" aria-describedby="inp_inicio_vendas_help" dmxorgdomid="d496" required="" data-msg-required="Preenchimento Obrigatório!" dmx-bind:min="editar_item.sc_editar_produto.inp_inicio_vendas_edit.value" dmx-bind:value="data_detail_produto.data.final_vendas.formatDate('yyyy-MM-ddTHH:mm:ss')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+
+                                <label for="inp_ordem_lista">Ordem de exibição</label>
+                                <select id="ordem_lista_edit" class="form-select" name="ordem_lista_edit" dmx-bind:value="data_detail_produto.data.ordem_lista">
+                                    <option value="1">Posição 1</option>
+                                    <option value="2">Posição 2</option>
+                                    <option value="3">Posição 3</option>
+                                    <option value="4">Posição 4</option>
+                                    <option value="5">Posição 5</option>
+                                    <option value="6">Posição 6</option>
+                                    <option value="7">Posição 7</option>
+                                    <option value="8">Posição 8</option>
+                                    <option value="9">Posição 9</option>
+                                    <option value="10">Posição 10</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col align-self-center">
+                            <div class="form-group mb-0">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_cortesia_edit" name="cortesia_edit" dmxorgdomid="d529" dmx-bind:value="data_detail_produto.data.cortesia">
+                                    <label class="form-check-label" for="inp_cortesia_edit">Cortesia</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_is_mesa_edit" name="is_mesa_edit" dmxorgdomid="d519" dmx-bind:value="data_detail_produto.data.is_mesa">
+                                    <label class="form-check-label" for="inp_is_mesa_edit">É mesa/Camarote/...?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" dmx-show="editar_item.sc_editar_produto.inp_is_mesa_edit.checked">
+                            <div class="form-group mb-3">
+                                <label for="inp_qtide_mesa_edit">Qtide mesa/camarote/...</label>
+                                <input type="number" class="form-control" id="inp_qtide_mesa_edit" name="qtide_mesa_edit" aria-describedby="inp_qtide_mesa_help" dmxorgdomid="d524" dmx-bind:required="novo_item.sc_novo_produto.inp_is_mesa.checked" dmx-bind:value="data_detail_produto.data.qtide_mesa">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_cupom_ativo_edit" name="cupom_ativo_edit" dmxorgdomid="d535" dmx-bind:value="data_detail_produto.data.codigo_cupom">
+                                    <label class="form-check-label" for="inp_cupom_ativo_edit">Tem cupom desconto?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" dmx-show="editar_item.sc_editar_produto.inp_cupom_ativo_edit.checked">
+                            <div class="form-group mb-3">
+                                <label for="inp_codigo_cupom_edit">Codigo cupom</label>
+                                <input type="text" class="form-control" id="inp_codigo_cupom_edit" name="codigo_cupom_edit" aria-describedby="inp_codigo_cupom_help" dmxorgdomid="d540" dmx-bind:required="novo_item.sc_novo_produto.inp_cupom_ativo.checked" dmx-bind:value="data_detail_produto.data.codigo_cupom">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <div class="form-group mb-3" dmx-show="editar_item.sc_editar_produto.inp_cupom_ativo_edit.checked">
+                        <label for="inp_valor_desconto_edit">Valor desconto</label>
+                        <input id="inp_valor_desconto_edit" name="valor_desconto_edit" onkeyup="formatCurrency(this)" class="form-control" placeholder="R$ 0,00" dmx-bind:value="data_detail_produto.data.valor_desconto">
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="offset-5 align-self-center col-auto">
+                            <div class="form-group mt-0 mb-0">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="inp_ativo_edit" name="ativo_edit" dmxorgdomid="d513" dmx-bind:checked="data_detail_produto.data.ativo">
+                                    <label class="form-check-label mb-0" for="inp_ativo_edit">Ativar agora</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group text-end mb-0">
+                                <button type="submit" class="btn btn-primary text-end" dmx-bind:disabled="state.executing" dmxorgdomid="d548">Salvar alterações <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing" dmxorgdomid="d549"></span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <meta name="ac:route" content="/adm_evento/:id_evento">
 
 <div class="d-flex justify-content-between align-items-center mt-1 mb-3">
     <h4 class="font-18 fw-semibold mb-0">{{sc_dados_evento.data.dados_evento.evento_nome}}</h4>
-    <div class="d-flex"><button type="button" class="btn waves-effect waves-light ms-2 btn-info" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-plus"></i>
+    <div class="d-flex"><button type="button" class="btn waves-effect waves-light ms-2 btn-info" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-pencil"></i>
             </span>Editar Evento</button>
-        <button type="button" class="btn waves-effect waves-light ms-2 btn-info" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-plus"></i>
+        <button type="button" class="btn waves-effect waves-light ms-2 btn-info" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-download"></i>
             </span>Lista Compradores</button>
-        <button type="button" class="btn waves-effect waves-light ms-2 btn-danger" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-plus"></i>
+        <button type="button" class="btn waves-effect waves-light ms-2 btn-danger" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-eye-off"></i>
             </span>&nbsp;Desativar</button>
+        <button type="button" class="btn waves-effect waves-light ms-2 btn-success" dmx-on:click="modal1.show()"><span class="btn-label"><i class="mdi mdi-power"></i>
+            </span>&nbsp;Ativar Evento</button>
     </div>
 
 </div>
@@ -350,7 +493,7 @@
                                 <h5 class="m-0 fw-medium">{{produto_nome}}</h5>
                             </td>
 
-                            <td><span class="text-warning">R$</span>{{valor.toNumber().formatCurrency(' ', ',', '.', 2)}}</td>
+                            <td><span class="text-warning">R$</span>{{(valor.toNumber() / 100).formatCurrency(' ', ',', '.', 2)}}</td>
 
                             </td>
 
@@ -369,7 +512,7 @@
                             <td class="text-center"><span class="text-warning">R$</span>{{valor.toNumber().formatCurrency(' ', ',', '.', 2)}}</td>
                             <td class="text-center"></i>1</td>
 
-                            <td class="text-center"><button id="btn1" class="btn pt-1 pb-1 ps-1 pe-1">
+                            <td class="text-center"><button id="btn1" class="btn pt-1 pb-1 ps-1 pe-1" dmx-on:click="data_detail_produto.select(id);editar_item.show()">
                                     <i class="fas fa-pen fa-lg"></i></button>
                                 <button id="btn2" class="btn pt-1 pb-1 ps-1 pe-1 text-danger" dmx-on:click="data_detail_produto.select(id);deletar_item.show()">
                                     <i class="fas fa-trash-alt fa-lg"></i></button>
@@ -388,53 +531,30 @@
     <script src="assets/vendor/jquery-mask-plugin/jquery.mask.min.js"></script>
     <script src="assets/vendor/autonumeric/autoNumeric.min.js"></script>
     <script src="assets/js/pages/form-masks.js"></script>
+
     <script>
-        // Função para formatar o valor como moeda brasileira
-    function formatToBRL(value) {
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        }).format(value);
+        function formatCurrency(input) {
+        let value = input.value;
+
+        // Remove todos os caracteres que não são dígitos
+        value = value.replace(/[\D]+/g, "");
+
+        // Adiciona o ponto decimal ao valor
+        value = (value / 100).toFixed(2) + "";
+
+        // Divide o valor em parte inteira e decimal
+        let parts = value.split(".");
+        let integerPart = parts[0];
+        let decimalPart = parts[1];
+
+        // Adiciona separadores de milhar
+        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+        // Atualiza o valor do campo de entrada com "R$"
+        input.value = "R$ " + integerPart + "," + decimalPart;
     }
-
-    // Função para remover caracteres não numéricos e converter para decimal
-    function parseBRL(value) {
-        return parseFloat(value.replace(/[^\d]/g, '').replace(',', '.')) / 100 || 0;
-    }
-
-    // Sincroniza o input visível e o oculto
-    function syncInputs(formattedInput, hiddenInput) {
-        let rawValue = ""; // Armazena o valor bruto para processamento
-
-        formattedInput.addEventListener('input', () => {
-            // Captura apenas os números digitados
-            rawValue = formattedInput.value.replace(/[^\d]/g, '');
-
-            // Calcula o valor em reais e atualiza os inputs
-            const numericValue = parseFloat(rawValue) / 100;
-            formattedInput.value = formatToBRL(numericValue);
-
-            // Remove casas decimais no campo oculto, se não forem necessárias
-            hiddenInput.value = Number.isInteger(numericValue) ? parseInt(numericValue) : numericValue.toFixed(2);
-        });
-
-        formattedInput.addEventListener('blur', () => {
-            // Limpa o campo visível caso o valor seja inválido
-            if (!rawValue) {
-                formattedInput.value = '';
-                hiddenInput.value = '';
-            }
-        });
-    }
-
-    // Referenciando os campos de desconto
-    const inpValorDescontoFormatado = document.getElementById('inp_valor_desconto_formatado');
-    const inpValorDesconto = document.getElementById('inp_valor_desconto');
-    syncInputs(inpValorDescontoFormatado, inpValorDesconto);
-
-    // Referenciando os campos de valor
-    const inpValorFormatado1 = document.getElementById('inp_valor_formatado1');
-    const inpValor = document.getElementById('inp_valor');
-    syncInputs(inpValorFormatado1, inpValor);
     </script>
+
+
+
 </div>

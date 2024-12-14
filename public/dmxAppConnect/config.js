@@ -1186,6 +1186,86 @@ dmx.config({
         "type": "text",
         "name": "participante_email"
       }
+    ],
+    "carrinho": {
+      "meta": [
+        {
+          "type": "text",
+          "name": "produto"
+        },
+        {
+          "type": "number",
+          "name": "valor"
+        },
+        {
+          "type": "number",
+          "name": "qtide"
+        }
+      ],
+      "outputType": "key_array"
+    },
+    "arrsubtotal": {
+      "meta": null,
+      "outputType": "object"
+    },
+    "arrprodutos_id": {
+      "meta": null,
+      "outputType": "object"
+    },
+    "arrcarrinho": {
+      "meta": [
+        {
+          "type": "text",
+          "name": "nome"
+        },
+        {
+          "type": "number",
+          "name": "qtide"
+        },
+        {
+          "type": "number",
+          "name": "valor"
+        }
+      ],
+      "outputType": "key_array"
+    },
+    "arrprodutoid": {
+      "meta": null,
+      "outputType": "object"
+    },
+    "localStorage": [
+      {
+        "type": "object",
+        "name": "carrinho",
+        "sub": [
+          {
+            "type": "key_array",
+            "name": "itens",
+            "sub": [
+              {
+                "type": "text",
+                "name": "nome"
+              },
+              {
+                "type": "number",
+                "name": "qtide"
+              },
+              {
+                "type": "number",
+                "name": "valor"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "object",
+        "name": "subtotal"
+      },
+      {
+        "type": "object",
+        "name": "produtoid"
+      }
     ]
   },
   "cadastro": {

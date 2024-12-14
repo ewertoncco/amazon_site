@@ -38,5 +38,9 @@
   "cadastro.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "teste_evento.ejs": {
+    "layoutPage": "homepage",
+    "description": ""
   }
 }

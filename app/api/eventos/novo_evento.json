@@ -44,20 +44,77 @@
         "name": "evento_local"
       },
       {
-        "type": "text",
-        "name": "evento_banner_principal"
+        "type": "file",
+        "name": "evento_banner_principal",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
       },
       {
-        "type": "text",
-        "name": "evento_banner_secundario"
+        "type": "file",
+        "name": "evento_banner_secundario",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
       },
       {
         "type": "boolean",
         "name": "tem_mapa"
       },
       {
-        "type": "text",
-        "name": "mapa_imagem"
+        "type": "file",
+        "name": "mapa_imagem",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
       },
       {
         "type": "datetime",
@@ -121,7 +178,118 @@
         "meta": []
       },
       {
-        "name": "insert",
+        "name": "upload_banner1",
+        "module": "upload",
+        "action": "upload",
+        "options": {
+          "fields": "{{$_POST.evento_banner_principal}}",
+          "path": "/public/assets/uploads/banners_eventos",
+          "template": "{guid}{ext}"
+        },
+        "meta": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "path",
+            "type": "text"
+          },
+          {
+            "name": "url",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "text"
+          },
+          {
+            "name": "error",
+            "type": "number"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "name": "upload_banner2",
+        "module": "upload",
+        "action": "upload",
+        "options": {
+          "fields": "{{$_POST.evento_banner_secundario}}",
+          "path": "/public/assets/uploads/banners_eventos",
+          "template": "{guid}{ext}"
+        },
+        "meta": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "path",
+            "type": "text"
+          },
+          {
+            "name": "url",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "text"
+          },
+          {
+            "name": "error",
+            "type": "number"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "name": "upload_mapa",
+        "module": "upload",
+        "action": "upload",
+        "options": {
+          "fields": "{{$_POST.mapa_imagem}}",
+          "path": "/public/assets/uploads/banners_eventos",
+          "template": "{guid}{ext}"
+        },
+        "meta": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "path",
+            "type": "text"
+          },
+          {
+            "name": "url",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "text"
+          },
+          {
+            "name": "error",
+            "type": "number"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "name": "insert_evento",
         "module": "dbupdater",
         "action": "insert",
         "options": {
@@ -175,13 +343,14 @@
                 "table": "eventos",
                 "column": "evento_banner_principal",
                 "type": "text",
-                "value": "{{$_POST.evento_banner_principal}}"
+                "value": "{{upload_banner1.url}}"
               },
               {
                 "table": "eventos",
                 "column": "evento_banner_secundario",
                 "type": "text",
-                "value": "{{$_POST.evento_banner_secundario}}"
+                "value": "{{upload_banner2.url}}",
+                "condition": "{{$_POST.evento_banner_secundario}}"
               },
               {
                 "table": "eventos",
@@ -193,7 +362,8 @@
                 "table": "eventos",
                 "column": "mapa_imagem",
                 "type": "text",
-                "value": "{{$_POST.mapa_imagem}}"
+                "value": "{{upload_mapa.url}}",
+                "condition": "{{$_POST.mapa_imagem}}"
               },
               {
                 "table": "eventos",
@@ -317,13 +487,13 @@
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{$_POST.evento_banner_principal}}",
+                "value": "{{upload_banner1.url}}",
                 "test": ""
               },
               {
                 "name": ":P9",
                 "type": "expression",
-                "value": "{{$_POST.evento_banner_secundario}}",
+                "value": "{{upload_banner2.url}}",
                 "test": ""
               },
               {
@@ -335,7 +505,7 @@
               {
                 "name": ":P11",
                 "type": "expression",
-                "value": "{{$_POST.mapa_imagem}}",
+                "value": "{{upload_mapa.url}}",
                 "test": ""
               },
               {

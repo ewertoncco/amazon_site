@@ -1,6 +1,9 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{}}" is="dmx-app" appConnect="local" -->
-<dmx-datastore id="datastore_carrinho"></dmx-datastore>
-<dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: query.id_evento})"></dmx-socket>
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{}}" is="dmx-app" appConnect="local" -->
+<dmx-local-manager id="localStorage"></dmx-local-manager>
+<dmx-array id="arrcarrinho" dmx-bind:items="localStorage.data.carrinho.itens" dmx-on:updated="localStorage.set('carrinho',arrcarrinho.items)"></dmx-array>
+<dmx-array id="arrsubtotal" dmx-bind:items="localStorage.data.subtotal" dmx-on:updated="localStorage.set('subtotal',arrsubtotal.items)"></dmx-array>
+<dmx-array id="arrprodutoid" dmx-bind:items="localStorage.data.produtoid" dmx-on:updated="localStorage.set('produtoid',arrprodutoid.items)"></dmx-array>
+<dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: $event.evento_id})"></dmx-socket>
 <dmx-value id="status_pagamento" dmx-bind:value="0"></dmx-value>
 <dmx-value id="step" dmx-bind:value="1"></dmx-value>
 <dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
@@ -26,6 +29,11 @@
                                                 <h6>{{valor.formatCurrency('R$ ', ',', '.', 2)}}</h6>
                                                 <h6>{{final_vendas.formatDate('dd MMMM yyyy HH:mm')}}</h6>
                                                 <h5 class="text-danger text-start">Quase acabando</h5>
+                                                <input id="inp_produtoid" name="produtoid" type="hidden" dmx-bind:value="id">
+                                                <input id="inp_produto" name="produto" dmx-bind:value="produto_nome" type="hidden">
+                                                <input id="inp_valor" name="valor" type="hidden" dmx-bind:value="valor">
+                                                <input id="inp_qtide" name="qtide" type="hidden" value="1">
+                                                <input id="inp_subtotal" name="subtotal" type="hidden" dmx-bind:value="(valor * inp_qtide.value)">
                                             </div>
                                         </div>
                                         <div class="align-self-center col-4">
@@ -33,7 +41,7 @@
                                                 <button id="btn_minus" class="btn">
                                                     <i class="fas fa-minus"></i>
                                                 </button>
-                                                <input id="inp_qtide" name="inp_qtide" type="number" class="form-control mx-2 text-center" value="0" placeholder="0" dmx-bind:value="datastore_carrinho.qtide"><button id="btn_plus" class="btn" dmx-on:click="datastore_carrinho.upsert({produto_id: id, qtide: datastore_carrinho.qtide+1},{})">
+                                                <input id="inp_qtidec" name="qtidec" type="number" class="form-control mx-2 text-center" value="0" placeholder="0"><button id="btn_plus" class="btn" dmx-on:click="arrprodutoid.add(inp_produtoid.value);arrsubtotal.add(inp_subtotal.value);arrcarrinho.add('{id:'+inp_produtoid.value+',produto:'+inp_produto.value+',valor:'+inp_valor.value+'}')">
                                                     <i class="fas fa-plus"></i>
                                                 </button>
 

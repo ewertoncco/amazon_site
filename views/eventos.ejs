@@ -1,8 +1,9 @@
-<!-- Wappler include head-page="layouts/dashboard" is="dmx-app" id="eventos" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxTyped:{},dmxValidator:{}}" fontawesome_5pro="cdn" bootstrap5="custom" -->
+<!-- Wappler include head-page="layouts/dashboard" is="dmx-app" id="eventos" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxTyped:{},dmxValidator:{},dmxDropzone:{}}" fontawesome_5pro="cdn" bootstrap5="custom" -->
+<dmx-datetime id="data_hora_atual" interval="hours"></dmx-datetime>
 <dmx-serverconnect id="sc_eventos" url="/api/eventos/listar_eventos"></dmx-serverconnect>
 <dmx-value id="id_pass" dmx-bind:value="0"></dmx-value>
 <dmx-notifications id="notifies1"></dmx-notifications>
-<dmx-value id="var_step" dmx-bind:value="1"></dmx-value>
+<dmx-value id="var_step" dmx-bind:value="2"></dmx-value>
 <div class="modal" id="novo_evento" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -17,20 +18,39 @@
 
 
                     <div class="row mt-1 mb-2" id="tabs">
-                        <div class="align-self-center text-center col-auto">
-                            <button id="btn1" class="btn" dmx-class:btn-info="var_step.value==1">1. Geral</button>
+                        <div class="col text-center">
+                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==1" dmx-class:text-white="var_step.value==1">
+                                1
+                            </p>
+                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
                         </div>
-                        <div class="align-self-center text-center col-auto">
-                            <button id="btn2" class="btn " dmx-class:btn-info="var_step.value==2">2. Banner</button>
+                        <div class="col text-center">
+                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==2" dmx-class:text-white="var_step.value==2">
+                                2
+                            </p>
+                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
                         </div>
-                        <div class="align-self-center text-center col-auto">
-                            <button id="btn3" class="btn " dmx-class:btn-info="var_step.value==3">3. Opções</button>
+                        <div class="col text-center">
+                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==3" dmx-class:text-white="var_step.value==3">
+                                3
+                            </p>
+                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
                         </div>
-                        <div class="align-self-center text-center col-auto">
-                            <button id="btn4" class="btn" dmx-class:btn-info="var_step.value==4">4. Financeiro</button>
+                        <div class="col text-center">
+                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==4" dmx-class:text-white="var_step.value==4">
+                                4
+                            </p>
+                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
+                        </div>
+                        <div class="col text-center">
+                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==5" dmx-class:text-white="var_step.value==5">
+                                5
+                            </p>
+                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
                         </div>
                     </div>
-                    <div class="row" id="step1" dmx-show="var_step.value==1">
+
+                    <div class="row mt-2 mb-2" id="step1" dmx-show="var_step.value==1">
                         <div class="form-group mb-3">
                             <label for="inp_evento_nome">Nome do Evento</label>
                             <input type="text" class="form-control" id="inp_evento_nome" name="evento_nome" aria-describedby="inp_evento_nome_help" required="" data-msg-required="Preenchimento obrigatório">
@@ -38,13 +58,13 @@
                         <div class="col">
                             <div class="form-group mb-3">
                                 <label for="inp_evento_data_hora">Data e hora do evento</label>
-                                <input type="datetime-local" class="form-control" id="inp_evento_data_hora" name="evento_data_hora" aria-describedby="inp_evento_data_hora_help" placeholder="Enter Evento data hora" required="" data-msg-required="Preenchimento obrigatório">
+                                <input type="datetime-local" class="form-control" id="inp_evento_data_hora" name="evento_data_hora" aria-describedby="inp_evento_data_hora_help" required="" data-msg-required="Preenchimento obrigatório" dmx-bind:value="data_hora_atual.datetime">
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group mb-3">
                                 <label for="inp_evento_local">Nome do Local do Evento</label>
-                                <input type="text" class="form-control" id="inp_evento_local" name="evento_local" aria-describedby="inp_evento_local_help" required="" data-msg-required="Preenchimento obrigatório">
+                                <input type="text" class="form-control" id="inp_evento_local" name="evento_local" aria-describedby="inp_evento_local_help" required="" data-msg-required="Preenchimento obrigatório" value="Amazon Club">
                                 <span class="font-13 text-muted">Ex: Amazon Club</span>
                             </div>
                         </div>
@@ -63,37 +83,53 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="step2" dmx-show="var_step.value==2">
+                    <div class="row mt-2 mb-2" id="step2" dmx-show="var_step.value==2">
                         <div class="form-group mb-3">
-                            <div class="row gap-3">
-                                <div class="rounded-2 border-1 border rounded border-secondary-subtle pt-3 pb-3 col text-center">
-                                    <div class="mb-3">
-                                        <i class="display-6 text-muted mdi mdi-camera-plus"></i>
+                            <div class="row gap-1">
+                                <div class="rounded-2 border-secondary-subtle text-center rounded-0 col-12 pt-1 pb-1 align-self-center">
+                                    <div class="form-group mb-3 row">
+                                        <div class="col-4">
+                                            <img dmx-bind:src="novo_evento.sc_novo_evento.evento_banner_principal.file.dataUrl" class="img-fluid rounded shadow-sm">
+                                        </div>
+                                        <div class="col-sm-8 align-self-center text-start"><small id="input_bannerprimario" class="form-text text-muted">Banner principal *</small>
+                                            <input type="file" class="form-control" id="evento_banner_principal" name="evento_banner_principal" aria-describedby="input_bannersecundario" required="" data-msg-required="Adicione uma imagem">
+
+                                        </div>
                                     </div>
-                                    <p id="bannerprincipal">Banner Principal</p>
-                                    <input id="file1" name="file1" type="file" class="form-control">
+
                                 </div>
-                                <div class="rounded-2 border-1 border rounded border-secondary-subtle pt-3 pb-3 col text-center">
-                                    <div class="mb-3">
-                                        <i class="display-6 text-muted mdi mdi-camera-plus"></i>
+                                <div class="rounded-2 border-secondary-subtle col text-center rounded-0 pt-1 pb-1 align-self-center">
+                                    <div class="form-group mb-3 row">
+                                        <div class="col-4">
+                                            <img dmx-bind:src="novo_evento.sc_novo_evento.evento_banner_secundario.file.dataUrl" class="img-fluid rounded shadow-sm">
+                                        </div>
+                                        <div class="col-sm-8 align-self-center text-start"><small id="input_bannersecundario" class="form-text text-muted">Banner secundario</small>
+                                            <input type="file" class="form-control" id="evento_banner_secundario" name="evento_banner_secundario" aria-describedby="input_bannersecundario">
+
+                                        </div>
                                     </div>
-                                    <p id="bannersegundario">Banner 2</p>
+
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            <div class="row align-items-center gap-3">
+                            <div class="row align-items-center gap-1">
                                 <div class="align-self-center text-start col">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="1" id="inp_tem_mapa" name="tem_mapa">
                                         <label class="form-check-label mt-0 mb-0" for="inp_tem_mapa">Adicionar Mapa do evento</label>
                                     </div>
                                 </div>
-                                <div class="rounded-2 border-1 border rounded border-secondary-subtle pt-2 pb-2 col text-center" dmx-show="novo_evento.sc_novo_evento.inp_tem_mapa.checked">
-                                    <div class="mb-3">
-                                        <i class="display-6 text-muted mdi mdi-camera-plus"></i>
+                                <div class="rounded-2 border-secondary-subtle text-center col-12 pt-1 pb-1 align-self-center" dmx-show="novo_evento.sc_novo_evento.inp_tem_mapa.checked">
+                                    <div class="form-group mb-3 row">
+                                        <div class="col-4">
+                                            <img dmx-bind:src="novo_evento.sc_novo_evento.mapa_imagem.file.dataUrl" class="img-fluid rounded shadow-sm">
+                                        </div>
+                                        <div class="col-sm-8 align-self-center"><small id="input1_help" class="form-text text-muted">Mapa do evento</small>
+                                            <input type="file" class="form-control" id="mapa_imagem" name="mapa_imagem" aria-describedby="input_bannersecundario" dmx-bind:required="novo_evento.sc_novo_evento.inp_tem_mapa.checked" data-rule-maxsize="500" data-msg-maxsize="Tamanho máximo 500 bytes">
+
+                                        </div>
                                     </div>
-                                    <p id="modaltitle">Clique para adicionar uma imagem</p>
                                 </div>
                             </div>
 
@@ -101,7 +137,7 @@
 
 
                     </div>
-                    <div class="row" id="step3" dmx-show="var_step.value==3">
+                    <div class="row mt-2 mb-2" id="step3" dmx-show="var_step.value==3">
                         <div class="form-group mb-3">
                             <div class="row align-items-center">
                                 <div class="col">
@@ -185,7 +221,7 @@
                     </div>
                     <div class="row justify-content-end align-items-center mb-3">
                         <div class="col-auto"><button id="btn6" class="btn" dmx-on:click="var_step.setValue(var_step.value-1)" dmx-hide="var_step.value==1">Voltar</button></div>
-                        <div class="col-auto"><button id="btn7" class="btn btn-info" dmx-on:click="var_step.setValue(var_step.value+1)" dmx-hide="var_step.value==4" dmx-class:disabled="novo_evento.sc_novo_evento.inp_evento_nome.value.isEmpty()||novo_evento.sc_novo_evento.inp_evento_data_hora.value.isEmpty()||novo_evento.sc_novo_evento.inp_evento_local.value.isEmpty()||novo_evento.sc_novo_evento.inp_evento_resumo.value.isEmpty()||novo_evento.sc_novo_evento.inp_evento_descricao.value.isEmpty()">Próximo</button></div>
+                        <div class="col-auto"><button id="btn7" class="btn btn-info" dmx-on:click="var_step.setValue(var_step.value+1)" dmx-hide="var_step.value==4" dmx-class:disabled="(novo_evento.sc_novo_evento.inp_evento_descricao.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_resumo.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_nome.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_local.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_data_hora.value.isEmpty())&amp;&amp;(var_step.value == 1)">Próximo</button></div>
                         <div class="col-auto"><button type="submit" class="btn btn-primary btn-lg" dmx-show="var_step.value==4">Criar evento</button></div>
                     </div>
 
@@ -298,7 +334,8 @@
                                                                         }
                                                                     </style>
                                                                     <div class="form-check form-switch">
-                                                                        <input class="form-check-input ms-0 me-0" type="checkbox" role="switch" id="flexSwitchCheckDefault" dmx-bind:checked="evento_status==1">
+                                                                        <input class="form-check-input ms-0 me-0" type="checkbox" role="switch" id="togg_ativo" dmx-bind:checked="evento_status==1" style="cursor: pointer;" name="togg_ativo">
+
                                                                     </div>
                                                                 </td>
                                                                 <td class="text-center">
@@ -315,7 +352,7 @@
                                                                         }
                                                                     </style>
                                                                     <div class="form-check form-switch">
-                                                                        <input class="form-check-input ms-0 me-0" type="checkbox" role="switch" id="flexSwitchCheckDefault" dmx-bind:checked="evento_destaque">
+                                                                        <input class="form-check-input ms-0 me-0" type="checkbox" role="switch" id="togg_destaque" dmx-bind:checked="evento_destaque" style="cursor: pointer;" name="togg_destaque">
                                                                     </div>
                                                                 </td>
 

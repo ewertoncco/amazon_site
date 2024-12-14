@@ -22,7 +22,7 @@
         "name": "final_vendas"
       },
       {
-        "type": "number",
+        "type": "text",
         "name": "valor"
       },
       {
@@ -54,7 +54,7 @@
         "name": "codigo_cupom"
       },
       {
-        "type": "number",
+        "type": "text",
         "name": "valor_desconto"
       }
     ]
@@ -125,7 +125,7 @@
                 "table": "evento_produtos",
                 "column": "valor",
                 "type": "number",
-                "value": "{{$_POST.valor}}"
+                "value": "{{$_POST.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}"
               },
               {
                 "table": "evento_produtos",
@@ -174,7 +174,7 @@
                 "table": "evento_produtos",
                 "column": "valor_desconto",
                 "type": "number",
-                "value": "{{$_POST.valor_desconto}}",
+                "value": "{{$_POST.valor_desconto.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}",
                 "condition": "{{$_POST.valor_desconto}}"
               }
             ],
@@ -227,7 +227,7 @@
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{$_POST.valor}}",
+                "value": "{{$_POST.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}",
                 "test": ""
               },
               {
@@ -275,7 +275,7 @@
               {
                 "name": ":P16",
                 "type": "expression",
-                "value": "{{$_POST.valor_desconto}}",
+                "value": "{{$_POST.valor_desconto.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}",
                 "test": ""
               }
             ]

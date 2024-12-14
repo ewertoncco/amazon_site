@@ -51,7 +51,7 @@
 
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Boaa');browser1.goto('/home')">
+                                            <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="run([{condition:{outputType:'boolean',if:`sc_login.data.query_permissao_usuario.permissao==1`,then:{steps:{run:{outputType:'text',action:`browser1.goto(\'/index\')`}}}}},{condition:{outputType:'boolean',if:`sc_login.data.query_permissao_usuario.permissao==2`,then:{steps:{run:{outputType:'text',action:`browser1.goto(\'/home\')`}}}}}])">
                                                 <div class="form-group mb-3">
                                                     <label for="inp_email">E-mail</label>
                                                     <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">

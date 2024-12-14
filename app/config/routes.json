@@ -44,6 +44,11 @@
       "page": "index",
       "layout": "homepage",
       "name": ""
+    },
+    {
+      "path": "/teste_evento",
+      "page": "teste_evento",
+      "layout": "homepage"
     }
   ]
 }
