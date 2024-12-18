@@ -6,9 +6,9 @@
         <div class="container-fluid min-vh-100">
             <div is="dmx-swiper" id="swiper1" class="h-85" dmx-bind:slides="sc_listar_eventos.data.query.data" autoplay="true" loop="true">
                 <div class="swiper-slide h-100">
-                    <div class="row h-100">
+                    <div class="row h-100 align-items-center">
                         <!-- Coluna Esquerda (Texto e Descrição) -->
-                        <div class="col-lg-8 d-flex flex-column justify-content-between col">
+                        <div class="col-lg-8 d-flex col flex-column">
 
                             <!-- Parte Superior (Título, Subtítulo, Data) -->
                             <div>
@@ -21,7 +21,7 @@
 
 
                                     <!-- Resumo do evento -->
-                                    <h3 class="text-muted fw-bold text-center text-md-start text-lg-start text-xl-start text-xxl-start">{{evento_resumo}}</h3>
+                                    <h3 class="text-muted fw-bold text-md-start text-lg-start text-xl-start text-xxl-start h-75">{{evento_resumo}}</h3>
 
                                     <!-- Descrição com limite de 5 linhas, espaçamento maior entre as linhas e reticências -->
                                     <div class="d-flex justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start justify-content-center mb-3">
@@ -82,7 +82,7 @@
             <div class="col-sm-4">
                 <div class="card d-flex flex-row">
                     <!-- Imagem na esquerda -->
-                    <img class="card-img-left img-fluid me-2 pt-1 pb-1 ps-3 pe-3" style="max-height: 200px; object-fit: contain; width: auto; background-color: #f8f9fa;" alt="Card image cap" dmx-bind:src="evento_banner_principal">
+                    <img class="card-img-left me-2 pt-1 pb-1 ps-3 pe-3" style="max-height: 200px; object-fit: contain; width: auto; background-color: #f8f9fa;" alt="Card image cap" dmx-bind:src="evento_banner_principal">
 
                     <!-- Conteúdo na direita -->
                     <div class="card-body">

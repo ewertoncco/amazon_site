@@ -3,9 +3,9 @@
 <dmx-serverconnect id="sc_eventos" url="/api/eventos/listar_eventos"></dmx-serverconnect>
 <dmx-value id="id_pass" dmx-bind:value="0"></dmx-value>
 <dmx-notifications id="notifies1"></dmx-notifications>
-<dmx-value id="var_step" dmx-bind:value="2"></dmx-value>
+<dmx-value id="var_step" dmx-bind:value="1"></dmx-value>
 <div class="modal" id="novo_evento" is="dmx-bs5-modal" tabindex="-1">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">NOVO EVENTO</h5>
@@ -13,40 +13,31 @@
             </div>
             <div class="modal-body pt-0 pb-0">
 
-                <form is="dmx-serverconnect-form" id="sc_novo_evento" method="post" action="/api/eventos/novo_evento" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:success="sc_novo_evento.reset();notifies1.success('Evento cadastrado!');novo_evento.hide()">
+                <form is="dmx-serverconnect-form" id="sc_novo_evento" method="post" action="/api/eventos/novo_evento" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:success="sc_novo_evento.reset();notifies1.success('Evento cadastrado!');novo_evento.hide();sc_eventos.load({})">
 
 
 
-                    <div class="row mt-1 mb-2" id="tabs">
-                        <div class="col text-center">
-                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==1" dmx-class:text-white="var_step.value==1">
-                                1
-                            </p>
-                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
+                    <div class="row align-items-center justify-content-center mt-2 mb-3" id="tabs">
+                        <div class="col-2 position-relative">
+                            <div class="progress" style="height: 4px; position: absolute; top: 50%; transform: translateY(-50%); width: 100%;">
+                                <div class="progress-bar text-info bg-info" role="progressbar" style="width: 0%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" dmx-class:w-100="var_step.value&gt;1"></div>
+                            </div>
+                            <button type="button" class="btn btn-icon rounded-pill btn-light" dmx-class:text-bg-info="var_step.value+'&gt;=1'" dmx-style:cursor="'default'">1</button>
                         </div>
-                        <div class="col text-center">
-                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==2" dmx-class:text-white="var_step.value==2">
-                                2
-                            </p>
-                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
+                        <div class="col-2 position-relative">
+                            <div class="progress" style="height: 4px; position: absolute; top: 50%; transform: translateY(-50%); width: 100%;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 0%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" dmx-class:w-100="var_step.value&gt;2"></div>
+                            </div>
+                            <button type="button" class="btn btn-icon rounded-pill btn-light" dmx-class:text-bg-info="var_step.value&gt;=2" dmx-style:cursor="'default'">2</button>
                         </div>
-                        <div class="col text-center">
-                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==3" dmx-class:text-white="var_step.value==3">
-                                3
-                            </p>
-                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
+                        <div class="col-2 position-relative">
+                            <div class="progress" style="height: 4px; position: absolute; top: 50%; transform: translateY(-50%); width: 100%;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 0%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" dmx-class:w-100="var_step.value&gt;3"></div>
+                            </div>
+                            <button type="button" class="btn btn-icon rounded-pill btn-light" dmx-class:text-bg-info="var_step.value&gt;=3" dmx-style:cursor="'default'">3</button>
                         </div>
-                        <div class="col text-center">
-                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==4" dmx-class:text-white="var_step.value==4">
-                                4
-                            </p>
-                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
-                        </div>
-                        <div class="col text-center">
-                            <p style="border: 2px solid #0d6efd; background-color: white; color: #0d6efd; width: 30px; height: 30px; line-height: 26px; border-radius: 50%; margin: 0 auto; display: inline-block; font-weight: bold;" dmx-class:bg-primary="var_step.value==5" dmx-class:text-white="var_step.value==5">
-                                5
-                            </p>
-                            <p style="margin-top: 5px; font-size: 12px; color: #0d6efd;">Geral</p>
+                        <div class="col-2 position-relative">
+                            <button type="button" class="btn btn-icon btn-light rounded-pill" dmx-class:text-bg-info="var_step.value&gt;=4" dmx-style:cursor="'default'">4</button>
                         </div>
                     </div>
 
@@ -138,6 +129,7 @@
 
                     </div>
                     <div class="row mt-2 mb-2" id="step3" dmx-show="var_step.value==3">
+
                         <div class="form-group mb-3">
                             <div class="row align-items-center">
                                 <div class="col">
@@ -146,8 +138,14 @@
                                         <label class="form-check-label mt-0 mb-0" for="inp_mostrar_whatsapp">Mostrar whatsapp?</label>
                                     </div>
                                 </div>
-                                <div class="col" dmx-show="modal1.serverconnectform1.inp_mostrar_whatsapp.checked"><label for="inp_numero_whatsapp">Número whatsapp</label><input type="text" class="form-control" id="inp_numero_whatsapp" name="numero_whatsapp" aria-describedby="inp_numero_whatsapp_help"></div>
+                                <div class="col" dmx-show="novo_evento.sc_novo_evento.inp_mostrar_whatsapp.checked">
+                                    <label for="inp_numero_whatsapp">Número whatsapp</label>
+                                    <input type="text" class="form-control" id="inp_numero_whatsapp" name="numero_whatsapp" onkeyup="formatPhone(this)" placeholder="(00) 00000-0000" aria-describedby="inp_numero_whatsapp_help" dmx-bind:required="novo_evento.sc_novo_evento.inp_mostrar_whatsapp.checked">
+                                    <small id="bs5-form-group-help1" class="form-text text-muted">Será exibido na página</small>
+                                </div>
+
                             </div>
+
 
 
                         </div>
@@ -169,13 +167,7 @@
                             </div>
 
                         </div>
-                        <div class="form-group mb-3">
 
-                            <select id="evento_status" class="form-select" dmx-bind:value="1" name="evento_status">
-                                <option value="1">Publicar agora</option>
-                                <option value="2">Publicar depois</option>
-                            </select>
-                        </div>
                         <div class="form-group mb-3">
                             <div class="row">
                                 <div class="col">
@@ -193,7 +185,17 @@
                             </div>
 
                         </div>
+                        <div class="col">
+                            <div class="form-group mb-3">
+
+                                <select id="evento_status" class="form-select" dmx-bind:value="1" name="evento_status">
+                                    <option value="1">Publicar agora</option>
+                                    <option value="2">Publicar depois</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="row" id="step4" dmx-show="var_step.value==4">
                         <div class="form-group mb-3">
                             <div class="form-check">
@@ -207,7 +209,7 @@
                                 <label class="form-check-label" for="inp_aceita_cartao">Aceitar pagamentos com cartão de crédito</label>
                             </div>
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3" dmx-show="novo_evento.sc_novo_evento.inp_aceita_cartao.checked">
 
                             <label for="inp_qtide_parcelas_cartao">Quantidade de parcelas aceitas no cartão</label>
                             <select id="qtide_parcelas_cartao" class="form-select" name="qtide_parcelas_cartao" dmx-bind:value="1">
@@ -221,7 +223,8 @@
                     </div>
                     <div class="row justify-content-end align-items-center mb-3">
                         <div class="col-auto"><button id="btn6" class="btn" dmx-on:click="var_step.setValue(var_step.value-1)" dmx-hide="var_step.value==1">Voltar</button></div>
-                        <div class="col-auto"><button id="btn7" class="btn btn-info" dmx-on:click="var_step.setValue(var_step.value+1)" dmx-hide="var_step.value==4" dmx-class:disabled="(novo_evento.sc_novo_evento.inp_evento_descricao.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_resumo.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_nome.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_local.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_data_hora.value.isEmpty())&amp;&amp;(var_step.value == 1)">Próximo</button></div>
+                        <div class="col-auto"><button id="btn7" class="btn btn-info" dmx-on:click="var_step.setValue(var_step.value+1)" dmx-hide="var_step.value == 4" dmx-class:disabled="(var_step.value == 1 &amp;&amp; (novo_evento.sc_novo_evento.inp_evento_descricao.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_resumo.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_nome.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_local.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_data_hora.value.isEmpty()))||(var_step.value == 2 &amp;&amp; (novo_evento.sc_novo_evento.inp_evento_descricao.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_resumo.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_nome.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_local.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_data_hora.value.isEmpty() || novo_evento.sc_novo_evento.evento_banner_principal.value.isEmpty()))||(var_step.value == 3 &amp;&amp; (novo_evento.sc_novo_evento.inp_evento_descricao.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_resumo.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_nome.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_local.value.isEmpty() || novo_evento.sc_novo_evento.inp_evento_data_hora.value.isEmpty() || novo_evento.sc_novo_evento.evento_banner_principal.value.isEmpty()))">Próximo</button>
+                        </div>
                         <div class="col-auto"><button type="submit" class="btn btn-primary btn-lg" dmx-show="var_step.value==4">Criar evento</button></div>
                     </div>
 
@@ -307,8 +310,8 @@
                                                         <tbody is="dmx-repeat" id="repeat1" dmx-bind:repeat="sc_eventos.data.query.data" key="id">
 
                                                             <tr>
-                                                                <td>
-                                                                    <img src="assets/images/users/avatar-5.jpg" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm">
+                                                                <td class="text-center">
+                                                                    <img alt="contact-img" title="contact-img" class="rounded mt-0 mb-0 ms-0 me-0" height="50" dmx-bind:src="evento_banner_principal">
                                                                 </td>
 
                                                                 <td>
@@ -389,3 +392,20 @@
     </div>
 
 </div>
+<script>
+    function formatPhone(input) {
+    let value = input.value.replace(/\D/g, ''); // Remove todos os não dígitos
+    if (value.length > 11) value = value.substring(0, 11); // Limita a 11 dígitos
+
+    // Aplica a máscara
+    if (value.length > 10) {
+        input.value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+    } else if (value.length > 6) {
+        input.value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, "($1) $2-$3");
+    } else if (value.length > 2) {
+        input.value = value.replace(/^(\d{2})(\d{0,5})$/, "($1) $2");
+    } else {
+        input.value = value.replace(/^(\d{0,2})/, "($1");
+    }
+}
+</script>
