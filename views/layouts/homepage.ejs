@@ -20,7 +20,7 @@
   <link href="/assets/css/vendor.min.css" rel="stylesheet" />
 
   <!-- App css -->
-  <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
+  <link href="/assets/css/app.min.css" rel="stylesheet" id="app-style" />
 
   <!-- Icons css -->
   <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
@@ -46,9 +46,16 @@
   <script src="/socket.io/socket.io.js" defer></script>
   <script src="/dmxAppConnect/dmxSockets/dmxSockets.js" defer></script>
   <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
+  <script src="/dmxAppConnect/dmxScheduler/dmxScheduler.js" defer></script>
 </head>
 
 <body is="dmx-app" id="homepage">
+  <dmx-datetime id="data_hora" interval="minutes"></dmx-datetime>
+  <dmx-value id="validade_carrinho"></dmx-value>
+  <dmx-scheduler id="temporizador_carrinho" dmx-on:tick="run({condition:{outputType:'boolean',if:`data_hora.datetime.minutesUntil(validade_carrinho.value)&lt;=0`,then:{steps:{run:{outputType:'text',action:`datastore_carrinho.clear()`}}}}})" unit="minutes"></dmx-scheduler>
+  <dmx-value id="step" dmx-bind:value="1"></dmx-value>
+  <dmx-datastore id="datastore_carrinho"></dmx-datastore>
   <dmx-serverconnect id="sc_logout" url="/api/usuarios/logout" noload="true"></dmx-serverconnect>
   <dmx-serverconnect id="sc_listar_eventos" url="/api/eventos/listar_eventos"></dmx-serverconnect>
   <dmx-notifications id="notifies1"></dmx-notifications>
@@ -56,7 +63,85 @@
   <div is="dmx-browser" id="browser1"></div>
   <!-- Begin page -->
   <div class="wrapper">
+    <div class="modal" id="carrinho" is="dmx-bs5-modal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-light-subtle">
+            <h5 class="modal-title text-black">CARRINHO</h5>
+            <h5 class="modal-title text-black ms-4">{{(((var1.datetime.secondsUntil(validade_carrinho.value)/60)%60)).floor()}}</h5>
 
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-0 pb-0 ps-3 pe-3">
+            <div class="card-body pt-2">
+              <div class="table-responsive">
+                <table class="table table-hover m-0 table-actions-bar">
+
+                  <thead>
+                  </thead>
+                  <tbody is="dmx-repeat" id="itens_carrinho" dmx-bind:repeat="datastore_carrinho.data">
+                    <tr>
+                      <td class="w-70 w-75">
+                        <h3 class="m-0 fw-medium">{{item_nome}}</h3>
+                      </td>
+
+                      <td class="text-center w-15 w-25">
+                        <span class="text-warning">R$</span>{{(item_valor.toNumber() / 100).formatCurrency(' ', ',', '.', 2)}}
+                      </td>
+
+                      <td class="text-center">
+                        <button id="btn1" class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id})"><i class="fas fa-trash-alt text-danger"></i></button>
+                      </td>
+                    </tr>
+
+
+                    <tr>
+
+                      <td colspan="3">
+                        <div class="row g-2">
+                          <div class="col-7">
+                            <input id="participante_nome" name="participante_nome" type="text" class="form-control" placeholder="Nome Participante" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_nome: value, nome: value})" dmx-bind:value="nome">
+                          </div>
+                          <div class="col-5">
+                            <input id="participante_cpf" name="participante_cpf" type="text" onkeyup="formatCPF(this)" class="form-control" placeholder="CPF" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_cpf: participante_cpf.value, cpf: value})" dmx-bind:value="cpf">
+                          </div>
+                          <div class="col-7">
+                            <input id="participante_email" name="participante_email" type="text" class="form-control" placeholder="E-mail" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_email: participante_email.value, email: value})" dmx-bind:value="email">
+                          </div>
+                          <div class="col-5">
+                            <input id="participante_telefone" name="participante_telefone" type="text" onkeyup="formatTelefone(this)" class="form-control" placeholder="Telefone" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_telefone: value, telefone: value})" dmx-bind:value="telefone">
+                          </div>
+                        </div>
+                      </td>
+
+
+
+
+                    </tr>
+
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mt-4 mb-1">
+                <div class="col">
+                  <div class="d-flex flex-row gap-1 justify-content-end">
+                    <h4>Total</h4>
+                    <h4>{{(datastore_carrinho.data.sum(`item_valor`).toNumber() / 100).formatCurrency(' R$ ', ',', '.', 2)}}</h4>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer mt-0">
+            <button type="button" class="btn btn-info gap-1" dmx-on:click="carrinho.hide()">
+              <i class="fas fa-cart-plus"></i>ADICIONAR MAIS ITENS</button>
+            <button type="button" class="btn btn-success" dmx-on:click="step.setValue(2);carrinho.hide()">PAGAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Topbar Start -->
     <header class="app-topbar">
       <div class="page-container topbar-menu">
@@ -188,26 +273,6 @@
                     </div>
 
                     <!-- item-->
-                    <div class="dropdown-item notification-item py-2 text-wrap" id="notification-2">
-                      <span class="d-flex align-items-center">
-                        <span class="me-3 position-relative flex-shrink-0">
-                          <div class="avatar avatar-md">
-                            <span class="avatar-title bg-info rounded-circle">
-                              <i class="mdi mdi-bell-outline font-20"></i>
-                            </span>
-                          </div>
-                        </span>
-                        <span class="flex-grow-1 text-muted">
-                          <p class="fw-medium mb-0 text-dark">Updates</p>
-                          <span class="font-12">There are 2 new updates available</span>
-                        </span>
-                        <span class="notification-item-close">
-                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                            <i class="mdi mdi-close font-16"></i>
-                          </button>
-                        </span>
-                      </span>
-                    </div>
 
                     <!-- item-->
                     <div class="dropdown-item notification-item py-2 text-wrap" id="notification-3">
@@ -232,48 +297,8 @@
                     </div>
 
                     <!-- item-->
-                    <div class="dropdown-item notification-item py-2 text-wrap" id="notification-4">
-                      <span class="d-flex align-items-center">
-                        <span class="me-3 position-relative flex-shrink-0">
-                          <div class="avatar avatar-md">
-                            <span class="avatar-title bg-primary rounded-circle">
-                              <i class="mdi mdi-comment-account-outline font-20"></i>
-                            </span>
-                          </div>
-                        </span>
-                        <span class="flex-grow-1 text-muted">
-                          <p class="fw-medium mb-0 text-dark">Caleb Flakelar commented on Admin</p>
-                          <span class="font-12">4 days ago</span>
-                        </span>
-                        <span class="notification-item-close">
-                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                            <i class="mdi mdi-close font-16"></i>
-                          </button>
-                        </span>
-                      </span>
-                    </div>
 
                     <!-- item-->
-                    <div class="dropdown-item notification-item py-2 text-wrap mb-5" id="notification-5">
-                      <span class="d-flex align-items-center">
-                        <span class="me-3 position-relative flex-shrink-0">
-                          <div class="avatar avatar-md">
-                            <span class="avatar-title bg-info rounded-circle">
-                              <i class="mdi mdi-bell-outline font-20"></i>
-                            </span>
-                          </div>
-                        </span>
-                        <span class="flex-grow-1 text-muted">
-                          <p class="fw-medium mb-0 text-dark">Updates</p>
-                          <span class="font-12">There are 2 new updates available</span>
-                        </span>
-                        <span class="notification-item-close">
-                          <button type="button" class="btn btn-ghost-danger rounded-circle btn-sm btn-icon" data-dismissible="#notification-1">
-                            <i class="mdi mdi-close font-16"></i>
-                          </button>
-                        </span>
-                      </span>
-                    </div>
                   </div>
 
 
@@ -282,6 +307,14 @@
                     View All
                   </a>
                 </div>
+              </div>
+              <div class="dropdown" dmx-show="datastore_carrinho.data.count()&gt;0" dmx-on:click="carrinho.show()">
+                <button class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,25" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
+                  <i class="fas fa-shopping-cart fa-2x text-info"></i>
+                  <span class="badge bg-pink rounded-circle noti-icon-badge">{{datastore_carrinho.data.count()}}</span>
+                </button>
+
+
               </div>
               <div class="dropdown">
                 <a class="topbar-link dropdown-toggle drop-arrow-none px-0" data-bs-toggle="dropdown" data-bs-offset="0,19" type="button" aria-haspopup="false" aria-expanded="false">
@@ -389,7 +422,7 @@
   <script src="/assets/js/vendor.min.js"></script>
 
   <!-- App js -->
-  <script src="assets/js/app.js"></script>
+  <script src="/assets/js/app.js"></script>
 
   <!--C3 Chart-->
   <script src="assets/vendor/d3/d3.min.js"></script>
@@ -400,6 +433,46 @@
 
   <!-- Projects Analytics Dashboard App js -->
   <script src="assets/js/pages/dashboard-sales.js"></script>
+
+  <script>
+    function formatTelefone(input) {
+        let value = input.value;
+
+        // Remove todos os caracteres que não são dígitos
+        value = value.replace(/[\D]+/g, "");
+
+        // Aplica a máscara de telefone
+        if (value.length <= 10) {
+            value = value.replace(/(\d{2})(\d)/, "($1) $2");
+            value = value.replace(/(\d{4})(\d{1,4})$/, "$1-$2");
+        } else {
+            value = value.replace(/(\d{2})(\d)/, "($1) $2");
+            value = value.replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+        }
+
+        // Atualiza o valor do campo de entrada
+        input.value = value;
+    }
+  </script>
+  <script>
+    function formatCPF(input) {
+        let value = input.value;
+
+        // Remove todos os caracteres que não são dígitos
+        value = value.replace(/[\D]+/g, "");
+
+        // Aplica a máscara de CPF
+        if (value.length <= 11) {
+            value = value.replace(/(\d{3})(\d)/, "$1.$2");
+            value = value.replace(/(\d{3})(\d)/, "$1.$2");
+            value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        }
+
+        // Atualiza o valor do campo de entrada
+        input.value = value;
+    }
+  </script>
+
 
 </body>
 

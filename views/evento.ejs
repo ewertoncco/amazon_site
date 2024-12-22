@@ -1,11 +1,27 @@
-<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{}}" is="dmx-app" appConnect="local" -->
-<dmx-local-manager id="localStorage"></dmx-local-manager>
-<dmx-array id="arrcarrinho" dmx-bind:items="localStorage.data.carrinho.itens" dmx-on:updated="localStorage.set('carrinho',arrcarrinho.items)"></dmx-array>
-<dmx-array id="arrsubtotal" dmx-bind:items="localStorage.data.subtotal" dmx-on:updated="localStorage.set('subtotal',arrsubtotal.items)"></dmx-array>
-<dmx-array id="arrprodutoid" dmx-bind:items="localStorage.data.produtoid" dmx-on:updated="localStorage.set('produtoid',arrprodutoid.items)"></dmx-array>
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" is="dmx-app" appConnect="local" bootstrap5="custom" -->
+<div class="modal" id="modal_nao_logado" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Ir login</button>
+            </div>
+        </div>
+    </div>
+</div>
+<dmx-value id="var_contador" dmx-bind:value="0"></dmx-value>
+
+
 <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: $event.evento_id})"></dmx-socket>
 <dmx-value id="status_pagamento" dmx-bind:value="0"></dmx-value>
-<dmx-value id="step" dmx-bind:value="1"></dmx-value>
+
 <dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
 <dmx-datetime id="var1"></dmx-datetime>
 
@@ -14,7 +30,7 @@
         <div class="row justify-content-between gap-3">
             <div class="col-lg-6 col-xxl mt-xxl-0">
                 <div class="title-heading mt-5">
-                    <h2 class="fw-bold mb-3" style="font-size: 40px;">Compre agora</h2>
+                    <h3 class="mb-3 fw-normal" style="font-size: 30px;">Compre agora</h3>
                     <div class="row" is="dmx-repeat" id="itens_venda" dmx-bind:repeat="sc_evento.data.evento_front.produtos">
                         <div class="col-12">
                             <div class="card shadow-sm mt-1 mb-1">
@@ -24,11 +40,18 @@
                                         <div class="col-8">
                                             <div class="d-flex flex-column">
                                                 <div class="d-flex justify-content-between">
-                                                    <h4 class="fw-bold">{{produto_nome}}</h4>
+                                                    <h4 class="fw-bold mt-0 mb-0">{{produto_nome}}</h4>
                                                 </div>
-                                                <h6>{{valor.formatCurrency('R$ ', ',', '.', 2)}}</h6>
-                                                <h6>{{final_vendas.formatDate('dd MMMM yyyy HH:mm')}}</h6>
-                                                <h5 class="text-danger text-start">Quase acabando</h5>
+                                                <h4 class="mt-1">{{(valor.toNumber() / 100).formatCurrency(' R$ ', ',', '.', 2)}}</h4>
+                                                <h6 class="mt-0 mb-0">até {{final_vendas.formatDate('dd MMMM yyyy HH:mm')}}</h6>
+                                                <h5 class="text-danger text-start mt-1">Quase acabando</h5>
+                                                <div class="d-flex">
+                                                    <h5 class="text-danger mt-0 mb-0 text-center">Termina em&nbsp;</h5>
+                                                    <h5 class="text-danger mt-0 mb-0 text-center">{{(((var1.datetime.secondsUntil(final_vendas))/ 86400)%365).floor()}} Dias</h5>
+                                                    <h5 class="text-danger mt-0 mb-0 ms-1 text-center"> {{(((var1.datetime.secondsUntil(final_vendas)/3600)%24)).floor()}} Horas</h5>
+                                                    <h5 class="text-danger mt-0 mb-0 ms-1 text-center"> {{(((var1.datetime.secondsUntil(final_vendas)/60)%60)).floor()}} minutos</h5>
+                                                </div>
+
                                                 <input id="inp_produtoid" name="produtoid" type="hidden" dmx-bind:value="id">
                                                 <input id="inp_produto" name="produto" dmx-bind:value="produto_nome" type="hidden">
                                                 <input id="inp_valor" name="valor" type="hidden" dmx-bind:value="valor">
@@ -38,11 +61,8 @@
                                         </div>
                                         <div class="align-self-center col-4">
                                             <div class="d-flex align-items-center justify-content-center">
-                                                <button id="btn_minus" class="btn">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <input id="inp_qtidec" name="qtidec" type="number" class="form-control mx-2 text-center" value="0" placeholder="0"><button id="btn_plus" class="btn" dmx-on:click="arrprodutoid.add(inp_produtoid.value);arrsubtotal.add(inp_subtotal.value);arrcarrinho.add('{id:'+inp_produtoid.value+',produto:'+inp_produto.value+',valor:'+inp_valor.value+'}')">
-                                                    <i class="fas fa-plus"></i>
+                                                <button id="btn_plus" class="btn" dmx-on:click="run({condition:{outputType:'boolean',if:`sc_usuario_logado.data.query.usuario_email`,then:{steps:[{run:{outputType:'text',action:`validade_carrinho.setValue(data_hora.datetime.toDate().addMinutes(2).toDate())`}},{condition:{outputType:'boolean',if:`is_mesa==true`,then:{steps:[{run:{outputType:'text',action:`var_contador.setValue(0)`}},{while:{condition:`var_contador.value&lt;qtide_mesa`,exec:{steps:[{run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},{run:{outputType:'text',action:`var_contador.setValue(var_contador.value+1)`}}]}}},{run:{outputType:'text',action:`carrinho.show()`}},{run:{outputType:'text',action:`notifies1.success(\'Item inserido no carrinho\')`}}]},else:{steps:[{run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},{run:{outputType:'text',action:`carrinho.show()`}},{run:{outputType:'text',action:`notifies1.success(\'Item inserido no carrinho\')`}}]}}}]},else:{steps:{run:{outputType:'text',action:`modal_nao_logado.show()`}}}}})">
+                                                    <i class="fas fa-cart-plus fa-2x text-primary"></i>
                                                 </button>
 
                                             </div>
@@ -110,9 +130,9 @@
                                 <h6 class="fw-light">Segundos</h6>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-4 justify-content-center justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start" dmx-show="!sc_evento.data.evento_front.produtos[0].id.isEmpty()">
-                        <button id="btn3" class="btn w-50 btn-primary ms-2" dmx-on:click="step.setValue(2)">IR PARA PAGAMENTO</button>
+                        <div class="col">
+                            <img dmx-bind:src="sc_evento.data.evento_front.evento_banner_principal" height="200">
+                        </div>
                     </div>
 
                 </div>
@@ -127,10 +147,15 @@
         <div class="row justify-content-between">
             <div class="col-lg-6 col-xxl mt-xxl-0">
                 <div class="title-heading mt-5 text-center">
-                    <h2 class="fw-bold mb-3" style="font-size: 40px;">Método pagamento</h2>
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+
+                        <i class="fas fa-stopwatch fa-2x text-danger"></i>
+                        <h4 class="mt-0 mb-0 fw-bold">10:00</h4>
+                    </div>
+                    <h2 class="fw-bold mb-3" style="font-size: 40px;">Qual método de pagamento ?</h2>
                     <div class="row shadow-sm rounded rounded-2 me-2 pt-3 pb-3 ps-2 pe-2 gap-4 bg-transparent">
                         <div class="col-4">
-                            <div class="d-flex flex-row align-items-center justify-content-start gap-3">
+                            <div class="d-flex flex-row align-items-center justify-content-start gap-3 pt-2 pb-2 ps-2 pe-2 bordas">
 
                                 <img width="35" height="35" src="/assets/images/pix.png">
                                 <div class="form-check">
@@ -180,27 +205,26 @@
                         <form id="form1" is="dmx-form" novalidate="">
 
 
-                            <div class="form-group mb-3"> <label for="input4" class="form-label mt-1 mb-1">Nome no cartão</label>
-                                <input type="text" class="form-control border-b" id="input4" name="input4" aria-describedby="input4_help" placeholder="0000 0000 0000 0000" is="dmx-input" value="">
+                            <div class="form-group mb-3"> <label for="inp_nome_cartao" class="form-label mt-1 mb-1">Nome no cartão</label>
+                                <input type="text" class="form-control border-b" id="inp_nome_cartao" name="nome_cartao" aria-describedby="input4_help" placeholder="0000 0000 0000 0000" is="dmx-input" value="">
                             </div>
-                            <div class="form-group mb-3"> <label for="input5" class="form-label mt-1 mb-1">Número do cartão</label>
-                                <input type="text" class="form-control" id="input5" name="input4" aria-describedby="input4_help" is="dmx-input" value="">
+                            <div class="form-group mb-3"> <label for="inp_numero_cartao" class="form-label mt-1 mb-1">Número do cartão</label>
+                                <input type="text" class="form-control" id="inp_numero_cartao" name="numero_cartao" aria-describedby="input4_help" is="dmx-input" value="">
                             </div>
                             <div class="form-group mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <label for="input6" class="form-label mt-1 mb-1">Validade</label>
-                                        <div class="d-flex flex-row gap-2"><input type="text" class="form-control" id="input6" name="input4" aria-describedby="input4_help" placeholder="00" is="dmx-input" value="">
-                                            <input type="text" class="form-control" id="input8" name="input4" aria-describedby="input4_help" placeholder="00" is="dmx-input" value="">
+                                        <label for="inp_validade_cartao" class="form-label mt-1 mb-1">Validade</label>
+                                        <div class="d-flex flex-row gap-2"><input type="date" class="form-control" id="inp_validade_cartao" name="validade_cartao" aria-describedby="input4_help" placeholder="00 / 00" is="dmx-input" value="">
                                         </div>
                                     </div>
-                                    <div class="col"><label for="input7" class="form-label mt-1 mb-1">Cód Segurança</label><input type="text" class="form-control" id="input7" name="input4" aria-describedby="input4_help" is="dmx-input" value=""></div>
+                                    <div class="col"><label for="inp_codigo_seguranca" class="form-label mt-1 mb-1">Cód Segurança</label><input type="text" class="form-control" id="inp_codigo_seguranca" name="codigo_seguranca" aria-describedby="input4_help" is="dmx-input" value=""></div>
                                 </div>
 
                             </div>
                             <div class="form-group mb-3">
                                 <label for="input8" class="form-label mt-0 mb-1">Parcelamento</label>
-                                <select id="select1" class="form-select" is="dmx-select">
+                                <select id="select_parcelamento" class="form-select" is="dmx-select" dmx-bind:options="sc_evento.data.evento_front.qtide_parcelas_cartao">
                                     <!-- </div-->
 
 
@@ -295,7 +319,7 @@
                                 </select>
                             </div>
                         </form>
-                        <h4 class="card-title">Total R$ 200</h4>
+                        <h4 class="card-title">Total {{datastore_carrinho.data.sum(`item_valor.toNumber().formatCurrency('R$ ', ',', '.', 2)`)}}</h4>
 
                         <button id="btn5" class="btn btn-success" is="dmx-button" value="" type="button">Pagar</button>
                         <button id="btn7" class="btn btn-outline-secondary" is="dmx-button" value="" type="button">Pagar com PIX&nbsp;</button>

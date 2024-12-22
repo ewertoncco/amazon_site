@@ -1,5 +1,5 @@
 <!-- Wappler include head-page="layouts/dashboard" bootstrap5="custom" is="dmx-app" id="adm_evento" appConnect="local" components="{dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxValidator:{},dmxAnimateCSS:{},dmxDataTraversal:{}}" fontawesome_6="local" -->
-<dmx-value id="var_step" dmx-bind:value="2"></dmx-value>
+<dmx-value id="var_step" dmx-bind:value="1"></dmx-value>
 <dmx-serverconnect id="sc_status_evento" url="/api/eventos/ativar_desativar" noload="true"></dmx-serverconnect>
 <dmx-data-detail id="data_detail_produto" dmx-bind:data="sc_dados_evento.data.dados_evento.produtos" key="id"></dmx-data-detail>
 <div class="modal" id="editar_evento" is="dmx-bs5-modal" tabindex="-1">

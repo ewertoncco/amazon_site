@@ -4,7 +4,7 @@
 <section id="eventos" class="min-vh-100">
     <section id="eventos" class="min-vh-100 d-flex align-items-stretch">
         <div class="container-fluid min-vh-100">
-            <div is="dmx-swiper" id="swiper1" class="h-85" dmx-bind:slides="sc_listar_eventos.data.query.data" autoplay="true" loop="true">
+            <div is="dmx-swiper" id="swiper1" class="h-85" autoplay="true" loop="true" dmx-bind:slides="sc_listar_eventos.data.query.data.filter(`evento_destaque==true`)">
                 <div class="swiper-slide h-100">
                     <div class="row h-100 align-items-center">
                         <!-- Coluna Esquerda (Texto e Descrição) -->
@@ -59,7 +59,7 @@
                                     <h6 class="fw-light">Segundos</h6>
                                 </div>
                                 <div class="align-self-center col-xl-2 col-lg-2 col-sm-6 col-6 col-xxl-4">
-                                    <a class="btn btn-primary rounded mt-3 pt-2 pb-2 btn-lg mt-xxl-0" dmx-on:click="browser1.goto('/evento/'+id)">Comprar Ingressos</a>
+                                    <a class="btn btn-primary rounded mt-3 pt-2 pb-2 btn-lg mt-xxl-0" dmx-on:click="browser1.goto('/evento/'+id)">COMPRAR AGORA</a>
                                 </div>
                             </div>
 

@@ -14,9 +14,7 @@
     ],
     "tables": {
       "associados": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -75,9 +73,7 @@
         }
       },
       "carrinho_transacoes": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -293,9 +289,7 @@
         }
       },
       "noticias": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -361,9 +355,7 @@
         }
       },
       "forma_pagamento": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -385,9 +377,7 @@
         }
       },
       "tipo_transacao": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -412,9 +402,7 @@
         }
       },
       "eventos": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -644,9 +632,7 @@
         }
       },
       "evento_produtos": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -810,9 +796,7 @@
         }
       },
       "carrinho": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -892,9 +876,7 @@
         }
       },
       "status_pagamento": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -920,9 +902,7 @@
         }
       },
       "status_publicacao": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -947,9 +927,7 @@
         }
       },
       "carrinho_itens_vendidos": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1090,9 +1068,7 @@
         "parent": "carrinho"
       },
       "usuarios": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1316,9 +1292,7 @@
         }
       },
       "organizador": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1438,9 +1412,7 @@
         }
       },
       "evento_despesas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1541,9 +1513,7 @@
         "parent": "eventos"
       },
       "notificacoes": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1607,9 +1577,7 @@
         }
       },
       "usuarios_notificacoes_lidas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1660,9 +1628,7 @@
         "parent": "usuarios"
       },
       "evento_checklist": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1761,9 +1727,7 @@
         "parent": "eventos"
       },
       "organizador_financeiro": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1908,9 +1872,7 @@
         }
       },
       "usuarios_compras": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1950,9 +1912,7 @@
         "parent": "usuarios"
       },
       "genero": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {

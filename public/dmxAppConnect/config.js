@@ -1431,11 +1431,7 @@ dmx.config({
     "datastore_carrinho": [
       {
         "type": "text",
-        "name": "produto_id"
-      },
-      {
-        "type": "number",
-        "name": "qtide"
+        "name": "item_id"
       },
       {
         "type": "text",
@@ -1452,24 +1448,52 @@ dmx.config({
       {
         "type": "text",
         "name": "participante_email"
+      },
+      {
+        "type": "number",
+        "name": "item_valor"
+      },
+      {
+        "type": "text",
+        "name": "item_nome"
       }
     ],
     "carrinho": {
       "meta": [
         {
+          "name": "$id",
+          "type": "number"
+        },
+        {
           "type": "text",
-          "name": "produto"
+          "name": "item_id"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
         },
         {
           "type": "number",
-          "name": "valor"
+          "name": "item_valor"
         },
         {
-          "type": "number",
-          "name": "qtide"
+          "type": "text",
+          "name": "item_nome"
         }
       ],
-      "outputType": "key_array"
+      "outputType": "array"
     },
     "arrsubtotal": {
       "meta": null,
@@ -1673,6 +1697,75 @@ dmx.config({
           }
         }
       ]
+    }
+  },
+  "homepage": {
+    "datastore_carrinho": [
+      {
+        "type": "number",
+        "name": "item_valor"
+      },
+      {
+        "type": "text",
+        "name": "item_nome"
+      },
+      {
+        "type": "text",
+        "name": "item_id"
+      },
+      {
+        "type": "text",
+        "name": "nome"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "telefone"
+      },
+      {
+        "type": "text",
+        "name": "cpf"
+      }
+    ],
+    "itens_carrinho": {
+      "meta": [
+        {
+          "name": "$id",
+          "type": "number"
+        },
+        {
+          "type": "number",
+          "name": "item_valor"
+        },
+        {
+          "type": "text",
+          "name": "item_nome"
+        },
+        {
+          "type": "text",
+          "name": "item_id"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        }
+      ],
+      "outputType": "array"
     }
   }
 });
