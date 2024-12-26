@@ -42,5 +42,13 @@
   "teste_evento.ejs": {
     "layoutPage": "homepage",
     "description": ""
+  },
+  "meus_ingressos.ejs": {
+    "layoutPage": "homepage",
+    "description": ""
+  },
+  "ingresso.ejs": {
+    "layoutPage": "homepage",
+    "description": ""
   }
 }

@@ -20,368 +20,426 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "query",
-      "module": "dbconnector",
-      "action": "paged",
-      "options": {
-        "connection": "db",
-        "sql": {
-          "type": "select",
-          "columns": [
-            {
-              "table": "eventos",
-              "column": "*"
-            }
-          ],
-          "params": [],
-          "table": {
-            "name": "eventos"
-          },
-          "primary": "id",
-          "joins": [],
-          "query": "select * from \"eventos\"",
-          "sub": {
-            "produtos": {
-              "table": {
-                "name": "evento_produtos",
-                "alias": "produtos"
-              },
-              "key": "evento_id"
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "eventos",
+                "column": "*"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "eventos"
             },
-            "despesas": {
-              "table": {
-                "name": "evento_despesas",
-                "alias": "despesas"
+            "primary": "id",
+            "joins": [],
+            "query": "select * from \"eventos\"",
+            "sub": {
+              "produtos": {
+                "table": {
+                  "name": "evento_produtos",
+                  "alias": "produtos"
+                },
+                "key": "evento_id"
               },
-              "key": "codigo_evento"
-            },
-            "checklist": {
-              "table": {
-                "name": "evento_checklist",
-                "alias": "checklist"
+              "despesas": {
+                "table": {
+                  "name": "evento_despesas",
+                  "alias": "despesas"
+                },
+                "key": "codigo_evento"
               },
-              "key": "evento_id"
+              "checklist": {
+                "table": {
+                  "name": "evento_checklist",
+                  "alias": "checklist"
+                },
+                "key": "evento_id"
+              }
             }
           }
-        }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "datetime",
+                "name": "data_criacao"
+              },
+              {
+                "type": "number",
+                "name": "usuario_id"
+              },
+              {
+                "type": "number",
+                "name": "evento_status"
+              },
+              {
+                "type": "text",
+                "name": "evento_nome"
+              },
+              {
+                "type": "text",
+                "name": "evento_resumo"
+              },
+              {
+                "type": "text",
+                "name": "evento_descricao"
+              },
+              {
+                "type": "text",
+                "name": "evento_local"
+              },
+              {
+                "type": "text",
+                "name": "evento_banner_principal"
+              },
+              {
+                "type": "text",
+                "name": "evento_banner_secundario"
+              },
+              {
+                "type": "boolean",
+                "name": "tem_mapa"
+              },
+              {
+                "type": "text",
+                "name": "mapa_imagem"
+              },
+              {
+                "type": "datetime",
+                "name": "evento_data_hora"
+              },
+              {
+                "type": "boolean",
+                "name": "evento_destaque"
+              },
+              {
+                "type": "boolean",
+                "name": "pode_alterar_ingresso"
+              },
+              {
+                "type": "boolean",
+                "name": "pode_devolver_ingresso"
+              },
+              {
+                "type": "boolean",
+                "name": "aceita_pix"
+              },
+              {
+                "type": "boolean",
+                "name": "aceita_cartao"
+              },
+              {
+                "type": "number",
+                "name": "qtide_parcelas_cartao"
+              },
+              {
+                "type": "boolean",
+                "name": "mostrar_sobre_evento"
+              },
+              {
+                "type": "text",
+                "name": "slug_evento"
+              },
+              {
+                "type": "boolean",
+                "name": "mostrar_whatsapp"
+              },
+              {
+                "type": "text",
+                "name": "numero_whatsapp"
+              },
+              {
+                "type": "boolean",
+                "name": "bar_online"
+              },
+              {
+                "name": "produtos",
+                "type": "array",
+                "sub": [
+                  {
+                    "type": "number",
+                    "name": "id"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "data_criacao"
+                  },
+                  {
+                    "type": "number",
+                    "name": "usuario_id"
+                  },
+                  {
+                    "type": "number",
+                    "name": "evento_id"
+                  },
+                  {
+                    "type": "text",
+                    "name": "produto_nome"
+                  },
+                  {
+                    "type": "number",
+                    "name": "qtide_cadastrada"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "inicio_vendas"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "final_vendas"
+                  },
+                  {
+                    "type": "number",
+                    "name": "valor"
+                  },
+                  {
+                    "type": "number",
+                    "name": "ordem_lista"
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "ativo"
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "is_mesa"
+                  },
+                  {
+                    "type": "number",
+                    "name": "qtide_mesa"
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "cortesia"
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "cupom_ativo"
+                  },
+                  {
+                    "type": "text",
+                    "name": "codigo_cupom"
+                  },
+                  {
+                    "type": "number",
+                    "name": "valor_desconto"
+                  }
+                ]
+              },
+              {
+                "name": "despesas",
+                "type": "array",
+                "sub": [
+                  {
+                    "type": "number",
+                    "name": "id"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "data_criacao"
+                  },
+                  {
+                    "type": "number",
+                    "name": "usuario_id"
+                  },
+                  {
+                    "type": "number",
+                    "name": "tipo_despesa"
+                  },
+                  {
+                    "type": "text",
+                    "name": "titulo"
+                  },
+                  {
+                    "type": "text",
+                    "name": "descricao"
+                  },
+                  {
+                    "type": "number",
+                    "name": "codigo_evento"
+                  },
+                  {
+                    "type": "number",
+                    "name": "valor"
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "paga"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "data_pagamento"
+                  }
+                ]
+              },
+              {
+                "name": "checklist",
+                "type": "array",
+                "sub": [
+                  {
+                    "type": "number",
+                    "name": "id"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "data_criacao"
+                  },
+                  {
+                    "type": "number",
+                    "name": "usuario_id"
+                  },
+                  {
+                    "type": "text",
+                    "name": "titulo"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "data_prazo_conclusao"
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "finalizada"
+                  },
+                  {
+                    "type": "number",
+                    "name": "finalizada_por"
+                  },
+                  {
+                    "type": "datetime",
+                    "name": "data_finalizacao"
+                  },
+                  {
+                    "type": "number",
+                    "name": "evento_id"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
       },
-      "output": true,
-      "meta": [
-        {
-          "name": "offset",
-          "type": "number"
+      {
+        "name": "informacoes",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "notificacoes",
+                "column": "data_criacao"
+              },
+              {
+                "table": "notificacoes",
+                "column": "titulo"
+              },
+              {
+                "table": "notificacoes",
+                "column": "conteudo"
+              },
+              {
+                "table": "notificacoes",
+                "column": "imagem_url"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "notificacoes"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select \"data_criacao\", \"titulo\", \"conteudo\", \"imagem_url\" from \"notificacoes\""
+          }
         },
-        {
-          "name": "limit",
-          "type": "number"
-        },
-        {
-          "name": "total",
-          "type": "number"
-        },
-        {
-          "name": "page",
-          "type": "object",
-          "sub": [
-            {
-              "name": "offset",
-              "type": "object",
-              "sub": [
-                {
-                  "name": "first",
-                  "type": "number"
-                },
-                {
-                  "name": "prev",
-                  "type": "number"
-                },
-                {
-                  "name": "next",
-                  "type": "number"
-                },
-                {
-                  "name": "last",
-                  "type": "number"
-                }
-              ]
-            },
-            {
-              "name": "current",
-              "type": "number"
-            },
-            {
-              "name": "total",
-              "type": "number"
-            }
-          ]
-        },
-        {
-          "name": "data",
-          "type": "array",
-          "sub": [
-            {
-              "type": "number",
-              "name": "id"
-            },
-            {
-              "type": "datetime",
-              "name": "data_criacao"
-            },
-            {
-              "type": "number",
-              "name": "usuario_id"
-            },
-            {
-              "type": "number",
-              "name": "evento_status"
-            },
-            {
-              "type": "text",
-              "name": "evento_nome"
-            },
-            {
-              "type": "text",
-              "name": "evento_resumo"
-            },
-            {
-              "type": "text",
-              "name": "evento_descricao"
-            },
-            {
-              "type": "text",
-              "name": "evento_local"
-            },
-            {
-              "type": "text",
-              "name": "evento_banner_principal"
-            },
-            {
-              "type": "text",
-              "name": "evento_banner_secundario"
-            },
-            {
-              "type": "boolean",
-              "name": "tem_mapa"
-            },
-            {
-              "type": "text",
-              "name": "mapa_imagem"
-            },
-            {
-              "type": "datetime",
-              "name": "evento_data_hora"
-            },
-            {
-              "type": "boolean",
-              "name": "evento_destaque"
-            },
-            {
-              "type": "boolean",
-              "name": "pode_alterar_ingresso"
-            },
-            {
-              "type": "boolean",
-              "name": "pode_devolver_ingresso"
-            },
-            {
-              "type": "boolean",
-              "name": "aceita_pix"
-            },
-            {
-              "type": "boolean",
-              "name": "aceita_cartao"
-            },
-            {
-              "type": "number",
-              "name": "qtide_parcelas_cartao"
-            },
-            {
-              "type": "boolean",
-              "name": "mostrar_sobre_evento"
-            },
-            {
-              "type": "text",
-              "name": "slug_evento"
-            },
-            {
-              "type": "boolean",
-              "name": "mostrar_whatsapp"
-            },
-            {
-              "type": "text",
-              "name": "numero_whatsapp"
-            },
-            {
-              "type": "boolean",
-              "name": "bar_online"
-            },
-            {
-              "name": "produtos",
-              "type": "array",
-              "sub": [
-                {
-                  "type": "number",
-                  "name": "id"
-                },
-                {
-                  "type": "datetime",
-                  "name": "data_criacao"
-                },
-                {
-                  "type": "number",
-                  "name": "usuario_id"
-                },
-                {
-                  "type": "number",
-                  "name": "evento_id"
-                },
-                {
-                  "type": "text",
-                  "name": "produto_nome"
-                },
-                {
-                  "type": "number",
-                  "name": "qtide_cadastrada"
-                },
-                {
-                  "type": "datetime",
-                  "name": "inicio_vendas"
-                },
-                {
-                  "type": "datetime",
-                  "name": "final_vendas"
-                },
-                {
-                  "type": "number",
-                  "name": "valor"
-                },
-                {
-                  "type": "number",
-                  "name": "ordem_lista"
-                },
-                {
-                  "type": "boolean",
-                  "name": "ativo"
-                },
-                {
-                  "type": "boolean",
-                  "name": "is_mesa"
-                },
-                {
-                  "type": "number",
-                  "name": "qtide_mesa"
-                },
-                {
-                  "type": "boolean",
-                  "name": "cortesia"
-                },
-                {
-                  "type": "boolean",
-                  "name": "cupom_ativo"
-                },
-                {
-                  "type": "text",
-                  "name": "codigo_cupom"
-                },
-                {
-                  "type": "number",
-                  "name": "valor_desconto"
-                }
-              ]
-            },
-            {
-              "name": "despesas",
-              "type": "array",
-              "sub": [
-                {
-                  "type": "number",
-                  "name": "id"
-                },
-                {
-                  "type": "datetime",
-                  "name": "data_criacao"
-                },
-                {
-                  "type": "number",
-                  "name": "usuario_id"
-                },
-                {
-                  "type": "number",
-                  "name": "tipo_despesa"
-                },
-                {
-                  "type": "text",
-                  "name": "titulo"
-                },
-                {
-                  "type": "text",
-                  "name": "descricao"
-                },
-                {
-                  "type": "number",
-                  "name": "codigo_evento"
-                },
-                {
-                  "type": "number",
-                  "name": "valor"
-                },
-                {
-                  "type": "boolean",
-                  "name": "paga"
-                },
-                {
-                  "type": "datetime",
-                  "name": "data_pagamento"
-                }
-              ]
-            },
-            {
-              "name": "checklist",
-              "type": "array",
-              "sub": [
-                {
-                  "type": "number",
-                  "name": "id"
-                },
-                {
-                  "type": "datetime",
-                  "name": "data_criacao"
-                },
-                {
-                  "type": "number",
-                  "name": "usuario_id"
-                },
-                {
-                  "type": "text",
-                  "name": "titulo"
-                },
-                {
-                  "type": "datetime",
-                  "name": "data_prazo_conclusao"
-                },
-                {
-                  "type": "boolean",
-                  "name": "finalizada"
-                },
-                {
-                  "type": "number",
-                  "name": "finalizada_por"
-                },
-                {
-                  "type": "datetime",
-                  "name": "data_finalizacao"
-                },
-                {
-                  "type": "number",
-                  "name": "evento_id"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "outputType": "object"
-    }
+        "output": true,
+        "meta": [
+          {
+            "type": "datetime",
+            "name": "data_criacao"
+          },
+          {
+            "type": "text",
+            "name": "titulo"
+          },
+          {
+            "type": "text",
+            "name": "conteudo"
+          },
+          {
+            "type": "text",
+            "name": "imagem_url"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
   }
 }

@@ -228,5 +228,58 @@
       }
     ],
     "outputType": "object"
+  },
+  {
+    "name": "informacoes",
+    "module": "dbconnector",
+    "action": "select",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "select",
+        "columns": [
+          {
+            "table": "notificacoes",
+            "column": "*"
+          }
+        ],
+        "params": [],
+        "table": {
+          "name": "notificacoes"
+        },
+        "primary": "id",
+        "joins": [],
+        "query": "select * from \"notificacoes\""
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "datetime",
+        "name": "data_criacao"
+      },
+      {
+        "type": "text",
+        "name": "titulo"
+      },
+      {
+        "type": "text",
+        "name": "conteudo"
+      },
+      {
+        "type": "text",
+        "name": "imagem_url"
+      },
+      {
+        "type": "number",
+        "name": "usuario_id"
+      }
+    ],
+    "outputType": "array",
+    "type": "dbconnector_select"
   }
 ]

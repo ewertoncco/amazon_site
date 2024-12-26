@@ -14,7 +14,9 @@
     ],
     "tables": {
       "associados": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -73,7 +75,9 @@
         }
       },
       "carrinho_transacoes": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -289,7 +293,9 @@
         }
       },
       "noticias": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -355,7 +361,9 @@
         }
       },
       "forma_pagamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -377,7 +385,9 @@
         }
       },
       "tipo_transacao": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -402,7 +412,9 @@
         }
       },
       "eventos": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -632,7 +644,9 @@
         }
       },
       "evento_produtos": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -796,7 +810,9 @@
         }
       },
       "carrinho": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -876,7 +892,9 @@
         }
       },
       "status_pagamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -902,7 +920,9 @@
         }
       },
       "status_publicacao": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -927,7 +947,9 @@
         }
       },
       "carrinho_itens_vendidos": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1068,7 +1090,9 @@
         "parent": "carrinho"
       },
       "usuarios": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1292,7 +1316,9 @@
         }
       },
       "organizador": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1412,7 +1438,9 @@
         }
       },
       "evento_despesas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1513,7 +1541,9 @@
         "parent": "eventos"
       },
       "notificacoes": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1577,7 +1607,9 @@
         }
       },
       "usuarios_notificacoes_lidas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1628,7 +1660,9 @@
         "parent": "usuarios"
       },
       "evento_checklist": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1727,7 +1761,9 @@
         "parent": "eventos"
       },
       "organizador_financeiro": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1872,7 +1908,9 @@
         }
       },
       "usuarios_compras": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1912,7 +1950,9 @@
         "parent": "usuarios"
       },
       "genero": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1933,6 +1973,64 @@
         },
         "refs": {
           "usuarios": "genero"
+        }
+      },
+      "parcelamento": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "numero_parcelas": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "taxa_juros": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "ativo": {
+            "db": {
+              "type": "boolean",
+              "default": "true",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "data_criacao": {
+            "db": {
+              "type": "timestamp",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "data_atualizacao": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
         }
       }
     },

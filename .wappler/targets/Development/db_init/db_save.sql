@@ -1033,6 +1033,15 @@ COPY public.associados (id, data_criacao, codigo_usuario, ativo, criado_por) FRO
 
 COPY public.carrinho (id, data_criacao, evento_id, usuario_id, tipo_transacao, status_pagamento) FROM stdin;
 1	2024-11-30 18:17:26+00	\N	\N	\N	\N
+2	2024-12-16 07:43:55+00	\N	\N	\N	\N
+3	2024-12-16 08:07:53+00	\N	\N	\N	\N
+4	2024-12-16 08:10:10+00	\N	\N	\N	\N
+5	2024-12-16 08:10:51+00	\N	\N	\N	\N
+6	2024-12-16 08:10:56+00	\N	\N	\N	\N
+7	2024-12-16 08:10:56+00	\N	\N	\N	\N
+8	2024-12-16 08:10:56+00	\N	\N	\N	\N
+9	2024-12-16 08:10:57+00	\N	\N	\N	\N
+10	2024-12-16 14:49:33+00	\N	\N	\N	\N
 \.
 
 
@@ -1042,6 +1051,15 @@ COPY public.carrinho (id, data_criacao, evento_id, usuario_id, tipo_transacao, s
 
 COPY public.carrinho_itens_vendidos (id, produto_id, carrinho_id, item_resgatado, data_horario_resgate, id_transacao, pdf, trocou_nome, nome_anterior, cpf_anterior, data_troca, participante_nome, participante_telefone, participante_cpf, participante_email) FROM stdin;
 1	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+8	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+9	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -1050,7 +1068,7 @@ COPY public.carrinho_itens_vendidos (id, produto_id, carrinho_id, item_resgatado
 --
 
 COPY public.carrinho_transacoes (id, data_criacao, carrinho_id, evento_id, status_pagamento_id, forma_pagamento_id, valor_total_compra, valor_liquido_organizador, pag_key, pag_qrcode, pag_json, has_error, error_description, error_code, data_update, pag_id_transaction, pag_message, pag_description, receita_liquida, pediu_reembolso, data_vencimento, desconto, valor_desconto) FROM stdin;
-1	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+17	2024-12-16 18:23:17.765524+00	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	101231612	Autorizado	\N	\N	f	\N	f	\N
 \.
 
 
@@ -1075,7 +1093,10 @@ COPY public.evento_despesas (id, data_criacao, usuario_id, tipo_despesa, titulo,
 --
 
 COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_nome, qtide_cadastrada, inicio_vendas, final_vendas, valor, ordem_lista, ativo, is_mesa, qtide_mesa, cortesia, cupom_ativo, codigo_cupom, valor_desconto) FROM stdin;
-13	2024-12-09 15:22:00+00	9	11	VIP	10	2024-12-09 18:00:00+00	2024-12-09 18:21:00+00	10	1	t	f	0	f	f	\N	\N
+22	2024-12-15 17:37:41+00	9	11	Ingresso 01	10	2024-12-15 20:00:00+00	2024-12-16 20:37:00+00	1000	1	t	f	0	f	f	\N	\N
+19	2024-12-13 09:33:14+00	9	\N	Bruno VIP	50	2024-12-13 12:00:00+00	2024-12-21 12:33:00+00	20	1	t	f	0	f	f	\N	\N
+21	2024-12-13 18:21:18+00	9	11	Ewerton	1000	2024-12-13 18:00:00+00	2024-12-21 18:20:00+00	5000	1	t	f	0	f	t	asdasd	100000
+20	2024-12-13 17:57:54+00	9	11	Murilo Vip 201	200	2024-12-13 08:00:00+00	2024-12-21 08:57:00+00	3000	1	t	t	2	f	f	\N	\N
 \.
 
 
@@ -1084,7 +1105,8 @@ COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_no
 --
 
 COPY public.eventos (id, data_criacao, usuario_id, evento_status, evento_nome, evento_resumo, evento_descricao, evento_local, evento_banner_principal, evento_banner_secundario, tem_mapa, mapa_imagem, evento_data_hora, evento_destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, qtide_parcelas_cartao, mostrar_sobre_evento, slug_evento, mostrar_whatsapp, numero_whatsapp, bar_online) FROM stdin;
-11	2024-12-01 22:01:06+00	9	1	Victor Lou [longset]	Estreia MEGA aguardada: 07/12 no Amazon	A MAIOR festa DO ANO no club tem data marcada, e com uma estreia MEGA aguardada: 07/12 Amazon com Victor Lou [longset]\r\n\r\nVamos receber o verão da melhor forma possível…\r\n\r\nA reabertura do palco Selva, open air, com uma estrutura inédita e comandada pelo projeto Fusion.\r\n\r\n+12 horas de festas\r\n\r\nLine-up com + de 12 artistas\r\n\r\nNovas experiências desbloqueadas\r\n\r\nSerá uma noite histórica!	Amazon	\\assets\\images\\banners_eventos\\vitorlou.png	\N	f	\N	2024-12-22 22:00:00+00	f	t	t	t	t	2	t	\N	t		\N
+11	2024-12-01 22:01:06+00	9	1	Corrida de Rua Chapecó+	🏃‍♂️🌟 Prepare-se para a Corrida de Rua Chapecó+! 🌟🏃‍♀️	Venha viver a emoção das ruas de Chapecó com percursos incríveis de 5K e 10K! 🏅 Seja você iniciante ou corredor experiente, este é o evento perfeito para desafiar seus limites, se divertir e conquistar novas metas. 💪✨ A energia estará lá em cada passada, com muita vibração e apoio! 🎶👏\r\n\r\n🗓️ Data: [Insira a data do evento]\r\n📍 Local: [Insira o local do evento]\r\n\r\nNão perca essa oportunidade de celebrar a saúde, o esporte e a superação. Inscreva-se agora e garanta sua vaga! 🖊️🎉 Convide seus amigos e venha fazer parte dessa festa esportiva! 🤩👟 #ChapecóMais #CorridaDeRua	Getúlio Vargas, Chapecó SC	/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png	\N	f	\N	2025-01-31 16:00:00+00	t	t	t	t	t	2	t	\N	f		\N
+13	2024-12-15 17:27:46+00	9	1	Réveillon dos Desejos 2025	Uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano.	O Réveillon dos Desejos 2025 promete ser uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano. Realizado na Amazônia, o evento combina uma atmosfera tropical única com uma programação envolvente, perfeita para quem busca experiências memoráveis. A fusão entre cultura local, música e natureza faz deste evento uma opção ideal para celebrar o início de 2025 em grande estilo.\r\n\r\nCom uma ambientação cuidadosamente planejada, o Réveillon dos Desejos oferece uma conexão única com a natureza exuberante da Amazônia, destacando cenários deslumbrantes e momentos de celebração. O público pode esperar uma noite de performances musicais, gastronomia diferenciada e experiências sensoriais que exaltam os desejos de renovação e alegria para o ano que se inicia.	Amazon Club	/assets/uploads/banners_eventos/6d943723-53cb-467e-83d7-3a1c06e8e03d.jpg	\N	f	\N	2024-12-31 19:00:00+00	f	t	t	t	t	1	t	\N	t	(49) 99959-0901	\N
 \.
 
 
@@ -1196,8 +1218,8 @@ COPY public.tipo_transacao (id, tipo_transacao) FROM stdin;
 --
 
 COPY public.usuarios (id, data_criacao, senha, usuario_email, usuario_nome, usuario_apelido, usuario_telefone, usuario_cpf, ativo, end_rua, end_numero, end_bairro, end_cidade, end_estado, end_cep, notificacoes_email, notificacoes_push, notificacoes_whats, fcm_token, foto, data_nascimento, permissao, atualizar_senha, genero) FROM stdin;
-9	2024-12-01 17:49:26+00	$argon2i$v=19$m=65536,t=3,p=4$32A6/19W0WSZvFmM4/6lFA$ltbwe9QLYMmwyztfaELHklEsvGux4E6neaLsTKuArwQ	ewerton.cco@gmail.com	Ewerton Oliveira	Ewerton	49999590901	02679601904	t	Rua Cláudio Stakonski	90	Paraíso	Chapecó	SC	89806-248	t	t	t	\N	/assets/uploads/usuarios/ewerton.jpg	27/04/1979	1	\N	\N
 10	2024-12-01 18:29:15+00	$argon2i$v=19$m=65536,t=3,p=4$bnzEjhuWDLLKnE4LHTFo0w$wdJa95INrxwTHQjTlvJNDS7pCzLnl8Z+Pd717r8Sbgw	ewerton.cco1@gmail.com	Ewerton Luiz Oliveira	Ewerton	(49) 9 9959-0901	026.796.019-04	t	Rua Cláudio Stakonski	90	Paraíso	Chapecó	SC	89806-248	t	t	t	\N	/assets/uploads/usuarios/ewerton.jpg	27/04/1979	1	f	1
+9	2024-12-01 17:49:26+00	$argon2i$v=19$m=65536,t=3,p=4$32A6/19W0WSZvFmM4/6lFA$ltbwe9QLYMmwyztfaELHklEsvGux4E6neaLsTKuArwQ	ewerton.cco@gmail.com	Ewerton Oliveira	Ewerton	49999590901	02679601904	t	Rua Cláudio Stakonski	90	Paraíso	Chapecó	SC	89806-248	t	t	t	\N	/assets/uploads/usuarios/ewerton.jpg	27/04/1979	2	\N	\N
 \.
 
 
@@ -1245,21 +1267,21 @@ SELECT pg_catalog.setval('public.associados_id_seq', 1, false);
 -- Name: carrinho_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_id_seq', 1, true);
+SELECT pg_catalog.setval('public.carrinho_id_seq', 10, true);
 
 
 --
 -- Name: carrinho_itens_vendidos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_itens_vendidos_id_seq', 1, true);
+SELECT pg_catalog.setval('public.carrinho_itens_vendidos_id_seq', 10, true);
 
 
 --
 -- Name: carrinho_transacoes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 1, true);
+SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 17, true);
 
 
 --
@@ -1280,14 +1302,14 @@ SELECT pg_catalog.setval('public.evento_despesas_id_seq', 1, false);
 -- Name: evento_produtos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.evento_produtos_id_seq', 13, true);
+SELECT pg_catalog.setval('public.evento_produtos_id_seq', 23, true);
 
 
 --
 -- Name: eventos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.eventos_id_seq', 11, true);
+SELECT pg_catalog.setval('public.eventos_id_seq', 13, true);
 
 
 --

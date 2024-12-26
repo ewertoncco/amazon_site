@@ -1346,6 +1346,27 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "informacoes": {
+      "meta": [
+        {
+          "type": "datetime",
+          "name": "data_criacao"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "type": "text",
+          "name": "conteudo"
+        },
+        {
+          "type": "text",
+          "name": "imagem_url"
+        }
+      ],
+      "outputType": "array"
     }
   },
   "index": {
@@ -1766,6 +1787,35 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "info": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "datetime",
+          "name": "data_criacao"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "type": "text",
+          "name": "conteudo"
+        },
+        {
+          "type": "text",
+          "name": "imagem_url"
+        },
+        {
+          "type": "number",
+          "name": "usuario_id"
+        }
+      ],
+      "outputType": "object"
     }
   }
 });

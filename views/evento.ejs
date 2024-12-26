@@ -1,17 +1,41 @@
 <!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" is="dmx-app" appConnect="local" bootstrap5="custom" -->
+<dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
 <div class="modal" id="modal_nao_logado" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                <h5 class="modal-title ms-2">ATENÇÃO</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" dmx-on:click="user_logado.setValue(0)"></button>
             </div>
-            <div class="modal-body">
-                <p>Modal body text goes here.</p>
+            <div class="modal-body" dmx-hide="user_logado.value==1">
+                <h5 class="text-center">Você precisa estar logado para comprar ingressos</h5>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Ir login</button>
+            <div class="modal-body" dmx-show="user_logado.value==1&amp;&amp;sc_usuario_logado.data.query.isEmpty()">
+                <h3 class="text-center mb-2">Login</h3>
+                <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Usuário logado');modal_nao_logado.hide()">
+                    <div class="form-group mb-3">
+                        <label for="inp_email">E-mail</label>
+                        <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="inp_senha">Senha</label>
+                        <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="inp_lembre-me" name="lembre-me">
+                            <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 text-end">
+                        <button type="submit" class="btn btn-primary width-lg" dmx-bind:disabled="state.executing">Entrar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" dmx-hide="user_logado.value==1">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Não tenho cadastro</button>
+                <button type="button" class="btn btn-primary" dmx-on:click="user_logado.setValue(1)">Fazer login</button>
             </div>
         </div>
     </div>

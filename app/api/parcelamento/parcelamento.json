@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "valor_carrinho"
+      },
+      {
+        "type": "number",
+        "name": "juros"
+      },
+      {
+        "type": "number",
+        "name": "parcelamento"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query_parcelamento",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "parcelamento",
+              "column": "numero_parcelas",
+              "aggregate": "",
+              "recid": 1
+            },
+            {
+              "table": "parcelamento",
+              "column": "taxa_juros",
+              "recid": 2
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "parcelamento"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select \"numero_parcelas\", \"taxa_juros\" from \"parcelamento\""
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "numero_parcelas"
+        },
+        {
+          "type": "number",
+          "name": "taxa_juros"
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}
