@@ -198,6 +198,44 @@ ALTER SEQUENCE public.carrinho_transacoes_id_seq OWNED BY public.carrinho_transa
 
 
 --
+-- Name: parcelamento; Type: TABLE; Schema: public; Owner: amazon
+--
+
+CREATE TABLE public.parcelamento (
+    id integer NOT NULL,
+    numero_parcelas integer NOT NULL,
+    taxa_juros numeric(5,2) NOT NULL,
+    ativo boolean DEFAULT true,
+    data_criacao timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    data_atualizacao timestamp without time zone
+);
+
+
+ALTER TABLE public.parcelamento OWNER TO amazon;
+
+--
+-- Name: configuracao_parcelas_id_seq; Type: SEQUENCE; Schema: public; Owner: amazon
+--
+
+CREATE SEQUENCE public.configuracao_parcelas_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.configuracao_parcelas_id_seq OWNER TO amazon;
+
+--
+-- Name: configuracao_parcelas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: amazon
+--
+
+ALTER SEQUENCE public.configuracao_parcelas_id_seq OWNED BY public.parcelamento.id;
+
+
+--
 -- Name: evento_checklist; Type: TABLE; Schema: public; Owner: amazon
 --
 
@@ -971,6 +1009,13 @@ ALTER TABLE ONLY public.organizador_financeiro ALTER COLUMN id SET DEFAULT nextv
 
 
 --
+-- Name: parcelamento id; Type: DEFAULT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.parcelamento ALTER COLUMN id SET DEFAULT nextval('public.configuracao_parcelas_id_seq'::regclass);
+
+
+--
 -- Name: status_pagamento id; Type: DEFAULT; Schema: public; Owner: amazon
 --
 
@@ -1152,6 +1197,10 @@ COPY public.noticias (id, data_criacao, titulo, conteudo, status_publicacao, cri
 --
 
 COPY public.notificacoes (id, data_criacao, titulo, conteudo, imagem_url, usuario_id) FROM stdin;
+9	2024-12-25 22:29:14.784653+00	🎉 Promoção Imperdível!	Aproveite 50% de desconto em ingressos selecionados. Corra, é por tempo limitado!	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfxd2J7OhjoKiwzvLatz2XfBHHnZhj9NzJBw&s	9
+10	2024-12-25 22:29:14.785+00	🔔 Última Chance!	Os ingressos para o evento Show das Estrelas estão quase esgotados. Garanta já o seu!	https://d1muf25xaso8hp.cloudfront.net/https://img.criativodahora.com.br/2024/11/criativo-6726b4ae1f437img-2024-11-026726b4ae1f43e.jpg?w=1000&h=&auto=compress&dpr=1&fit=max	9
+11	2024-12-25 22:29:14.785472+00	🎁 Você Ganhou um Presente!	Confira seu app para descobrir seu brinde exclusivo no evento deste final de semana!	https://pbs.twimg.com/media/FCo8f0nXIAU8T7d.jpg:large	9
+12	2024-12-25 22:29:14.789458+00	📅 Atualização no Seu Evento	O horário do evento Festival de Verão foi atualizado. Acesse para mais detalhes!	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2ILXibcKKgpp4z6xVDPurEKBBJDmWq2n4Lw&s	9
 \.
 
 
@@ -1169,6 +1218,24 @@ COPY public.organizador (id, data_criacao, organizador_razao_social, organizador
 --
 
 COPY public.organizador_financeiro (id, data_criacao, organizador_banco, organizador_agencia, organizador_agencia_digito, organizador_conta, organizador_conta_digito, juros_parcelamento, sandbox, token_sandbox, id_receiver, taxa_pix, porcentagem_repasse_pix, taxa_credito, porcentagem_repasse_credito, taxa_bar, porcentagem_repasse_bar) FROM stdin;
+\.
+
+
+--
+-- Data for Name: parcelamento; Type: TABLE DATA; Schema: public; Owner: amazon
+--
+
+COPY public.parcelamento (id, numero_parcelas, taxa_juros, ativo, data_criacao, data_atualizacao) FROM stdin;
+3	3	12.00	t	2024-12-25 22:10:22.739352	\N
+4	4	16.00	t	2024-12-25 22:10:22.73975	\N
+5	5	20.00	t	2024-12-25 22:10:22.757185	\N
+6	6	24.00	t	2024-12-25 22:10:22.75687	\N
+7	7	28.00	t	2024-12-25 22:10:22.757022	\N
+8	8	32.00	t	2024-12-25 22:11:29.810673	\N
+9	9	36.00	t	2024-12-25 22:11:29.811102	\N
+10	10	40.00	t	2024-12-25 22:11:29.811416	\N
+1	1	1.00	t	2024-12-25 22:05:05.326925	\N
+2	2	8.00	t	2024-12-25 22:05:05.327166	\N
 \.
 
 
@@ -1285,6 +1352,13 @@ SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 17, true);
 
 
 --
+-- Name: configuracao_parcelas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
+--
+
+SELECT pg_catalog.setval('public.configuracao_parcelas_id_seq', 11, true);
+
+
+--
 -- Name: evento_checklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
@@ -1330,7 +1404,7 @@ SELECT pg_catalog.setval('public.noticias_id_seq', 1, false);
 -- Name: notificacoes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.notificacoes_id_seq', 1, false);
+SELECT pg_catalog.setval('public.notificacoes_id_seq', 12, true);
 
 
 --
@@ -1426,6 +1500,14 @@ ALTER TABLE ONLY public.carrinho
 
 ALTER TABLE ONLY public.carrinho_transacoes
     ADD CONSTRAINT carrinho_transacoes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: parcelamento configuracao_parcelas_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.parcelamento
+    ADD CONSTRAINT configuracao_parcelas_pkey PRIMARY KEY (id);
 
 
 --
