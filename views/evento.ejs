@@ -1,4 +1,6 @@
 <!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" is="dmx-app" appConnect="local" bootstrap5="custom" -->
+<dmx-serverconnect id="sc_parcelamento" url="/api/parcelamento/parcelamento" dmx-param:evento_id="query.id_evento"></dmx-serverconnect>
+<dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
 <dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
 <div class="modal" id="modal_nao_logado" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -46,7 +48,7 @@
 <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: $event.evento_id})"></dmx-socket>
 <dmx-value id="status_pagamento" dmx-bind:value="0"></dmx-value>
 
-<dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
+
 <dmx-datetime id="var1"></dmx-datetime>
 
 <section id="ingressos" class="min-vh-100" dmx-show="step.value==1">
@@ -226,7 +228,10 @@
                 <div class="card bg-transparent">
                     <div class="card-body">
                         <h4 class="card-title">Cartão de Crédito</h4>
-                        <form id="form1" is="dmx-form" novalidate="">
+                        <form id="form_carrinho" is="dmx-serverconnect-form" novalidate="" method="post" action="/api/safe2pay/credito">
+                            <dmx-form-data id="valor_total_compra" name="valor_total_compra" dmx-bind:data=""></dmx-form-data>
+                            <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
+                            <dmx-form-data id="evento_id" name="evento_id" dmx-bind:data="query.id_evento"></dmx-form-data>
 
 
                             <div class="form-group mb-3"> <label for="inp_nome_cartao" class="form-label mt-1 mb-1">Nome no cartão</label>
@@ -248,7 +253,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="input8" class="form-label mt-0 mb-1">Parcelamento</label>
-                                <select id="select_parcelamento" class="form-select" is="dmx-select" dmx-bind:options="sc_evento.data.evento_front.qtide_parcelas_cartao">
+                                <select id="select_parcelamento" class="form-select" is="dmx-select" optiontext="numero_parcelas+'x '+((numero_parcelas == 1 ?      datastore_carrinho.data.sum('item_valor') / 100  :      datastore_carrinho.data.sum('item_valor') / 100 + datastore_carrinho.data.sum('item_valor') / 100 * taxa_juros)      / numero_parcelas) .formatCurrency('R$ ', ',', '.', 2)+' total '+(numero_parcelas == 1 ?      datastore_carrinho.data.sum('item_valor') / 100 :      datastore_carrinho.data.sum('item_valor') / 100 + datastore_carrinho.data.sum('item_valor') / 100 * taxa_juros) .formatCurrency('R$ ', ',', '.', 2)" dmx-bind:options="sc_parcelamento.data.query_parcelamento.data">
                                     <!-- </div-->
 
 
@@ -343,9 +348,9 @@
                                 </select>
                             </div>
                         </form>
-                        <h4 class="card-title">Total {{datastore_carrinho.data.sum(`item_valor.toNumber().formatCurrency('R$ ', ',', '.', 2)`)}}</h4>
+                        <h4 class="card-title">Total {{(datastore_carrinho.data.sum('item_valor').toNumber() / 100).formatCurrency('R$ ', ',', '.', 2)}}</h4>
 
-                        <button id="btn5" class="btn btn-success" is="dmx-button" value="" type="button">Pagar</button>
+                        <button id="btn5" class="btn btn-success" is="dmx-button" value="" type="button" dmx-on:click="form_carrinho.submit()">Pagar</button>
                         <button id="btn7" class="btn btn-outline-secondary" is="dmx-button" value="" type="button">Pagar com PIX&nbsp;</button>
 
                     </div>

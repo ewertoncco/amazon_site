@@ -46,11 +46,6 @@
       "name": ""
     },
     {
-      "path": "/teste_evento",
-      "page": "teste_evento",
-      "layout": "homepage"
-    },
-    {
       "path": "/meus_ingressos",
       "page": "meus_ingressos",
       "layout": "homepage"

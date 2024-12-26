@@ -1,0 +1,578 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "boolean",
+        "name": "IsSandbox"
+      },
+      {
+        "type": "text",
+        "name": "Application"
+      },
+      {
+        "type": "text",
+        "name": "Vendor"
+      },
+      {
+        "type": "text",
+        "name": "Reference"
+      },
+      {
+        "type": "text",
+        "name": "Name"
+      },
+      {
+        "type": "text",
+        "name": "Identity"
+      },
+      {
+        "type": "text",
+        "name": "Email"
+      },
+      {
+        "type": "text",
+        "name": "Phone"
+      },
+      {
+        "type": "text",
+        "name": "ZipCode"
+      },
+      {
+        "type": "text",
+        "name": "Street"
+      },
+      {
+        "type": "text",
+        "name": "Number"
+      },
+      {
+        "type": "text",
+        "name": "District"
+      },
+      {
+        "type": "text",
+        "name": "StateInitials"
+      },
+      {
+        "type": "text",
+        "name": "CityName"
+      },
+      {
+        "type": "array",
+        "name": "Products"
+      },
+      {
+        "type": "object",
+        "name": "new"
+      },
+      {
+        "type": "number",
+        "name": "evento_id"
+      },
+      {
+        "type": "number",
+        "name": "usuario_id"
+      },
+      {
+        "type": "number",
+        "name": "tipo_transacao"
+      },
+      {
+        "type": "number",
+        "name": "status_pagamento"
+      },
+      {
+        "type": "text",
+        "name": "itens_vendidos"
+      },
+      {
+        "type": "array",
+        "name": "record",
+        "sub": [
+          {
+            "type": "number",
+            "name": "$value"
+          },
+          {
+            "type": "number",
+            "name": "novo_carrinho"
+          },
+          {
+            "type": "number",
+            "name": "item_id"
+          },
+          {
+            "type": "number",
+            "name": "id_transacao"
+          },
+          {
+            "type": "number",
+            "name": "nova_transacao"
+          },
+          {
+            "type": "text",
+            "name": "participante_nome"
+          },
+          {
+            "type": "text",
+            "name": "participante_telefone"
+          },
+          {
+            "type": "text",
+            "name": "participante_cpf"
+          },
+          {
+            "type": "text",
+            "name": "participante_email"
+          },
+          {
+            "type": "text",
+            "name": "nome"
+          },
+          {
+            "type": "text",
+            "name": "telefone"
+          },
+          {
+            "type": "text",
+            "name": "cpf"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "name": "valor_total_compra"
+      },
+      {
+        "type": "boolean",
+        "name": "desconto"
+      },
+      {
+        "type": "number",
+        "name": "valor_desconto"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "auth"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "novo_carrinho",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "carrinho",
+                "column": "data_criacao",
+                "type": "datetime",
+                "value": "{{NOW}}",
+                "recid": 1
+              },
+              {
+                "table": "carrinho",
+                "column": "evento_id",
+                "type": "number",
+                "value": "{{$_POST.evento_id}}",
+                "recid": 2
+              },
+              {
+                "table": "carrinho",
+                "column": "usuario_id",
+                "type": "number",
+                "value": "{{identity}}",
+                "recid": 3
+              },
+              {
+                "table": "carrinho",
+                "column": "tipo_transacao",
+                "type": "number",
+                "value": "1",
+                "recid": 4
+              },
+              {
+                "table": "carrinho",
+                "column": "status_pagamento",
+                "type": "number",
+                "value": "1",
+                "recid": 5
+              }
+            ],
+            "table": "carrinho",
+            "returning": "id",
+            "query": "insert into \"carrinho\" (\"data_criacao\", \"evento_id\", \"status_pagamento\", \"tipo_transacao\", \"usuario_id\") values (?, ?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.evento_id}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "nova_transacao",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "carrinho_transacoes",
+                "column": "data_criacao",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "carrinho_id",
+                "type": "number",
+                "value": "{{novo_carrinho.identity}}"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "evento_id",
+                "type": "number",
+                "value": "{{$_POST.evento_id}}"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "status_pagamento_id",
+                "type": "number",
+                "value": "1"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "forma_pagamento_id",
+                "type": "number",
+                "value": "2"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "valor_total_compra",
+                "type": "number",
+                "value": "{{$_POST.valor_total_compra}}"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "pediu_reembolso",
+                "type": "boolean",
+                "value": "false"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "desconto",
+                "type": "boolean",
+                "value": "{{$_POST.desconto}}"
+              },
+              {
+                "table": "carrinho_transacoes",
+                "column": "valor_desconto",
+                "type": "number",
+                "value": "{{$_POST.valor_desconto}}"
+              }
+            ],
+            "table": "carrinho_transacoes",
+            "returning": "id",
+            "query": "insert into \"carrinho_transacoes\" (\"carrinho_id\", \"data_criacao\", \"desconto\", \"evento_id\", \"forma_pagamento_id\", \"pediu_reembolso\", \"status_pagamento_id\", \"valor_desconto\", \"valor_total_compra\") values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{novo_carrinho.identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.evento_id}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.valor_total_compra}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.desconto}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.valor_desconto}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "itens_vendidos",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{$_POST.itens_vendidos}}",
+          "outputFields": [],
+          "exec": {
+            "steps": {
+              "name": "novo_itens_carrinho",
+              "module": "dbupdater",
+              "action": "insert",
+              "options": {
+                "connection": "db",
+                "sql": {
+                  "type": "insert",
+                  "values": [
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "produto_id",
+                      "type": "number",
+                      "value": "{{item_id}}"
+                    },
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "carrinho_id",
+                      "type": "number",
+                      "value": "{{novo_carrinho.identity}}"
+                    },
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "item_resgatado",
+                      "type": "boolean",
+                      "value": "false"
+                    },
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "id_transacao",
+                      "type": "number",
+                      "value": "{{nova_transacao.identity}}"
+                    },
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "participante_nome",
+                      "type": "text",
+                      "value": "{{nome}}"
+                    },
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "participante_telefone",
+                      "type": "text",
+                      "value": "{{telefone}}"
+                    },
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "participante_cpf",
+                      "type": "text",
+                      "value": "{{cpf}}"
+                    },
+                    {
+                      "table": "carrinho_itens_vendidos",
+                      "column": "participante_email",
+                      "type": "text",
+                      "value": "{{email}}"
+                    }
+                  ],
+                  "table": "carrinho_itens_vendidos",
+                  "returning": "id",
+                  "query": "insert into \"carrinho_itens_vendidos\" (\"carrinho_id\", \"id_transacao\", \"item_resgatado\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"produto_id\") values (?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{item_id}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{novo_carrinho.identity}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{nova_transacao.identity}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{nome}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P5",
+                      "type": "expression",
+                      "value": "{{telefone}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P6",
+                      "type": "expression",
+                      "value": "{{cpf}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P7",
+                      "type": "expression",
+                      "value": "{{email}}",
+                      "test": ""
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "identity",
+                  "type": "text"
+                },
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "safe2pay_pix",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "method": "POST",
+          "dataType": "json",
+          "data": {
+            "IsSandbox": false,
+            "Application": "Aplicação de teste",
+            "Vendor": "João da Silva",
+            "CallbackUrl": "https://callbacks.exemplo.com.br/api/Notify",
+            "PaymentMethod": "6",
+            "Reference": "TESTE",
+            "Customer": {
+              "Name": "João da silva",
+              "Identity": "18978393080",
+              "Phone": "51999999999",
+              "Email": "safe2pay@safe2pay.com.br",
+              "Address": {
+                "ZipCode": "90670090",
+                "Street": "Logradouro",
+                "Number": "123",
+                "Complement": "Complemento",
+                "District": "Higienopolis",
+                "CityName": "Porto Alegre",
+                "StateInitials": "RS",
+                "CountryName": "Brasil"
+              }
+            },
+            "Products": [
+              {
+                "Code": "001",
+                "Description": "Teste 1",
+                "UnitPrice": 1.99,
+                "Quantity": 10
+              },
+              {
+                "Code": "002",
+                "Description": "Teste 1",
+                "UnitPrice": 1.99,
+                "Quantity": 10
+              },
+              {
+                "Code": "002",
+                "Description": "Teste 1",
+                "UnitPrice": 1.99,
+                "Quantity": 10
+              }
+            ]
+          },
+          "url": "https://payment.safe2pay.com.br/v2/Payment"
+        },
+        "output": true,
+        "disabled": true
+      }
+    ]
+  }
+}

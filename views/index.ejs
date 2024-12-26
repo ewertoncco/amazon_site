@@ -79,19 +79,39 @@
 <section id="lista_eventos">
     <div class="container mt-4 mb-4">
         <div class="row" is="dmx-repeat" id="eventos_card" dmx-bind:items="1" dmx-bind:repeat="sc_listar_eventos.data.query.data" key="id">
-            <div class="col-sm-6 col-lg-3">
+            <div class="col-12">
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="header-title text-center">{{evento_nome}}</h5>
-                        <h6 class="card-subtitle text-muted text-center">{{evento_resumo}}</h6>
-                    </div>
-                    <img class="img-fluid" src="assets/images/small/img-4.jpg" alt="Card image cap" dmx-bind:src="evento_banner_principal">
-                    <div class="card-body">
-                        <p class="card-text">{{evento_descricao}}</p>
-                        <a href="#" class="card-link">Comprar</a>
+                <div class="container mt-1">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <!-- Left side - Image -->
+                            <div class="col-md-3">
+                                <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&amp;auto=format" class="img-fluid rounded-start h-100 object-fit-cover" alt="Event" dmx-bind:src="evento_banner_principal">
+                            </div>
+
+                            <!-- Middle - Title and Subtitle -->
+                            <div class="col-md-4">
+                                <div class="card-body">
+                                    <h3 class="card-title">{{evento_nome}}</h3>
+                                    <p class="card-subtitle text-muted">{{evento_resumo}}</p>
+                                </div>
+
+                                <div class="d-flex align-items-center p-3 gap-3 mt-3 justify-content-center flex-row justify-content-md-start">
+                                    <h4 class="sub-title mt-0 mb-0 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start"><i class="fas fa-calendar-alt text-primary"></i>&nbsp; {{evento_data_hora.formatDate('dd MMM yyyy')}}&nbsp;</h4>
+                                    <h4 class="sub-title mt-0 mb-0"><i class="fas fa-clock text-primary"></i>&nbsp; {{evento_data_hora.formatDate('HH:mm')}}</h4>
+                                </div>
+                            </div>
+
+                            <!-- Right side - Event Description -->
+                            <div class="col-md-5">
+                                <div class="card-body">
+                                    <p class="card-text">{{evento_descricao}}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
 
             </div>
         </div>
@@ -110,7 +130,7 @@
         <!-- end row -->
 
         <div class="row p-t-50" is="dmx-repeat" id="info" dmx-bind:repeat="sc_listar_eventos.data.informacoes" key="$key">
-            <div class="col-sm-6 py-2">
+            <div class="col- col-12">
                 <div class="row no-gutters align-items-center">
                     <div class="col-auto">
                         <img alt="..." dmx-bind:src="imagem_url" height="100" width="70">

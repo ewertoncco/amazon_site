@@ -50,9 +50,25 @@
                                 <div class="account-content mt-4">
 
                                     <div class="row">
-                                        <div class="col-sm-12">
-                                            c
-                                        </div>
+                                        <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Usuário logado');browser1.goto('/index')">
+                                            <div class="form-group mb-3">
+                                                <label for="inp_email">E-mail</label>
+                                                <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="inp_senha">Senha</label>
+                                                <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="1" id="inp_lembre-me" name="lembre-me">
+                                                    <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3 text-end">
+                                                <button type="submit" class="btn btn-primary width-lg" dmx-bind:disabled="state.executing">Entrar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                                            </div>
+                                        </form>
                                     </div>
 
                                     <div class="row mt-4 pt-2">

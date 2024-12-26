@@ -176,22 +176,22 @@
         <div class="row align-items-center justify-content-start d-none d-md-flex" id="menu">
           <div class="col-auto align-self-center">
             <button id="home" class="btn btn-link waves-effect" style="width: 100px; height: 40px;" dmx-on:click="browser1.goto('/index')">
-              <i class="fas fa-home"></i> Home
+              <i class="fas fa-home" style="margin-right: 5px;"></i> Home
             </button>
           </div>
           <div class="col-auto align-self-center" id="eventos">
             <button id="btn3" class="btn btn-link waves-effect" style="width: 110px; height: 40px;">
-              <i class="fas fa-glass-cheers"></i> Eventos
+              <i class="fas fa-glass-cheers" style="margin-right: 5px;"></i> Eventos
             </button>
           </div>
           <div class="col-auto align-self-center">
             <button id="faq" class="btn btn-link waves-effect" style="width: 100px; height: 40px;">
-              <i class="fas fa-question"></i> Faq
+              <i class="fas fa-question" style="margin-right: 5px;"></i> Faq
             </button>
           </div>
           <div class="col-auto align-self-center">
-            <button id="meus_ingressos" class="btn btn-link waves-effect" style="width: 150px; height: 40px;" dmx-on:click="browser1.goto('/meus_ingressos')">
-              <i class="fas fa-ticket-alt"></i> Meus Ingressos
+            <button id="meus_ingressos" class="btn btn-link waves-effect" style="width: 160px; height: 40px;" dmx-on:click="browser1.goto('/meus_ingressos')" dmx-show="!sc_usuario_logado.data.query.usuario_email.isEmpty()">
+              <i class="fas fa-ticket-alt" style="margin-right: 5px;"></i> Meus Ingressos
             </button>
           </div>
         </div>
