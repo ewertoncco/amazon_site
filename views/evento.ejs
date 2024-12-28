@@ -1,6 +1,7 @@
 <!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" is="dmx-app" appConnect="local" bootstrap5="custom" -->
 <dmx-serverconnect id="sc_parcelamento" url="/api/parcelamento/parcelamento" dmx-param:evento_id="query.id_evento"></dmx-serverconnect>
 <dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
+
 <dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
 <div class="modal" id="modal_nao_logado" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -197,7 +198,7 @@
 
                                 <img width="35" height="35" src="/assets/images/cartao.png">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="check_credito" name="icheck_credito">
+                                    <input class="form-check-input" type="checkbox" value="" id="check_credito" name="icheck_credito" dmx-on:click="sc_parcelamento.load({evento_id: query.id_evento})">
                                     <label class="form-check-label" for="check_credito">Crédito</label>
                                 </div>
 
@@ -229,9 +230,6 @@
                     <div class="card-body">
                         <h4 class="card-title">Cartão de Crédito</h4>
                         <form id="form_carrinho" is="dmx-serverconnect-form" novalidate="" method="post" action="/api/safe2pay/credito">
-                            <dmx-form-data id="input_valor_desconto" name="valor_desconto" dmx-bind:data="datastore_carrinho.valor_desconto"></dmx-form-data>
-                            <dmx-form-data id="input_desconto" name="desconto" dmx-bind:data="datastore_carrinho.desconto"></dmx-form-data>
-                            <dmx-form-data id="input_valor_total_compra" name="valor_total_compra" dmx-bind:data="datastore_carrinho.data.sum('item_valor')"></dmx-form-data>
                             <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
                             <dmx-form-data id="evento_id" name="evento_id" dmx-bind:data="query.id_evento"></dmx-form-data>
 
@@ -255,7 +253,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="input8" class="form-label mt-0 mb-1">Parcelamento</label>
-                                <select id="select_parcelamento" class="form-select" is="dmx-select" optiontext="numero_parcelas+'x '+((numero_parcelas == 1 ?      datastore_carrinho.data.sum('item_valor') / 100  :      datastore_carrinho.data.sum('item_valor') / 100 + datastore_carrinho.data.sum('item_valor') / 100 * taxa_juros)      / numero_parcelas) .formatCurrency('R$ ', ',', '.', 2)+' total '+(numero_parcelas == 1 ?      datastore_carrinho.data.sum('item_valor') / 100 :      datastore_carrinho.data.sum('item_valor') / 100 + datastore_carrinho.data.sum('item_valor') / 100 * taxa_juros) .formatCurrency('R$ ', ',', '.', 2)" dmx-bind:options="sc_parcelamento.data.query_parcelamento.data">
+                                <select id="select_parcelamento" class="form-select" is="dmx-select" optiontext="numero_parcelas+'x '+(     (         numero_parcelas == 1          ? datastore_carrinho.data.sum('item_valor') / 100          : (datastore_carrinho.data.sum('item_valor') / 100) +            ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros)     ) / numero_parcelas ).formatCurrency('R$ ', ',', '.', 2)+' total '+(     numero_parcelas == 1      ? datastore_carrinho.data.sum('item_valor') / 100      : (datastore_carrinho.data.sum('item_valor') / 100) +        ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros) ).formatCurrency('R$ ', ',', '.', 2); " dmx-bind:options="sc_parcelamento.data.query_parcelamento.data" optionvalue="numero_parcelas" name="qtide_parcelas">
                                     <!-- </div-->
 
 
@@ -359,7 +357,7 @@
                         </form>
                         <h4 class="card-title mt-3 mb-2">Total {{(datastore_carrinho.data.sum('item_valor').toNumber() / 100).formatCurrency('R$ ', ',', '.', 2)}}</h4>
 
-                        <button id="btn5" class="btn btn-success" is="dmx-button" value="" type="button" dmx-on:click="form_carrinho.submit()">Pagar</button>
+                        <button id="btn5" class="btn btn-success" is="dmx-button" value="" type="button" dmx-on:click="form_carrinho.submit();form_carrinho.reset();step.setValue(1);datastore_carrinho.clear()">Pagar</button>
                         <button id="btn7" class="btn btn-outline-secondary" is="dmx-button" value="" type="button">Pagar com PIX&nbsp;</button>
 
                     </div>
@@ -380,7 +378,7 @@
                 </div>
             </div>
             <div class="col-lg-6 col-xxl mt-xxl-0" id="processando" dmx-show="status_pagamento.value==1">
-                <div class="card bg-transparent">
+                <div class="card bg-transparent pt-2 pb-2">
                     <h4 class="card-title text-center">Processando</h4><img class="card-img" src="/assets/images/loader.svg" width="150" height="150">
                     <div class="card-body text-center">
 

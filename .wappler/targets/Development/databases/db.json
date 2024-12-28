@@ -147,31 +147,6 @@
               "unique": false,
               "nullable": true
             }
-          },
-          "cupom_ativo": {
-            "db": {
-              "type": "boolean",
-              "default": "false",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "codigo_cupom": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "valor_desconto": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
           }
         },
         "parent": "eventos",
@@ -974,6 +949,14 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "qtide_parcelas": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "parent": "carrinho",
@@ -1197,6 +1180,31 @@
             "db": {
               "type": "boolean",
               "default": "false",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "tem_cupom": {
+            "db": {
+              "type": "boolean",
+              "default": "false",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "codigo_cupom": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "valor": {
+            "db": {
+              "type": "integer",
               "primary": false,
               "unique": false,
               "nullable": true

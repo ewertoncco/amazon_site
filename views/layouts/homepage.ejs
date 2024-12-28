@@ -51,6 +51,7 @@
 </head>
 
 <body is="dmx-app" id="homepage">
+
   <dmx-datastore id="datastore_carrinho"></dmx-datastore>
   <dmx-datetime id="data_hora" interval="minutes"></dmx-datetime>
   <dmx-value id="validade_carrinho"></dmx-value>
@@ -148,7 +149,7 @@
           <div class="modal-footer mt-0" dmx-hide="datastore_carrinho.data.isEmpty()">
             <button type="button" class="btn btn-info gap-1" dmx-on:click="carrinho.hide()">
               <i class="fas fa-cart-plus"></i>ADICIONAR MAIS ITENS</button>
-            <button type="button" class="btn btn-success" dmx-on:click="step.setValue(2);carrinho.hide()">PAGAR</button>
+            <button type="button" class="btn btn-success" dmx-on:click="step.setValue(2);carrinho.hide();sc_parcelamento.load({})">PAGAR</button>
           </div>
         </div>
       </div>
