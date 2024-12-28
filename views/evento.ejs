@@ -229,7 +229,9 @@
                     <div class="card-body">
                         <h4 class="card-title">Cartão de Crédito</h4>
                         <form id="form_carrinho" is="dmx-serverconnect-form" novalidate="" method="post" action="/api/safe2pay/credito">
-                            <dmx-form-data id="valor_total_compra" name="valor_total_compra" dmx-bind:data=""></dmx-form-data>
+                            <dmx-form-data id="input_valor_desconto" name="valor_desconto" dmx-bind:data="datastore_carrinho.valor_desconto"></dmx-form-data>
+                            <dmx-form-data id="input_desconto" name="desconto" dmx-bind:data="datastore_carrinho.desconto"></dmx-form-data>
+                            <dmx-form-data id="input_valor_total_compra" name="valor_total_compra" dmx-bind:data="datastore_carrinho.data.sum('item_valor')"></dmx-form-data>
                             <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
                             <dmx-form-data id="evento_id" name="evento_id" dmx-bind:data="query.id_evento"></dmx-form-data>
 
@@ -347,8 +349,15 @@
 
                                 </select>
                             </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h6>Cupom desconto</h6>
+                                    <input id="cupom_desconto" name="text1" type="text" class="form-control">
+                                </div>
+                                <div class="col-4 align-self-end"><button id="btn1" class="btn btn-primary text-center">Aplicar Cupom</button></div>
+                            </div>
                         </form>
-                        <h4 class="card-title">Total {{(datastore_carrinho.data.sum('item_valor').toNumber() / 100).formatCurrency('R$ ', ',', '.', 2)}}</h4>
+                        <h4 class="card-title mt-3 mb-2">Total {{(datastore_carrinho.data.sum('item_valor').toNumber() / 100).formatCurrency('R$ ', ',', '.', 2)}}</h4>
 
                         <button id="btn5" class="btn btn-success" is="dmx-button" value="" type="button" dmx-on:click="form_carrinho.submit()">Pagar</button>
                         <button id="btn7" class="btn btn-outline-secondary" is="dmx-button" value="" type="button">Pagar com PIX&nbsp;</button>

@@ -1077,16 +1077,7 @@ COPY public.associados (id, data_criacao, codigo_usuario, ativo, criado_por) FRO
 --
 
 COPY public.carrinho (id, data_criacao, evento_id, usuario_id, tipo_transacao, status_pagamento) FROM stdin;
-1	2024-11-30 18:17:26+00	\N	\N	\N	\N
-2	2024-12-16 07:43:55+00	\N	\N	\N	\N
-3	2024-12-16 08:07:53+00	\N	\N	\N	\N
-4	2024-12-16 08:10:10+00	\N	\N	\N	\N
-5	2024-12-16 08:10:51+00	\N	\N	\N	\N
-6	2024-12-16 08:10:56+00	\N	\N	\N	\N
-7	2024-12-16 08:10:56+00	\N	\N	\N	\N
-8	2024-12-16 08:10:56+00	\N	\N	\N	\N
-9	2024-12-16 08:10:57+00	\N	\N	\N	\N
-10	2024-12-16 14:49:33+00	\N	\N	\N	\N
+14	2024-12-26 22:25:06+00	11	9	1	1
 \.
 
 
@@ -1095,16 +1086,8 @@ COPY public.carrinho (id, data_criacao, evento_id, usuario_id, tipo_transacao, s
 --
 
 COPY public.carrinho_itens_vendidos (id, produto_id, carrinho_id, item_resgatado, data_horario_resgate, id_transacao, pdf, trocou_nome, nome_anterior, cpf_anterior, data_troca, participante_nome, participante_telefone, participante_cpf, participante_email) FROM stdin;
-1	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-2	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-3	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-4	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-5	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-6	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-7	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-8	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-9	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-10	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+16	21	14	f	\N	19	\N	f	\N	\N	\N	\N	\N	\N	\N
+17	20	14	f	\N	19	\N	f	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -1113,7 +1096,7 @@ COPY public.carrinho_itens_vendidos (id, produto_id, carrinho_id, item_resgatado
 --
 
 COPY public.carrinho_transacoes (id, data_criacao, carrinho_id, evento_id, status_pagamento_id, forma_pagamento_id, valor_total_compra, valor_liquido_organizador, pag_key, pag_qrcode, pag_json, has_error, error_description, error_code, data_update, pag_id_transaction, pag_message, pag_description, receita_liquida, pediu_reembolso, data_vencimento, desconto, valor_desconto) FROM stdin;
-17	2024-12-16 18:23:17.765524+00	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	101231612	Autorizado	\N	\N	f	\N	f	\N
+19	2024-12-26 22:25:06+00	14	11	1	2	8000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N
 \.
 
 
@@ -1150,8 +1133,8 @@ COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_no
 --
 
 COPY public.eventos (id, data_criacao, usuario_id, evento_status, evento_nome, evento_resumo, evento_descricao, evento_local, evento_banner_principal, evento_banner_secundario, tem_mapa, mapa_imagem, evento_data_hora, evento_destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, qtide_parcelas_cartao, mostrar_sobre_evento, slug_evento, mostrar_whatsapp, numero_whatsapp, bar_online) FROM stdin;
-11	2024-12-01 22:01:06+00	9	1	Corrida de Rua Chapecó+	🏃‍♂️🌟 Prepare-se para a Corrida de Rua Chapecó+! 🌟🏃‍♀️	Venha viver a emoção das ruas de Chapecó com percursos incríveis de 5K e 10K! 🏅 Seja você iniciante ou corredor experiente, este é o evento perfeito para desafiar seus limites, se divertir e conquistar novas metas. 💪✨ A energia estará lá em cada passada, com muita vibração e apoio! 🎶👏\r\n\r\n🗓️ Data: [Insira a data do evento]\r\n📍 Local: [Insira o local do evento]\r\n\r\nNão perca essa oportunidade de celebrar a saúde, o esporte e a superação. Inscreva-se agora e garanta sua vaga! 🖊️🎉 Convide seus amigos e venha fazer parte dessa festa esportiva! 🤩👟 #ChapecóMais #CorridaDeRua	Getúlio Vargas, Chapecó SC	/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png	\N	f	\N	2025-01-31 16:00:00+00	t	t	t	t	t	2	t	\N	f		\N
 13	2024-12-15 17:27:46+00	9	1	Réveillon dos Desejos 2025	Uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano.	O Réveillon dos Desejos 2025 promete ser uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano. Realizado na Amazônia, o evento combina uma atmosfera tropical única com uma programação envolvente, perfeita para quem busca experiências memoráveis. A fusão entre cultura local, música e natureza faz deste evento uma opção ideal para celebrar o início de 2025 em grande estilo.\r\n\r\nCom uma ambientação cuidadosamente planejada, o Réveillon dos Desejos oferece uma conexão única com a natureza exuberante da Amazônia, destacando cenários deslumbrantes e momentos de celebração. O público pode esperar uma noite de performances musicais, gastronomia diferenciada e experiências sensoriais que exaltam os desejos de renovação e alegria para o ano que se inicia.	Amazon Club	/assets/uploads/banners_eventos/6d943723-53cb-467e-83d7-3a1c06e8e03d.jpg	\N	f	\N	2024-12-31 19:00:00+00	f	t	t	t	t	1	t	\N	t	(49) 99959-0901	\N
+11	2024-12-01 22:01:06+00	9	1	Corrida de Rua Chapecó+	🏃‍♂️🌟 Prepare-se para a Corrida de Rua Chapecó+! 🌟🏃‍♀️	Venha viver a emoção das ruas de Chapecó com percursos incríveis de 5K e 10K! 🏅 Seja você iniciante ou corredor experiente, este é o evento perfeito para desafiar seus limites, se divertir e conquistar novas metas. 💪✨ A energia estará lá em cada passada, com muita vibração e apoio! 🎶👏\r\n\r\n🗓️ Data: [Insira a data do evento]\r\n📍 Local: [Insira o local do evento]\r\n\r\nNão perca essa oportunidade de celebrar a saúde, o esporte e a superação. Inscreva-se agora e garanta sua vaga! 🖊️🎉 Convide seus amigos e venha fazer parte dessa festa esportiva! 🤩👟 #ChapecóMais #CorridaDeRua	Getúlio Vargas, Chapecó SC	/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png	\N	f	\N	2025-01-31 16:00:00+00	t	t	t	t	t	4	t	\N	f		\N
 \.
 
 
@@ -1226,16 +1209,16 @@ COPY public.organizador_financeiro (id, data_criacao, organizador_banco, organiz
 --
 
 COPY public.parcelamento (id, numero_parcelas, taxa_juros, ativo, data_criacao, data_atualizacao) FROM stdin;
-3	3	12.00	t	2024-12-25 22:10:22.739352	\N
-4	4	16.00	t	2024-12-25 22:10:22.73975	\N
-5	5	20.00	t	2024-12-25 22:10:22.757185	\N
-6	6	24.00	t	2024-12-25 22:10:22.75687	\N
-7	7	28.00	t	2024-12-25 22:10:22.757022	\N
-8	8	32.00	t	2024-12-25 22:11:29.810673	\N
-9	9	36.00	t	2024-12-25 22:11:29.811102	\N
-10	10	40.00	t	2024-12-25 22:11:29.811416	\N
 1	1	1.00	t	2024-12-25 22:05:05.326925	\N
-2	2	8.00	t	2024-12-25 22:05:05.327166	\N
+7	7	28.00	t	2024-12-25 22:10:22.757022	\N
+10	10	40.00	t	2024-12-25 22:11:29.811416	\N
+9	9	36.00	t	2024-12-25 22:11:29.811102	\N
+8	8	32.00	t	2024-12-25 22:11:29.810673	\N
+2	2	0.08	t	2024-12-25 22:05:05.327166	\N
+3	3	0.12	t	2024-12-25 22:10:22.739352	\N
+4	4	0.16	t	2024-12-25 22:10:22.73975	\N
+5	5	0.20	t	2024-12-25 22:10:22.757185	\N
+6	6	0.24	t	2024-12-25 22:10:22.75687	\N
 \.
 
 
@@ -1334,21 +1317,21 @@ SELECT pg_catalog.setval('public.associados_id_seq', 1, false);
 -- Name: carrinho_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_id_seq', 10, true);
+SELECT pg_catalog.setval('public.carrinho_id_seq', 14, true);
 
 
 --
 -- Name: carrinho_itens_vendidos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_itens_vendidos_id_seq', 10, true);
+SELECT pg_catalog.setval('public.carrinho_itens_vendidos_id_seq', 17, true);
 
 
 --
 -- Name: carrinho_transacoes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 17, true);
+SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 19, true);
 
 
 --

@@ -51,11 +51,11 @@
 </head>
 
 <body is="dmx-app" id="homepage">
+  <dmx-datastore id="datastore_carrinho"></dmx-datastore>
   <dmx-datetime id="data_hora" interval="minutes"></dmx-datetime>
   <dmx-value id="validade_carrinho"></dmx-value>
   <dmx-scheduler id="temporizador_carrinho" dmx-on:tick="run({condition:{outputType:'boolean',if:`data_hora.datetime.minutesUntil(validade_carrinho.value)&lt;=0`,then:{steps:{run:{outputType:'text',action:`datastore_carrinho.clear()`}}}}})" unit="minutes"></dmx-scheduler>
   <dmx-value id="step" dmx-bind:value="1"></dmx-value>
-  <dmx-datastore id="datastore_carrinho"></dmx-datastore>
   <dmx-serverconnect id="sc_logout" url="/api/usuarios/logout" noload="true"></dmx-serverconnect>
   <dmx-serverconnect id="sc_listar_eventos" url="/api/eventos/listar_eventos"></dmx-serverconnect>
   <dmx-notifications id="notifies1"></dmx-notifications>
