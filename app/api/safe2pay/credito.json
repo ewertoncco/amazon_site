@@ -105,19 +105,7 @@
           },
           {
             "type": "number",
-            "name": "novo_carrinho"
-          },
-          {
-            "type": "number",
             "name": "item_id"
-          },
-          {
-            "type": "number",
-            "name": "id_transacao"
-          },
-          {
-            "type": "number",
-            "name": "nova_transacao"
           },
           {
             "type": "text",
@@ -155,27 +143,35 @@
       },
       {
         "type": "number",
-        "name": "qtide_parcelas"
+        "name": "valor_final"
       },
       {
         "type": "text",
-        "name": "cupom_desconto"
+        "name": "cupom_codigo"
       },
       {
         "type": "number",
-        "name": "valor_total_compra"
+        "name": "desconto_aplicado"
       },
       {
-        "type": "boolean",
-        "name": "desconto"
+        "type": "text",
+        "name": "nome_participante"
+      },
+      {
+        "type": "text",
+        "name": "cpf_participante"
+      },
+      {
+        "type": "text",
+        "name": "email_participante"
+      },
+      {
+        "type": "text",
+        "name": "telefone_participante"
       },
       {
         "type": "number",
-        "name": "valor_desconto"
-      },
-      {
-        "type": "number",
-        "name": "id"
+        "name": "qtide_parcelas"
       }
     ],
     "$_SESSION": [
@@ -198,7 +194,7 @@
         "meta": []
       },
       {
-        "name": "buscar_usuario",
+        "name": "usuario",
         "module": "dbconnector",
         "action": "single",
         "options": {
@@ -247,7 +243,8 @@
                       "name": "id"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "usuarios"
                 }
               ],
               "conditional": null,
@@ -357,179 +354,87 @@
         "outputType": "object"
       },
       {
-        "name": "novo_carrinho",
-        "module": "dbupdater",
-        "action": "insert",
+        "name": "evento",
+        "module": "dbconnector",
+        "action": "single",
         "options": {
           "connection": "db",
           "sql": {
-            "type": "insert",
-            "values": [
+            "type": "select",
+            "columns": [
               {
-                "table": "carrinho",
-                "column": "data_criacao",
-                "type": "datetime",
-                "value": "{{NOW}}",
-                "recid": 1
+                "table": "evento",
+                "column": "valor"
               },
               {
-                "table": "carrinho",
-                "column": "evento_id",
-                "type": "number",
-                "value": "{{$_POST.evento_id}}",
-                "recid": 2
+                "table": "evento",
+                "column": "codigo_cupom"
               },
               {
-                "table": "carrinho",
-                "column": "usuario_id",
-                "type": "number",
-                "value": "{{identity}}",
-                "recid": 3
-              },
-              {
-                "table": "carrinho",
-                "column": "tipo_transacao",
-                "type": "number",
-                "value": "1",
-                "recid": 4
-              },
-              {
-                "table": "carrinho",
-                "column": "status_pagamento",
-                "type": "number",
-                "value": "1",
-                "recid": 5
+                "table": "evento",
+                "column": "tem_cupom"
               }
             ],
-            "table": "carrinho",
-            "returning": "id",
-            "query": "insert into \"carrinho\" (\"data_criacao\", \"evento_id\", \"status_pagamento\", \"tipo_transacao\", \"usuario_id\") values (?, ?, ?, ?, ?) returning \"id\"",
             "params": [
               {
+                "operator": "equal",
+                "type": "expression",
                 "name": ":P1",
-                "type": "expression",
-                "value": "{{NOW}}",
-                "test": ""
-              },
-              {
-                "name": ":P2",
-                "type": "expression",
                 "value": "{{$_POST.evento_id}}",
                 "test": ""
-              },
-              {
-                "name": ":P3",
-                "type": "expression",
-                "value": "{{identity}}",
-                "test": ""
               }
-            ]
+            ],
+            "table": {
+              "name": "evento"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select \"valor\", \"codigo_cupom\", \"tem_cupom\" from \"evento\" where \"evento\".\"id\" = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "evento.id",
+                  "field": "evento.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.evento_id}}",
+                  "data": {
+                    "table": "evento",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "unique": true,
+                      "nullable": false,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
           }
         },
         "meta": [
           {
-            "name": "identity",
-            "type": "text"
+            "type": "number",
+            "name": "valor"
           },
           {
-            "name": "affected",
-            "type": "number"
-          }
-        ]
-      },
-      {
-        "name": "nova_transacao",
-        "module": "dbupdater",
-        "action": "insert",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "insert",
-            "values": [
-              {
-                "table": "carrinho_transacoes",
-                "column": "data_criacao",
-                "type": "datetime",
-                "value": "{{NOW}}"
-              },
-              {
-                "table": "carrinho_transacoes",
-                "column": "carrinho_id",
-                "type": "number",
-                "value": "{{novo_carrinho.identity}}"
-              },
-              {
-                "table": "carrinho_transacoes",
-                "column": "evento_id",
-                "type": "number",
-                "value": "{{$_POST.evento_id}}"
-              },
-              {
-                "table": "carrinho_transacoes",
-                "column": "status_pagamento_id",
-                "type": "number",
-                "value": "1"
-              },
-              {
-                "table": "carrinho_transacoes",
-                "column": "forma_pagamento_id",
-                "type": "number",
-                "value": "2"
-              },
-              {
-                "table": "carrinho_transacoes",
-                "column": "pediu_reembolso",
-                "type": "boolean",
-                "value": "false"
-              },
-              {
-                "table": "carrinho_transacoes",
-                "column": "qtide_parcelas",
-                "type": "number",
-                "value": "{{$_POST.qtide_parcelas}}"
-              }
-            ],
-            "table": "carrinho_transacoes",
-            "returning": "id",
-            "query": "insert into \"carrinho_transacoes\" (\"carrinho_id\", \"data_criacao\", \"evento_id\", \"forma_pagamento_id\", \"pediu_reembolso\", \"qtide_parcelas\", \"status_pagamento_id\") values (?, ?, ?, ?, ?, ?, ?) returning \"id\"",
-            "params": [
-              {
-                "name": ":P1",
-                "type": "expression",
-                "value": "{{NOW}}",
-                "test": ""
-              },
-              {
-                "name": ":P2",
-                "type": "expression",
-                "value": "{{novo_carrinho.identity}}",
-                "test": ""
-              },
-              {
-                "name": ":P3",
-                "type": "expression",
-                "value": "{{$_POST.evento_id}}",
-                "test": ""
-              },
-              {
-                "name": ":P4",
-                "type": "expression",
-                "value": "{{$_POST.qtide_parcelas}}",
-                "test": ""
-              }
-            ]
-          }
-        },
-        "meta": [
-          {
-            "name": "identity",
-            "type": "text"
+            "type": "text",
+            "name": "codigo_cupom"
           },
           {
-            "name": "affected",
-            "type": "number"
+            "type": "boolean",
+            "name": "tem_cupom"
           }
-        ]
+        ],
+        "outputType": "object"
       },
       {
         "name": "itens_vendidos",
@@ -541,133 +446,7 @@
           "exec": {
             "steps": [
               {
-                "name": "novo_itens_carrinho",
-                "module": "dbupdater",
-                "action": "insert",
-                "options": {
-                  "connection": "db",
-                  "sql": {
-                    "type": "insert",
-                    "values": [
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "produto_id",
-                        "type": "number",
-                        "value": "{{item_id}}",
-                        "recid": 1
-                      },
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "carrinho_id",
-                        "type": "number",
-                        "value": "{{novo_carrinho.identity}}",
-                        "recid": 2
-                      },
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "item_resgatado",
-                        "type": "boolean",
-                        "value": "false",
-                        "recid": 3
-                      },
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "id_transacao",
-                        "type": "number",
-                        "value": "{{nova_transacao.identity}}",
-                        "recid": 4
-                      },
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "participante_nome",
-                        "type": "text",
-                        "value": "{{nome}}",
-                        "recid": 5
-                      },
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "participante_telefone",
-                        "type": "text",
-                        "value": "{{telefone}}",
-                        "recid": 6
-                      },
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "participante_cpf",
-                        "type": "text",
-                        "value": "{{cpf}}",
-                        "recid": 7
-                      },
-                      {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "participante_email",
-                        "type": "text",
-                        "value": "{{email}}",
-                        "recid": 8
-                      }
-                    ],
-                    "table": "carrinho_itens_vendidos",
-                    "returning": "id",
-                    "query": "insert into \"carrinho_itens_vendidos\" (\"carrinho_id\", \"id_transacao\", \"item_resgatado\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"produto_id\") values (?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
-                    "params": [
-                      {
-                        "name": ":P1",
-                        "type": "expression",
-                        "value": "{{item_id}}",
-                        "test": ""
-                      },
-                      {
-                        "name": ":P2",
-                        "type": "expression",
-                        "value": "{{novo_carrinho.identity}}",
-                        "test": ""
-                      },
-                      {
-                        "name": ":P3",
-                        "type": "expression",
-                        "value": "{{nova_transacao.identity}}",
-                        "test": ""
-                      },
-                      {
-                        "name": ":P4",
-                        "type": "expression",
-                        "value": "{{nome}}",
-                        "test": ""
-                      },
-                      {
-                        "name": ":P5",
-                        "type": "expression",
-                        "value": "{{telefone}}",
-                        "test": ""
-                      },
-                      {
-                        "name": ":P6",
-                        "type": "expression",
-                        "value": "{{cpf}}",
-                        "test": ""
-                      },
-                      {
-                        "name": ":P7",
-                        "type": "expression",
-                        "value": "{{email}}",
-                        "test": ""
-                      }
-                    ]
-                  }
-                },
-                "meta": [
-                  {
-                    "name": "identity",
-                    "type": "text"
-                  },
-                  {
-                    "name": "affected",
-                    "type": "number"
-                  }
-                ]
-              },
-              {
-                "name": "pegar_produto",
+                "name": "produto",
                 "module": "dbconnector",
                 "action": "single",
                 "options": {
@@ -678,6 +457,10 @@
                       {
                         "table": "evento_produtos",
                         "column": "valor"
+                      },
+                      {
+                        "table": "evento_produtos",
+                        "column": "id"
                       }
                     ],
                     "params": [
@@ -723,25 +506,203 @@
                       "conditional": null,
                       "valid": true
                     },
-                    "query": "select \"valor\" from \"evento_produtos\" where \"evento_produtos\".\"id\" = ?"
+                    "query": "select \"valor\", \"id\" from \"evento_produtos\" where \"evento_produtos\".\"id\" = ?"
                   }
                 },
-                "output": true,
                 "meta": [
                   {
                     "type": "number",
                     "name": "valor"
+                  },
+                  {
+                    "type": "number",
+                    "name": "id"
                   }
                 ],
                 "outputType": "object"
               },
               {
-                "name": "valor_total_carrinho",
+                "name": "",
                 "module": "core",
-                "action": "setsession",
+                "action": "condition",
                 "options": {
-                  "value": "{{$_SESSION.valor_total_carrinho+pegar_produto.valor}}"
-                }
+                  "if": "{{tem_cupom==true&&codigo_cupom==evento.codigo_cupom&&evento.tem_cupom==true}}",
+                  "then": {
+                    "steps": {
+                      "name": "vendas",
+                      "module": "dbupdater",
+                      "action": "insert",
+                      "options": {
+                        "connection": "db",
+                        "sql": {
+                          "type": "insert",
+                          "values": [
+                            {
+                              "table": "vendas",
+                              "column": "evento_id",
+                              "type": "number",
+                              "value": "{{$_POST.evento_id}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "usuarios_id",
+                              "type": "number",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "evento_produtos_id",
+                              "type": "number",
+                              "value": "{{produto.id}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "status_pagamento",
+                              "type": "number",
+                              "value": "1"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "forma_pagamento_id",
+                              "type": "number",
+                              "value": "2"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "valor_original",
+                              "type": "number",
+                              "value": "{{produto.valor}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "valor_final",
+                              "type": "number",
+                              "value": "{{$_POST.valor_final}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "cupom_codigo",
+                              "type": "text",
+                              "value": ""
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "desconto_aplicado",
+                              "type": "number",
+                              "value": ""
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "nome_participante",
+                              "type": "text",
+                              "value": "{{$_POST.nome_participante}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "cpf_participante",
+                              "type": "text",
+                              "value": "{{$_POST.cpf_participante}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "email_participante",
+                              "type": "text",
+                              "value": "{{$_POST.email_participante}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "telefone_participante",
+                              "type": "text",
+                              "value": "{{$_POST.telefone_participante}}"
+                            },
+                            {
+                              "table": "vendas",
+                              "column": "qtide_parcelas",
+                              "type": "number",
+                              "value": "{{$_POST.qtide_parcelas}}"
+                            }
+                          ],
+                          "table": "vendas",
+                          "returning": "id",
+                          "query": "insert into \"vendas\" (\"cpf_participante\", \"cupom_codigo\", \"desconto_aplicado\", \"email_participante\", \"evento_id\", \"evento_produtos_id\", \"forma_pagamento_id\", \"nome_participante\", \"qtide_parcelas\", \"status_pagamento\", \"telefone_participante\", \"usuarios_id\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{$_POST.evento_id}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P2",
+                              "type": "expression",
+                              "value": "{{identity}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P3",
+                              "type": "expression",
+                              "value": "{{produto.id}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P4",
+                              "type": "expression",
+                              "value": "{{produto.valor}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P5",
+                              "type": "expression",
+                              "value": "{{$_POST.valor_final}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P6",
+                              "type": "expression",
+                              "value": "{{$_POST.nome_participante}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P7",
+                              "type": "expression",
+                              "value": "{{$_POST.cpf_participante}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P8",
+                              "type": "expression",
+                              "value": "{{$_POST.email_participante}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P9",
+                              "type": "expression",
+                              "value": "{{$_POST.telefone_participante}}",
+                              "test": ""
+                            },
+                            {
+                              "name": ":P10",
+                              "type": "expression",
+                              "value": "{{$_POST.qtide_parcelas}}",
+                              "test": ""
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "identity",
+                          "type": "text"
+                        },
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "outputType": "boolean"
               }
             ]
           }
@@ -763,379 +724,6 @@
           {
             "name": "$value",
             "type": "object"
-          }
-        ],
-        "outputType": "array"
-      },
-      {
-        "name": "tem_cupom",
-        "module": "dbconnector",
-        "action": "single",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "select",
-            "columns": [
-              {
-                "table": "eventos",
-                "column": "valor"
-              }
-            ],
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{$_POST.cupom_desconto}}",
-                "test": ""
-              }
-            ],
-            "table": {
-              "name": "eventos"
-            },
-            "primary": "id",
-            "joins": [],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "eventos.tem_cupom",
-                  "field": "eventos.tem_cupom",
-                  "type": "boolean",
-                  "operator": "equal",
-                  "value": true,
-                  "data": {
-                    "table": "eventos",
-                    "column": "tem_cupom",
-                    "type": "boolean",
-                    "columnObj": {
-                      "type": "boolean",
-                      "default": "false",
-                      "primary": false,
-                      "unique": false,
-                      "nullable": true,
-                      "name": "tem_cupom"
-                    }
-                  },
-                  "operation": "="
-                },
-                {
-                  "id": "eventos.codigo_cupom",
-                  "field": "eventos.codigo_cupom",
-                  "type": "string",
-                  "operator": "equal",
-                  "value": "{{$_POST.cupom_desconto}}",
-                  "data": {
-                    "table": "eventos",
-                    "column": "codigo_cupom",
-                    "type": "text",
-                    "columnObj": {
-                      "type": "text",
-                      "primary": false,
-                      "unique": false,
-                      "nullable": true,
-                      "name": "codigo_cupom"
-                    }
-                  },
-                  "operation": "="
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            },
-            "query": "select \"valor\" from \"eventos\" where \"eventos\".\"tem_cupom\" = ? and \"eventos\".\"codigo_cupom\" = ?"
-          }
-        },
-        "meta": [
-          {
-            "type": "number",
-            "name": "valor"
-          }
-        ],
-        "outputType": "object"
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{tem_cupom}}",
-          "then": {
-            "steps": [
-              {
-                "name": "valor_final_carrinho",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{($_SESSION.valor_total_carrinho*tem_cupom.valor)/100}}"
-                },
-                "meta": [],
-                "outputType": "number"
-              },
-              {
-                "name": "update_transacao",
-                "module": "dbupdater",
-                "action": "update",
-                "options": {
-                  "connection": "db",
-                  "sql": {
-                    "type": "update",
-                    "values": [
-                      {
-                        "table": "carrinho_transacoes",
-                        "column": "valor_total_compra",
-                        "type": "number",
-                        "value": "{{$_SESSION.valor_total_carrinho}}"
-                      },
-                      {
-                        "table": "carrinho_transacoes",
-                        "column": "desconto",
-                        "type": "boolean",
-                        "value": "true"
-                      },
-                      {
-                        "table": "carrinho_transacoes",
-                        "column": "valor_desconto",
-                        "type": "number",
-                        "value": "{{valor_final_carrinho}}"
-                      }
-                    ],
-                    "table": "carrinho_transacoes",
-                    "wheres": {
-                      "condition": "AND",
-                      "rules": [
-                        {
-                          "id": "id",
-                          "type": "double",
-                          "operator": "equal",
-                          "value": "{{$_POST.id}}",
-                          "data": {
-                            "column": "id"
-                          },
-                          "operation": "="
-                        }
-                      ]
-                    },
-                    "returning": "id",
-                    "query": "update \"carrinho_transacoes\" set \"valor_total_compra\" = ?, \"desconto\" = ?, \"valor_desconto\" = ? where \"id\" = ? returning \"id\"",
-                    "params": [
-                      {
-                        "name": ":P1",
-                        "type": "expression",
-                        "value": "{{$_SESSION.valor_total_carrinho}}",
-                        "test": ""
-                      },
-                      {
-                        "name": ":P2",
-                        "type": "expression",
-                        "value": "{{valor_final_carrinho}}",
-                        "test": ""
-                      },
-                      {
-                        "operator": "equal",
-                        "type": "expression",
-                        "name": ":P3",
-                        "value": "{{$_POST.id}}",
-                        "test": ""
-                      }
-                    ]
-                  }
-                },
-                "meta": [
-                  {
-                    "name": "affected",
-                    "type": "number"
-                  }
-                ]
-              }
-            ]
-          },
-          "else": {
-            "steps": [
-              {
-                "name": "valor_final_carrinho",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{$_SESSION.valor_total_carrinho}}"
-                },
-                "meta": [],
-                "outputType": "number"
-              },
-              {
-                "name": "update_transacao_sem_cupom",
-                "module": "dbupdater",
-                "action": "update",
-                "options": {
-                  "connection": "db",
-                  "sql": {
-                    "type": "update",
-                    "values": [
-                      {
-                        "table": "carrinho_transacoes",
-                        "column": "valor_total_compra",
-                        "type": "number",
-                        "value": "{{$_SESSION.valor_total_carrinho}}"
-                      },
-                      {
-                        "table": "carrinho_transacoes",
-                        "column": "desconto",
-                        "type": "boolean",
-                        "value": "false"
-                      },
-                      {
-                        "table": "carrinho_transacoes",
-                        "column": "valor_desconto",
-                        "type": "number",
-                        "value": "0"
-                      }
-                    ],
-                    "table": "carrinho_transacoes",
-                    "wheres": {
-                      "condition": "AND",
-                      "rules": [
-                        {
-                          "id": "id",
-                          "type": "double",
-                          "operator": "equal",
-                          "value": "{{$_POST.id}}",
-                          "data": {
-                            "column": "id"
-                          },
-                          "operation": "="
-                        }
-                      ]
-                    },
-                    "returning": "id",
-                    "query": "update \"carrinho_transacoes\" set \"valor_total_compra\" = ?, \"desconto\" = ?, \"valor_desconto\" = ? where \"id\" = ? returning \"id\"",
-                    "params": [
-                      {
-                        "name": ":P1",
-                        "type": "expression",
-                        "value": "{{$_SESSION.valor_total_carrinho}}",
-                        "test": ""
-                      },
-                      {
-                        "operator": "equal",
-                        "type": "expression",
-                        "name": ":P2",
-                        "value": "{{$_POST.id}}",
-                        "test": ""
-                      }
-                    ]
-                  }
-                },
-                "meta": [
-                  {
-                    "name": "affected",
-                    "type": "number"
-                  }
-                ]
-              }
-            ]
-          }
-        },
-        "outputType": "boolean"
-      },
-      {
-        "name": "buscar_produtos",
-        "module": "dbconnector",
-        "action": "select",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "select",
-            "columns": [
-              {
-                "table": "produtos",
-                "column": "id"
-              },
-              {
-                "table": "produtos",
-                "column": "valor"
-              }
-            ],
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{novo_carrinho.identity}}",
-                "test": ""
-              }
-            ],
-            "table": {
-              "name": "carrinho_itens_vendidos"
-            },
-            "primary": "id",
-            "joins": [
-              {
-                "table": "evento_produtos",
-                "column": "*",
-                "alias": "produtos",
-                "type": "LEFT",
-                "clauses": {
-                  "condition": "AND",
-                  "rules": [
-                    {
-                      "table": "produtos",
-                      "column": "id",
-                      "operator": "equal",
-                      "operation": "=",
-                      "value": {
-                        "table": "carrinho_itens_vendidos",
-                        "column": "produto_id"
-                      }
-                    }
-                  ]
-                },
-                "primary": "id"
-              }
-            ],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "carrinho_itens_vendidos.carrinho_id",
-                  "field": "carrinho_itens_vendidos.carrinho_id",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": "{{novo_carrinho.identity}}",
-                  "data": {
-                    "table": "carrinho_itens_vendidos",
-                    "column": "carrinho_id",
-                    "type": "number",
-                    "columnObj": {
-                      "type": "reference",
-                      "primary": false,
-                      "unique": false,
-                      "nullable": true,
-                      "references": "id",
-                      "inTable": "carrinho",
-                      "referenceType": "integer",
-                      "onUpdate": "NO ACTION",
-                      "onDelete": "NO ACTION",
-                      "name": "carrinho_id"
-                    }
-                  },
-                  "operation": "="
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            },
-            "query": "select \"produtos\".\"id\", \"produtos\".\"valor\" from \"carrinho_itens_vendidos\" left join \"evento_produtos\" as \"produtos\" on \"produtos\".\"id\" = \"carrinho_itens_vendidos\".\"produto_id\" where \"carrinho_itens_vendidos\".\"carrinho_id\" = ?"
-          }
-        },
-        "output": true,
-        "meta": [
-          {
-            "type": "number",
-            "name": "id"
-          },
-          {
-            "type": "number",
-            "name": "valor"
           }
         ],
         "outputType": "array"

@@ -19,83 +19,67 @@
           "columns": [
             {
               "table": "eventos",
-              "column": "evento_nome",
-              "recid": 1
+              "column": "evento_nome"
             },
             {
               "table": "eventos",
-              "column": "evento_resumo",
-              "recid": 2
+              "column": "evento_resumo"
             },
             {
               "table": "eventos",
-              "column": "evento_descricao",
-              "recid": 3
+              "column": "evento_descricao"
             },
             {
               "table": "eventos",
-              "column": "evento_local",
-              "recid": 4
+              "column": "evento_local"
             },
             {
               "table": "eventos",
-              "column": "evento_banner_principal",
-              "recid": 5
+              "column": "evento_banner_principal"
             },
             {
               "table": "eventos",
-              "column": "evento_banner_secundario",
-              "recid": 6
+              "column": "evento_banner_secundario"
             },
             {
               "table": "eventos",
-              "column": "tem_mapa",
-              "recid": 7
+              "column": "tem_mapa"
             },
             {
               "table": "eventos",
-              "column": "mapa_imagem",
-              "recid": 8
+              "column": "mapa_imagem"
             },
             {
               "table": "eventos",
-              "column": "evento_data_hora",
-              "recid": 9
+              "column": "evento_data_hora"
             },
             {
               "table": "eventos",
-              "column": "aceita_pix",
-              "recid": 10
+              "column": "aceita_pix"
             },
             {
               "table": "eventos",
-              "column": "aceita_cartao",
-              "recid": 11
+              "column": "aceita_cartao"
             },
             {
               "table": "eventos",
-              "column": "qtide_parcelas_cartao",
-              "recid": 12
+              "column": "qtide_parcelas_cartao"
             },
             {
               "table": "eventos",
-              "column": "mostrar_sobre_evento",
-              "recid": 13
+              "column": "mostrar_sobre_evento"
             },
             {
               "table": "eventos",
-              "column": "mostrar_whatsapp",
-              "recid": 14
+              "column": "mostrar_whatsapp"
             },
             {
               "table": "eventos",
-              "column": "numero_whatsapp",
-              "recid": 15
+              "column": "numero_whatsapp"
             },
             {
               "table": "eventos",
-              "column": "id",
-              "recid": 16
+              "column": "id"
             }
           ],
           "params": [
@@ -108,7 +92,8 @@
             }
           ],
           "table": {
-            "name": "eventos"
+            "name": "evento",
+            "alias": "eventos"
           },
           "primary": "id",
           "joins": [],
@@ -140,7 +125,7 @@
             "conditional": null,
             "valid": true
           },
-          "query": "select \"evento_nome\", \"evento_resumo\", \"evento_descricao\", \"evento_local\", \"evento_banner_principal\", \"evento_banner_secundario\", \"tem_mapa\", \"mapa_imagem\", \"evento_data_hora\", \"aceita_pix\", \"aceita_cartao\", \"qtide_parcelas_cartao\", \"mostrar_sobre_evento\", \"mostrar_whatsapp\", \"numero_whatsapp\", \"id\" from \"eventos\" where \"eventos\".\"id\" = ?",
+          "query": "select \"evento_nome\", \"evento_resumo\", \"evento_descricao\", \"evento_local\", \"evento_banner_principal\", \"evento_banner_secundario\", \"tem_mapa\", \"mapa_imagem\", \"evento_data_hora\", \"aceita_pix\", \"aceita_cartao\", \"qtide_parcelas_cartao\", \"mostrar_sobre_evento\", \"mostrar_whatsapp\", \"numero_whatsapp\", \"id\" from \"evento\" as \"eventos\" where \"eventos\".\"id\" = ?",
           "sub": {
             "produtos": {
               "table": {
@@ -277,18 +262,6 @@
             {
               "type": "boolean",
               "name": "cortesia"
-            },
-            {
-              "type": "boolean",
-              "name": "cupom_ativo"
-            },
-            {
-              "type": "text",
-              "name": "codigo_cupom"
-            },
-            {
-              "type": "number",
-              "name": "valor_desconto"
             }
           ]
         }

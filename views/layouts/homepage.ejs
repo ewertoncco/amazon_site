@@ -48,11 +48,14 @@
   <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
   <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
   <script src="/dmxAppConnect/dmxScheduler/dmxScheduler.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
+  <script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
 </head>
 
 <body is="dmx-app" id="homepage">
 
   <dmx-datastore id="datastore_carrinho"></dmx-datastore>
+  <dmx-serverconnect id="sc_parcelamento" url="/api/parcelamento/parcelamento" dmx-param:evento_id="query.id_evento"></dmx-serverconnect>
   <dmx-datetime id="data_hora" interval="minutes"></dmx-datetime>
   <dmx-value id="validade_carrinho"></dmx-value>
   <dmx-scheduler id="temporizador_carrinho" dmx-on:tick="run({condition:{outputType:'boolean',if:`data_hora.datetime.minutesUntil(validade_carrinho.value)&lt;=0`,then:{steps:{run:{outputType:'text',action:`datastore_carrinho.clear()`}}}}})" unit="minutes"></dmx-scheduler>
@@ -90,7 +93,7 @@
                       </td>
 
                       <td class="text-center">
-                        <button id="btn1" class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id})"><i class="fas fa-trash-alt text-danger"></i></button>
+                        <button id="btn1" class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id});sc_parcelamento.reset();sc_parcelamento.load({})"><i class="fas fa-trash-alt text-danger"></i></button>
                       </td>
                     </tr>
 
@@ -98,20 +101,25 @@
                     <tr>
 
                       <td colspan="3">
-                        <div class="row g-2">
+
+                        <div class="row g-2 justify-content-start">
+                          <button id="btn2" class="btn text-start w-50 text-bg-light text-primary" dmx-on:click="participante_nome.setValue(sc_usuario_logado.data.query.usuario_nome);participante_cpf.setValue(sc_usuario_logado.data.query.usuario_cpf);participante_email.setValue(sc_usuario_logado.data.query.usuario_email);participante_telefone.setValue(sc_usuario_logado.data.query.usuario_telefone)" dmx-hide="datastore_carrinho.data[0].cpf.contains(sc_usuario_logado.data.query.usuario_cpf)">Completar com meus dados</button>
                           <div class="col-7">
-                            <input id="participante_nome" name="participante_nome" type="text" class="form-control" placeholder="Nome Participante" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_nome: value, nome: value})" dmx-bind:value="nome">
+                            <input id="participante_nome" name="participante_nome" type="text" class="form-control" placeholder="Digite o nome do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_nome: value, nome: value})" dmx-bind:value="nome" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
                           </div>
                           <div class="col-5">
-                            <input id="participante_cpf" name="participante_cpf" type="text" onkeyup="formatCPF(this)" class="form-control" placeholder="CPF" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_cpf: participante_cpf.value, cpf: value})" dmx-bind:value="cpf">
+                            <input id="participante_cpf" name="participante_cpf" type="text" onkeyup="formatCPF(this)" class="form-control" placeholder="Digite o CPF do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_cpf: participante_cpf.value, cpf: value})" dmx-bind:value="cpf" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
                           </div>
                           <div class="col-7">
-                            <input id="participante_email" name="participante_email" type="text" class="form-control" placeholder="E-mail" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_email: participante_email.value, email: value})" dmx-bind:value="email">
+                            <input id="participante_email" name="participante_email" type="text" class="form-control" placeholder="Digite o email do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_email: participante_email.value, email: value})" dmx-bind:value="email" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
                           </div>
                           <div class="col-5">
-                            <input id="participante_telefone" name="participante_telefone" type="text" onkeyup="formatTelefone(this)" class="form-control" placeholder="Telefone" dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_telefone: value, telefone: value})" dmx-bind:value="telefone">
+                            <input id="participante_telefone" name="participante_telefone" type="text" onkeyup="formatTelefone(this)" class="form-control" placeholder="Digite o telefone do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_telefone: value, telefone: value})" dmx-bind:value="telefone" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
                           </div>
+
                         </div>
+
+
                       </td>
 
 
@@ -147,9 +155,9 @@
             </div>
           </div>
           <div class="modal-footer mt-0" dmx-hide="datastore_carrinho.data.isEmpty()">
-            <button type="button" class="btn btn-info gap-1" dmx-on:click="carrinho.hide()">
+            <button type="button" class="btn btn-info gap-1" dmx-on:click="carrinho.hide();step.setValue(1)">
               <i class="fas fa-cart-plus"></i>ADICIONAR MAIS ITENS</button>
-            <button type="button" class="btn btn-success" dmx-on:click="step.setValue(2);carrinho.hide();sc_parcelamento.load({})">PAGAR</button>
+            <button type="button" class="btn btn-success" dmx-on:click="step.setValue(2);carrinho.hide();sc_parcelamento.reset();sc_parcelamento.load({})">PAGAR</button>
           </div>
         </div>
       </div>
@@ -268,7 +276,7 @@
               </div>
 
 
-              <div class="dropdown" dmx-show="datastore_carrinho.data.count()&gt;0" dmx-on:click="carrinho.show()">
+              <div class="dropdown" dmx-show="datastore_carrinho.data.count()&gt;0" dmx-on:click="carrinho.show();sc_parcelamento.reset()">
                 <button class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,25" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
                   <i class="fas fa-shopping-cart fa-2x text-info"></i>
                   <span class="badge bg-pink rounded-circle noti-icon-badge">{{datastore_carrinho.data.count()}}</span>

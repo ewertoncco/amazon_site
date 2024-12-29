@@ -37,7 +37,8 @@
               }
             ],
             "table": {
-              "name": "eventos"
+              "name": "evento",
+              "alias": "eventos"
             },
             "primary": "id",
             "joins": [],
@@ -69,7 +70,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "select \"qtide_parcelas_cartao\" from \"eventos\" where \"eventos\".\"id\" = ?"
+            "query": "select \"qtide_parcelas_cartao\" from \"evento\" as \"eventos\" where \"eventos\".\"id\" = ?"
           }
         },
         "meta": [

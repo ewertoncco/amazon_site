@@ -1,5 +1,5 @@
-<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" is="dmx-app" appConnect="local" bootstrap5="custom" -->
-<dmx-serverconnect id="sc_parcelamento" url="/api/parcelamento/parcelamento" dmx-param:evento_id="query.id_evento"></dmx-serverconnect>
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{}}" is="dmx-app" appConnect="local" bootstrap5="custom" -->
+
 <dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
 
 <dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
@@ -88,9 +88,29 @@
                                         </div>
                                         <div class="align-self-center col-4">
                                             <div class="d-flex align-items-center justify-content-center">
-                                                <button id="btn_plus" class="btn" dmx-on:click="run({condition:{outputType:'boolean',if:`sc_usuario_logado.data.query.usuario_email`,then:{steps:[{run:{outputType:'text',action:`validade_carrinho.setValue(data_hora.datetime.toDate().addMinutes(2).toDate())`}},{condition:{outputType:'boolean',if:`is_mesa==true`,then:{steps:[{run:{outputType:'text',action:`var_contador.setValue(0)`}},{while:{condition:`var_contador.value&lt;qtide_mesa`,exec:{steps:[{run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},{run:{outputType:'text',action:`var_contador.setValue(var_contador.value+1)`}}]}}},{run:{outputType:'text',action:`carrinho.show()`}},{run:{outputType:'text',action:`notifies1.success(\'Item inserido no carrinho\')`}}]},else:{steps:[{run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},{run:{outputType:'text',action:`carrinho.show()`}},{run:{outputType:'text',action:`notifies1.success(\'Item inserido no carrinho\')`}}]}}}]},else:{steps:{run:{outputType:'text',action:`modal_nao_logado.show()`}}}}})">
+                                                <button id="btn_plus" class="btn" dmx-on:click="run({condition:{outputType:'boolean',if:`sc_usuario_logado.data.query.usuario_email`,then:{steps:[
+    {run:{outputType:'text',action:`validade_carrinho.setValue(data_hora.datetime.toDate().addMinutes(2).toDate())`}},
+    {condition:{outputType:'boolean',if:`is_mesa==true`,then:{steps:[
+        {run:{outputType:'text',action:`var_contador.setValue(0)`}},
+        {while:{condition:`var_contador.value<qtide_mesa`,exec:{steps:[
+            {run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},
+            {run:{outputType:'text',action:`var_contador.setValue(var_contador.value+1)`}}
+        ]}}},
+        {run:{outputType:'text',action:`carrinho.show()`}},
+        {run:{outputType:'text',action:`const select = document.getElementById('select_parcelamento'); if (select && select.dmx) { select.dmx.update(); }`}},
+        {run:{outputType:'text',action:`notifies1.success('Item inserido no carrinho')`}}
+    ]},else:{steps:[
+        {run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},
+        {run:{outputType:'text',action:`carrinho.show()`}},
+        {run:{outputType:'text',action:`const select = document.getElementById('select_parcelamento'); if (select && select.dmx) { select.dmx.update(); }`}},
+        {run:{outputType:'text',action:`notifies1.success('Item inserido no carrinho')`}}
+    ]}}}
+]},else:{steps:{run:{outputType:'text',action:`modal_nao_logado.show()`}}}}})">
                                                     <i class="fas fa-cart-plus fa-2x text-primary"></i>
                                                 </button>
+
+
+
 
                                             </div>
                                         </div>
@@ -198,13 +218,29 @@
 
                                 <img width="35" height="35" src="/assets/images/cartao.png">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="check_credito" name="icheck_credito" dmx-on:click="sc_parcelamento.load({evento_id: query.id_evento})">
+                                    <input class="form-check-input" type="checkbox" value="" id="check_credito" name="check_credito" dmx-on:click="sc_parcelamento.reset();sc_parcelamento.load({})">
                                     <label class="form-check-label" for="check_credito">Crédito</label>
                                 </div>
 
 
                             </div>
                         </div>
+                        <script>
+                            const check_credito = document.getElementById('check_credito');
+    const select_parcelamento = document.getElementById('select_parcelamento');
+
+    check_credito.addEventListener('change', function() {
+        if (check_credito.checked) {
+            // Reseta o select
+            select_parcelamento.value = "";
+            console.log("Checkbox marcado. Select resetado.");
+        } else {
+            console.log("Checkbox desmarcado.");
+        }
+    });
+                        </script>
+
+
                         <div class="col-12">
                             <div class="d-flex flex-row align-items-center justify-content-start gap-3">
 
@@ -253,104 +289,30 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="input8" class="form-label mt-0 mb-1">Parcelamento</label>
-                                <select id="select_parcelamento" class="form-select" is="dmx-select" optiontext="numero_parcelas+'x '+(     (         numero_parcelas == 1          ? datastore_carrinho.data.sum('item_valor') / 100          : (datastore_carrinho.data.sum('item_valor') / 100) +            ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros)     ) / numero_parcelas ).formatCurrency('R$ ', ',', '.', 2)+' total '+(     numero_parcelas == 1      ? datastore_carrinho.data.sum('item_valor') / 100      : (datastore_carrinho.data.sum('item_valor') / 100) +        ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros) ).formatCurrency('R$ ', ',', '.', 2); " dmx-bind:options="sc_parcelamento.data.query_parcelamento.data" optionvalue="numero_parcelas" name="qtide_parcelas">
-                                    <!-- </div-->
-
-
-
-                                    TELEFONE
-                                    Promising development turmoil inclusive education transformative community
-                                    +152 534-468-854
-
-
-                                    <!--end col-->
-
-
-
-
-
-
-
-                                    E-mail
-                                    Promising development turmoil inclusive education transformative community
-                                    contact@example.com
-
-
-                                    <!--end col-->
-
-
-
-
-
-
-
-                                    ENDEREÇO
-                                    C/54 Northwest Freeway, Suite 558, Houston, USA 485
-
-
-                                    <!--end col-->
-                                    <!--end row-->
-                                    <!--end container-->
-                                    <!--end section-->
-
-                                    <!--end section-->
-                                    <!-- Contact End -->
-
-                                    <!-- Footer Start -->
-
-
-
-
-
-                                    Uma frase sobre o amazon
-
-
-
-
-
-
-
-
-                                    <!--end col-->
-                                    <!--end row-->
-                                    <!--end container-->
-                                    <!--end footer-->
-                                    <!--end footer-->
-                                    <!-- Footer End -->
-
-                                    <!-- Back to top -->
-
-
-
-                                    <!-- Back to top -->
-
-
-                                    <!-- javascript -->
-                                    <script src="assets/js/bootstrap.bundle.min.js"></script>
-                                    <script src="assets/js/gumshoe.js"></script>
-                                    <!-- SLIDER -->
-                                    <script src="assets/js/tiny-slider.js "></script>
-                                    <!-- Lightbox -->
-                                    <script src="assets/js/tobii.min.js"></script>
-                                    <script src="assets/js/shuffle.min.js"></script>
-                                    <!-- Feather icon -->
-                                    <script src="assets/js/feather.min.js"></script>
-                                    <!-- Main Js -->
-                                    <script src="assets/js/plugins.init.js"></script>
-                                    <script src="assets/js/app.js"></script>
-
-
-
-                                    Button
-                                    Some quick example text to build on the card title and make up the bulk of the card's content.
-                                    Go somewhere
-
+                                <select id="select_parcelamento" class="form-select" is="dmx-select" optiontext="numero_parcelas+'x '+(     
+        (numero_parcelas == 1 
+            ? datastore_carrinho.data.sum('item_valor') / 100 
+            : (datastore_carrinho.data.sum('item_valor') / 100) + 
+              ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros) 
+        ) / numero_parcelas 
+    ).formatCurrency('R$ ', ',', '.', 2)+' total '+
+    (numero_parcelas == 1 
+        ? datastore_carrinho.data.sum('item_valor') / 100 
+        : (datastore_carrinho.data.sum('item_valor') / 100) + 
+          ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros)
+    ).formatCurrency('R$ ', ',', '.', 2);" dmx-bind:options="sc_parcelamento.data.query_parcelamento.data" optionvalue="numero_parcelas" name="qtide_parcelas">
                                 </select>
+
+                                <!-- </div-->
+                                <dmx-data-refresh id="refresh_parcelamento" dmx-on:updated="sc_parcelamento.load()"></dmx-data-refresh>
+
+
+
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <h6>Cupom desconto</h6>
-                                    <input id="cupom_desconto" name="text1" type="text" class="form-control">
+                                    <input id="cupom_desconto" name="cupom_desconto" type="text" class="form-control">
                                 </div>
                                 <div class="col-4 align-self-end"><button id="btn1" class="btn btn-primary text-center">Aplicar Cupom</button></div>
                             </div>
@@ -497,3 +459,17 @@
     </div>
 </section>
 <meta name="ac:route" content="/evento/:id_evento">
+
+<!-- javascript -->
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/gumshoe.js"></script>
+<!-- SLIDER -->
+<script src="assets/js/tiny-slider.js "></script>
+<!-- Lightbox -->
+<script src="assets/js/tobii.min.js"></script>
+<script src="assets/js/shuffle.min.js"></script>
+<!-- Feather icon -->
+<script src="assets/js/feather.min.js"></script>
+<!-- Main Js -->
+<script src="assets/js/plugins.init.js"></script>
+<script src="assets/js/app.js"></script>

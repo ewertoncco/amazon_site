@@ -169,7 +169,8 @@ CREATE TABLE public.carrinho_transacoes (
     pediu_reembolso boolean DEFAULT false,
     data_vencimento timestamp with time zone,
     desconto boolean DEFAULT false,
-    valor_desconto integer
+    valor_desconto integer,
+    qtide_parcelas integer
 );
 
 
@@ -336,10 +337,7 @@ CREATE TABLE public.evento_produtos (
     ativo boolean DEFAULT true,
     is_mesa boolean DEFAULT false,
     qtide_mesa integer,
-    cortesia boolean DEFAULT false,
-    cupom_ativo boolean DEFAULT false,
-    codigo_cupom text,
-    valor_desconto integer
+    cortesia boolean DEFAULT false
 );
 
 
@@ -395,7 +393,10 @@ CREATE TABLE public.eventos (
     slug_evento text,
     mostrar_whatsapp boolean DEFAULT false,
     numero_whatsapp text,
-    bar_online boolean DEFAULT false
+    bar_online boolean DEFAULT false,
+    tem_cupom boolean DEFAULT false,
+    codigo_cupom text,
+    valor integer
 );
 
 
@@ -1078,6 +1079,8 @@ COPY public.associados (id, data_criacao, codigo_usuario, ativo, criado_por) FRO
 
 COPY public.carrinho (id, data_criacao, evento_id, usuario_id, tipo_transacao, status_pagamento) FROM stdin;
 14	2024-12-26 22:25:06+00	11	9	1	1
+15	2024-12-28 13:35:38+00	11	9	1	1
+16	2024-12-28 13:42:44+00	11	9	1	1
 \.
 
 
@@ -1088,6 +1091,9 @@ COPY public.carrinho (id, data_criacao, evento_id, usuario_id, tipo_transacao, s
 COPY public.carrinho_itens_vendidos (id, produto_id, carrinho_id, item_resgatado, data_horario_resgate, id_transacao, pdf, trocou_nome, nome_anterior, cpf_anterior, data_troca, participante_nome, participante_telefone, participante_cpf, participante_email) FROM stdin;
 16	21	14	f	\N	19	\N	f	\N	\N	\N	\N	\N	\N	\N
 17	20	14	f	\N	19	\N	f	\N	\N	\N	\N	\N	\N	\N
+18	21	15	f	\N	20	\N	f	\N	\N	\N	Ewerton Oliveira	(49) 99959-0901	123.464.898-74	ewerton.cco@gmail.com
+19	22	16	f	\N	21	\N	f	\N	\N	\N	Ewerton Oliveira	(49) 99959-0901	123.464.898-74	ewerton.cco@gmail.com
+20	22	16	f	\N	21	\N	f	\N	\N	\N	Luana D B Oliveira	(49) 1234-5654	026.796.019-04	luana@gmail.com
 \.
 
 
@@ -1095,8 +1101,10 @@ COPY public.carrinho_itens_vendidos (id, produto_id, carrinho_id, item_resgatado
 -- Data for Name: carrinho_transacoes; Type: TABLE DATA; Schema: public; Owner: amazon
 --
 
-COPY public.carrinho_transacoes (id, data_criacao, carrinho_id, evento_id, status_pagamento_id, forma_pagamento_id, valor_total_compra, valor_liquido_organizador, pag_key, pag_qrcode, pag_json, has_error, error_description, error_code, data_update, pag_id_transaction, pag_message, pag_description, receita_liquida, pediu_reembolso, data_vencimento, desconto, valor_desconto) FROM stdin;
-19	2024-12-26 22:25:06+00	14	11	1	2	8000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N
+COPY public.carrinho_transacoes (id, data_criacao, carrinho_id, evento_id, status_pagamento_id, forma_pagamento_id, valor_total_compra, valor_liquido_organizador, pag_key, pag_qrcode, pag_json, has_error, error_description, error_code, data_update, pag_id_transaction, pag_message, pag_description, receita_liquida, pediu_reembolso, data_vencimento, desconto, valor_desconto, qtide_parcelas) FROM stdin;
+19	2024-12-26 22:25:06+00	14	11	1	2	8000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	\N
+20	2024-12-28 13:35:39+00	15	11	1	2	5000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	\N
+21	2024-12-28 13:42:44+00	16	11	1	2	2000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	\N
 \.
 
 
@@ -1120,11 +1128,11 @@ COPY public.evento_despesas (id, data_criacao, usuario_id, tipo_despesa, titulo,
 -- Data for Name: evento_produtos; Type: TABLE DATA; Schema: public; Owner: amazon
 --
 
-COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_nome, qtide_cadastrada, inicio_vendas, final_vendas, valor, ordem_lista, ativo, is_mesa, qtide_mesa, cortesia, cupom_ativo, codigo_cupom, valor_desconto) FROM stdin;
-22	2024-12-15 17:37:41+00	9	11	Ingresso 01	10	2024-12-15 20:00:00+00	2024-12-16 20:37:00+00	1000	1	t	f	0	f	f	\N	\N
-19	2024-12-13 09:33:14+00	9	\N	Bruno VIP	50	2024-12-13 12:00:00+00	2024-12-21 12:33:00+00	20	1	t	f	0	f	f	\N	\N
-21	2024-12-13 18:21:18+00	9	11	Ewerton	1000	2024-12-13 18:00:00+00	2024-12-21 18:20:00+00	5000	1	t	f	0	f	t	asdasd	100000
-20	2024-12-13 17:57:54+00	9	11	Murilo Vip 201	200	2024-12-13 08:00:00+00	2024-12-21 08:57:00+00	3000	1	t	t	2	f	f	\N	\N
+COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_nome, qtide_cadastrada, inicio_vendas, final_vendas, valor, ordem_lista, ativo, is_mesa, qtide_mesa, cortesia) FROM stdin;
+19	2024-12-13 09:33:14+00	9	\N	Bruno VIP	50	2024-12-13 12:00:00+00	2024-12-21 12:33:00+00	20	1	t	f	0	f
+20	2024-12-13 17:57:54+00	9	11	Murilo camarote (2 pessoas)	200	2024-12-13 08:00:00+00	2024-12-21 08:57:00+00	3000	1	t	t	2	f
+22	2024-12-15 17:37:41+00	9	11	Ingresso Pista (1º Lote)	10	2024-12-15 20:00:00+00	2024-12-16 20:37:00+00	1000	1	t	f	0	f
+21	2024-12-13 18:21:18+00	9	11	VIP (Pré-Venda)	1000	2024-12-13 18:00:00+00	2024-12-21 18:20:00+00	5000	1	t	f	0	f
 \.
 
 
@@ -1132,9 +1140,9 @@ COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_no
 -- Data for Name: eventos; Type: TABLE DATA; Schema: public; Owner: amazon
 --
 
-COPY public.eventos (id, data_criacao, usuario_id, evento_status, evento_nome, evento_resumo, evento_descricao, evento_local, evento_banner_principal, evento_banner_secundario, tem_mapa, mapa_imagem, evento_data_hora, evento_destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, qtide_parcelas_cartao, mostrar_sobre_evento, slug_evento, mostrar_whatsapp, numero_whatsapp, bar_online) FROM stdin;
-13	2024-12-15 17:27:46+00	9	1	Réveillon dos Desejos 2025	Uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano.	O Réveillon dos Desejos 2025 promete ser uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano. Realizado na Amazônia, o evento combina uma atmosfera tropical única com uma programação envolvente, perfeita para quem busca experiências memoráveis. A fusão entre cultura local, música e natureza faz deste evento uma opção ideal para celebrar o início de 2025 em grande estilo.\r\n\r\nCom uma ambientação cuidadosamente planejada, o Réveillon dos Desejos oferece uma conexão única com a natureza exuberante da Amazônia, destacando cenários deslumbrantes e momentos de celebração. O público pode esperar uma noite de performances musicais, gastronomia diferenciada e experiências sensoriais que exaltam os desejos de renovação e alegria para o ano que se inicia.	Amazon Club	/assets/uploads/banners_eventos/6d943723-53cb-467e-83d7-3a1c06e8e03d.jpg	\N	f	\N	2024-12-31 19:00:00+00	f	t	t	t	t	1	t	\N	t	(49) 99959-0901	\N
-11	2024-12-01 22:01:06+00	9	1	Corrida de Rua Chapecó+	🏃‍♂️🌟 Prepare-se para a Corrida de Rua Chapecó+! 🌟🏃‍♀️	Venha viver a emoção das ruas de Chapecó com percursos incríveis de 5K e 10K! 🏅 Seja você iniciante ou corredor experiente, este é o evento perfeito para desafiar seus limites, se divertir e conquistar novas metas. 💪✨ A energia estará lá em cada passada, com muita vibração e apoio! 🎶👏\r\n\r\n🗓️ Data: [Insira a data do evento]\r\n📍 Local: [Insira o local do evento]\r\n\r\nNão perca essa oportunidade de celebrar a saúde, o esporte e a superação. Inscreva-se agora e garanta sua vaga! 🖊️🎉 Convide seus amigos e venha fazer parte dessa festa esportiva! 🤩👟 #ChapecóMais #CorridaDeRua	Getúlio Vargas, Chapecó SC	/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png	\N	f	\N	2025-01-31 16:00:00+00	t	t	t	t	t	4	t	\N	f		\N
+COPY public.eventos (id, data_criacao, usuario_id, evento_status, evento_nome, evento_resumo, evento_descricao, evento_local, evento_banner_principal, evento_banner_secundario, tem_mapa, mapa_imagem, evento_data_hora, evento_destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, qtide_parcelas_cartao, mostrar_sobre_evento, slug_evento, mostrar_whatsapp, numero_whatsapp, bar_online, tem_cupom, codigo_cupom, valor) FROM stdin;
+13	2024-12-15 17:27:46+00	9	1	Réveillon dos Desejos 2025	Uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano.	O Réveillon dos Desejos 2025 promete ser uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano. Realizado na Amazônia, o evento combina uma atmosfera tropical única com uma programação envolvente, perfeita para quem busca experiências memoráveis. A fusão entre cultura local, música e natureza faz deste evento uma opção ideal para celebrar o início de 2025 em grande estilo.\r\n\r\nCom uma ambientação cuidadosamente planejada, o Réveillon dos Desejos oferece uma conexão única com a natureza exuberante da Amazônia, destacando cenários deslumbrantes e momentos de celebração. O público pode esperar uma noite de performances musicais, gastronomia diferenciada e experiências sensoriais que exaltam os desejos de renovação e alegria para o ano que se inicia.	Amazon Club	/assets/uploads/banners_eventos/6d943723-53cb-467e-83d7-3a1c06e8e03d.jpg	\N	f	\N	2024-12-31 19:00:00+00	f	t	t	t	t	1	t	\N	t	(49) 99959-0901	\N	f	\N	\N
+11	2024-12-01 22:01:06+00	9	1	Corrida de Rua Chapecó+	🏃‍♂️🌟 Prepare-se para a Corrida de Rua Chapecó+! 🌟🏃‍♀️	Venha viver a emoção das ruas de Chapecó com percursos incríveis de 5K e 10K! 🏅 Seja você iniciante ou corredor experiente, este é o evento perfeito para desafiar seus limites, se divertir e conquistar novas metas. 💪✨ A energia estará lá em cada passada, com muita vibração e apoio! 🎶👏\r\n\r\n🗓️ Data: [Insira a data do evento]\r\n📍 Local: [Insira o local do evento]\r\n\r\nNão perca essa oportunidade de celebrar a saúde, o esporte e a superação. Inscreva-se agora e garanta sua vaga! 🖊️🎉 Convide seus amigos e venha fazer parte dessa festa esportiva! 🤩👟 #ChapecóMais #CorridaDeRua	Getúlio Vargas, Chapecó SC	/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png	\N	f	\N	2025-01-31 16:00:00+00	t	t	t	t	t	4	t	\N	f		\N	f	\N	\N
 \.
 
 
@@ -1317,21 +1325,21 @@ SELECT pg_catalog.setval('public.associados_id_seq', 1, false);
 -- Name: carrinho_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_id_seq', 14, true);
+SELECT pg_catalog.setval('public.carrinho_id_seq', 16, true);
 
 
 --
 -- Name: carrinho_itens_vendidos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_itens_vendidos_id_seq', 17, true);
+SELECT pg_catalog.setval('public.carrinho_itens_vendidos_id_seq', 20, true);
 
 
 --
 -- Name: carrinho_transacoes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 19, true);
+SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 21, true);
 
 
 --

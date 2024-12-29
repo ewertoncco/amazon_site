@@ -30,20 +30,20 @@
         "name": "evento_banner_principal",
         "sub": [
           {
-            "name": "name",
-            "type": "text"
+            "type": "text",
+            "name": "name"
           },
           {
-            "name": "type",
-            "type": "text"
+            "type": "text",
+            "name": "type"
           },
           {
-            "name": "size",
-            "type": "number"
+            "type": "number",
+            "name": "size"
           },
           {
-            "name": "error",
-            "type": "text"
+            "type": "text",
+            "name": "error"
           }
         ],
         "outputType": "file"
@@ -53,20 +53,20 @@
         "name": "evento_banner_secundario",
         "sub": [
           {
-            "name": "name",
-            "type": "text"
+            "type": "text",
+            "name": "name"
           },
           {
-            "name": "type",
-            "type": "text"
+            "type": "text",
+            "name": "type"
           },
           {
-            "name": "size",
-            "type": "number"
+            "type": "number",
+            "name": "size"
           },
           {
-            "name": "error",
-            "type": "text"
+            "type": "text",
+            "name": "error"
           }
         ],
         "outputType": "file"
@@ -80,20 +80,20 @@
         "name": "mapa_imagem",
         "sub": [
           {
-            "name": "name",
-            "type": "text"
+            "type": "text",
+            "name": "name"
           },
           {
-            "name": "type",
-            "type": "text"
+            "type": "text",
+            "name": "type"
           },
           {
-            "name": "size",
-            "type": "number"
+            "type": "number",
+            "name": "size"
           },
           {
-            "name": "error",
-            "type": "text"
+            "type": "text",
+            "name": "error"
           }
         ],
         "outputType": "file"
@@ -316,7 +316,7 @@
                 "value": "{{$_POST.numero_whatsapp}}"
               }
             ],
-            "table": "eventos",
+            "table": "evento",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -336,7 +336,7 @@
               "valid": true
             },
             "returning": "id",
-            "query": "update \"eventos\" set \"evento_status\" = ?, \"evento_nome\" = ?, \"evento_resumo\" = ?, \"evento_descricao\" = ?, \"evento_local\" = ?, \"evento_banner_principal\" = ?, \"evento_banner_secundario\" = ?, \"tem_mapa\" = ?, \"mapa_imagem\" = ?, \"evento_data_hora\" = ?, \"evento_destaque\" = ?, \"pode_alterar_ingresso\" = ?, \"pode_devolver_ingresso\" = ?, \"aceita_pix\" = ?, \"aceita_cartao\" = ?, \"qtide_parcelas_cartao\" = ?, \"mostrar_sobre_evento\" = ?, \"slug_evento\" = ?, \"mostrar_whatsapp\" = ?, \"numero_whatsapp\" = ? where \"id\" = ? returning \"id\"",
+            "query": "update \"evento\" set \"evento_status\" = ?, \"evento_nome\" = ?, \"evento_resumo\" = ?, \"evento_descricao\" = ?, \"evento_local\" = ?, \"evento_banner_principal\" = ?, \"evento_banner_secundario\" = ?, \"tem_mapa\" = ?, \"mapa_imagem\" = ?, \"evento_data_hora\" = ?, \"evento_destaque\" = ?, \"pode_alterar_ingresso\" = ?, \"pode_devolver_ingresso\" = ?, \"aceita_pix\" = ?, \"aceita_cartao\" = ?, \"qtide_parcelas_cartao\" = ?, \"mostrar_sobre_evento\" = ?, \"slug_evento\" = ?, \"mostrar_whatsapp\" = ?, \"numero_whatsapp\" = ? where \"id\" = ? returning \"id\"",
             "params": [
               {
                 "name": ":P1",

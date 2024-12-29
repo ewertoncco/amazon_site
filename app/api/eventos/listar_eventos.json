@@ -37,11 +37,12 @@
             ],
             "params": [],
             "table": {
-              "name": "eventos"
+              "name": "evento",
+              "alias": "eventos"
             },
             "primary": "id",
             "joins": [],
-            "query": "select * from \"eventos\"",
+            "query": "select * from \"evento\" as \"eventos\"",
             "sub": {
               "produtos": {
                 "table": {
@@ -218,6 +219,18 @@
                 "name": "bar_online"
               },
               {
+                "type": "boolean",
+                "name": "tem_cupom"
+              },
+              {
+                "type": "text",
+                "name": "codigo_cupom"
+              },
+              {
+                "type": "number",
+                "name": "valor"
+              },
+              {
                 "name": "produtos",
                 "type": "array",
                 "sub": [
@@ -276,18 +289,6 @@
                   {
                     "type": "boolean",
                     "name": "cortesia"
-                  },
-                  {
-                    "type": "boolean",
-                    "name": "cupom_ativo"
-                  },
-                  {
-                    "type": "text",
-                    "name": "codigo_cupom"
-                  },
-                  {
-                    "type": "number",
-                    "name": "valor_desconto"
                   }
                 ]
               },
