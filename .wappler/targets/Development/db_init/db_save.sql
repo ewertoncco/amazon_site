@@ -58,147 +58,6 @@ ALTER SEQUENCE public.associados_id_seq OWNED BY public.associados.id;
 
 
 --
--- Name: carrinho; Type: TABLE; Schema: public; Owner: amazon
---
-
-CREATE TABLE public.carrinho (
-    id integer NOT NULL,
-    data_criacao timestamp with time zone DEFAULT now(),
-    evento_id integer,
-    usuario_id integer,
-    tipo_transacao integer,
-    status_pagamento integer
-);
-
-
-ALTER TABLE public.carrinho OWNER TO amazon;
-
---
--- Name: carrinho_id_seq; Type: SEQUENCE; Schema: public; Owner: amazon
---
-
-CREATE SEQUENCE public.carrinho_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.carrinho_id_seq OWNER TO amazon;
-
---
--- Name: carrinho_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: amazon
---
-
-ALTER SEQUENCE public.carrinho_id_seq OWNED BY public.carrinho.id;
-
-
---
--- Name: carrinho_itens_vendidos; Type: TABLE; Schema: public; Owner: amazon
---
-
-CREATE TABLE public.carrinho_itens_vendidos (
-    id integer NOT NULL,
-    produto_id integer,
-    carrinho_id integer,
-    item_resgatado boolean DEFAULT false,
-    data_horario_resgate timestamp with time zone,
-    id_transacao integer,
-    pdf text,
-    trocou_nome boolean DEFAULT false,
-    nome_anterior text,
-    cpf_anterior text,
-    data_troca timestamp with time zone,
-    participante_nome text,
-    participante_telefone text,
-    participante_cpf text,
-    participante_email text
-);
-
-
-ALTER TABLE public.carrinho_itens_vendidos OWNER TO amazon;
-
---
--- Name: carrinho_itens_vendidos_id_seq; Type: SEQUENCE; Schema: public; Owner: amazon
---
-
-CREATE SEQUENCE public.carrinho_itens_vendidos_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.carrinho_itens_vendidos_id_seq OWNER TO amazon;
-
---
--- Name: carrinho_itens_vendidos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: amazon
---
-
-ALTER SEQUENCE public.carrinho_itens_vendidos_id_seq OWNED BY public.carrinho_itens_vendidos.id;
-
-
---
--- Name: carrinho_transacoes; Type: TABLE; Schema: public; Owner: amazon
---
-
-CREATE TABLE public.carrinho_transacoes (
-    id integer NOT NULL,
-    data_criacao timestamp with time zone DEFAULT now(),
-    carrinho_id integer,
-    evento_id integer,
-    status_pagamento_id integer,
-    forma_pagamento_id integer,
-    valor_total_compra integer,
-    valor_liquido_organizador integer,
-    pag_key text,
-    pag_qrcode text,
-    pag_json json,
-    has_error boolean DEFAULT false,
-    error_description text,
-    error_code text,
-    data_update timestamp with time zone,
-    pag_id_transaction integer,
-    pag_message text,
-    pag_description text,
-    receita_liquida integer,
-    pediu_reembolso boolean DEFAULT false,
-    data_vencimento timestamp with time zone,
-    desconto boolean DEFAULT false,
-    valor_desconto integer,
-    qtide_parcelas integer
-);
-
-
-ALTER TABLE public.carrinho_transacoes OWNER TO amazon;
-
---
--- Name: carrinho_transacoes_id_seq; Type: SEQUENCE; Schema: public; Owner: amazon
---
-
-CREATE SEQUENCE public.carrinho_transacoes_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.carrinho_transacoes_id_seq OWNER TO amazon;
-
---
--- Name: carrinho_transacoes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: amazon
---
-
-ALTER SEQUENCE public.carrinho_transacoes_id_seq OWNED BY public.carrinho_transacoes.id;
-
-
---
 -- Name: parcelamento; Type: TABLE; Schema: public; Owner: amazon
 --
 
@@ -235,6 +94,43 @@ ALTER TABLE public.configuracao_parcelas_id_seq OWNER TO amazon;
 
 ALTER SEQUENCE public.configuracao_parcelas_id_seq OWNED BY public.parcelamento.id;
 
+
+--
+-- Name: evento; Type: TABLE; Schema: public; Owner: amazon
+--
+
+CREATE TABLE public.evento (
+    id integer NOT NULL,
+    data_criacao timestamp with time zone DEFAULT now(),
+    usuario_id integer,
+    evento_status integer,
+    evento_nome text NOT NULL,
+    evento_resumo text,
+    evento_descricao text,
+    evento_local text,
+    evento_banner_principal text,
+    evento_banner_secundario text,
+    tem_mapa boolean DEFAULT false,
+    mapa_imagem text,
+    evento_data_hora timestamp with time zone,
+    evento_destaque boolean DEFAULT false,
+    pode_alterar_ingresso boolean DEFAULT false,
+    pode_devolver_ingresso boolean DEFAULT false,
+    aceita_pix boolean DEFAULT false,
+    aceita_cartao boolean DEFAULT false,
+    qtide_parcelas_cartao integer,
+    mostrar_sobre_evento boolean DEFAULT true,
+    slug_evento text,
+    mostrar_whatsapp boolean DEFAULT false,
+    numero_whatsapp text,
+    bar_online boolean DEFAULT false,
+    tem_cupom boolean DEFAULT false,
+    codigo_cupom text,
+    valor integer
+);
+
+
+ALTER TABLE public.evento OWNER TO amazon;
 
 --
 -- Name: evento_checklist; Type: TABLE; Schema: public; Owner: amazon
@@ -366,43 +262,6 @@ ALTER SEQUENCE public.evento_produtos_id_seq OWNED BY public.evento_produtos.id;
 
 
 --
--- Name: eventos; Type: TABLE; Schema: public; Owner: amazon
---
-
-CREATE TABLE public.eventos (
-    id integer NOT NULL,
-    data_criacao timestamp with time zone DEFAULT now(),
-    usuario_id integer,
-    evento_status integer,
-    evento_nome text NOT NULL,
-    evento_resumo text,
-    evento_descricao text,
-    evento_local text,
-    evento_banner_principal text,
-    evento_banner_secundario text,
-    tem_mapa boolean DEFAULT false,
-    mapa_imagem text,
-    evento_data_hora timestamp with time zone,
-    evento_destaque boolean DEFAULT false,
-    pode_alterar_ingresso boolean DEFAULT false,
-    pode_devolver_ingresso boolean DEFAULT false,
-    aceita_pix boolean DEFAULT false,
-    aceita_cartao boolean DEFAULT false,
-    qtide_parcelas_cartao integer,
-    mostrar_sobre_evento boolean DEFAULT true,
-    slug_evento text,
-    mostrar_whatsapp boolean DEFAULT false,
-    numero_whatsapp text,
-    bar_online boolean DEFAULT false,
-    tem_cupom boolean DEFAULT false,
-    codigo_cupom text,
-    valor integer
-);
-
-
-ALTER TABLE public.eventos OWNER TO amazon;
-
---
 -- Name: eventos_id_seq; Type: SEQUENCE; Schema: public; Owner: amazon
 --
 
@@ -421,7 +280,7 @@ ALTER TABLE public.eventos_id_seq OWNER TO amazon;
 -- Name: eventos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: amazon
 --
 
-ALTER SEQUENCE public.eventos_id_seq OWNED BY public.eventos.id;
+ALTER SEQUENCE public.eventos_id_seq OWNED BY public.evento.id;
 
 
 --
@@ -778,19 +637,6 @@ CREATE TABLE public.usuarios (
 ALTER TABLE public.usuarios OWNER TO amazon;
 
 --
--- Name: usuarios_compras; Type: TABLE; Schema: public; Owner: amazon
---
-
-CREATE TABLE public.usuarios_compras (
-    id integer,
-    usuario_id integer,
-    transacoes_id integer
-);
-
-
-ALTER TABLE public.usuarios_compras OWNER TO amazon;
-
---
 -- Name: usuarios_id_seq; Type: SEQUENCE; Schema: public; Owner: amazon
 --
 
@@ -846,6 +692,65 @@ ALTER TABLE public.usuarios_notificacoes_lidas_id_seq OWNER TO amazon;
 --
 
 ALTER SEQUENCE public.usuarios_notificacoes_lidas_id_seq OWNED BY public.usuarios_notificacoes_lidas.id;
+
+
+--
+-- Name: vendas; Type: TABLE; Schema: public; Owner: amazon
+--
+
+CREATE TABLE public.vendas (
+    id integer NOT NULL,
+    data_criacao timestamp without time zone DEFAULT now() NOT NULL,
+    data_update timestamp without time zone DEFAULT now(),
+    evento_id integer NOT NULL,
+    usuarios_id integer NOT NULL,
+    evento_produtos_id integer NOT NULL,
+    status_pagamento integer NOT NULL,
+    forma_pagamento_id integer NOT NULL,
+    valor_original numeric(10,2) NOT NULL,
+    valor_final numeric(10,2) NOT NULL,
+    cupom_codigo text DEFAULT 0,
+    desconto_aplicado numeric(10,2) DEFAULT 0,
+    pag_key text,
+    pag_qrcode text,
+    pag_json json,
+    has_error boolean DEFAULT false,
+    error_description text,
+    nome_participante text NOT NULL,
+    cpf_participante text NOT NULL,
+    email_participante text,
+    telefone_participante text,
+    pdf text,
+    data_resgate timestamp without time zone DEFAULT now(),
+    trocou_nome boolean DEFAULT false,
+    nome_anterior text,
+    cpf_anterior text,
+    qtide_parcelas integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.vendas OWNER TO amazon;
+
+--
+-- Name: vendas_id_seq; Type: SEQUENCE; Schema: public; Owner: amazon
+--
+
+CREATE SEQUENCE public.vendas_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.vendas_id_seq OWNER TO amazon;
+
+--
+-- Name: vendas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: amazon
+--
+
+ALTER SEQUENCE public.vendas_id_seq OWNED BY public.vendas.id;
 
 
 --
@@ -926,24 +831,10 @@ ALTER TABLE ONLY public.associados ALTER COLUMN id SET DEFAULT nextval('public.a
 
 
 --
--- Name: carrinho id; Type: DEFAULT; Schema: public; Owner: amazon
+-- Name: evento id; Type: DEFAULT; Schema: public; Owner: amazon
 --
 
-ALTER TABLE ONLY public.carrinho ALTER COLUMN id SET DEFAULT nextval('public.carrinho_id_seq'::regclass);
-
-
---
--- Name: carrinho_itens_vendidos id; Type: DEFAULT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_itens_vendidos ALTER COLUMN id SET DEFAULT nextval('public.carrinho_itens_vendidos_id_seq'::regclass);
-
-
---
--- Name: carrinho_transacoes id; Type: DEFAULT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_transacoes ALTER COLUMN id SET DEFAULT nextval('public.carrinho_transacoes_id_seq'::regclass);
+ALTER TABLE ONLY public.evento ALTER COLUMN id SET DEFAULT nextval('public.eventos_id_seq'::regclass);
 
 
 --
@@ -965,13 +856,6 @@ ALTER TABLE ONLY public.evento_despesas ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.evento_produtos ALTER COLUMN id SET DEFAULT nextval('public.evento_produtos_id_seq'::regclass);
-
-
---
--- Name: eventos id; Type: DEFAULT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.eventos ALTER COLUMN id SET DEFAULT nextval('public.eventos_id_seq'::regclass);
 
 
 --
@@ -1052,6 +936,13 @@ ALTER TABLE ONLY public.usuarios_notificacoes_lidas ALTER COLUMN id SET DEFAULT 
 
 
 --
+-- Name: vendas id; Type: DEFAULT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.vendas ALTER COLUMN id SET DEFAULT nextval('public.vendas_id_seq'::regclass);
+
+
+--
 -- Name: wappler_migrations id; Type: DEFAULT; Schema: public; Owner: amazon
 --
 
@@ -1074,37 +965,12 @@ COPY public.associados (id, data_criacao, codigo_usuario, ativo, criado_por) FRO
 
 
 --
--- Data for Name: carrinho; Type: TABLE DATA; Schema: public; Owner: amazon
+-- Data for Name: evento; Type: TABLE DATA; Schema: public; Owner: amazon
 --
 
-COPY public.carrinho (id, data_criacao, evento_id, usuario_id, tipo_transacao, status_pagamento) FROM stdin;
-14	2024-12-26 22:25:06+00	11	9	1	1
-15	2024-12-28 13:35:38+00	11	9	1	1
-16	2024-12-28 13:42:44+00	11	9	1	1
-\.
-
-
---
--- Data for Name: carrinho_itens_vendidos; Type: TABLE DATA; Schema: public; Owner: amazon
---
-
-COPY public.carrinho_itens_vendidos (id, produto_id, carrinho_id, item_resgatado, data_horario_resgate, id_transacao, pdf, trocou_nome, nome_anterior, cpf_anterior, data_troca, participante_nome, participante_telefone, participante_cpf, participante_email) FROM stdin;
-16	21	14	f	\N	19	\N	f	\N	\N	\N	\N	\N	\N	\N
-17	20	14	f	\N	19	\N	f	\N	\N	\N	\N	\N	\N	\N
-18	21	15	f	\N	20	\N	f	\N	\N	\N	Ewerton Oliveira	(49) 99959-0901	123.464.898-74	ewerton.cco@gmail.com
-19	22	16	f	\N	21	\N	f	\N	\N	\N	Ewerton Oliveira	(49) 99959-0901	123.464.898-74	ewerton.cco@gmail.com
-20	22	16	f	\N	21	\N	f	\N	\N	\N	Luana D B Oliveira	(49) 1234-5654	026.796.019-04	luana@gmail.com
-\.
-
-
---
--- Data for Name: carrinho_transacoes; Type: TABLE DATA; Schema: public; Owner: amazon
---
-
-COPY public.carrinho_transacoes (id, data_criacao, carrinho_id, evento_id, status_pagamento_id, forma_pagamento_id, valor_total_compra, valor_liquido_organizador, pag_key, pag_qrcode, pag_json, has_error, error_description, error_code, data_update, pag_id_transaction, pag_message, pag_description, receita_liquida, pediu_reembolso, data_vencimento, desconto, valor_desconto, qtide_parcelas) FROM stdin;
-19	2024-12-26 22:25:06+00	14	11	1	2	8000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	\N
-20	2024-12-28 13:35:39+00	15	11	1	2	5000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	\N
-21	2024-12-28 13:42:44+00	16	11	1	2	2000	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	\N
+COPY public.evento (id, data_criacao, usuario_id, evento_status, evento_nome, evento_resumo, evento_descricao, evento_local, evento_banner_principal, evento_banner_secundario, tem_mapa, mapa_imagem, evento_data_hora, evento_destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, qtide_parcelas_cartao, mostrar_sobre_evento, slug_evento, mostrar_whatsapp, numero_whatsapp, bar_online, tem_cupom, codigo_cupom, valor) FROM stdin;
+11	2024-12-01 22:01:06+00	9	1	Corrida de Rua Chapecó+	🏃‍♂️🌟 Prepare-se para a Corrida de Rua Chapecó+! 🌟🏃‍♀️	Venha viver a emoção das ruas de Chapecó com percursos incríveis de 5K e 10K! 🏅 Seja você iniciante ou corredor experiente, este é o evento perfeito para desafiar seus limites, se divertir e conquistar novas metas. 💪✨ A energia estará lá em cada passada, com muita vibração e apoio! 🎶👏\r\n\r\n🗓️ Data: [Insira a data do evento]\r\n📍 Local: [Insira o local do evento]\r\n\r\nNão perca essa oportunidade de celebrar a saúde, o esporte e a superação. Inscreva-se agora e garanta sua vaga! 🖊️🎉 Convide seus amigos e venha fazer parte dessa festa esportiva! 🤩👟 #ChapecóMais #CorridaDeRua	Getúlio Vargas, Chapecó SC	/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png	\N	f	\N	2025-01-31 16:00:00+00	t	t	t	t	t	3	t	\N	f		\N	f	\N	\N
+13	2024-12-15 17:27:46+00	9	1	Réveillon dos Desejos 2025	Uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano.	O Réveillon dos Desejos 2025 promete ser uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano. Realizado na Amazônia, o evento combina uma atmosfera tropical única com uma programação envolvente, perfeita para quem busca experiências memoráveis. A fusão entre cultura local, música e natureza faz deste evento uma opção ideal para celebrar o início de 2025 em grande estilo.\r\n\r\nCom uma ambientação cuidadosamente planejada, o Réveillon dos Desejos oferece uma conexão única com a natureza exuberante da Amazônia, destacando cenários deslumbrantes e momentos de celebração. O público pode esperar uma noite de performances musicais, gastronomia diferenciada e experiências sensoriais que exaltam os desejos de renovação e alegria para o ano que se inicia.	Amazon Club	/assets/uploads/banners_eventos/6d943723-53cb-467e-83d7-3a1c06e8e03d.jpg	\N	f	\N	2024-12-31 19:00:00+00	f	t	t	t	t	5	t	\N	t	(49) 99959-0901	\N	f	\N	\N
 \.
 
 
@@ -1133,16 +999,6 @@ COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_no
 20	2024-12-13 17:57:54+00	9	11	Murilo camarote (2 pessoas)	200	2024-12-13 08:00:00+00	2024-12-21 08:57:00+00	3000	1	t	t	2	f
 22	2024-12-15 17:37:41+00	9	11	Ingresso Pista (1º Lote)	10	2024-12-15 20:00:00+00	2024-12-16 20:37:00+00	1000	1	t	f	0	f
 21	2024-12-13 18:21:18+00	9	11	VIP (Pré-Venda)	1000	2024-12-13 18:00:00+00	2024-12-21 18:20:00+00	5000	1	t	f	0	f
-\.
-
-
---
--- Data for Name: eventos; Type: TABLE DATA; Schema: public; Owner: amazon
---
-
-COPY public.eventos (id, data_criacao, usuario_id, evento_status, evento_nome, evento_resumo, evento_descricao, evento_local, evento_banner_principal, evento_banner_secundario, tem_mapa, mapa_imagem, evento_data_hora, evento_destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, qtide_parcelas_cartao, mostrar_sobre_evento, slug_evento, mostrar_whatsapp, numero_whatsapp, bar_online, tem_cupom, codigo_cupom, valor) FROM stdin;
-13	2024-12-15 17:27:46+00	9	1	Réveillon dos Desejos 2025	Uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano.	O Réveillon dos Desejos 2025 promete ser uma celebração inesquecível, repleta de magia e boas energias para a chegada do novo ano. Realizado na Amazônia, o evento combina uma atmosfera tropical única com uma programação envolvente, perfeita para quem busca experiências memoráveis. A fusão entre cultura local, música e natureza faz deste evento uma opção ideal para celebrar o início de 2025 em grande estilo.\r\n\r\nCom uma ambientação cuidadosamente planejada, o Réveillon dos Desejos oferece uma conexão única com a natureza exuberante da Amazônia, destacando cenários deslumbrantes e momentos de celebração. O público pode esperar uma noite de performances musicais, gastronomia diferenciada e experiências sensoriais que exaltam os desejos de renovação e alegria para o ano que se inicia.	Amazon Club	/assets/uploads/banners_eventos/6d943723-53cb-467e-83d7-3a1c06e8e03d.jpg	\N	f	\N	2024-12-31 19:00:00+00	f	t	t	t	t	1	t	\N	t	(49) 99959-0901	\N	f	\N	\N
-11	2024-12-01 22:01:06+00	9	1	Corrida de Rua Chapecó+	🏃‍♂️🌟 Prepare-se para a Corrida de Rua Chapecó+! 🌟🏃‍♀️	Venha viver a emoção das ruas de Chapecó com percursos incríveis de 5K e 10K! 🏅 Seja você iniciante ou corredor experiente, este é o evento perfeito para desafiar seus limites, se divertir e conquistar novas metas. 💪✨ A energia estará lá em cada passada, com muita vibração e apoio! 🎶👏\r\n\r\n🗓️ Data: [Insira a data do evento]\r\n📍 Local: [Insira o local do evento]\r\n\r\nNão perca essa oportunidade de celebrar a saúde, o esporte e a superação. Inscreva-se agora e garanta sua vaga! 🖊️🎉 Convide seus amigos e venha fazer parte dessa festa esportiva! 🤩👟 #ChapecóMais #CorridaDeRua	Getúlio Vargas, Chapecó SC	/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png	\N	f	\N	2025-01-31 16:00:00+00	t	t	t	t	t	4	t	\N	f		\N	f	\N	\N
 \.
 
 
@@ -1282,18 +1138,18 @@ COPY public.usuarios (id, data_criacao, senha, usuario_email, usuario_nome, usua
 
 
 --
--- Data for Name: usuarios_compras; Type: TABLE DATA; Schema: public; Owner: amazon
---
-
-COPY public.usuarios_compras (id, usuario_id, transacoes_id) FROM stdin;
-\.
-
-
---
 -- Data for Name: usuarios_notificacoes_lidas; Type: TABLE DATA; Schema: public; Owner: amazon
 --
 
 COPY public.usuarios_notificacoes_lidas (id, data_criacao, usuario_id, notificacao_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: vendas; Type: TABLE DATA; Schema: public; Owner: amazon
+--
+
+COPY public.vendas (id, data_criacao, data_update, evento_id, usuarios_id, evento_produtos_id, status_pagamento, forma_pagamento_id, valor_original, valor_final, cupom_codigo, desconto_aplicado, pag_key, pag_qrcode, pag_json, has_error, error_description, nome_participante, cpf_participante, email_participante, telefone_participante, pdf, data_resgate, trocou_nome, nome_anterior, cpf_anterior, qtide_parcelas) FROM stdin;
 \.
 
 
@@ -1319,27 +1175,6 @@ COPY public.wappler_migrations_lock (index, is_locked) FROM stdin;
 --
 
 SELECT pg_catalog.setval('public.associados_id_seq', 1, false);
-
-
---
--- Name: carrinho_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
---
-
-SELECT pg_catalog.setval('public.carrinho_id_seq', 16, true);
-
-
---
--- Name: carrinho_itens_vendidos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
---
-
-SELECT pg_catalog.setval('public.carrinho_itens_vendidos_id_seq', 20, true);
-
-
---
--- Name: carrinho_transacoes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
---
-
-SELECT pg_catalog.setval('public.carrinho_transacoes_id_seq', 21, true);
 
 
 --
@@ -1448,6 +1283,13 @@ SELECT pg_catalog.setval('public.usuarios_notificacoes_lidas_id_seq', 1, false);
 
 
 --
+-- Name: vendas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
+--
+
+SELECT pg_catalog.setval('public.vendas_id_seq', 1, false);
+
+
+--
 -- Name: wappler_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
@@ -1467,30 +1309,6 @@ SELECT pg_catalog.setval('public.wappler_migrations_lock_index_seq', 1, true);
 
 ALTER TABLE ONLY public.associados
     ADD CONSTRAINT associados_pkey PRIMARY KEY (id);
-
-
---
--- Name: carrinho_itens_vendidos carrinho_itens_vendidos_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_itens_vendidos
-    ADD CONSTRAINT carrinho_itens_vendidos_pkey PRIMARY KEY (id);
-
-
---
--- Name: carrinho carrinho_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho
-    ADD CONSTRAINT carrinho_pkey PRIMARY KEY (id);
-
-
---
--- Name: carrinho_transacoes carrinho_transacoes_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_transacoes
-    ADD CONSTRAINT carrinho_transacoes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1526,18 +1344,18 @@ ALTER TABLE ONLY public.evento_produtos
 
 
 --
--- Name: eventos eventos_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
+-- Name: evento eventos_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
 --
 
-ALTER TABLE ONLY public.eventos
+ALTER TABLE ONLY public.evento
     ADD CONSTRAINT eventos_pkey PRIMARY KEY (id);
 
 
 --
--- Name: eventos eventos_slug_evento_key; Type: CONSTRAINT; Schema: public; Owner: amazon
+-- Name: evento eventos_slug_evento_key; Type: CONSTRAINT; Schema: public; Owner: amazon
 --
 
-ALTER TABLE ONLY public.eventos
+ALTER TABLE ONLY public.evento
     ADD CONSTRAINT eventos_slug_evento_key UNIQUE (slug_evento);
 
 
@@ -1646,6 +1464,14 @@ ALTER TABLE ONLY public.usuarios
 
 
 --
+-- Name: vendas vendas_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.vendas
+    ADD CONSTRAINT vendas_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: wappler_migrations_lock wappler_migrations_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: amazon
 --
 
@@ -1662,24 +1488,45 @@ ALTER TABLE ONLY public.wappler_migrations
 
 
 --
--- Name: idx_carrinho_evento; Type: INDEX; Schema: public; Owner: amazon
+-- Name: idx_cupom_codigo; Type: INDEX; Schema: public; Owner: amazon
 --
 
-CREATE INDEX idx_carrinho_evento ON public.carrinho USING btree (evento_id);
+CREATE INDEX idx_cupom_codigo ON public.vendas USING btree (cupom_codigo);
 
 
 --
--- Name: idx_carrinho_usuario; Type: INDEX; Schema: public; Owner: amazon
+-- Name: idx_data_criacao; Type: INDEX; Schema: public; Owner: amazon
 --
 
-CREATE INDEX idx_carrinho_usuario ON public.carrinho USING btree (usuario_id);
+CREATE INDEX idx_data_criacao ON public.vendas USING btree (data_criacao);
+
+
+--
+-- Name: idx_data_update; Type: INDEX; Schema: public; Owner: amazon
+--
+
+CREATE INDEX idx_data_update ON public.vendas USING btree (data_update);
+
+
+--
+-- Name: idx_eventos_id; Type: INDEX; Schema: public; Owner: amazon
+--
+
+CREATE INDEX idx_eventos_id ON public.vendas USING btree (evento_id);
 
 
 --
 -- Name: idx_eventos_nome; Type: INDEX; Schema: public; Owner: amazon
 --
 
-CREATE INDEX idx_eventos_nome ON public.eventos USING btree (evento_nome);
+CREATE INDEX idx_eventos_nome ON public.evento USING btree (evento_nome);
+
+
+--
+-- Name: idx_status_pagamento; Type: INDEX; Schema: public; Owner: amazon
+--
+
+CREATE INDEX idx_status_pagamento ON public.vendas USING btree (status_pagamento);
 
 
 --
@@ -1690,19 +1537,10 @@ CREATE INDEX idx_usuarios_email ON public.usuarios USING btree (usuario_email);
 
 
 --
--- Name: usuarios_compras FK_usuarios_compras_carrinho_transacoes; Type: FK CONSTRAINT; Schema: public; Owner: amazon
+-- Name: idx_usuarios_id; Type: INDEX; Schema: public; Owner: amazon
 --
 
-ALTER TABLE ONLY public.usuarios_compras
-    ADD CONSTRAINT "FK_usuarios_compras_carrinho_transacoes" FOREIGN KEY (transacoes_id) REFERENCES public.carrinho_transacoes(id);
-
-
---
--- Name: usuarios_compras FK_usuarios_compras_usuarios; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.usuarios_compras
-    ADD CONSTRAINT "FK_usuarios_compras_usuarios" FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id);
+CREATE INDEX idx_usuarios_id ON public.vendas USING btree (usuarios_id);
 
 
 --
@@ -1711,6 +1549,30 @@ ALTER TABLE ONLY public.usuarios_compras
 
 ALTER TABLE ONLY public.usuarios
     ADD CONSTRAINT "FK_usuarios_genero" FOREIGN KEY (genero) REFERENCES public.genero(id);
+
+
+--
+-- Name: vendas FK_vendas_evento_produtos; Type: FK CONSTRAINT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.vendas
+    ADD CONSTRAINT "FK_vendas_evento_produtos" FOREIGN KEY (evento_produtos_id) REFERENCES public.evento_produtos(id);
+
+
+--
+-- Name: vendas FK_vendas_eventos; Type: FK CONSTRAINT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.vendas
+    ADD CONSTRAINT "FK_vendas_eventos" FOREIGN KEY (evento_id) REFERENCES public.evento(id);
+
+
+--
+-- Name: vendas FK_vendas_usuarios; Type: FK CONSTRAINT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.vendas
+    ADD CONSTRAINT "FK_vendas_usuarios" FOREIGN KEY (usuarios_id) REFERENCES public.usuarios(id);
 
 
 --
@@ -1730,83 +1592,11 @@ ALTER TABLE ONLY public.associados
 
 
 --
--- Name: carrinho carrinho_evento_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho
-    ADD CONSTRAINT carrinho_evento_id_fkey FOREIGN KEY (evento_id) REFERENCES public.eventos(id);
-
-
---
--- Name: carrinho_itens_vendidos carrinho_itens_vendidos_carrinho_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_itens_vendidos
-    ADD CONSTRAINT carrinho_itens_vendidos_carrinho_id_fkey FOREIGN KEY (carrinho_id) REFERENCES public.carrinho(id);
-
-
---
--- Name: carrinho_itens_vendidos carrinho_itens_vendidos_produto_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_itens_vendidos
-    ADD CONSTRAINT carrinho_itens_vendidos_produto_id_fkey FOREIGN KEY (produto_id) REFERENCES public.evento_produtos(id);
-
-
---
--- Name: carrinho carrinho_status_pagamento_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho
-    ADD CONSTRAINT carrinho_status_pagamento_fkey FOREIGN KEY (status_pagamento) REFERENCES public.status_pagamento(id);
-
-
---
--- Name: carrinho carrinho_tipo_transacao_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho
-    ADD CONSTRAINT carrinho_tipo_transacao_fkey FOREIGN KEY (tipo_transacao) REFERENCES public.tipo_transacao(id);
-
-
---
--- Name: carrinho_transacoes carrinho_transacoes_carrinho_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_transacoes
-    ADD CONSTRAINT carrinho_transacoes_carrinho_id_fkey FOREIGN KEY (carrinho_id) REFERENCES public.carrinho(id);
-
-
---
--- Name: carrinho_transacoes carrinho_transacoes_evento_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_transacoes
-    ADD CONSTRAINT carrinho_transacoes_evento_id_fkey FOREIGN KEY (evento_id) REFERENCES public.eventos(id);
-
-
---
--- Name: carrinho_transacoes carrinho_transacoes_status_pagamento_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho_transacoes
-    ADD CONSTRAINT carrinho_transacoes_status_pagamento_id_fkey FOREIGN KEY (status_pagamento_id) REFERENCES public.status_pagamento(id);
-
-
---
--- Name: carrinho carrinho_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
---
-
-ALTER TABLE ONLY public.carrinho
-    ADD CONSTRAINT carrinho_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id);
-
-
---
 -- Name: evento_checklist evento_checklist_evento_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
 --
 
 ALTER TABLE ONLY public.evento_checklist
-    ADD CONSTRAINT evento_checklist_evento_id_fkey FOREIGN KEY (evento_id) REFERENCES public.eventos(id);
+    ADD CONSTRAINT evento_checklist_evento_id_fkey FOREIGN KEY (evento_id) REFERENCES public.evento(id);
 
 
 --
@@ -1830,7 +1620,7 @@ ALTER TABLE ONLY public.evento_checklist
 --
 
 ALTER TABLE ONLY public.evento_despesas
-    ADD CONSTRAINT evento_despesas_codigo_evento_fkey FOREIGN KEY (codigo_evento) REFERENCES public.eventos(id);
+    ADD CONSTRAINT evento_despesas_codigo_evento_fkey FOREIGN KEY (codigo_evento) REFERENCES public.evento(id);
 
 
 --
@@ -1846,7 +1636,7 @@ ALTER TABLE ONLY public.evento_despesas
 --
 
 ALTER TABLE ONLY public.evento_produtos
-    ADD CONSTRAINT evento_produtos_evento_id_fkey FOREIGN KEY (evento_id) REFERENCES public.eventos(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT;
+    ADD CONSTRAINT evento_produtos_evento_id_fkey FOREIGN KEY (evento_id) REFERENCES public.evento(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT;
 
 
 --
@@ -1858,10 +1648,10 @@ ALTER TABLE ONLY public.evento_produtos
 
 
 --
--- Name: eventos eventos_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
+-- Name: evento eventos_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: amazon
 --
 
-ALTER TABLE ONLY public.eventos
+ALTER TABLE ONLY public.evento
     ADD CONSTRAINT eventos_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT;
 
 
