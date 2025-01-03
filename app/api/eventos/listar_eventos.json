@@ -32,7 +32,59 @@
             "columns": [
               {
                 "table": "eventos",
-                "column": "*"
+                "column": "id"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_status"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_nome"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_resumo"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_descricao"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_local"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_banner_principal"
+              },
+              {
+                "table": "eventos",
+                "column": "tem_mapa"
+              },
+              {
+                "table": "eventos",
+                "column": "mapa_imagem"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_data_hora"
+              },
+              {
+                "table": "eventos",
+                "column": "evento_destaque"
+              },
+              {
+                "table": "eventos",
+                "column": "mostrar_sobre_evento"
+              },
+              {
+                "table": "eventos",
+                "column": "mostrar_whatsapp"
+              },
+              {
+                "table": "eventos",
+                "column": "numero_whatsapp"
               }
             ],
             "params": [],
@@ -42,7 +94,7 @@
             },
             "primary": "id",
             "joins": [],
-            "query": "select * from \"evento\" as \"eventos\"",
+            "query": "select \"id\", \"evento_status\", \"evento_nome\", \"evento_resumo\", \"evento_descricao\", \"evento_local\", \"evento_banner_principal\", \"tem_mapa\", \"mapa_imagem\", \"evento_data_hora\", \"evento_destaque\", \"mostrar_sobre_evento\", \"mostrar_whatsapp\", \"numero_whatsapp\" from \"evento\" as \"eventos\"",
             "sub": {
               "produtos": {
                 "table": {
@@ -127,14 +179,6 @@
                 "name": "id"
               },
               {
-                "type": "datetime",
-                "name": "data_criacao"
-              },
-              {
-                "type": "number",
-                "name": "usuario_id"
-              },
-              {
                 "type": "number",
                 "name": "evento_status"
               },
@@ -159,10 +203,6 @@
                 "name": "evento_banner_principal"
               },
               {
-                "type": "text",
-                "name": "evento_banner_secundario"
-              },
-              {
                 "type": "boolean",
                 "name": "tem_mapa"
               },
@@ -180,31 +220,7 @@
               },
               {
                 "type": "boolean",
-                "name": "pode_alterar_ingresso"
-              },
-              {
-                "type": "boolean",
-                "name": "pode_devolver_ingresso"
-              },
-              {
-                "type": "boolean",
-                "name": "aceita_pix"
-              },
-              {
-                "type": "boolean",
-                "name": "aceita_cartao"
-              },
-              {
-                "type": "number",
-                "name": "qtide_parcelas_cartao"
-              },
-              {
-                "type": "boolean",
                 "name": "mostrar_sobre_evento"
-              },
-              {
-                "type": "text",
-                "name": "slug_evento"
               },
               {
                 "type": "boolean",
@@ -213,22 +229,6 @@
               {
                 "type": "text",
                 "name": "numero_whatsapp"
-              },
-              {
-                "type": "boolean",
-                "name": "bar_online"
-              },
-              {
-                "type": "boolean",
-                "name": "tem_cupom"
-              },
-              {
-                "type": "text",
-                "name": "codigo_cupom"
-              },
-              {
-                "type": "number",
-                "name": "valor"
               },
               {
                 "name": "produtos",

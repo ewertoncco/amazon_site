@@ -1,4 +1,5 @@
-<!-- Wappler include head-page="layouts/dashboard" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="home" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
+<!-- Wappler include head-page="layouts/dashboard" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="home" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxFormatter:{}}" -->
+<dmx-serverconnect id="sc_dados" url="/api/dashboard/home"></dmx-serverconnect>
 <div class="container mt-3">
     <div class="row">
         <div class="col-xl-2 col-sm-2">
@@ -29,7 +30,7 @@
 
                         <div class="wigdet-two-content media-body text-end text-truncate">
                             <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">Devoluções</p>
-                            <h3 class="fw-medium my-2"><span data-plugin="counterup">35</span></h3>
+                            <h3 class="fw-medium my-2"><span data-plugin="counterup">{{sc_dados.data.devolucoes[0].total_devolucoes}}</span></h3>
                         </div>
                     </div>
                 </div>
@@ -47,7 +48,7 @@
 
                         <div class="wigdet-two-content media-body text-end text-truncate">
                             <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">cortesias</p>
-                            <h3 class="fw-medium my-2"><span data-plugin="counterup">120</span></h3>
+                            <h3 class="fw-medium my-2"><span data-plugin="counterup">{{sc_dados.data.cortesias[0].total_cortesias}}</span></h3>
                         </div>
                     </div>
                 </div>
@@ -65,7 +66,7 @@
 
                         <div class="wigdet-two-content media-body text-end text-truncate">
                             <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">usuários</p>
-                            <h3 class="fw-medium my-2">1.200</h3>
+                            <h3 class="fw-medium my-2">{{sc_dados.data.usuarios[0].total_usuarios}}</h3>
                         </div>
                     </div>
                 </div>
@@ -81,7 +82,7 @@
 
                         <div class="wigdet-two-content media-body text-end text-truncate">
                             <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">PIX</p>
-                            <h3 class="fw-medium my-2">1.200</h3>
+                            <h3 class="fw-medium my-2">{{sc_dados.data.vendas_pix[0].quantidade_pix}}</h3>
                         </div>
                     </div>
                 </div>
@@ -97,7 +98,7 @@
 
                         <div class="wigdet-two-content media-body text-end text-truncate">
                             <p class="m-0 text-uppercase fw-medium text-truncate" title="Statistics">CRÉDITO</p>
-                            <h3 class="fw-medium my-2">1.200</h3>
+                            <h3 class="fw-medium my-2">{{sc_dados.data.vendas_credito[0].quantidade_credito}}</h3>
                         </div>
                     </div>
                 </div>
@@ -117,144 +118,34 @@
 
                             <thead>
                                 <tr>
-                                    <th>
-                                        <div class="btn-group dropdown">
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                            </div>
-                                        </div>
-                                    </th>
                                     <th>Name</th>
-                                    <th>Ingresso</th>
+                                    <th>Item</th>
                                     <th>Evento</th>
                                     <th>Data</th>
                                     <th>Pag</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody is="dmx-repeat" id="ultimas_vendas" dmx-bind:repeat="sc_dados.data.ultimas_vendas.data">
                                 <tr>
-                                    <td>
-                                        <img src="assets/images/users/avatar-2.jpg" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm" />
-                                    </td>
 
                                     <td>
-                                        <h5 class="m-0 fw-medium">Aleff Cabral Feliciano&nbsp;</h5>
+                                        <h5 class="m-0 fw-medium">{{nome_participante}}</h5>
                                     </td>
 
-                                    <td>Réveillon (1º Lote)
-                                        <br>R$ 50,00
-                                    </td>
+                                    <td>{{produto_nome}}<br><i class="fas fa-solid fa-ticket  text-info"></i>&nbsp;{{(valor_final /100).formatCurrency('R$ ', ',', '.', 2)}}</td>
 
-                                    <td>Réveillon dos Desejos</td>
+                                    <td>{{evento_nome}}</td>
 
-                                    <td>
-                                        <i class="mdi mdi-calendar-clock text-warning"></i> 3265
-                                    </td>
+                                    <td><i class="mdi mdi-calendar-clock text-warning"></i>&nbsp;{{data_criacao.formatDate("dd/MM/yyyy HH:mm")}}</td>
 
-                                    <td>
-                                        <a href="#" class="table-action-btn"></a>
-                                        <a href="#" class="table-action-btn"><i class="mdi mdi-cash-sync"></i></a>
+                                    <td class="text-center">
+                                        <i class="fas fa-credit-card fa-lg" dmx-show="forma_pagamento_id==2"></i>
+                                        <i class="fas fa-brands fa-pix text-success fa-lg" dmx-show="forma_pagamento_id==1"></i>
+                                        <i class="fas fa-gift text-pink fa-lg" dmx-show="forma_pagamento_id==6"></i>
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/users/avatar-3.jpg" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm" />
-                                    </td>
 
-                                    <td>
-                                        <h5 class="m-0 fw-medium">Thifany Malmhan&nbsp;</h5>
-                                    </td>
-
-                                    <td>Réveillon (1º Lote)
-                                        <br>R$ 50,00
-                                    </td>
-
-                                    <td>Réveillon dos Desejos</td>
-
-                                    <td>
-                                        <i class="mdi mdi-calendar-clock text-warning"></i> 1365
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="table-action-btn"></a>
-                                        <a href="#" class="table-action-btn"><i class="mdi mdi-gift"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/users/avatar-4.jpg" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm" />
-                                    </td>
-
-                                    <td>
-                                        <h5 class="m-0 fw-medium">Gustavo Belo Brizolla&nbsp;</h5>
-                                    </td>
-
-                                    <td>Réveillon (1º Lote)
-                                        <br>R$ 50,00
-                                    </td>
-
-                                    <td>Réveillon dos Desejos</td>
-
-                                    <td>
-                                        <i class="mdi mdi-calendar-clock text-warning"></i> 115248
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="table-action-btn"></a>
-                                        <a href="#" class="table-action-btn"><i class="mdi mdi-credit-card"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/users/avatar-5.jpg" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm" />
-                                    </td>
-
-                                    <td>
-                                        <h5 class="m-0 fw-medium">Jose D. Delacruz</h5>
-                                    </td>
-
-                                    <td>New Réveillon (1º Lote)
-                                        <br>R$ 50,00
-                                    </td>
-
-                                    <td>Réveillon dos Desejos</td>
-
-                                    <td>
-                                        <i class="mdi mdi-calendar-clock text-warning"></i> 2451
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="table-action-btn"></a>
-                                        <a href="#" class="table-action-btn"><i class="mdi mdi-gift"></i></a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/users/avatar-8.jpg" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm" />
-                                    </td>
-
-                                    <td>
-                                        <h5 class="m-0 fw-medium">Simoni Mari de Barros&nbsp;</h5>
-                                    </td>
-
-                                    <td>Réveillon (1º Lote)
-                                        <br>R$ 50,00
-                                    </td>
-
-                                    <td>Réveillon dos Desejos</td>
-
-                                    <td>
-                                        <i class="mdi mdi-calendar-clock text-warning"></i> 3265
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="table-action-btn"></a>
-                                        <a href="#" class="table-action-btn"><i class="mdi mdi-credit-card"></i></a>
-                                    </td>
-                                </tr>
 
                             </tbody>
                         </table>
@@ -293,7 +184,7 @@
         <div class="col-xl-6 col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="header-title">pÚBLICO</h4>
+                    <h4 class="header-title">USUÁRIOS</h4>
                 </div>
                 <div class="card-body pt-2">
                     <div class="widget-chart text-center" dir="ltr">

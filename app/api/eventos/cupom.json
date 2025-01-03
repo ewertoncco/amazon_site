@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "evento_id"
+      },
+      {
+        "type": "text",
+        "name": "codigo_cupom"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "valor_cupom",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "evento",
+              "column": "valor"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.codigo_cupom}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_GET.evento_id}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "evento"
+          },
+          "primary": "id",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "evento.codigo_cupom",
+                "field": "evento.codigo_cupom",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.codigo_cupom}}",
+                "data": {
+                  "table": "evento",
+                  "column": "codigo_cupom",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "text",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "codigo_cupom"
+                  }
+                },
+                "operation": "="
+              },
+              {
+                "id": "evento.id",
+                "field": "evento.id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.evento_id}}",
+                "data": {
+                  "table": "evento",
+                  "column": "id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "increments",
+                    "default": "",
+                    "primary": true,
+                    "unique": true,
+                    "nullable": false,
+                    "name": "id"
+                  }
+                },
+                "operation": "="
+              },
+              {
+                "id": "evento.tem_cupom",
+                "field": "evento.tem_cupom",
+                "type": "boolean",
+                "operator": "equal",
+                "value": true,
+                "data": {
+                  "table": "evento",
+                  "column": "tem_cupom",
+                  "type": "boolean",
+                  "columnObj": {
+                    "type": "boolean",
+                    "default": "false",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "tem_cupom"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select \"valor\" from \"evento\" where \"evento\".\"codigo_cupom\" = ? and \"evento\".\"id\" = ? and \"evento\".\"tem_cupom\" = ?"
+        }
+      },
+      "meta": [
+        {
+          "type": "number",
+          "name": "valor"
+        }
+      ],
+      "outputType": "object",
+      "output": true
+    }
+  }
+}

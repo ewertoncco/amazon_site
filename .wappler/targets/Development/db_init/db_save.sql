@@ -705,12 +705,12 @@ CREATE TABLE public.vendas (
     evento_id integer NOT NULL,
     usuarios_id integer NOT NULL,
     evento_produtos_id integer NOT NULL,
-    status_pagamento integer NOT NULL,
+    status_pagamento_id integer NOT NULL,
     forma_pagamento_id integer NOT NULL,
-    valor_original numeric(10,2) NOT NULL,
-    valor_final numeric(10,2) NOT NULL,
+    valor_original integer NOT NULL,
+    valor_final integer NOT NULL,
     cupom_codigo text DEFAULT 0,
-    desconto_aplicado numeric(10,2) DEFAULT 0,
+    desconto_aplicado numeric,
     pag_key text,
     pag_qrcode text,
     pag_json json,
@@ -720,12 +720,14 @@ CREATE TABLE public.vendas (
     cpf_participante text NOT NULL,
     email_participante text,
     telefone_participante text,
-    pdf text,
-    data_resgate timestamp without time zone DEFAULT now(),
+    data_resgate timestamp without time zone,
     trocou_nome boolean DEFAULT false,
     nome_anterior text,
     cpf_anterior text,
-    qtide_parcelas integer DEFAULT 1 NOT NULL
+    qtide_parcelas integer DEFAULT 1 NOT NULL,
+    description text,
+    id_transaction integer,
+    qrcode text
 );
 
 
@@ -995,10 +997,10 @@ COPY public.evento_despesas (id, data_criacao, usuario_id, tipo_despesa, titulo,
 --
 
 COPY public.evento_produtos (id, data_criacao, usuario_id, evento_id, produto_nome, qtide_cadastrada, inicio_vendas, final_vendas, valor, ordem_lista, ativo, is_mesa, qtide_mesa, cortesia) FROM stdin;
-19	2024-12-13 09:33:14+00	9	\N	Bruno VIP	50	2024-12-13 12:00:00+00	2024-12-21 12:33:00+00	20	1	t	f	0	f
-20	2024-12-13 17:57:54+00	9	11	Murilo camarote (2 pessoas)	200	2024-12-13 08:00:00+00	2024-12-21 08:57:00+00	3000	1	t	t	2	f
 22	2024-12-15 17:37:41+00	9	11	Ingresso Pista (1º Lote)	10	2024-12-15 20:00:00+00	2024-12-16 20:37:00+00	1000	1	t	f	0	f
-21	2024-12-13 18:21:18+00	9	11	VIP (Pré-Venda)	1000	2024-12-13 18:00:00+00	2024-12-21 18:20:00+00	5000	1	t	f	0	f
+19	2024-12-13 09:33:14+00	9	\N	Bruno VIP	10	2024-12-13 12:00:00+00	2024-12-21 12:33:00+00	20	1	t	f	0	f
+20	2024-12-13 17:57:54+00	9	11	Murilo camarote (2 pessoas)	10	2024-12-13 08:00:00+00	2024-12-21 08:57:00+00	3000	1	t	t	2	f
+21	2024-12-13 18:21:18+00	9	11	VIP (Pré-Venda)	10	2024-12-13 18:00:00+00	2024-12-21 18:20:00+00	5000	1	t	f	0	f
 \.
 
 
@@ -1073,16 +1075,16 @@ COPY public.organizador_financeiro (id, data_criacao, organizador_banco, organiz
 --
 
 COPY public.parcelamento (id, numero_parcelas, taxa_juros, ativo, data_criacao, data_atualizacao) FROM stdin;
-1	1	1.00	t	2024-12-25 22:05:05.326925	\N
-7	7	28.00	t	2024-12-25 22:10:22.757022	\N
-10	10	40.00	t	2024-12-25 22:11:29.811416	\N
-9	9	36.00	t	2024-12-25 22:11:29.811102	\N
-8	8	32.00	t	2024-12-25 22:11:29.810673	\N
 2	2	0.08	t	2024-12-25 22:05:05.327166	\N
 3	3	0.12	t	2024-12-25 22:10:22.739352	\N
 4	4	0.16	t	2024-12-25 22:10:22.73975	\N
-5	5	0.20	t	2024-12-25 22:10:22.757185	\N
 6	6	0.24	t	2024-12-25 22:10:22.75687	\N
+5	5	0.20	t	2024-12-25 22:10:22.757185	\N
+8	8	0.32	t	2024-12-25 22:11:29.810673	\N
+7	7	0.28	t	2024-12-25 22:10:22.757022	\N
+9	9	0.36	t	2024-12-25 22:11:29.811102	\N
+10	10	0.40	t	2024-12-25 22:11:29.811416	\N
+1	1	0.00	t	2024-12-25 22:05:05.326925	\N
 \.
 
 
@@ -1149,7 +1151,9 @@ COPY public.usuarios_notificacoes_lidas (id, data_criacao, usuario_id, notificac
 -- Data for Name: vendas; Type: TABLE DATA; Schema: public; Owner: amazon
 --
 
-COPY public.vendas (id, data_criacao, data_update, evento_id, usuarios_id, evento_produtos_id, status_pagamento, forma_pagamento_id, valor_original, valor_final, cupom_codigo, desconto_aplicado, pag_key, pag_qrcode, pag_json, has_error, error_description, nome_participante, cpf_participante, email_participante, telefone_participante, pdf, data_resgate, trocou_nome, nome_anterior, cpf_anterior, qtide_parcelas) FROM stdin;
+COPY public.vendas (id, data_criacao, data_update, evento_id, usuarios_id, evento_produtos_id, status_pagamento_id, forma_pagamento_id, valor_original, valor_final, cupom_codigo, desconto_aplicado, pag_key, pag_qrcode, pag_json, has_error, error_description, nome_participante, cpf_participante, email_participante, telefone_participante, data_resgate, trocou_nome, nome_anterior, cpf_anterior, qtide_parcelas, description, id_transaction, qrcode) FROM stdin;
+24	2025-01-02 23:41:19.689237	2025-01-02 23:41:19.689237	11	9	22	3	2	1000	1000	0	0	\N	\N	{"CreditCard":{"Is3DSAuthenticated":false,"CardNumber":"000000******0000","Brand":99,"Installments":1,"ReturnCode":"4","MessageProvider":"Operation Successful"},"IdTransaction":102432186,"Token":"af020c61-01c0-4f73-a9e5-e4ec732e268c","Description":"O seu pagamento foi autorizado pela operadora do cartão de crédito.","Tid":"0102084408380","AuthorizationCode":"689612","Status":3,"Message":"Pagamento Autorizado"}	f	\N	Ewerton Oliveira	02679601904	ewerton.cco@gmail.com	49999590901	\N	f	\N	\N	1	O seu pagamento foi autorizado pela operadora do cartão de crédito.	102432186	0ca6f577-940c-4014-80af-5f4c55c43be7
+25	2025-01-02 23:42:13.471148	2025-01-02 23:42:13.471148	11	9	21	3	2	5000	5400	0	0	\N	\N	{"CreditCard":{"Is3DSAuthenticated":false,"CardNumber":"000000******0000","Brand":99,"Installments":1,"ReturnCode":"4","MessageProvider":"Operation Successful"},"IdTransaction":102432336,"Token":"95cddd62-621f-46d0-89d5-2ee28478512e","Description":"O seu pagamento foi autorizado pela operadora do cartão de crédito.","Tid":"0102084501953","AuthorizationCode":"244871","Status":3,"Message":"Pagamento Autorizado"}	f	\N	Luana	02679601904	ewerton.cco@gmail.com	49999590901	\N	f	\N	\N	2	O seu pagamento foi autorizado pela operadora do cartão de crédito.	102432336	23551fe0-e936-4289-a756-6624a4d0a43b
 \.
 
 
@@ -1286,7 +1290,7 @@ SELECT pg_catalog.setval('public.usuarios_notificacoes_lidas_id_seq', 1, false);
 -- Name: vendas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.vendas_id_seq', 1, false);
+SELECT pg_catalog.setval('public.vendas_id_seq', 25, true);
 
 
 --
@@ -1526,7 +1530,7 @@ CREATE INDEX idx_eventos_nome ON public.evento USING btree (evento_nome);
 -- Name: idx_status_pagamento; Type: INDEX; Schema: public; Owner: amazon
 --
 
-CREATE INDEX idx_status_pagamento ON public.vendas USING btree (status_pagamento);
+CREATE INDEX idx_status_pagamento ON public.vendas USING btree (status_pagamento_id);
 
 
 --
@@ -1565,6 +1569,22 @@ ALTER TABLE ONLY public.vendas
 
 ALTER TABLE ONLY public.vendas
     ADD CONSTRAINT "FK_vendas_eventos" FOREIGN KEY (evento_id) REFERENCES public.evento(id);
+
+
+--
+-- Name: vendas FK_vendas_forma_pagamento; Type: FK CONSTRAINT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.vendas
+    ADD CONSTRAINT "FK_vendas_forma_pagamento" FOREIGN KEY (forma_pagamento_id) REFERENCES public.forma_pagamento(id);
+
+
+--
+-- Name: vendas FK_vendas_status_pagamento; Type: FK CONSTRAINT; Schema: public; Owner: amazon
+--
+
+ALTER TABLE ONLY public.vendas
+    ADD CONSTRAINT "FK_vendas_status_pagamento" FOREIGN KEY (status_pagamento_id) REFERENCES public.status_pagamento(id);
 
 
 --

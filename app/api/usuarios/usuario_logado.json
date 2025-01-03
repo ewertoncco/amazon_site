@@ -19,10 +19,6 @@
         "columns": [
           {
             "table": "usuarios",
-            "column": "senha"
-          },
-          {
-            "table": "usuarios",
             "column": "usuario_email"
           },
           {
@@ -71,31 +67,11 @@
           },
           {
             "table": "usuarios",
-            "column": "notificacoes_push"
-          },
-          {
-            "table": "usuarios",
-            "column": "notificacoes_whats"
-          },
-          {
-            "table": "usuarios",
             "column": "foto"
           },
           {
             "table": "usuarios",
-            "column": "permissao"
-          },
-          {
-            "table": "usuarios",
             "column": "data_nascimento"
-          },
-          {
-            "table": "usuarios",
-            "column": "genero"
-          },
-          {
-            "table": "usuarios",
-            "column": "atualizar_senha"
           }
         ],
         "params": [
@@ -141,15 +117,11 @@
           "conditional": null,
           "valid": true
         },
-        "query": "select \"senha\", \"usuario_email\", \"usuario_nome\", \"usuario_apelido\", \"usuario_telefone\", \"usuario_cpf\", \"end_rua\", \"end_numero\", \"end_bairro\", \"end_cidade\", \"end_estado\", \"end_cep\", \"notificacoes_email\", \"notificacoes_push\", \"notificacoes_whats\", \"foto\", \"permissao\", \"data_nascimento\", \"genero\", \"atualizar_senha\" from \"usuarios\" where \"usuarios\".\"id\" = ?"
+        "query": "select \"usuario_email\", \"usuario_nome\", \"usuario_apelido\", \"usuario_telefone\", \"usuario_cpf\", \"end_rua\", \"end_numero\", \"end_bairro\", \"end_cidade\", \"end_estado\", \"end_cep\", \"notificacoes_email\", \"foto\", \"data_nascimento\" from \"usuarios\" where \"usuarios\".\"id\" = ?"
       }
     },
     "output": true,
     "meta": [
-      {
-        "type": "text",
-        "name": "senha"
-      },
       {
         "type": "text",
         "name": "usuario_email"
@@ -199,32 +171,12 @@
         "name": "notificacoes_email"
       },
       {
-        "type": "boolean",
-        "name": "notificacoes_push"
-      },
-      {
-        "type": "boolean",
-        "name": "notificacoes_whats"
-      },
-      {
         "type": "text",
         "name": "foto"
       },
       {
-        "type": "number",
-        "name": "permissao"
-      },
-      {
         "type": "text",
         "name": "data_nascimento"
-      },
-      {
-        "type": "number",
-        "name": "genero"
-      },
-      {
-        "type": "boolean",
-        "name": "atualizar_senha"
       }
     ],
     "outputType": "object"

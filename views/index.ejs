@@ -1,80 +1,77 @@
-<!-- Wappler include head-page="layouts/homepage" bootstrap5="custom" is="dmx-app" id="comeco" appConnect="local" components="{dmxSwiper:{},dmxFormatter:{},dmxTyped:{},dmxSlideshow:{},dmxFormRepeat:{}}" fontawesome_6="local" -->
+<!-- Wappler include head-page="layouts/homepage" bootstrap5="custom" is="dmx-app" id="comeco" appConnect="local" components="{dmxSwiper:{},dmxFormatter:{},dmxTyped:{},dmxSlideshow:{},dmxFormRepeat:{},dmxPdfCreator:{}}" fontawesome_6="local" -->
 <dmx-datetime id="var1"></dmx-datetime>
 <meta name="ac:route" content="/index">
-<section id="eventos" class="min-vh-100">
-    <section id="eventos" class="d-flex align-items-stretch">
-        <div class="container-fluid min-vh-100">
-            <div is="dmx-swiper" id="swiper1" class="h-85" autoplay="true" loop="true" dmx-bind:slides="sc_listar_eventos.data.query.data.filter(`evento_destaque==true`)">
-                <div class="swiper-slide h-100">
-                    <div class="row h-100 align-items-center py-4">
-                        <!-- Coluna Esquerda (Texto e Descrição) -->
-                        <div class="col-lg-8 d-flex col flex-column">
+<section id="eventos" class="d-flex align-items-stretch">
+    <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
+        <div is="dmx-swiper" id="swiper1" class="h-85 w-100" autoplay="true" loop="true" dmx-bind:slides="sc_listar_eventos.data.query.data.filter(`evento_destaque==true`)">
+            <div class="swiper-slide h-100">
+                <div class="row h-100 align-items-center py-4">
+                    <!-- Coluna Esquerda (Texto e Descrição) -->
+                    <div class="col-lg-8 d-flex col flex-column">
 
-                            <!-- Parte Superior (Título, Subtítulo, Data) -->
-                            <div>
-                                <div class="mt-5 text-center">
-                                    <!-- Data do evento -->
-                                    <h4 class="sub-title text-center text-md-start text-lg-start text-xl-start text-xxl-start">{{evento_data_hora.formatDate('dd MMM yyyy')}}</h4>
+                        <!-- Parte Superior (Título, Subtítulo, Data) -->
+                        <div>
+                            <div class="mt-1 text-center">
+                                <!-- Data do evento -->
+                                <h4 class="sub-title text-center text-md-start text-lg-start text-xl-start text-xxl-start">{{evento_data_hora.formatDate('dd MMM yyyy')}}</h4>
 
-                                    <!-- Nome do evento -->
-                                    <h1 class="display-1 fw-bold text-center text-md-start text-lg-start text-xl-start text-xxl-start" style="font-size: 60px;">{{evento_nome}}</h1>
-
-
-                                    <!-- Resumo do evento -->
-                                    <h3 class="text-muted fw-bold text-md-start text-lg-start text-xl-start text-xxl-start h-75">{{evento_resumo}}</h3>
-
-                                    <!-- Descrição com limite de 5 linhas, espaçamento maior entre as linhas e reticências -->
-                                    <div class="d-flex justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start justify-content-center mb-3">
-                                        <h5 class="text-muted text-md-start text-lg-start text-xxl-start mt-3 w-75 fw-light text-xl-start text-sm-center text-center" style="line-height: 1.75; max-height: calc(1.75em * 5); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
-                                            {{evento_descricao}}
-                                        </h5>
-                                    </div>
+                                <!-- Nome do evento -->
+                                <h1 class="display-1 fw-bold text-center text-md-start text-lg-start text-xl-start text-xxl-start" style="font-size: 50px;">{{evento_nome}}</h1>
 
 
+                                <!-- Resumo do evento -->
+                                <h4 class="text-muted fw-bold text-md-start text-lg-start text-xl-start text-xxl-start h-75">{{evento_resumo}}</h4>
 
+                                <!-- Descrição com limite de 5 linhas, espaçamento maior entre as linhas e reticências -->
+                                <div class="d-flex justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start justify-content-center mb-3">
+                                    <h5 class="text-muted text-md-start text-lg-start text-xxl-start mt-3 fw-light text-xl-start text-sm-center text-center" style="line-height: 1.75; max-height: calc(1.75em * 5); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                        {{evento_descricao}}
+                                    </h5>
                                 </div>
 
-                            </div>
-                            <!-- Parte Inferior (Contagem Regressiva e Botões) -->
-                            <div class="row" dmx-show="(((var1.datetime.secondsUntil(evento_data_hora)/60)%60)).floor()&lt;0">
-                                <div class="col">
-                                    <p style="font-size: 30px;" class="text-primary fw-bold">Evento Realizado</p>
-                                </div>
-                            </div>
-                            <div class="row text-center mt-auto mb-4 justify-content-xxl-start justify-content-center justify-content-xl-start justify-content-lg-start justify-content-md-start justify-content-sm-start" id="contagem_regressiva" dmx-hide="(((var1.datetime.secondsUntil(evento_data_hora)/60)%60)).floor()&lt;0">
-                                <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
-                                    <h2 id="days2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora))/ 86400)%365).floor()}}</h2>
-                                    <h6 class="fw-light">Dias</h6>
-                                </div>
-                                <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
-                                    <h2 id="hours2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)/3600)%24)).floor()}}</h2>
-                                    <h6 class="fw-light">Horas</h6>
-                                </div>
-                                <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
-                                    <h2 id="minutes2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)/60)%60)).floor()}}</h2>
-                                    <h6 class="fw-light">Minutos</h6>
-                                </div>
-                                <div class="align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3">
-                                    <h2 id="seconds2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)%60))).floor()}}</h2>
-                                    <h6 class="fw-light">Segundos</h6>
-                                </div>
-                                <div class="align-self-center col-xl-2 col-lg-2 col-sm-6 col-6 col-xxl-4">
-                                    <a class="btn btn-primary rounded mt-3 pt-2 pb-2 btn-lg mt-xxl-0" dmx-on:click="browser1.goto('/evento/'+id)">COMPRAR AGORA</a>
-                                </div>
+
+
                             </div>
 
                         </div>
-                        <!-- Coluna Direita (Imagem) -->
-                        <div class="col-lg-4 d-flex align-items-center justify-content-center col-12 h-100">
-                            <img class="pt-2 pb-2 ps-2 pe-1 img-fluid" style="object-fit: cover;" dmx-bind:src="evento_banner_principal">
+                        <!-- Parte Inferior (Contagem Regressiva e Botões) -->
+                        <div class="row" dmx-show="(((var1.datetime.secondsUntil(evento_data_hora)/60)%60)).floor()&lt;0">
+                            <div class="col">
+                                <p style="font-size: 30px;" class="text-primary fw-bold">Evento Realizado</p>
+                            </div>
                         </div>
+                        <div class="row text-center mt-auto mb-4 justify-content-center" id="contagem_regressiva" dmx-hide="(((var1.datetime.secondsUntil(evento_data_hora)/60)%60)).floor()&lt;0">
+                            <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 col-auto">
+                                <h2 id="days2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora))/ 86400)%365).floor()}}</h2>
+                                <h6 class="fw-light">Dias</h6>
+                            </div>
+                            <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 col-auto">
+                                <h2 id="hours2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)/3600)%24)).floor()}}</h2>
+                                <h6 class="fw-light">Horas</h6>
+                            </div>
+                            <div class="border-end align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 col-auto">
+                                <h2 id="minutes2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)/60)%60)).floor()}}</h2>
+                                <h6 class="fw-light">Minutos</h6>
+                            </div>
+                            <div class="align-self-center col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 col-auto">
+                                <h2 id="seconds2" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(evento_data_hora)%60))).floor()}}</h2>
+                                <h6 class="fw-light">Segundos</h6>
+                            </div>
+                            <div class="align-self-center col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-auto">
+                                <a class="btn btn-primary rounded btn-lg mt-xxl-0 pt-2 pb-2" dmx-on:click="browser1.goto('/evento/'+id)">COMPRAR AGORA</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- Coluna Direita (Imagem) -->
+                    <div class="col-lg-4 d-flex align-items-center justify-content-center col-12 h-100">
+                        <img class="pt-2 pb-2 ps-2 pe-1 img-fluid" style="object-fit: cover;" dmx-bind:src="evento_banner_principal">
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-
+    </div>
 </section>
 <section id="lista_eventos">
     <div class="container mt-4 mb-4">
@@ -90,20 +87,25 @@
                             </div>
 
                             <!-- Middle - Title and Subtitle -->
-                            <div class="col-md-4">
-                                <div class="card-body">
+                            <div class="col-md-4 align-self-center">
+                                <div class="card-body text-center">
                                     <h3 class="card-title">{{evento_nome}}</h3>
                                     <p class="card-subtitle text-muted">{{evento_resumo}}</p>
                                 </div>
 
-                                <div class="d-flex align-items-center p-3 gap-3 mt-3 justify-content-center flex-row justify-content-md-start">
-                                    <h4 class="sub-title mt-0 mb-0 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start"><i class="fas fa-calendar-alt text-primary"></i>&nbsp; {{evento_data_hora.formatDate('dd MMM yyyy')}}&nbsp;</h4>
-                                    <h4 class="sub-title mt-0 mb-0"><i class="fas fa-clock text-primary"></i>&nbsp; {{evento_data_hora.formatDate('HH:mm')}}</h4>
+                                <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 mt-3">
+                                    <h4 class="sub-title mt-0 mb-0 d-flex align-items-center">
+                                        <i class="fas fa-calendar-alt text-primary"></i>&nbsp; {{evento_data_hora.formatDate('dd MMM yyyy')}}
+                                    </h4>
+                                    <h4 class="sub-title mt-0 mb-0 d-flex align-items-center">
+                                        <i class="fas fa-clock text-primary"></i>&nbsp; {{evento_data_hora.formatDate('HH:mm')}}
+                                    </h4>
                                 </div>
+
                             </div>
 
                             <!-- Right side - Event Description -->
-                            <div class="col-md-5">
+                            <div class="col-md-5 align-self-center">
                                 <div class="card-body">
                                     <p class="card-text">{{evento_descricao}}</p>
                                 </div>
@@ -119,111 +121,123 @@
 </section>
 
 <section id="informacoes">
-    <div class="container">
-
-        <div class="row text-center">
-            <div class="col-sm-12">
-                <h2 class="title">Informações</h2>
-                <p class="slogan">Você sempre atualizado</p>
+    <section id="informacoes">
+        <div class="container px-1 px-md-3 mt-4 mb-4">
+            <div class="row text-center mb-4">
+                <div class="col-sm-12">
+                    <h2 class="title">Informações</h2>
+                    <p class="slogan">Você sempre atualizado</p>
+                </div>
             </div>
-        </div>
-        <!-- end row -->
 
-        <div class="row p-t-50" is="dmx-repeat" id="info" dmx-bind:repeat="sc_listar_eventos.data.informacoes" key="$key">
-            <div class="col- col-12">
-                <div class="row no-gutters align-items-center">
-                    <div class="col-auto">
-                        <img alt="..." dmx-bind:src="imagem_url" height="100" width="70">
-                    </div>
-                    <div class="col-8">
-                        <div class="card-body py-2">
-                            <h5 class="header-title">{{titulo}}</h5>
-                            <p class="card-text">{{conteudo}}</p>
-                            <p class="card-text"><small class="text-muted">{{data_criacao.formatDate('dd/MM/yyyy')}}</small></p>
+            <!-- Cartões de Informações -->
+            <div class="row row-cols-2 row-cols-md-2 g-4" is="dmx-repeat" id="repeat1" dmx-bind:repeat="sc_listar_eventos.data.informacoes">
+                <!-- Repetição dos itens -->
+                <div key="$key" class="col">
+
+                    <div class="card shadow-sm border-0">
+                        <div class="row g-0">
+                            <!-- Imagem -->
+                            <div class="col-auto">
+                                <img dmx-bind:src="imagem_url" alt="Imagem do evento" class="img-fluid rounded-start" style="width: 105px; height: 150px; object-fit: cover;">
+                            </div>
+                            <!-- Conteúdo -->
+                            <div class="col d-flex flex-column justify-content-center">
+                                <div class="card-body">
+                                    <h5 class="header-title">{{titulo}}</h5>
+                                    <p class="card-text">{{conteudo}}</p>
+                                    <p class="card-text"><small class="text-muted">{{data_criacao.formatDate('dd/MM/yyyy')}}</small></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- Fim da Repetição -->
             </div>
+
         </div>
-    </div> <!-- end Container -->
-</section>
-
-<section id="faq">
-
-    <div class="card-body text-center">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="text-center mt-3">
-                    <h3 class="fw-semibold">Perguntas frequentes</h3>
-                    <p class="text-muted mt-3 mb-2">Se você tem dúvidas, confira abaixo as respostas para as perguntas mais comuns. Caso não encontre o que procura, entre em contato conosco.</p>
+    </section>
 
 
 
+
+
+
+    <section id="faq">
+
+        <div class="card-body text-center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mt-3">
+                        <h3 class="fw-semibold">Perguntas frequentes</h3>
+                        <p class="text-muted mt-3 mb-2">Se você tem dúvidas, confira abaixo as respostas para as perguntas mais comuns. Caso não encontre o que procura, entre em contato conosco.</p>
+
+
+
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+
+
+            <div class="row mt-4">
+                <div class="col-lg-4">
+                    <div class="faq-box text-center p-4">
+                        <img src="/assets/images/faq_icons/ingresso.png" alt="icon" class="img-fluid avatar-md">
+                        <h4 class="mt-4 fw-semibold">Os ingressos são nominais?</h4>
+                        <p class="mb-0">Sim. A entrada no evento só é permitida ao portador do ingresso, que deve apresentar um documento de identificação oficial correspondente ao CPF e nome registrados no ingresso.</p>
+                    </div>
                 </div>
-            </div><!-- end col -->
-        </div><!-- end row -->
+                <!--/col-sm-4 -->
 
-
-        <div class="row mt-4">
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/ingresso.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Os ingressos são nominais?</h4>
-                    <p class="mb-0">Sim. A entrada no evento só é permitida ao portador do ingresso, que deve apresentar um documento de identificação oficial correspondente ao CPF e nome registrados no ingresso.</p>
+                <div class="col-lg-4">
+                    <div class="faq-box text-center p-4">
+                        <img src="/assets/images/faq_icons/edit.png" alt="icon" class="img-fluid avatar-md">
+                        <h4 class="mt-4 fw-semibold">Porque o CPF no ingresso?</h4>
+                        <p class="mb-0">Para as transações de compra, é utilizado o CPF do usuário logado. Certifique-se de que o CPF esteja corretamente preenchido para evitar problemas com o pagamento. Para fazer alterações, basta acessar o seu perfil.</p>
+                    </div>
                 </div>
+                <!--/col-sm-4 -->
+
+                <div class="col-lg-4">
+                    <div class="faq-box text-center p-4">
+                        <img src="/assets/images/faq_icons/devolver.png" alt="icon" class="img-fluid avatar-md">
+                        <h4 class="mt-4 fw-semibold">Devolução e reembolso</h4>
+                        <p class="mb-0">Você tem até 07 (sete) dias após a compra para solicitar a devolução do ingresso, exceto nos 02 (dois) dias que antecedem o evento. O reembolso é efetuado integralmente e de forma automática pelo método de pagamento utilizado, em até 10 dias.</p>
+                    </div>
+                </div>
+                <!--/col-sm-4 -->
             </div>
-            <!--/col-sm-4 -->
+            <!-- end row -->
 
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/edit.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Porque o CPF no ingresso?</h4>
-                    <p class="mb-0">Para as transações de compra, é utilizado o CPF do usuário logado. Certifique-se de que o CPF esteja corretamente preenchido para evitar problemas com o pagamento. Para fazer alterações, basta acessar o seu perfil.</p>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="faq-box text-center p-4">
+                        <img src="/assets/images/faq_icons/transferir.png" alt="icon" class="img-fluid avatar-md">
+                        <h4 class="mt-4 fw-semibold">Transferência do ingresso</h4>
+                        <p class="mb-0">Você pode ceder o ingresso 01 (uma) única vez, desde que seja feito até 01 (um) dia antes do evento.</p>
+                    </div>
                 </div>
-            </div>
-            <!--/col-sm-4 -->
+                <!--/col-sm-4 -->
 
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/devolver.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Devolução e reembolso</h4>
-                    <p class="mb-0">Você tem até 07 (sete) dias após a compra para solicitar a devolução do ingresso, exceto nos 02 (dois) dias que antecedem o evento. O reembolso é efetuado integralmente e de forma automática pelo método de pagamento utilizado, em até 10 dias.</p>
+                <div class="col-lg-4">
+                    <div class="faq-box text-center p-4">
+                        <img src="/assets/images/faq_icons/search.png" alt="icon" class="img-fluid avatar-md">
+                        <h4 class="mt-4 fw-semibold">Onde acho meu ingresso?</h4>
+                        <p class="mb-0">Após a confirmação do pagamento, seus ingressos estarão disponíveis no aplicativo. Apresente-os junto com um documento de identificação na entrada do evento. Você pode baixá-los em PDF ou mostrá-los diretamente no aplicativo. Um QR Code será escaneado na entrada.</p>
+                    </div>
                 </div>
+                <!--/col-sm-4 -->
+
+                <div class="col-lg-4">
+                    <div class="faq-box text-center p-4">
+                        <img src="/assets/images/faq_icons/suporte.png" alt="icon" class="img-fluid avatar-md">
+                        <h4 class="mt-4 fw-semibold">Suporte</h4>
+                        <p class="mb-0">Nosso suporte está sempre à disposição para ajudar você com qualquer dúvida ou necessidade, garantindo uma experiência tranquila e segura.</p>
+                    </div>
+                </div>
+                <!--/col-sm-4 -->
             </div>
-            <!--/col-sm-4 -->
+            <!-- end row -->
+
         </div>
-        <!-- end row -->
-
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/transferir.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Transferência do ingresso</h4>
-                    <p class="mb-0">Você pode ceder o ingresso 01 (uma) única vez, desde que seja feito até 01 (um) dia antes do evento.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/search.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Onde acho meu ingresso?</h4>
-                    <p class="mb-0">Após a confirmação do pagamento, seus ingressos estarão disponíveis no aplicativo. Apresente-os junto com um documento de identificação na entrada do evento. Você pode baixá-los em PDF ou mostrá-los diretamente no aplicativo. Um QR Code será escaneado na entrada.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/suporte.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Suporte</h4>
-                    <p class="mb-0">Nosso suporte está sempre à disposição para ajudar você com qualquer dúvida ou necessidade, garantindo uma experiência tranquila e segura.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-        </div>
-        <!-- end row -->
-
-        <button type="button" class="btn btn-primary waves-effect waves-light mt-2 me-1"><i class="fab fa-whatsapp"></i>&nbsp;Entre em contato</button>
-    </div>
-</section>
+    </section>

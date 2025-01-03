@@ -1,0 +1,625 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "usuarios",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "usuarios",
+                "column": "data_criacao",
+                "alias": "total_usuarios",
+                "aggregate": "COUNT"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "usuarios"
+            },
+            "primary": "id",
+            "joins": [],
+            "groupBy": [],
+            "query": "select count(\"data_criacao\") as \"total_usuarios\" from \"usuarios\""
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "datetime",
+            "name": "total_usuarios"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "vendas_credito",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "vendas",
+                "column": "valor_final",
+                "alias": "total_credito",
+                "aggregate": "SUM",
+                "recid": 1
+              },
+              {
+                "table": "vendas",
+                "column": "id",
+                "alias": "quantidade_credito",
+                "aggregate": "COUNT",
+                "recid": 2
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "vendas"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "vendas.status_pagamento_id",
+                  "field": "vendas.status_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 3,
+                  "data": {
+                    "table": "vendas",
+                    "column": "status_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "references": "id",
+                      "inTable": "status_pagamento",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "status_pagamento_id"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "vendas.forma_pagamento_id",
+                  "field": "vendas.forma_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 2,
+                  "data": {
+                    "table": "vendas",
+                    "column": "forma_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "referenceType": "integer",
+                      "references": "id",
+                      "inTable": "forma_pagamento",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "forma_pagamento_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select sum(\"valor_final\") as \"total_credito\", count(\"id\") as \"quantidade_credito\" from \"vendas\" where \"vendas\".\"status_pagamento_id\" = ? and \"vendas\".\"forma_pagamento_id\" = ?",
+            "groupBy": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "total_credito"
+          },
+          {
+            "type": "number",
+            "name": "quantidade_credito"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "vendas_pix",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "vendas",
+                "column": "valor_final",
+                "alias": "total_pix",
+                "aggregate": "SUM"
+              },
+              {
+                "table": "vendas",
+                "column": "id",
+                "alias": "quantidade_pix",
+                "aggregate": "COUNT"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "vendas"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "vendas.status_pagamento_id",
+                  "field": "vendas.status_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 3,
+                  "data": {
+                    "table": "vendas",
+                    "column": "status_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "references": "id",
+                      "inTable": "status_pagamento",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "status_pagamento_id"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "vendas.forma_pagamento_id",
+                  "field": "vendas.forma_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "vendas",
+                    "column": "forma_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "referenceType": "integer",
+                      "references": "id",
+                      "inTable": "forma_pagamento",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "forma_pagamento_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select sum(\"valor_final\") as \"total_pix\", count(\"id\") as \"quantidade_pix\" from \"vendas\" where \"vendas\".\"status_pagamento_id\" = ? and \"vendas\".\"forma_pagamento_id\" = ?",
+            "groupBy": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "total_pix"
+          },
+          {
+            "type": "number",
+            "name": "quantidade_pix"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "cortesias",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "vendas",
+                "column": "data_criacao",
+                "alias": "total_cortesias",
+                "aggregate": "COUNT"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "vendas"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "vendas.status_pagamento_id",
+                  "field": "vendas.status_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 3,
+                  "data": {
+                    "table": "vendas",
+                    "column": "status_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "references": "id",
+                      "inTable": "status_pagamento",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "status_pagamento_id"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "vendas"
+                },
+                {
+                  "id": "vendas.forma_pagamento_id",
+                  "field": "vendas.forma_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 7,
+                  "data": {
+                    "table": "vendas",
+                    "column": "forma_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "referenceType": "integer",
+                      "references": "id",
+                      "inTable": "forma_pagamento",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "forma_pagamento_id"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "vendas"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select count(\"data_criacao\") as \"total_cortesias\" from \"vendas\" where \"vendas\".\"status_pagamento_id\" = ? and \"vendas\".\"forma_pagamento_id\" = ?",
+            "groupBy": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "datetime",
+            "name": "total_cortesias"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "devolucoes",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "vendas",
+                "column": "data_criacao",
+                "alias": "total_devolucoes",
+                "aggregate": "COUNT"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "vendas"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "vendas.status_pagamento_id",
+                  "field": "vendas.status_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 6,
+                  "data": {
+                    "table": "vendas",
+                    "column": "status_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "references": "id",
+                      "inTable": "status_pagamento",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "status_pagamento_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select count(\"data_criacao\") as \"total_devolucoes\" from \"vendas\" where \"vendas\".\"status_pagamento_id\" = ?",
+            "groupBy": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "datetime",
+            "name": "total_devolucoes"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "ultimas_vendas",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "limit": 5,
+            "columns": [
+              {
+                "table": "vendas",
+                "column": "data_criacao"
+              },
+              {
+                "table": "vendas",
+                "column": "nome_participante"
+              },
+              {
+                "table": "evento",
+                "column": "evento_nome"
+              },
+              {
+                "table": "itens",
+                "column": "produto_nome"
+              },
+              {
+                "table": "vendas",
+                "column": "forma_pagamento_id"
+              },
+              {
+                "table": "vendas",
+                "column": "valor_final"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "vendas"
+            },
+            "primary": "id",
+            "joins": [
+              {
+                "table": "evento",
+                "column": "*",
+                "alias": "evento",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "evento",
+                      "column": "id",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "vendas",
+                        "column": "evento_id"
+                      }
+                    }
+                  ]
+                },
+                "primary": "id"
+              },
+              {
+                "table": "evento_produtos",
+                "column": "*",
+                "alias": "itens",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "itens",
+                      "column": "id",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "vendas",
+                        "column": "evento_produtos_id"
+                      }
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "vendas.status_pagamento_id",
+                  "field": "vendas.status_pagamento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 3,
+                  "data": {
+                    "table": "vendas",
+                    "column": "status_pagamento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "references": "id",
+                      "inTable": "status_pagamento",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "status_pagamento_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select \"vendas\".\"data_criacao\", \"vendas\".\"nome_participante\", \"evento\".\"evento_nome\", \"itens\".\"produto_nome\", \"vendas\".\"forma_pagamento_id\", \"vendas\".\"valor_final\" from \"vendas\" left join \"evento\" as \"evento\" on \"evento\".\"id\" = \"vendas\".\"evento_id\" left join \"evento_produtos\" as \"itens\" on \"itens\".\"id\" = \"vendas\".\"evento_produtos_id\" where \"vendas\".\"status_pagamento_id\" = ? limit ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "datetime",
+                "name": "data_criacao"
+              },
+              {
+                "type": "text",
+                "name": "nome_participante"
+              },
+              {
+                "type": "text",
+                "name": "evento_nome"
+              },
+              {
+                "type": "text",
+                "name": "produto_nome"
+              },
+              {
+                "type": "number",
+                "name": "forma_pagamento_id"
+              },
+              {
+                "type": "number",
+                "name": "valor_final"
+              }
+            ]
+          }
+        ],
+        "outputType": "object",
+        "type": "dbconnector_paged_select"
+      }
+    ]
+  }
+}

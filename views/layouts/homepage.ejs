@@ -50,11 +50,16 @@
   <script src="/dmxAppConnect/dmxScheduler/dmxScheduler.js" defer></script>
   <link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
   <script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
+  <script src="/dmxAppConnect/dmxPdfCreator/dmxPdfCreator.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.9/build/pdfmake.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.9/build/vfs_fonts.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake@2.5.2/browser.min.js" defer></script>
 </head>
 
 <body is="dmx-app" id="homepage">
-
   <dmx-datastore id="datastore_carrinho"></dmx-datastore>
+
+  <dmx-session-manager id="total_carrinho"></dmx-session-manager>
   <dmx-serverconnect id="sc_parcelamento" url="/api/parcelamento/parcelamento" dmx-param:evento_id="query.id_evento"></dmx-serverconnect>
   <dmx-datetime id="data_hora" interval="minutes"></dmx-datetime>
   <dmx-value id="validade_carrinho"></dmx-value>
@@ -93,7 +98,7 @@
                       </td>
 
                       <td class="text-center">
-                        <button id="btn1" class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id});sc_parcelamento.reset();sc_parcelamento.load({})"><i class="fas fa-trash-alt text-danger"></i></button>
+                        <button id="btn1" class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id});sc_parcelamento.reset();sc_parcelamento.load({});total_carrinho.set('valor_total',total_carrinho.data.valor_total-item_valor)"><i class="fas fa-trash-alt text-danger"></i></button>
                       </td>
                     </tr>
 
@@ -103,18 +108,18 @@
                       <td colspan="3">
 
                         <div class="row g-2 justify-content-start">
-                          <button id="btn2" class="btn text-start w-50 text-bg-light text-primary" dmx-on:click="participante_nome.setValue(sc_usuario_logado.data.query.usuario_nome);participante_cpf.setValue(sc_usuario_logado.data.query.usuario_cpf);participante_email.setValue(sc_usuario_logado.data.query.usuario_email);participante_telefone.setValue(sc_usuario_logado.data.query.usuario_telefone)" dmx-hide="datastore_carrinho.data[0].cpf.contains(sc_usuario_logado.data.query.usuario_cpf)">Completar com meus dados</button>
+                          <button id="btn2" class="btn text-start w-50 text-bg-light text-primary" dmx-on:click="nome.setValue(sc_usuario_logado.data.query.usuario_nome);cpf.setValue(sc_usuario_logado.data.query.usuario_cpf);email.setValue(sc_usuario_logado.data.query.usuario_email);telefone.setValue(sc_usuario_logado.data.query.usuario_telefone)" dmx-hide="datastore_carrinho.data[0].cpf.contains(sc_usuario_logado.data.query.usuario_cpf)">Completar com meus dados</button>
                           <div class="col-7">
-                            <input id="participante_nome" name="participante_nome" type="text" class="form-control" placeholder="Digite o nome do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_nome: value, nome: value})" dmx-bind:value="nome" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
+                            <input id="nome" name="nome" type="text" class="form-control" placeholder="Digite o nome do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{nome: value})" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}" required="" data-msg-required="Obrigatório">
                           </div>
                           <div class="col-5">
-                            <input id="participante_cpf" name="participante_cpf" type="text" onkeyup="formatCPF(this)" class="form-control" placeholder="Digite o CPF do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_cpf: participante_cpf.value, cpf: value})" dmx-bind:value="cpf" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
+                            <input id="cpf" name="cpf" type="text" onkeyup="formatCPF(this)" class="form-control" placeholder="Digite o CPF do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{cpf: cpf.value, cpf: value})" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}" required="" data-msg-required="Obrigatório">
                           </div>
                           <div class="col-7">
-                            <input id="participante_email" name="participante_email" type="text" class="form-control" placeholder="Digite o email do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_email: participante_email.value, email: value})" dmx-bind:value="email" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
+                            <input id="email" name="email" type="text" class="form-control" placeholder="Digite o email do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{email: email.value, email: value})" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}" required="" data-msg-required="Obrigatório" data-rule-email="">
                           </div>
                           <div class="col-5">
-                            <input id="participante_telefone" name="participante_telefone" type="text" onkeyup="formatTelefone(this)" class="form-control" placeholder="Digite o telefone do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_telefone: value, telefone: value})" dmx-bind:value="telefone" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
+                            <input id="telefone" name="telefone" type="text" onkeyup="formatTelefone(this)" class="form-control" placeholder="Digite o telefone do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{telefone: value})" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}" required="" data-msg-required="Obrigatório">
                           </div>
 
                         </div>
@@ -135,7 +140,7 @@
                 <div class="col">
                   <div class="d-flex flex-row gap-1 justify-content-end">
                     <h4>Total</h4>
-                    <h4>{{(datastore_carrinho.data.sum(`item_valor`).toNumber() / 100).formatCurrency(' R$ ', ',', '.', 2)}}</h4>
+                    <h4>{{(total_carrinho.data.valor_total.toNumber() / 100).formatCurrency(' R$ ', ',', '.', 2)}}</h4>
                   </div>
 
                 </div>
@@ -156,9 +161,14 @@
           </div>
           <div class="modal-footer mt-0" dmx-hide="datastore_carrinho.data.isEmpty()">
             <button type="button" class="btn btn-info gap-1" dmx-on:click="carrinho.hide();step.setValue(1)">
-              <i class="fas fa-cart-plus"></i>ADICIONAR MAIS ITENS</button>
-            <button type="button" class="btn btn-success" dmx-on:click="step.setValue(2);carrinho.hide();sc_parcelamento.reset();sc_parcelamento.load({})">PAGAR</button>
+              <i class="fas fa-cart-plus"></i> ADICIONAR MAIS ITENS
+            </button>
+            <button type="button" class="btn btn-success gap-1" dmx-on:click="step.setValue(2);carrinho.hide();sc_parcelamento.reset();sc_parcelamento.load({})">
+              <i class="fas fa-running"></i>
+              IR PARA O PAGAMENTO
+            </button>
           </div>
+
         </div>
       </div>
     </div>
@@ -199,7 +209,7 @@
             </button>
           </div>
           <div class="col-auto align-self-center">
-            <button id="meus_ingressos" class="btn btn-link waves-effect" style="width: 160px; height: 40px;" dmx-on:click="browser1.goto('/meus_ingressos')" dmx-show="!sc_usuario_logado.data.query.usuario_email.isEmpty()">
+            <button id="meus_ingressos" class="btn btn-link waves-effect" style="width: 160px; height: 40px;" dmx-on:click="browser1.goto('/compras')" dmx-show="!sc_usuario_logado.data.query.usuario_email.isEmpty()">
               <i class="fas fa-ticket-alt" style="margin-right: 5px;"></i> Meus Ingressos
             </button>
           </div>

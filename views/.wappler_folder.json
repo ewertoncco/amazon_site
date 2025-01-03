@@ -43,11 +43,11 @@
     "layoutPage": "homepage",
     "description": ""
   },
-  "meus_ingressos.ejs": {
+  "ingresso.ejs": {
     "layoutPage": "homepage",
     "description": ""
   },
-  "ingresso.ejs": {
+  "compras.ejs": {
     "layoutPage": "homepage",
     "description": ""
   }

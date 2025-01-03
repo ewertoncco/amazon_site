@@ -39,10 +39,6 @@
             },
             {
               "table": "eventos",
-              "column": "evento_banner_secundario"
-            },
-            {
-              "table": "eventos",
               "column": "tem_mapa"
             },
             {
@@ -80,6 +76,10 @@
             {
               "table": "eventos",
               "column": "id"
+            },
+            {
+              "table": "eventos",
+              "column": "tem_cupom"
             }
           ],
           "params": [
@@ -125,7 +125,7 @@
             "conditional": null,
             "valid": true
           },
-          "query": "select \"evento_nome\", \"evento_resumo\", \"evento_descricao\", \"evento_local\", \"evento_banner_principal\", \"evento_banner_secundario\", \"tem_mapa\", \"mapa_imagem\", \"evento_data_hora\", \"aceita_pix\", \"aceita_cartao\", \"qtide_parcelas_cartao\", \"mostrar_sobre_evento\", \"mostrar_whatsapp\", \"numero_whatsapp\", \"id\" from \"evento\" as \"eventos\" where \"eventos\".\"id\" = ?",
+          "query": "select \"evento_nome\", \"evento_resumo\", \"evento_descricao\", \"evento_local\", \"evento_banner_principal\", \"tem_mapa\", \"mapa_imagem\", \"evento_data_hora\", \"aceita_pix\", \"aceita_cartao\", \"qtide_parcelas_cartao\", \"mostrar_sobre_evento\", \"mostrar_whatsapp\", \"numero_whatsapp\", \"id\", \"tem_cupom\" from \"evento\" as \"eventos\" where \"eventos\".\"id\" = ?",
           "sub": {
             "produtos": {
               "table": {
@@ -158,10 +158,6 @@
         {
           "type": "text",
           "name": "evento_banner_principal"
-        },
-        {
-          "type": "text",
-          "name": "evento_banner_secundario"
         },
         {
           "type": "boolean",
@@ -202,6 +198,10 @@
         {
           "type": "number",
           "name": "id"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_cupom"
         },
         {
           "name": "produtos",

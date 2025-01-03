@@ -1,43 +1,39 @@
 <!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="ingresso" appConnect="local" -->
-<meta name="ac:route" content="/ingresso">
+<dmx-serverconnect id="sc_produto" url="/api/vendas/produto" dmx-param:ingresso="query.ingresso"></dmx-serverconnect>
+<meta name="ac:route" content="/ingresso/:ingresso">
 
 <body class="bg-light">
-    <div class="container py-4">
-        <div class="card shadow-sm">
+    <div class="container d-flex justify-content-center align-items-center py-4">
+        <div class="card shadow-sm w-75">
             <div class="card-body text-center">
                 <!-- Cabeçalho do Ingresso -->
                 <div class="border-bottom pb-3">
-                    <h1 class="display-6 fw-bold text-primary mb-1">Nome do Ingresso</h1>
-                    <h2 class="h5 text-muted">Nome do evento</h2>
+                    <h1 class="display-6 fw-bold text-primary mb-1">{{sc_produto.data.item.produto_nome}}</h1>
+                    <h2 class="h5 text-muted">{{sc_produto.data.item.evento_nome}}</h2>
                 </div>
 
                 <!-- Detalhes do Evento -->
                 <div class="row gap-3">
                     <div class="col-12">
                         <div class="d-flex justify-content-around p-2 flex-column">
-                            <h4 class="mb-0 text-muted"><span class="fw-bold">Horário:</span> 16:00</h4>
-                            <h4 class="mt-2 mb-2 text-muted"><span class="fw-bold">Data:</span> 15/09/2024</h4>
-                            <h4 class="mb-0 text-muted"><span class="fw-bold">Local:</span> Amazon</h4>
+                            <h4 class="mb-0 text-muted"><span class="fw-bold">Horário:</span> {{sc_produto.data.item.evento_data_hora.formatDate("HH:mm")}}</h4>
+                            <h4 class="mt-2 mb-2 text-muted"><span class="fw-bold">Data:</span> {{sc_produto.data.item.evento_data_hora.formatDate("dd/MM/yyyy")}}</h4>
+                            <h4 class="mb-0 text-muted"><span class="fw-bold">Local:</span> {{sc_produto.data.item.evento_local}}</h4>
                         </div>
-
-
-
-
                     </div>
                 </div>
-
 
                 <!-- QR Code -->
                 <div class="py-3">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TICKET123456789" alt="QR Code do Ingresso" class="img-fluid mb-3">
-                    <p class="small text-muted mb-0">TICKET123456789</p>
+                    <p class="small text-muted mb-0">TICKET {{sc_produto.data.item.qrcode}}</p>
                 </div>
 
                 <!-- Dados do Usuário -->
                 <div class="bg-light p-3 rounded mt-3">
                     <h3 class="text-muted">Participante</h3>
-                    <h3 class="mb-1"><span class="fw-bold">Nome:</span> João Silva Santos</h3>
-                    <h3 class="mb-1"><span class="fw-bold">CPF:</span> 123.456.789-00</h3>
+                    <h3 class="mb-1"><span class="fw-bold">Nome:</span> {{sc_produto.data.item.nome_participante}}</h3>
+                    <h3 class="mb-1"><span class="fw-bold">CPF:</span> {{sc_produto.data.item.cpf_participante}}</h3>
                 </div>
 
                 <!-- Informações Adicionais -->
