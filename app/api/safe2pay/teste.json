@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "Products",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "vendas",
+              "column": "valor_final",
+              "alias": "UnitPrice",
+              "recid": 1
+            },
+            {
+              "table": "vendas",
+              "column": "id",
+              "alias": "Code",
+              "recid": 2
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "vendas"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select \"valor_final\" as \"UnitPrice\", \"id\" as \"Code\" from \"vendas\""
+        }
+      },
+      "meta": [
+        {
+          "type": "number",
+          "name": "UnitPrice"
+        },
+        {
+          "type": "number",
+          "name": "Code"
+        }
+      ],
+      "outputType": "array",
+      "output": true
+    }
+  }
+}

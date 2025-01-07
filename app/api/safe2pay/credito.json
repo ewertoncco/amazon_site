@@ -432,6 +432,14 @@
         "outputType": "text"
       },
       {
+        "name": "lista_produtos",
+        "module": "arraylist",
+        "action": "create",
+        "options": {},
+        "meta": [],
+        "outputType": "array"
+      },
+      {
         "name": "itens_vendidos",
         "module": "core",
         "action": "repeat",
@@ -724,191 +732,216 @@
                     }
                   },
                   "else": {
-                    "steps": {
-                      "name": "vendas_sem_cupom",
-                      "module": "dbupdater",
-                      "action": "insert",
-                      "options": {
-                        "connection": "db",
-                        "sql": {
-                          "type": "insert",
-                          "values": [
-                            {
-                              "table": "vendas",
-                              "column": "evento_id",
-                              "type": "number",
-                              "value": "{{$_POST.evento_id}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "usuarios_id",
-                              "type": "number",
-                              "value": "{{identity}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "evento_produtos_id",
-                              "type": "number",
-                              "value": "{{produto.id}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "forma_pagamento_id",
-                              "type": "number",
-                              "value": "2"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "valor_original",
-                              "type": "number",
-                              "value": "{{produto.valor}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "valor_final",
-                              "type": "number",
-                              "value": "{{(produto.valor*parcelamento.taxa_juros)+produto.valor}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "cupom_codigo",
-                              "type": "text",
-                              "value": "0"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "desconto_aplicado",
-                              "type": "number",
-                              "value": "0"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "nome_participante",
-                              "type": "text",
-                              "value": "{{nome}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "cpf_participante",
-                              "type": "text",
-                              "value": "{{cpf}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "email_participante",
-                              "type": "text",
-                              "value": "{{email}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "telefone_participante",
-                              "type": "text",
-                              "value": "{{telefone}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "qtide_parcelas",
-                              "type": "number",
-                              "value": "{{$_POST.qtide_parcelas}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "qrcode",
-                              "type": "text",
-                              "value": "{{qrcode}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "status_pagamento_id",
-                              "type": "number",
-                              "value": "1"
-                            }
-                          ],
-                          "table": "vendas",
-                          "returning": "id",
-                          "query": "insert into \"vendas\" (\"cpf_participante\", \"cupom_codigo\", \"desconto_aplicado\", \"email_participante\", \"evento_id\", \"evento_produtos_id\", \"forma_pagamento_id\", \"nome_participante\", \"qrcode\", \"qtide_parcelas\", \"status_pagamento_id\", \"telefone_participante\", \"usuarios_id\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
-                          "params": [
-                            {
-                              "name": ":P1",
-                              "type": "expression",
-                              "value": "{{$_POST.evento_id}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P2",
-                              "type": "expression",
-                              "value": "{{identity}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P3",
-                              "type": "expression",
-                              "value": "{{produto.id}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P4",
-                              "type": "expression",
-                              "value": "{{produto.valor}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P5",
-                              "type": "expression",
-                              "value": "{{(produto.valor*parcelamento.taxa_juros)+produto.valor}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P6",
-                              "type": "expression",
-                              "value": "{{nome}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P7",
-                              "type": "expression",
-                              "value": "{{cpf}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P8",
-                              "type": "expression",
-                              "value": "{{email}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P9",
-                              "type": "expression",
-                              "value": "{{telefone}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P10",
-                              "type": "expression",
-                              "value": "{{$_POST.qtide_parcelas}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P11",
-                              "type": "expression",
-                              "value": "{{qrcode}}",
-                              "test": ""
-                            }
-                          ]
-                        }
-                      },
-                      "meta": [
-                        {
-                          "name": "identity",
-                          "type": "text"
+                    "steps": [
+                      {
+                        "name": "vendas_sem_cupom",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "vendas",
+                                "column": "evento_id",
+                                "type": "number",
+                                "value": "{{$_POST.evento_id}}",
+                                "recid": 1
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "usuarios_id",
+                                "type": "number",
+                                "value": "{{identity}}",
+                                "recid": 2
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "evento_produtos_id",
+                                "type": "number",
+                                "value": "{{produto.id}}",
+                                "recid": 3
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "forma_pagamento_id",
+                                "type": "number",
+                                "value": "2",
+                                "recid": 4
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_original",
+                                "type": "number",
+                                "value": "{{produto.valor}}",
+                                "recid": 5
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_final",
+                                "type": "number",
+                                "value": "{{(produto.valor*parcelamento.taxa_juros)+produto.valor}}",
+                                "recid": 6
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "cupom_codigo",
+                                "type": "text",
+                                "value": "0",
+                                "recid": 7
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "desconto_aplicado",
+                                "type": "number",
+                                "value": "0",
+                                "recid": 8
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "nome_participante",
+                                "type": "text",
+                                "value": "{{nome}}",
+                                "recid": 9
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "cpf_participante",
+                                "type": "text",
+                                "value": "{{cpf}}",
+                                "recid": 10
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "email_participante",
+                                "type": "text",
+                                "value": "{{email}}",
+                                "recid": 11
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "telefone_participante",
+                                "type": "text",
+                                "value": "{{telefone}}",
+                                "recid": 12
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "qtide_parcelas",
+                                "type": "number",
+                                "value": "{{$_POST.qtide_parcelas}}",
+                                "recid": 13
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "qrcode",
+                                "type": "text",
+                                "value": "{{qrcode}}",
+                                "recid": 14
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "status_pagamento_id",
+                                "type": "number",
+                                "value": "1",
+                                "recid": 15
+                              }
+                            ],
+                            "table": "vendas",
+                            "returning": "id",
+                            "query": "insert into \"vendas\" (\"cpf_participante\", \"cupom_codigo\", \"desconto_aplicado\", \"email_participante\", \"evento_id\", \"evento_produtos_id\", \"forma_pagamento_id\", \"nome_participante\", \"qrcode\", \"qtide_parcelas\", \"status_pagamento_id\", \"telefone_participante\", \"usuarios_id\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{$_POST.evento_id}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{identity}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{produto.id}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{(produto.valor*parcelamento.taxa_juros)+produto.valor}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{nome}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{cpf}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{email}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{telefone}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{$_POST.qtide_parcelas}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P11",
+                                "type": "expression",
+                                "value": "{{qrcode}}",
+                                "test": ""
+                              }
+                            ]
+                          }
                         },
-                        {
-                          "name": "affected",
-                          "type": "number"
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ],
+                        "output": true
+                      },
+                      {
+                        "name": "",
+                        "module": "arraylist",
+                        "action": "add",
+                        "options": {
+                          "ref": "lista_produtos"
                         }
-                      ],
-                      "output": true
-                    }
+                      }
+                    ]
                   }
                 },
                 "outputType": "boolean"
@@ -947,6 +980,104 @@
                 "type": "number"
               }
             ]
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "Products",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "vendas",
+                "column": "valor_final",
+                "alias": "UnitPrice"
+              },
+              {
+                "table": "vendas",
+                "column": "id",
+                "alias": "Code"
+              },
+              {
+                "table": "vendas",
+                "column": "evento_id",
+                "alias": "quantidade",
+                "aggregate": "COUNT"
+              },
+              {
+                "table": "produto",
+                "column": "produto_nome",
+                "alias": "Description"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "vendas"
+            },
+            "primary": "id",
+            "joins": [
+              {
+                "table": "evento_produtos",
+                "column": "*",
+                "alias": "produto",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "produto",
+                      "column": "id",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "vendas",
+                        "column": "evento_produtos_id"
+                      }
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "groupBy": [
+              {
+                "table": "vendas",
+                "column": "valor_final"
+              },
+              {
+                "table": "vendas",
+                "column": "id"
+              },
+              {
+                "table": "produto",
+                "column": "produto_nome"
+              }
+            ],
+            "query": "select \"vendas\".\"valor_final\" as \"UnitPrice\", \"vendas\".\"id\" as \"Code\", count(\"vendas\".\"evento_id\") as \"quantidade\", \"produto\".\"produto_nome\" as \"Description\" from \"vendas\" inner join \"evento_produtos\" as \"produto\" on \"produto\".\"id\" = \"vendas\".\"evento_produtos_id\" group by \"vendas\".\"valor_final\", \"vendas\".\"id\", \"produto\".\"produto_nome\""
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "UnitPrice"
+          },
+          {
+            "type": "number",
+            "name": "Code"
+          },
+          {
+            "type": "number",
+            "name": "quantidade"
+          },
+          {
+            "type": "text",
+            "name": "Description"
           }
         ],
         "outputType": "array"

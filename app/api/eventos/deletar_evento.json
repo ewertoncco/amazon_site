@@ -16,7 +16,7 @@
         "connection": "db",
         "sql": {
           "type": "delete",
-          "table": "eventos",
+          "table": "evento",
           "wheres": {
             "condition": "AND",
             "rules": [
@@ -36,7 +36,7 @@
             "valid": true
           },
           "returning": "id",
-          "query": "delete from \"eventos\" where \"id\" = ?",
+          "query": "delete from \"evento\" where \"id\" = ? returning \"id\"",
           "params": [
             {
               "operator": "equal",

@@ -29,7 +29,7 @@
                 "value": "{{$_GET.status}}"
               }
             ],
-            "table": "eventos",
+            "table": "evento",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -49,7 +49,7 @@
               "valid": true
             },
             "returning": "id",
-            "query": "update \"eventos\" set \"evento_status\" = ? where \"id\" = ? returning \"id\"",
+            "query": "update \"evento\" set \"evento_status\" = ? where \"id\" = ? returning \"id\"",
             "params": [
               {
                 "name": ":P1",
