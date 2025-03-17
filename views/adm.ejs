@@ -1,0 +1,231 @@
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="adm" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{}}" is="dmx-app" appconnect="local" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
+<dmx-serverconnect id="eventos" url="/api/eventos/eventos"></dmx-serverconnect>
+<dmx-moment id="moment1" locale="pt-br"></dmx-moment>
+
+<meta name="ac:route" content="/adm">
+
+<body>
+    <div class="container-fluid mt-5 pt-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Administração de Eventos</h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Painel lateral de navegação -->
+            <div class="col-lg-3">
+                <div class="card shadow-sm rounded-3 border-0">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">Menu de Administração</h5>
+                        <div class="list-group">
+                            <a href="#eventos" class="list-group-item list-group-item-action active">
+                                <i class="fas fa-calendar-alt me-2"></i> Eventos
+                            </a>
+                            <a href="#usuarios" class="list-group-item list-group-item-action">
+                                <i class="fas fa-users me-2"></i> Usuários
+                            </a>
+                            <a href="#vendas" class="list-group-item list-group-item-action">
+                                <i class="fas fa-shopping-cart me-2"></i> Vendas
+                            </a>
+                            <a href="#relatorios" class="list-group-item list-group-item-action">
+                                <i class="fas fa-chart-bar me-2"></i> Relatórios
+                            </a>
+                            <a href="#configuracoes" class="list-group-item list-group-item-action">
+                                <i class="fas fa-cogs me-2"></i> Configurações
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conteúdo principal -->
+            <div class="col-lg-9">
+                <!-- Seção de Eventos -->
+                <div id="eventos" class="adminSection">
+                    <div class="card shadow-sm rounded-3 border-0">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="fw-bold mb-0">Gerenciar Eventos</h4>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Novo Evento
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Título</th>
+                                            <th>Data</th>
+                                            <th>Local</th>
+                                            <th>Status</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody is="dmx-repeat" id="repeat_eventos" dmx-bind:repeat="eventos.data.eventos">
+                                        <tr>
+                                            <td>{{titulo}}</td>
+                                            <td>{{data_hora.formatDateLocale('DD/MM/YYYY HH:mm')}}</td>
+                                            <td>{{local}}</td>
+                                            <td>
+                                                <span class="badge bg-success">Ativo</span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="/adm_evento/{{uuid}}" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de Usuários -->
+                <div id="usuarios" class="adminSection d-none">
+                    <div class="card shadow-sm rounded-3 border-0">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="fw-bold mb-0">Gerenciar Usuários</h4>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Novo Usuário
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>Seção de gerenciamento de usuários em desenvolvimento.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de Vendas -->
+                <div id="vendas" class="adminSection d-none">
+                    <div class="card shadow-sm rounded-3 border-0">
+                        <div class="card-header bg-transparent border-0">
+                            <h4 class="fw-bold mb-0">Relatório de Vendas</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>Seção de relatório de vendas em desenvolvimento.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de Relatórios -->
+                <div id="relatorios" class="adminSection d-none">
+                    <div class="card shadow-sm rounded-3 border-0">
+                        <div class="card-header bg-transparent border-0">
+                            <h4 class="fw-bold mb-0">Relatórios</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>Seção de relatórios em desenvolvimento.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de Configurações -->
+                <div id="configuracoes" class="adminSection d-none">
+                    <div class="card shadow-sm rounded-3 border-0">
+                        <div class="card-header bg-transparent border-0">
+                            <h4 class="fw-bold mb-0">Configurações do Sistema</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>Seção de configurações em desenvolvimento.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Formatador para data
+        dmx.Formatter('string', 'formatDateLocale', function(val, format) {
+            return moment(val).format(format);
+        });
+        
+        // Navegação SPA entre as seções
+        document.addEventListener('DOMContentLoaded', function() {
+            // Manipular navegação do menu
+            const menuLinks = document.querySelectorAll('.list-group-item');
+            const sections = document.querySelectorAll('.adminSection');
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover classe active de todos os links
+                    menuLinks.forEach(item => item.classList.remove('active'));
+                    
+                    // Adicionar classe active ao link clicado
+                    this.classList.add('active');
+                    
+                    // Obter o id da seção alvo
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    // Esconder todas as seções
+                    sections.forEach(section => {
+                        section.classList.add('d-none');
+                    });
+                    
+                    // Mostrar a seção alvo
+                    document.getElementById(targetId).classList.remove('d-none');
+                    
+                    // Atualizar a URL sem recarregar a página
+                    history.pushState(null, null, `/adm#${targetId}`);
+                });
+            });
+            
+            // Verificar se há um hash na URL ao carregar
+            if (location.hash) {
+                const targetId = location.hash.substring(1);
+                const targetLink = document.querySelector(`.list-group-item[href="#${targetId}"]`);
+                
+                if (targetLink) {
+                    // Simular o clique no link correspondente
+                    targetLink.click();
+                }
+            }
+        });
+    </script>
+    
+    <style>
+        .list-group-item {
+            border-radius: 0.5rem !important;
+            margin-bottom: 0.5rem;
+            border: none;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .list-group-item:hover {
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            transform: translateX(5px);
+        }
+        
+        .list-group-item.active {
+            background-color: var(--bs-primary);
+            color: white;
+        }
+        
+        .adminSection {
+            transition: all 0.3s ease;
+        }
+    </style>
+</body> 

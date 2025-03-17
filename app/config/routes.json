@@ -6,13 +6,9 @@
       "layout": "main"
     },
     {
-      "path": "/evento/:id_evento",
+      "path": "/evento/:evento",
       "page": "evento",
       "layout": "homepage"
-    },
-    {
-      "path": "/teste",
-      "page": "teste"
     },
     {
       "path": "/perfil",
@@ -40,7 +36,7 @@
       "layout": "main"
     },
     {
-      "path": "/index",
+      "path": "/",
       "page": "index",
       "layout": "homepage",
       "name": ""
@@ -53,6 +49,11 @@
     {
       "path": "/ingresso/:ingresso",
       "page": "ingresso",
+      "layout": "homepage"
+    },
+    {
+      "path": "/adm",
+      "page": "adm",
       "layout": "homepage"
     }
   ]

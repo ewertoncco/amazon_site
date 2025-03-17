@@ -12,7 +12,7 @@
     "description": ""
   },
   "teste.ejs": {
-    "layoutPage": "",
+    "layoutPage": "main",
     "description": ""
   },
   "perfil.ejs": {
@@ -48,6 +48,10 @@
     "description": ""
   },
   "compras.ejs": {
+    "layoutPage": "homepage",
+    "description": ""
+  },
+  "primeira.ejs": {
     "layoutPage": "homepage",
     "description": ""
   }

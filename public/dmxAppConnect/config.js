@@ -28,6 +28,10 @@ dmx.config({
       {
         "type": "text",
         "name": "cpf"
+      },
+      {
+        "type": "boolean",
+        "name": "mesa"
       }
     ],
     "sessionStorage": [
@@ -38,6 +42,10 @@ dmx.config({
       {
         "type": "number",
         "name": "parcelas"
+      },
+      {
+        "type": "text",
+        "name": "step"
       }
     ]
   },
@@ -49,20 +57,8 @@ dmx.config({
           "name": "id"
         },
         {
-          "type": "datetime",
-          "name": "data_criacao"
-        },
-        {
-          "type": "number",
-          "name": "usuario_id"
-        },
-        {
-          "type": "number",
-          "name": "evento_id"
-        },
-        {
           "type": "text",
-          "name": "produto_nome"
+          "name": "nome"
         },
         {
           "type": "number",
@@ -82,7 +78,7 @@ dmx.config({
         },
         {
           "type": "number",
-          "name": "ordem_lista"
+          "name": "ordem"
         },
         {
           "type": "boolean",
@@ -97,20 +93,8 @@ dmx.config({
           "name": "qtide_mesa"
         },
         {
-          "type": "boolean",
-          "name": "cortesia"
-        },
-        {
-          "type": "boolean",
-          "name": "cupom_ativo"
-        },
-        {
-          "type": "text",
-          "name": "codigo_cupom"
-        },
-        {
           "type": "number",
-          "name": "valor_desconto"
+          "name": "tipo_item"
         }
       ],
       "outputType": "array"
@@ -143,6 +127,152 @@ dmx.config({
     "input_qtide_parcelas": {
       "meta": null,
       "outputType": "number"
+    },
+    "eventos_destaque": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "number",
+          "name": "status_id"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "type": "text",
+          "name": "sub_titulo"
+        },
+        {
+          "type": "boolean",
+          "name": "mostrar_descricao"
+        },
+        {
+          "type": "text",
+          "name": "descricao"
+        },
+        {
+          "type": "datetime",
+          "name": "data_hora"
+        },
+        {
+          "type": "text",
+          "name": "local"
+        },
+        {
+          "type": "text",
+          "name": "banner"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_mapa"
+        },
+        {
+          "type": "text",
+          "name": "mapa_imagem"
+        },
+        {
+          "type": "boolean",
+          "name": "destaque"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_pix"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_cartao"
+        },
+        {
+          "type": "text",
+          "name": "slug"
+        },
+        {
+          "type": "boolean",
+          "name": "divulgacao"
+        },
+        {
+          "type": "number",
+          "name": "segundos_destaque"
+        }
+      ],
+      "outputType": "array"
+    },
+    "todos_eventos": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "number",
+          "name": "status_id"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "type": "text",
+          "name": "sub_titulo"
+        },
+        {
+          "type": "boolean",
+          "name": "mostrar_descricao"
+        },
+        {
+          "type": "text",
+          "name": "descricao"
+        },
+        {
+          "type": "datetime",
+          "name": "data_hora"
+        },
+        {
+          "type": "text",
+          "name": "local"
+        },
+        {
+          "type": "text",
+          "name": "banner"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_mapa"
+        },
+        {
+          "type": "text",
+          "name": "mapa_imagem"
+        },
+        {
+          "type": "boolean",
+          "name": "destaque"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_pix"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_cartao"
+        },
+        {
+          "type": "text",
+          "name": "slug"
+        },
+        {
+          "type": "boolean",
+          "name": "divulgacao"
+        },
+        {
+          "type": "number",
+          "name": "segundos_destaque"
+        }
+      ],
+      "outputType": "array"
     }
   },
   "home": {

@@ -1,0 +1,188 @@
+{
+  "name": "user",
+  "module": "dbconnector",
+  "action": "single",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "select",
+      "columns": [
+        {
+          "table": "usuarios",
+          "column": "uuid"
+        },
+        {
+          "table": "usuarios",
+          "column": "senha_atualizada"
+        },
+        {
+          "table": "usuarios",
+          "column": "permissao"
+        },
+        {
+          "table": "usuarios",
+          "column": "foto"
+        },
+        {
+          "table": "usuarios",
+          "column": "usuario_email"
+        },
+        {
+          "table": "usuarios",
+          "column": "usuario_nome"
+        },
+        {
+          "table": "usuarios",
+          "column": "usuario_apelido"
+        },
+        {
+          "table": "usuarios",
+          "column": "usuario_telefone"
+        },
+        {
+          "table": "usuarios",
+          "column": "usuario_cpf"
+        },
+        {
+          "table": "usuarios",
+          "column": "ativo"
+        },
+        {
+          "table": "usuarios",
+          "column": "end_rua"
+        },
+        {
+          "table": "usuarios",
+          "column": "end_numero"
+        },
+        {
+          "table": "usuarios",
+          "column": "end_bairro"
+        },
+        {
+          "table": "usuarios",
+          "column": "end_cidade"
+        },
+        {
+          "table": "usuarios",
+          "column": "end_estado"
+        },
+        {
+          "table": "usuarios",
+          "column": "end_cep"
+        }
+      ],
+      "params": [
+        {
+          "operator": "equal",
+          "type": "expression",
+          "name": ":P1",
+          "value": "{{identity}}",
+          "test": ""
+        }
+      ],
+      "table": {
+        "name": "usuarios"
+      },
+      "joins": [],
+      "primary": "id",
+      "query": "select \"uuid\", \"senha_atualizada\", \"permissao\", \"foto\", \"usuario_email\", \"usuario_nome\", \"usuario_apelido\", \"usuario_telefone\", \"usuario_cpf\", \"ativo\", \"end_rua\", \"end_numero\", \"end_bairro\", \"end_cidade\", \"end_estado\", \"end_cep\" from \"usuarios\" where \"usuarios\".\"id\" = ?",
+      "wheres": {
+        "condition": "AND",
+        "rules": [
+          {
+            "id": "usuarios.id",
+            "field": "usuarios.id",
+            "type": "double",
+            "operator": "equal",
+            "value": "{{identity}}",
+            "data": {
+              "table": "usuarios",
+              "column": "id",
+              "type": "number",
+              "columnObj": {
+                "type": "increments",
+                "default": "",
+                "primary": true,
+                "unique": true,
+                "nullable": false,
+                "name": "id"
+              }
+            },
+            "operation": "="
+          }
+        ],
+        "conditional": null,
+        "valid": true
+      }
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "type": "text",
+      "name": "uuid"
+    },
+    {
+      "type": "boolean",
+      "name": "senha_atualizada"
+    },
+    {
+      "type": "number",
+      "name": "permissao"
+    },
+    {
+      "type": "text",
+      "name": "foto"
+    },
+    {
+      "type": "text",
+      "name": "usuario_email"
+    },
+    {
+      "type": "text",
+      "name": "usuario_nome"
+    },
+    {
+      "type": "text",
+      "name": "usuario_apelido"
+    },
+    {
+      "type": "text",
+      "name": "usuario_telefone"
+    },
+    {
+      "type": "text",
+      "name": "usuario_cpf"
+    },
+    {
+      "type": "boolean",
+      "name": "ativo"
+    },
+    {
+      "type": "text",
+      "name": "end_rua"
+    },
+    {
+      "type": "text",
+      "name": "end_numero"
+    },
+    {
+      "type": "text",
+      "name": "end_bairro"
+    },
+    {
+      "type": "text",
+      "name": "end_cidade"
+    },
+    {
+      "type": "text",
+      "name": "end_estado"
+    },
+    {
+      "type": "text",
+      "name": "end_cep"
+    }
+  ],
+  "outputType": "object"
+}

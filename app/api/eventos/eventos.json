@@ -1,0 +1,208 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "eventos",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "eventos",
+              "column": "segundos_destaque"
+            },
+            {
+              "table": "eventos",
+              "column": "divulgacao"
+            },
+            {
+              "table": "eventos",
+              "column": "tem_cupom"
+            },
+            {
+              "table": "eventos",
+              "column": "numero_whatsapp"
+            },
+            {
+              "table": "eventos",
+              "column": "tem_whatsapp"
+            },
+            {
+              "table": "eventos",
+              "column": "slug"
+            },
+            {
+              "table": "eventos",
+              "column": "aceita_cartao"
+            },
+            {
+              "table": "eventos",
+              "column": "parcelas_cartao"
+            },
+            {
+              "table": "eventos",
+              "column": "aceita_pix"
+            },
+            {
+              "table": "eventos",
+              "column": "destaque"
+            },
+            {
+              "table": "eventos",
+              "column": "mapa_imagem"
+            },
+            {
+              "table": "eventos",
+              "column": "tem_mapa"
+            },
+            {
+              "table": "eventos",
+              "column": "banner"
+            },
+            {
+              "table": "eventos",
+              "column": "local"
+            },
+            {
+              "table": "eventos",
+              "column": "data_hora"
+            },
+            {
+              "table": "eventos",
+              "column": "descricao"
+            },
+            {
+              "table": "eventos",
+              "column": "mostrar_descricao"
+            },
+            {
+              "table": "eventos",
+              "column": "sub_titulo"
+            },
+            {
+              "table": "eventos",
+              "column": "titulo"
+            },
+            {
+              "table": "eventos",
+              "column": "uuid"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "eventos"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select \"segundos_destaque\", \"divulgacao\", \"tem_cupom\", \"numero_whatsapp\", \"tem_whatsapp\", \"slug\", \"aceita_cartao\", \"parcelas_cartao\", \"aceita_pix\", \"destaque\", \"mapa_imagem\", \"tem_mapa\", \"banner\", \"local\", \"data_hora\", \"descricao\", \"mostrar_descricao\", \"sub_titulo\", \"titulo\", \"uuid\" from \"eventos\"",
+          "wheres": {
+            "condition": "AND",
+            "rules": [],
+            "conditional": null,
+            "valid": true
+          },
+          "orders": []
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "segundos_destaque"
+        },
+        {
+          "type": "boolean",
+          "name": "divulgacao"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_cupom"
+        },
+        {
+          "type": "text",
+          "name": "numero_whatsapp"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_whatsapp"
+        },
+        {
+          "type": "text",
+          "name": "slug"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_cartao"
+        },
+        {
+          "type": "number",
+          "name": "parcelas_cartao"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_pix"
+        },
+        {
+          "type": "boolean",
+          "name": "destaque"
+        },
+        {
+          "type": "text",
+          "name": "mapa_imagem"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_mapa"
+        },
+        {
+          "type": "text",
+          "name": "banner"
+        },
+        {
+          "type": "text",
+          "name": "local"
+        },
+        {
+          "type": "datetime",
+          "name": "data_hora"
+        },
+        {
+          "type": "text",
+          "name": "descricao"
+        },
+        {
+          "type": "boolean",
+          "name": "mostrar_descricao"
+        },
+        {
+          "type": "text",
+          "name": "sub_titulo"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "type": "text",
+          "name": "uuid"
+        }
+      ],
+      "outputType": "array",
+      "collapsed": true
+    }
+  }
+}

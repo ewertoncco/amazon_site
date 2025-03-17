@@ -3,13 +3,21 @@
     "$_GET": [
       {
         "type": "text",
-        "name": "id_evento"
+        "name": "evento"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
       }
     ]
   },
   "exec": {
     "steps": {
-      "name": "evento_front",
+      "name": "evento",
       "module": "dbconnector",
       "action": "single",
       "options": {
@@ -19,23 +27,35 @@
           "columns": [
             {
               "table": "eventos",
-              "column": "evento_nome"
+              "column": "status_id"
             },
             {
               "table": "eventos",
-              "column": "evento_resumo"
+              "column": "titulo"
             },
             {
               "table": "eventos",
-              "column": "evento_descricao"
+              "column": "sub_titulo"
             },
             {
               "table": "eventos",
-              "column": "evento_local"
+              "column": "mostrar_descricao"
             },
             {
               "table": "eventos",
-              "column": "evento_banner_principal"
+              "column": "descricao"
+            },
+            {
+              "table": "eventos",
+              "column": "data_hora"
+            },
+            {
+              "table": "eventos",
+              "column": "local"
+            },
+            {
+              "table": "eventos",
+              "column": "banner"
             },
             {
               "table": "eventos",
@@ -47,7 +67,15 @@
             },
             {
               "table": "eventos",
-              "column": "evento_data_hora"
+              "column": "destaque"
+            },
+            {
+              "table": "eventos",
+              "column": "pode_alterar_ingresso"
+            },
+            {
+              "table": "eventos",
+              "column": "pode_devolver_ingresso"
             },
             {
               "table": "eventos",
@@ -59,15 +87,15 @@
             },
             {
               "table": "eventos",
-              "column": "qtide_parcelas_cartao"
+              "column": "parcelas_cartao"
             },
             {
               "table": "eventos",
-              "column": "mostrar_sobre_evento"
+              "column": "slug"
             },
             {
               "table": "eventos",
-              "column": "mostrar_whatsapp"
+              "column": "tem_whatsapp"
             },
             {
               "table": "eventos",
@@ -75,11 +103,15 @@
             },
             {
               "table": "eventos",
-              "column": "id"
+              "column": "tem_cupom"
             },
             {
               "table": "eventos",
-              "column": "tem_cupom"
+              "column": "divulgacao"
+            },
+            {
+              "table": "eventos",
+              "column": "uuid"
             }
           ],
           "params": [
@@ -87,52 +119,131 @@
               "operator": "equal",
               "type": "expression",
               "name": ":P1",
-              "value": "{{$_GET.id_evento}}",
+              "value": "{{$_GET.evento}}",
               "test": ""
             }
           ],
           "table": {
-            "name": "evento",
-            "alias": "eventos"
+            "name": "eventos"
           },
           "primary": "id",
           "joins": [],
+          "query": "select \"status_id\", \"titulo\", \"sub_titulo\", \"mostrar_descricao\", \"descricao\", \"data_hora\", \"local\", \"banner\", \"tem_mapa\", \"mapa_imagem\", \"destaque\", \"pode_alterar_ingresso\", \"pode_devolver_ingresso\", \"aceita_pix\", \"aceita_cartao\", \"parcelas_cartao\", \"slug\", \"tem_whatsapp\", \"numero_whatsapp\", \"tem_cupom\", \"divulgacao\", \"uuid\" from \"eventos\" where \"eventos\".\"uuid\" = ?",
           "wheres": {
             "condition": "AND",
             "rules": [
               {
-                "id": "eventos.id",
-                "field": "eventos.id",
-                "type": "double",
+                "id": "eventos.uuid",
+                "field": "eventos.uuid",
+                "type": "string",
                 "operator": "equal",
-                "value": "{{$_GET.id_evento}}",
+                "value": "{{$_GET.evento}}",
                 "data": {
                   "table": "eventos",
-                  "column": "id",
-                  "type": "number",
+                  "column": "uuid",
+                  "type": "text",
                   "columnObj": {
-                    "type": "increments",
-                    "default": "",
-                    "primary": true,
-                    "unique": true,
+                    "type": "uuid",
+                    "default": "gen_random_uuid()",
+                    "primary": false,
+                    "unique": false,
                     "nullable": false,
-                    "name": "id"
+                    "name": "uuid"
                   }
                 },
-                "operation": "="
+                "operation": "=",
+                "table": "eventos"
               }
             ],
             "conditional": null,
             "valid": true
           },
-          "query": "select \"evento_nome\", \"evento_resumo\", \"evento_descricao\", \"evento_local\", \"evento_banner_principal\", \"tem_mapa\", \"mapa_imagem\", \"evento_data_hora\", \"aceita_pix\", \"aceita_cartao\", \"qtide_parcelas_cartao\", \"mostrar_sobre_evento\", \"mostrar_whatsapp\", \"numero_whatsapp\", \"id\", \"tem_cupom\" from \"evento\" as \"eventos\" where \"eventos\".\"id\" = ?",
           "sub": {
-            "produtos": {
+            "itens": {
+              "type": "select",
               "table": {
-                "name": "evento_produtos",
-                "alias": "produtos"
+                "name": "eventos_itens",
+                "alias": "itens"
               },
-              "key": "evento_id"
+              "key": "evento_id",
+              "columns": [
+                {
+                  "table": "itens",
+                  "column": "id"
+                },
+                {
+                  "table": "itens",
+                  "column": "nome"
+                },
+                {
+                  "table": "itens",
+                  "column": "qtide_cadastrada"
+                },
+                {
+                  "table": "itens",
+                  "column": "inicio_vendas"
+                },
+                {
+                  "table": "itens",
+                  "column": "final_vendas"
+                },
+                {
+                  "table": "itens",
+                  "column": "valor"
+                },
+                {
+                  "table": "itens",
+                  "column": "ordem"
+                },
+                {
+                  "table": "itens",
+                  "column": "ativo"
+                },
+                {
+                  "table": "itens",
+                  "column": "is_mesa"
+                },
+                {
+                  "table": "itens",
+                  "column": "qtide_mesa"
+                },
+                {
+                  "table": "itens",
+                  "column": "tipo_item"
+                }
+              ],
+              "params": [],
+              "primary": "id",
+              "joins": [],
+              "query": "select \"id\", \"nome\", \"qtide_cadastrada\", \"inicio_vendas\", \"final_vendas\", \"valor\", \"ordem\", \"ativo\", \"is_mesa\", \"qtide_mesa\", \"tipo_item\" from \"eventos_itens\" as \"itens\" where \"itens\".\"ativo\" = ?",
+              "wheres": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "id": "itens.ativo",
+                    "field": "itens.ativo",
+                    "type": "boolean",
+                    "operator": "equal",
+                    "value": true,
+                    "data": {
+                      "table": "itens",
+                      "column": "ativo",
+                      "type": "boolean",
+                      "columnObj": {
+                        "type": "boolean",
+                        "default": "true",
+                        "primary": false,
+                        "unique": false,
+                        "nullable": true,
+                        "name": "ativo"
+                      }
+                    },
+                    "operation": "="
+                  }
+                ],
+                "conditional": null,
+                "valid": true
+              }
             }
           }
         }
@@ -140,24 +251,36 @@
       "output": true,
       "meta": [
         {
-          "type": "text",
-          "name": "evento_nome"
+          "type": "number",
+          "name": "status_id"
         },
         {
           "type": "text",
-          "name": "evento_resumo"
+          "name": "titulo"
         },
         {
           "type": "text",
-          "name": "evento_descricao"
+          "name": "sub_titulo"
+        },
+        {
+          "type": "boolean",
+          "name": "mostrar_descricao"
         },
         {
           "type": "text",
-          "name": "evento_local"
+          "name": "descricao"
+        },
+        {
+          "type": "datetime",
+          "name": "data_hora"
         },
         {
           "type": "text",
-          "name": "evento_banner_principal"
+          "name": "local"
+        },
+        {
+          "type": "text",
+          "name": "banner"
         },
         {
           "type": "boolean",
@@ -168,8 +291,16 @@
           "name": "mapa_imagem"
         },
         {
-          "type": "datetime",
-          "name": "evento_data_hora"
+          "type": "boolean",
+          "name": "destaque"
+        },
+        {
+          "type": "boolean",
+          "name": "pode_alterar_ingresso"
+        },
+        {
+          "type": "boolean",
+          "name": "pode_devolver_ingresso"
         },
         {
           "type": "boolean",
@@ -181,30 +312,34 @@
         },
         {
           "type": "number",
-          "name": "qtide_parcelas_cartao"
+          "name": "parcelas_cartao"
+        },
+        {
+          "type": "text",
+          "name": "slug"
         },
         {
           "type": "boolean",
-          "name": "mostrar_sobre_evento"
-        },
-        {
-          "type": "boolean",
-          "name": "mostrar_whatsapp"
+          "name": "tem_whatsapp"
         },
         {
           "type": "text",
           "name": "numero_whatsapp"
         },
         {
-          "type": "number",
-          "name": "id"
-        },
-        {
           "type": "boolean",
           "name": "tem_cupom"
         },
         {
-          "name": "produtos",
+          "type": "boolean",
+          "name": "divulgacao"
+        },
+        {
+          "type": "text",
+          "name": "uuid"
+        },
+        {
+          "name": "itens",
           "type": "array",
           "sub": [
             {
@@ -212,20 +347,8 @@
               "name": "id"
             },
             {
-              "type": "datetime",
-              "name": "data_criacao"
-            },
-            {
-              "type": "number",
-              "name": "usuario_id"
-            },
-            {
-              "type": "number",
-              "name": "evento_id"
-            },
-            {
               "type": "text",
-              "name": "produto_nome"
+              "name": "nome"
             },
             {
               "type": "number",
@@ -245,7 +368,7 @@
             },
             {
               "type": "number",
-              "name": "ordem_lista"
+              "name": "ordem"
             },
             {
               "type": "boolean",
@@ -260,13 +383,14 @@
               "name": "qtide_mesa"
             },
             {
-              "type": "boolean",
-              "name": "cortesia"
+              "type": "number",
+              "name": "tipo_item"
             }
           ]
         }
       ],
-      "outputType": "object"
+      "outputType": "object",
+      "collapsed": true
     }
   }
 }
