@@ -138,10 +138,7 @@ CREATE TABLE public.eventos (
     numero_whatsapp text,
     tem_cupom boolean DEFAULT false,
     codigo_cupom text,
-    valor_cupom numeric(10,2),
-    uuid uuid DEFAULT gen_random_uuid(),
-    divulgacao boolean,
-    segundos_destaque integer
+    valor_cupom numeric(10,2)
 );
 
 
@@ -938,9 +935,7 @@ COPY public.evento_checklist (id, criado_em, usuario_id, titulo, previsao_conclu
 -- Data for Name: eventos; Type: TABLE DATA; Schema: public; Owner: amazon
 --
 
-COPY public.eventos (id, organizador_id, criado_em, usuario_id, status_id, titulo, sub_titulo, mostrar_descricao, descricao, data_hora, local, banner, tem_mapa, mapa_imagem, destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, parcelas_cartao, slug, tem_whatsapp, numero_whatsapp, tem_cupom, codigo_cupom, valor_cupom, uuid, divulgacao, segundos_destaque) FROM stdin;
-1	1	2025-03-22 12:00:00	1	1	Festival de Rock 2025	O maior evento de rock do ano	t	Um dia inteiro de música e diversão	2025-06-15 18:00:00	Arena Rock SP	banner_festival_rock.jpg	t	mapa_rock.jpg	t	f	t	t	t	3	festival-rock-2025	t	11987654321	t	ROCK10	10.00	a857e1da-98c5-45aa-90bf-6d38de82eca6	f	8000
-2	1	2025-03-22 13:00:00	1	1	Feira de Tecnologia 2025	Inovações e tendências	f	\N	2025-07-20 09:00:00	Centro de Convenções SP	banner_feira_tech.jpg	f	\N	f	t	f	t	f	1	feira-tecnologia-2025	f	\N	f	\N	\N	4c48347f-7298-4fe8-a790-f380e72e3fc0	f	5000
+COPY public.eventos (id, organizador_id, criado_em, usuario_id, status_id, titulo, sub_titulo, mostrar_descricao, descricao, data_hora, local, banner, tem_mapa, mapa_imagem, destaque, pode_alterar_ingresso, pode_devolver_ingresso, aceita_pix, aceita_cartao, parcelas_cartao, slug, tem_whatsapp, numero_whatsapp, tem_cupom, codigo_cupom, valor_cupom) FROM stdin;
 \.
 
 
@@ -957,11 +952,6 @@ COPY public.eventos_despesas (id, criado_em, usuario_id, tipo_despesa_id, titulo
 --
 
 COPY public.eventos_itens (id, criado_em, atualizado_em, criado_por, evento_id, nome, qtide_cadastrada, inicio_vendas, final_vendas, valor, ordem, ativo, is_mesa, qtide_mesa, tipo_item, valor_desconto) FROM stdin;
-1	2025-03-22 14:00:00	\N	1	1	Ingresso Pista	500	2025-04-01 13:00:00+00	2025-06-15 02:59:00+00	150.00	1	t	f	\N	1	\N
-2	2025-03-22 14:05:00	\N	1	1	Ingresso VIP	200	2025-04-01 13:00:00+00	2025-06-15 02:59:00+00	300.00	2	t	f	\N	1	20.00
-3	2025-03-22 14:10:00	\N	1	1	Mesa Premium	10	2025-04-01 13:00:00+00	2025-06-15 02:59:00+00	1000.00	3	t	t	4	2	\N
-4	2025-03-22 14:15:00	\N	1	2	Ingresso Básico	1000	2025-05-01 12:00:00+00	2025-07-20 02:59:00+00	50.00	1	t	f	\N	1	\N
-5	2025-03-22 14:20:00	\N	1	2	Ingresso Premium	300	2025-05-01 12:00:00+00	2025-07-20 02:59:00+00	120.00	2	t	f	\N	1	10.00
 \.
 
 
@@ -1031,7 +1021,6 @@ COPY public.notificacoes_nao_lidas (id, criado_em, usuario_id, notificacao_id) F
 --
 
 COPY public.organizador (id, criado_em, nome, logo) FROM stdin;
-1	2025-03-22 11:00:00	Eventos Top Ltda	logo_eventos_top.png
 \.
 
 
@@ -1040,7 +1029,6 @@ COPY public.organizador (id, criado_em, nome, logo) FROM stdin;
 --
 
 COPY public.organizador_dados (id, criado_em, organizador_id, razao_social, cnpj, token, id_receiver, cashback, tem_cashback, contato_telefone, contato_email, cidade, estado, taxa_juros) FROM stdin;
-1	2025-03-22 11:30:00	1	Eventos Top Ltda	12.345.678/0001-99	token_abc123	1001	5	t	11912345678	contato@eventostop.com	São Paulo	SP	2.50
 \.
 
 
@@ -1087,7 +1075,6 @@ COPY public.tipo_despesa (id, despesa) FROM stdin;
 --
 
 COPY public.usuarios (id, criado_em, senha, usuario_email, usuario_nome, usuario_apelido, usuario_telefone, usuario_cpf, ativo, end_rua, end_numero, end_bairro, end_cidade, end_estado, end_cep, notificacoes_email, notificacoes_push, notificacoes_whats, fcm_token, foto, data_nascimento, permissao, genero_id, senha_atualizada) FROM stdin;
-1	2025-03-22 10:00:00	hashedpassword123	joao.silva@email.com	João Silva	Joãozinho	11987654321	123.456.789-00	t	Rua das Flores	123	Jardim Primavera	São Paulo	SP	01234-567	t	t	t	fcm_token_12345	foto_joao.jpg	1990-05-15	1	1	f
 \.
 
 
@@ -1124,14 +1111,14 @@ SELECT pg_catalog.setval('public.eventos_despesas_id_seq', 1, false);
 -- Name: eventos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.eventos_id_seq', 2, true);
+SELECT pg_catalog.setval('public.eventos_id_seq', 1, false);
 
 
 --
 -- Name: eventos_itens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.eventos_itens_id_seq', 5, true);
+SELECT pg_catalog.setval('public.eventos_itens_id_seq', 1, false);
 
 
 --
@@ -1180,14 +1167,14 @@ SELECT pg_catalog.setval('public.notificacoes_nao_lidas_id_seq', 1, false);
 -- Name: organizador_dados_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.organizador_dados_id_seq', 1, true);
+SELECT pg_catalog.setval('public.organizador_dados_id_seq', 1, false);
 
 
 --
 -- Name: organizador_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.organizador_id_seq', 1, true);
+SELECT pg_catalog.setval('public.organizador_id_seq', 1, false);
 
 
 --
@@ -1215,7 +1202,7 @@ SELECT pg_catalog.setval('public.tipo_despesa_id_seq', 1, false);
 -- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: amazon
 --
 
-SELECT pg_catalog.setval('public.usuarios_id_seq', 1, true);
+SELECT pg_catalog.setval('public.usuarios_id_seq', 1, false);
 
 
 --

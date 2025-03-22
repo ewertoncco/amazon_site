@@ -36,12 +36,16 @@ dmx.config({
     ],
     "sessionStorage": [
       {
-        "type": "number",
-        "name": "valor_total"
+        "type": "text",
+        "name": "evento"
+      },
+      {
+        "type": "boolean",
+        "name": "pagamento"
       },
       {
         "type": "number",
-        "name": "parcelas"
+        "name": "status_pagamento"
       },
       {
         "type": "text",

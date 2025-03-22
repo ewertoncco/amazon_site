@@ -1,4 +1,7 @@
 <!-- Wappler include head-page="layouts/homepage" bootstrap5="custom" is="dmx-app" id="index" appconnect="local" components="{dmxSwiper:{},dmxFormatter:{},dmxTyped:{},dmxSlideshow:{},dmxFormRepeat:{},dmxPdfCreator:{},dmxMoment:{}}" fontawesome_6="local" moment_2="local with locales" -->
+<script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun="true">{
+  run: {outputType: "text", action: "{{datastore_carrinho.clear()}}"}
+}</script>
 <dmx-moment id="moment1" locale="pt-br"></dmx-moment>
 <dmx-serverconnect id="eventos" url="/api/eventos/eventos"></dmx-serverconnect>
 

@@ -71,22 +71,12 @@
       },
       {
         "type": "text",
-        "name": "validade_cartao"
+        "name": "validade"
       }
     ]
   },
   "exec": {
     "steps": [
-      {
-        "name": "identity",
-        "module": "auth",
-        "action": "identify",
-        "options": {
-          "provider": "auth"
-        },
-        "output": true,
-        "meta": []
-      },
       {
         "name": "usuario",
         "module": "dbconnector",
@@ -95,12 +85,7 @@
           "connection": "db",
           "sql": {
             "type": "select",
-            "columns": [
-              {
-                "table": "usuarios",
-                "column": "*"
-              }
-            ],
+            "columns": [],
             "params": [
               {
                 "operator": "equal",
@@ -115,6 +100,7 @@
             },
             "primary": "id",
             "joins": [],
+            "query": "select * from \"usuarios\" where \"usuarios\".\"id\" = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -143,8 +129,7 @@
               ],
               "conditional": null,
               "valid": true
-            },
-            "query": "select * from \"usuarios\" where \"usuarios\".\"id\" = ?"
+            }
           }
         },
         "meta": [
@@ -154,7 +139,7 @@
           },
           {
             "type": "datetime",
-            "name": "data_criacao"
+            "name": "criado_em"
           },
           {
             "type": "text",
@@ -229,7 +214,7 @@
             "name": "foto"
           },
           {
-            "type": "text",
+            "type": "date",
             "name": "data_nascimento"
           },
           {
@@ -237,12 +222,16 @@
             "name": "permissao"
           },
           {
-            "type": "boolean",
-            "name": "atualizar_senha"
+            "type": "number",
+            "name": "genero_id"
           },
           {
-            "type": "number",
-            "name": "genero"
+            "type": "boolean",
+            "name": "senha_atualizada"
+          },
+          {
+            "type": "text",
+            "name": "uuid"
           }
         ],
         "outputType": "object"
@@ -255,24 +244,7 @@
           "connection": "db",
           "sql": {
             "type": "select",
-            "columns": [
-              {
-                "table": "evento",
-                "column": "valor"
-              },
-              {
-                "table": "evento",
-                "column": "codigo_cupom"
-              },
-              {
-                "table": "evento",
-                "column": "tem_cupom"
-              },
-              {
-                "table": "evento",
-                "column": "evento_nome"
-              }
-            ],
+            "columns": [],
             "params": [
               {
                 "operator": "equal",
@@ -283,105 +255,32 @@
               }
             ],
             "table": {
-              "name": "evento"
+              "name": "eventos"
             },
             "primary": "id",
             "joins": [],
-            "query": "select \"valor\", \"codigo_cupom\", \"tem_cupom\", \"evento_nome\" from \"evento\" where \"evento\".\"id\" = ?",
+            "query": "select * from \"eventos\" where \"eventos\".\"uuid\" = ?",
+            "orders": [],
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "evento.id",
-                  "field": "evento.id",
-                  "type": "double",
+                  "id": "eventos.uuid",
+                  "field": "eventos.uuid",
+                  "type": "string",
                   "operator": "equal",
                   "value": "{{$_POST.evento_id}}",
                   "data": {
-                    "table": "evento",
-                    "column": "id",
-                    "type": "number",
+                    "table": "eventos",
+                    "column": "uuid",
+                    "type": "text",
                     "columnObj": {
-                      "type": "increments",
-                      "default": "",
-                      "primary": true,
-                      "unique": true,
-                      "nullable": false,
-                      "name": "id"
-                    }
-                  },
-                  "operation": "=",
-                  "table": "evento"
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            }
-          }
-        },
-        "meta": [
-          {
-            "type": "number",
-            "name": "valor"
-          },
-          {
-            "type": "text",
-            "name": "codigo_cupom"
-          },
-          {
-            "type": "boolean",
-            "name": "tem_cupom"
-          },
-          {
-            "type": "text",
-            "name": "evento_nome"
-          }
-        ],
-        "outputType": "object"
-      },
-      {
-        "name": "parcelamento",
-        "module": "dbconnector",
-        "action": "single",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "select",
-            "columns": [],
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{$_POST.qtide_parcelas}}",
-                "test": ""
-              }
-            ],
-            "table": {
-              "name": "parcelamento"
-            },
-            "primary": "id",
-            "joins": [],
-            "query": "select * from \"parcelamento\" where \"parcelamento\".\"numero_parcelas\" = ?",
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "parcelamento.numero_parcelas",
-                  "field": "parcelamento.numero_parcelas",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": "{{$_POST.qtide_parcelas}}",
-                  "data": {
-                    "table": "parcelamento",
-                    "column": "numero_parcelas",
-                    "type": "number",
-                    "columnObj": {
-                      "type": "integer",
+                      "type": "uuid",
                       "primary": false,
                       "unique": false,
-                      "nullable": false,
-                      "name": "numero_parcelas"
+                      "nullable": true,
+                      "default": "gen_random_uuid()",
+                      "name": "uuid"
                     }
                   },
                   "operation": "="
@@ -399,23 +298,304 @@
           },
           {
             "type": "number",
-            "name": "numero_parcelas"
+            "name": "organizador_id"
+          },
+          {
+            "type": "datetime",
+            "name": "criado_em"
           },
           {
             "type": "number",
-            "name": "taxa_juros"
+            "name": "usuario_id"
+          },
+          {
+            "type": "number",
+            "name": "status_id"
+          },
+          {
+            "type": "text",
+            "name": "titulo"
+          },
+          {
+            "type": "text",
+            "name": "sub_titulo"
           },
           {
             "type": "boolean",
-            "name": "ativo"
+            "name": "mostrar_descricao"
+          },
+          {
+            "type": "text",
+            "name": "descricao"
           },
           {
             "type": "datetime",
-            "name": "data_criacao"
+            "name": "data_hora"
+          },
+          {
+            "type": "text",
+            "name": "local"
+          },
+          {
+            "type": "text",
+            "name": "banner"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_mapa"
+          },
+          {
+            "type": "text",
+            "name": "mapa_imagem"
+          },
+          {
+            "type": "boolean",
+            "name": "destaque"
+          },
+          {
+            "type": "boolean",
+            "name": "pode_alterar_ingresso"
+          },
+          {
+            "type": "boolean",
+            "name": "pode_devolver_ingresso"
+          },
+          {
+            "type": "boolean",
+            "name": "aceita_pix"
+          },
+          {
+            "type": "boolean",
+            "name": "aceita_cartao"
+          },
+          {
+            "type": "number",
+            "name": "parcelas_cartao"
+          },
+          {
+            "type": "text",
+            "name": "slug"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_whatsapp"
+          },
+          {
+            "type": "text",
+            "name": "numero_whatsapp"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_cupom"
+          },
+          {
+            "type": "text",
+            "name": "codigo_cupom"
+          },
+          {
+            "type": "number",
+            "name": "valor_cupom"
+          },
+          {
+            "type": "text",
+            "name": "uuid"
+          },
+          {
+            "type": "boolean",
+            "name": "divulgacao"
+          },
+          {
+            "type": "number",
+            "name": "segundos_destaque"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "organizador",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "organizador",
+                "column": "*"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{evento.organizador_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "organizador"
+            },
+            "primary": "id",
+            "joins": [],
+            "sub": {
+              "dados": {
+                "table": {
+                  "name": "organizador_dados",
+                  "alias": "dados"
+                },
+                "key": "organizador_id"
+              }
+            },
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "organizador.id",
+                  "field": "organizador.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{evento.organizador_id}}",
+                  "data": {
+                    "table": "organizador",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "unique": true,
+                      "nullable": false,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select * from \"organizador\" where \"organizador\".\"id\" = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
           },
           {
             "type": "datetime",
-            "name": "data_atualizacao"
+            "name": "criado_em"
+          },
+          {
+            "type": "text",
+            "name": "nome"
+          },
+          {
+            "type": "text",
+            "name": "logo"
+          },
+          {
+            "name": "dados",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "datetime",
+                "name": "criado_em"
+              },
+              {
+                "type": "number",
+                "name": "organizador_id"
+              },
+              {
+                "type": "text",
+                "name": "razao_social"
+              },
+              {
+                "type": "text",
+                "name": "cnpj"
+              },
+              {
+                "type": "text",
+                "name": "token"
+              },
+              {
+                "type": "number",
+                "name": "id_receiver"
+              },
+              {
+                "type": "number",
+                "name": "cashback"
+              },
+              {
+                "type": "boolean",
+                "name": "tem_cashback"
+              },
+              {
+                "type": "text",
+                "name": "contato_telefone"
+              },
+              {
+                "type": "text",
+                "name": "contato_email"
+              },
+              {
+                "type": "text",
+                "name": "cidade"
+              },
+              {
+                "type": "text",
+                "name": "estado"
+              },
+              {
+                "type": "number",
+                "name": "taxa_juros"
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "parcelamento",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [],
+            "params": [],
+            "table": {
+              "name": "parcelamento"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select * from \"parcelamento\""
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "number",
+            "name": "juros"
+          },
+          {
+            "type": "number",
+            "name": "qtide"
+          },
+          {
+            "type": "text",
+            "name": "parcelamento"
           }
         ],
         "outputType": "object",
@@ -459,13 +639,19 @@
                     "columns": [
                       {
                         "table": "evento_produtos",
-                        "column": "valor",
-                        "recid": 1
+                        "column": "valor"
                       },
                       {
                         "table": "evento_produtos",
-                        "column": "id",
-                        "recid": 2
+                        "column": "id"
+                      },
+                      {
+                        "table": "evento_produtos",
+                        "column": "tipo_item"
+                      },
+                      {
+                        "table": "evento_produtos",
+                        "column": "nome"
                       }
                     ],
                     "params": [
@@ -478,7 +664,8 @@
                       }
                     ],
                     "table": {
-                      "name": "evento_produtos"
+                      "name": "eventos_itens",
+                      "alias": "evento_produtos"
                     },
                     "primary": "id",
                     "joins": [],
@@ -511,7 +698,7 @@
                       "conditional": null,
                       "valid": true
                     },
-                    "query": "select \"valor\", \"id\" from \"evento_produtos\" where \"evento_produtos\".\"id\" = ?"
+                    "query": "select \"valor\", \"id\", \"tipo_item\", \"nome\" from \"eventos_itens\" as \"evento_produtos\" where \"evento_produtos\".\"id\" = ?"
                   }
                 },
                 "meta": [
@@ -522,9 +709,18 @@
                   {
                     "type": "number",
                     "name": "id"
+                  },
+                  {
+                    "type": "number",
+                    "name": "tipo_item"
+                  },
+                  {
+                    "type": "text",
+                    "name": "nome"
                   }
                 ],
-                "outputType": "object"
+                "outputType": "object",
+                "output": true
               },
               {
                 "name": "",
@@ -744,178 +940,187 @@
                             "values": [
                               {
                                 "table": "vendas",
-                                "column": "evento_id",
-                                "type": "number",
-                                "value": "{{$_POST.evento_id}}",
-                                "recid": 1
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "usuarios_id",
-                                "type": "number",
-                                "value": "{{identity}}",
-                                "recid": 2
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "evento_produtos_id",
-                                "type": "number",
-                                "value": "{{produto.id}}",
-                                "recid": 3
-                              },
-                              {
-                                "table": "vendas",
                                 "column": "forma_pagamento_id",
                                 "type": "number",
-                                "value": "2",
-                                "recid": 4
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "valor_original",
-                                "type": "number",
-                                "value": "{{produto.valor}}",
-                                "recid": 5
+                                "value": "2"
                               },
                               {
                                 "table": "vendas",
                                 "column": "valor_final",
                                 "type": "number",
-                                "value": "{{(produto.valor*parcelamento.taxa_juros)+produto.valor}}",
-                                "recid": 6
+                                "value": "{{produto.valor}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "cupom_codigo",
                                 "type": "text",
-                                "value": "0",
-                                "recid": 7
+                                "value": "0"
                               },
                               {
                                 "table": "vendas",
                                 "column": "desconto_aplicado",
                                 "type": "number",
-                                "value": "0",
-                                "recid": 8
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "nome_participante",
-                                "type": "text",
-                                "value": "{{nome}}",
-                                "recid": 9
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "cpf_participante",
-                                "type": "text",
-                                "value": "{{cpf}}",
-                                "recid": 10
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "email_participante",
-                                "type": "text",
-                                "value": "{{email}}",
-                                "recid": 11
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "telefone_participante",
-                                "type": "text",
-                                "value": "{{telefone}}",
-                                "recid": 12
+                                "value": "0"
                               },
                               {
                                 "table": "vendas",
                                 "column": "qtide_parcelas",
                                 "type": "number",
-                                "value": "{{$_POST.qtide_parcelas}}",
-                                "recid": 13
+                                "value": "{{$_POST.qtide_parcelas}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "qrcode",
                                 "type": "text",
-                                "value": "{{qrcode}}",
-                                "recid": 14
+                                "value": "{{qrcode}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "status_pagamento_id",
                                 "type": "number",
-                                "value": "1",
-                                "recid": 15
+                                "value": "1"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_nome",
+                                "type": "text",
+                                "value": "{{nome}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_telefone",
+                                "type": "text",
+                                "value": "{{telefone}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_cpf",
+                                "type": "text",
+                                "value": "{{cpf}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_email",
+                                "type": "text",
+                                "value": "{{email}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "usuario_id",
+                                "type": "number",
+                                "value": "{{identity}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "item_id",
+                                "type": "number",
+                                "value": "{{produto.id}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "categoria_id",
+                                "type": "number",
+                                "value": "{{produto.tipo_item}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "cupom_utilizado",
+                                "type": "boolean",
+                                "value": "false"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "check_in",
+                                "type": "boolean",
+                                "value": "false"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "evento_id",
+                                "type": "number",
+                                "value": "{{evento.id}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_original",
+                                "type": "number",
+                                "value": "{{produto.valor}}"
                               }
                             ],
                             "table": "vendas",
                             "returning": "id",
-                            "query": "insert into \"vendas\" (\"cpf_participante\", \"cupom_codigo\", \"desconto_aplicado\", \"email_participante\", \"evento_id\", \"evento_produtos_id\", \"forma_pagamento_id\", \"nome_participante\", \"qrcode\", \"qtide_parcelas\", \"status_pagamento_id\", \"telefone_participante\", \"usuarios_id\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                            "query": "insert into \"vendas\" (\"categoria_id\", \"check_in\", \"cupom_codigo\", \"cupom_utilizado\", \"desconto_aplicado\", \"evento_id\", \"forma_pagamento_id\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\", \"qtide_parcelas\", \"status_pagamento_id\", \"usuario_id\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
                             "params": [
                               {
                                 "name": ":P1",
-                                "type": "expression",
-                                "value": "{{$_POST.evento_id}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P2",
-                                "type": "expression",
-                                "value": "{{identity}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P3",
-                                "type": "expression",
-                                "value": "{{produto.id}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P4",
                                 "type": "expression",
                                 "value": "{{produto.valor}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P5",
-                                "type": "expression",
-                                "value": "{{(produto.valor*parcelamento.taxa_juros)+produto.valor}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P6",
-                                "type": "expression",
-                                "value": "{{nome}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P7",
-                                "type": "expression",
-                                "value": "{{cpf}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P8",
-                                "type": "expression",
-                                "value": "{{email}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P9",
-                                "type": "expression",
-                                "value": "{{telefone}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P10",
+                                "name": ":P2",
                                 "type": "expression",
                                 "value": "{{$_POST.qtide_parcelas}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P11",
+                                "name": ":P3",
                                 "type": "expression",
                                 "value": "{{qrcode}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{nome}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{telefone}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{cpf}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{email}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{identity}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{produto.id}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{produto.tipo_item}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P11",
+                                "type": "expression",
+                                "value": "{{evento.id}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P12",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
                                 "test": ""
                               }
                             ]
@@ -931,14 +1136,21 @@
                             "type": "number"
                           }
                         ],
-                        "output": true
+                        "output": true,
+                        "collapsed": true
                       },
                       {
                         "name": "",
                         "module": "arraylist",
                         "action": "add",
                         "options": {
-                          "ref": "lista_produtos"
+                          "ref": "lista_produtos",
+                          "value": {
+                            "Code": "{{produto.id}}",
+                            "Description": "{{produto.nome}}",
+                            "UnitPrice": "{{produto.valor}}",
+                            "Quantity": 1
+                          }
                         }
                       }
                     ]
@@ -949,7 +1161,6 @@
             ]
           }
         },
-        "output": true,
         "meta": [
           {
             "name": "$index",
@@ -966,6 +1177,28 @@
           {
             "name": "$value",
             "type": "object"
+          },
+          {
+            "name": "produto",
+            "type": "object",
+            "sub": [
+              {
+                "type": "number",
+                "name": "valor"
+              },
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "number",
+                "name": "tipo_item"
+              },
+              {
+                "type": "text",
+                "name": "nome"
+              }
+            ]
           },
           {
             "name": "vendas_sem_cupom",
@@ -986,100 +1219,13 @@
       },
       {
         "name": "Products",
-        "module": "dbconnector",
-        "action": "select",
+        "module": "arraylist",
+        "action": "value",
         "options": {
-          "connection": "db",
-          "sql": {
-            "type": "select",
-            "columns": [
-              {
-                "table": "vendas",
-                "column": "valor_final",
-                "alias": "UnitPrice"
-              },
-              {
-                "table": "vendas",
-                "column": "id",
-                "alias": "Code"
-              },
-              {
-                "table": "vendas",
-                "column": "evento_id",
-                "alias": "quantidade",
-                "aggregate": "COUNT"
-              },
-              {
-                "table": "produto",
-                "column": "produto_nome",
-                "alias": "Description"
-              }
-            ],
-            "params": [],
-            "table": {
-              "name": "vendas"
-            },
-            "primary": "id",
-            "joins": [
-              {
-                "table": "evento_produtos",
-                "column": "*",
-                "alias": "produto",
-                "type": "INNER",
-                "clauses": {
-                  "condition": "AND",
-                  "rules": [
-                    {
-                      "table": "produto",
-                      "column": "id",
-                      "operator": "equal",
-                      "operation": "=",
-                      "value": {
-                        "table": "vendas",
-                        "column": "evento_produtos_id"
-                      }
-                    }
-                  ]
-                },
-                "primary": "id"
-              }
-            ],
-            "groupBy": [
-              {
-                "table": "vendas",
-                "column": "valor_final"
-              },
-              {
-                "table": "vendas",
-                "column": "id"
-              },
-              {
-                "table": "produto",
-                "column": "produto_nome"
-              }
-            ],
-            "query": "select \"vendas\".\"valor_final\" as \"UnitPrice\", \"vendas\".\"id\" as \"Code\", count(\"vendas\".\"evento_id\") as \"quantidade\", \"produto\".\"produto_nome\" as \"Description\" from \"vendas\" inner join \"evento_produtos\" as \"produto\" on \"produto\".\"id\" = \"vendas\".\"evento_produtos_id\" group by \"vendas\".\"valor_final\", \"vendas\".\"id\", \"produto\".\"produto_nome\""
-          }
+          "ref": "lista_produtos"
         },
         "output": true,
-        "meta": [
-          {
-            "type": "number",
-            "name": "UnitPrice"
-          },
-          {
-            "type": "number",
-            "name": "Code"
-          },
-          {
-            "type": "number",
-            "name": "quantidade"
-          },
-          {
-            "type": "text",
-            "name": "Description"
-          }
-        ],
+        "meta": [],
         "outputType": "array"
       },
       {
@@ -1092,10 +1238,10 @@
           "data": {
             "IsSandbox": true,
             "Application": "{{evento.evento_nome}}",
-            "Vendor": "{{evento.evento_nome}}",
+            "Vendor": "{{organizador.nome}}",
             "CallbackUrl": "https://webhook.site/e9f0c4b9-d5c0-473c-ad77-00f1491414aa",
             "PaymentMethod": "2",
-            "Reference": "ingresso",
+            "Reference": "{{itens_vendidos[0].$name}}",
             "Customer": {
               "Name": "{{usuario.usuario_nome}}",
               "Identity": "{{usuario.usuario_cpf}}",
@@ -1111,19 +1257,12 @@
                 "CountryName": "Brasil"
               }
             },
-            "Products": [
-              {
-                "Code": 1,
-                "Description": "nome produto",
-                "UnitPrice": 2,
-                "Quantity": 1
-              }
-            ],
+            "Products": "{{Products}}",
             "PaymentObject": {
               "Holder": "{{$_POST.nome_cartao}}",
               "CardNumber": "{{$_POST.numero_cartao}}",
-              "ExpirationDate": "{{$_POST.validade_cartao}}",
-              "SecurityCode": "289",
+              "ExpirationDate": "{{$_POST.validade.split('/')[0] + '/20' + $_POST.validade.split('/')[1]}}",
+              "SecurityCode": "{{$_POST.codigo_seguranca}}",
               "InstallmentQuantity": 1,
               "IsApplyInterest": false,
               "InterestRate": 0
@@ -1261,7 +1400,8 @@
           }
         ],
         "outputType": "object",
-        "output": true
+        "output": true,
+        "collapsed": true
       },
       {
         "name": "",
@@ -1471,7 +1611,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       }
     ]
   }

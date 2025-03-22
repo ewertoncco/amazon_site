@@ -14,9 +14,7 @@
     ],
     "tables": {
       "logs": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -108,9 +106,7 @@
         }
       },
       "eventos_despesas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -215,9 +211,7 @@
         "parent": "eventos"
       },
       "eventos_itens": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -375,9 +369,7 @@
         }
       },
       "categoria_item": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -403,9 +395,7 @@
         }
       },
       "noticias": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -470,9 +460,7 @@
         }
       },
       "forma_pagamento": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -497,9 +485,7 @@
         }
       },
       "notificacoes": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -602,9 +588,7 @@
         }
       },
       "notificacoes_nao_lidas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -654,9 +638,7 @@
         "parent": "notificacoes"
       },
       "genero": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -681,9 +663,7 @@
         }
       },
       "organizador_dados": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -809,9 +789,7 @@
         "parent": "organizador"
       },
       "status_pagamento": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -836,9 +814,7 @@
         }
       },
       "vendas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1196,9 +1172,7 @@
         ]
       },
       "tipo_despesa": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1223,9 +1197,7 @@
         }
       },
       "evento_checklist": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1321,10 +1293,79 @@
         },
         "parent": "eventos"
       },
-      "usuarios": {
-        "db": {
-          "schema": "public"
+      "organizador": {
+        "db": {},
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "criado_em": {
+            "db": {
+              "type": "timestamp",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "logo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
         },
+        "sub": {
+          "organizador_dados": "organizador_id"
+        },
+        "refs": {
+          "eventos": "organizador_id"
+        }
+      },
+      "status_publicacao": {
+        "db": {},
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "status": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          }
+        },
+        "refs": {
+          "noticias": "status_publicacao_id",
+          "eventos": "status_id"
+        }
+      },
+      "usuarios": {
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1530,6 +1571,15 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "uuid": {
+            "db": {
+              "type": "uuid",
+              "default": "gen_random_uuid()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "refs": {
@@ -1544,85 +1594,8 @@
           "eventos": "usuario_id"
         }
       },
-      "organizador": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "criado_em": {
-            "db": {
-              "type": "timestamp",
-              "default": "knex.fn.now()",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "nome": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "logo": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          }
-        },
-        "sub": {
-          "organizador_dados": "organizador_id"
-        },
-        "refs": {
-          "eventos": "organizador_id"
-        }
-      },
-      "status_publicacao": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "status": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          }
-        },
-        "refs": {
-          "noticias": "status_publicacao_id",
-          "eventos": "status_id"
-        }
-      },
       "eventos": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1862,16 +1835,15 @@
           "uuid": {
             "db": {
               "type": "uuid",
-              "default": "gen_random_uuid()",
               "primary": false,
               "unique": false,
-              "nullable": true
+              "nullable": true,
+              "default": "gen_random_uuid()"
             }
           },
           "divulgacao": {
             "db": {
               "type": "boolean",
-              "default": "false",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1893,6 +1865,44 @@
         },
         "refs": {
           "vendas": "evento_id"
+        }
+      },
+      "parcelamento": {
+        "db": {},
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "juros": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "qtide": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "parcelamento": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          }
         }
       }
     },
