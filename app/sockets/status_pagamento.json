@@ -1,0 +1,8 @@
+{
+  "name": "emit",
+  "module": "sockets",
+  "action": "emit",
+  "options": {
+    "eventName": "status_pagamento"
+  }
+}

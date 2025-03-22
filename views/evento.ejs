@@ -1,4 +1,9 @@
-<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{}}" is="dmx-app" appconnect="local" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{}}" is="dmx-app" appconnect="local" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
+
+<form id="cupom" is="dmx-serverconnect-form" method="post" action="/api/eventos/cupom" dmx-on:success="run({condition:{outputType:'boolean',if:`!cupom.data.evento.valor_cupom.Empt()`,then:{steps:{repeat:{name:'repeat',output:true,outputType:'array',repeat:`datastore_carrinho.data`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`datastore_carrinho.update({$id: $value.$id},{item_valor: $value.item_valor-((cupom.data.evento.valor_cupom*$value.item_valor)/100), cupom: cupom_code.value})`}}}}}}}})">
+    <dmx-form-data id="inp_evento" name="evento" dmx-bind:data="query.evento"></dmx-form-data>
+    <dmx-form-data id="inp_cupom" name="cupom" dmx-bind:data="cupom_code.value"></dmx-form-data>
+</form>
 <dmx-serverconnect id="evento" url="/api/eventos/evento" dmx-param:evento="query.evento"></dmx-serverconnect>
 <dmx-moment id="moment1" locale="pt-br"></dmx-moment>
 <meta name="ac:route" content="/evento/:evento">
@@ -136,7 +141,7 @@
 
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" dmx-on:click="run({condition:{outputType:'boolean',if:`user.data.identity.isEmpty()`,then:{steps:{run:{outputType:'text',action:`modal_nao_logado.show()`}}},else:{steps:{condition:{outputType:'boolean',if:`is_mesa==true`,then:{steps:[{while:{condition:`var_contador.value&lt;qtide_mesa`,exec:{steps:{condition:{outputType:'boolean',if:`var_contador.value&gt;0`,then:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: 0, item_nome: nome, item_id: id, mesa: true, nome: \'Convidado \'+var_contador.value, email: \'convidado@convite.com.br\', telefone: \'(00) 00000-0000\', cpf: \'000.000.000-00\'});carrinho.show();total_carrinho.set(\'valor_total\',total_carrinho.data.valor_total+valor);var_contador.setValue(var_contador.value+1);parcelamento.reset();parcelamento.load({})`}}},else:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: valor, item_nome: nome, item_id: id, mesa: true});carrinho.show();total_carrinho.set(\'valor_total\',total_carrinho.data.valor_total+valor);var_contador.setValue(var_contador.value+1);parcelamento.reset();parcelamento.load({})`}}}}}}}},{run:{outputType:'text',action:`var_contador.setValue(0)`}}]},else:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: valor, item_nome: nome, item_id: id, mesa: false});carrinho.show();total_carrinho.set(\'valor_total\',total_carrinho.data.valor_total+valor);eventos.load({});parcelamento.reset();parcelamento.load({})`}}}}}}}})" id="add_carrinho">
+                                    <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" dmx-on:click="run({condition:{outputType:'boolean',if:`user.data.identity.isEmpty()`,then:{steps:{run:{outputType:'text',action:`modal_nao_logado.show()`}}},else:{steps:[{condition:{outputType:'boolean',if:`is_mesa==true`,then:{steps:[{while:{condition:`var_contador.value&lt;qtide_mesa`,exec:{steps:{condition:{outputType:'boolean',if:`var_contador.value&gt;0`,then:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: 0, item_nome: nome, item_id: id, mesa: true, nome: \'Convidado \'+var_contador.value, email: \'convidado@convite.com.br\', telefone: \'(00) 00000-0000\', cpf: \'000.000.000-00\'});carrinho.show();total_carrinho.set(\'valor_total\',total_carrinho.data.valor_total+valor);var_contador.setValue(var_contador.value+1);parcelamento.reset();parcelamento.load({})`}}},else:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: valor, item_nome: nome, item_id: id, mesa: true});carrinho.show();total_carrinho.set(\'valor_total\',total_carrinho.data.valor_total+valor);var_contador.setValue(var_contador.value+1);parcelamento.reset();parcelamento.load({})`}}}}}}}},{run:{outputType:'text',action:`var_contador.setValue(0)`}}]},else:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: valor, item_nome: nome, item_id: id, mesa: false});carrinho.show();total_carrinho.set(\'valor_total\',total_carrinho.data.valor_total+valor);eventos.load({});parcelamento.reset();parcelamento.load({})`}}}}},{run:{outputType:'text',action:`limpar_carrinho.start()`}}]}}})" id="add_carrinho">
                                         <i class="fas fa-cart-plus"></i>
                                     </button>
                                 </div>
@@ -153,8 +158,15 @@
                 <div class="card border-0 shadow-sm rounded-4">
                     <div class="card-pagamento">
                         <!-- Resumo do Pedido -->
-                        <div class="order-summary p-4 border-bottom">
-                            <h5 class="fw-bold mb-4">Resumo do Pedido</h5>
+                        <div class="order-summary p-4 border-bottom" dmx-show="pagar.value">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0">Resumo do Pedido</h5>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2">Tempo restante:</span>
+                                    <span dmx-class:bg-danger="(5 - (limpar_carrinho.elapsed/60000)) < 1" class="badge bg-warning">{{Math.floor((5 - (limpar_carrinho.elapsed/60000))) || 5}}</span>
+                                    <span class="ms-1">minutos</span>
+                                </div>
+                            </div>
                             <!-- Lista de itens -->
                             <div class="mb-4">
                                 <div class="mb-3" is="dmx-repeat" id="repeat_resumo" dmx-bind:repeat="datastore_carrinho.data">
@@ -170,21 +182,20 @@
                                 <hr class="my-3">
                                 <!-- Cupom de desconto -->
                                 <div class="mb-3">
-                                    <div class="d-flex gap-2">
-                                        <input type="text" class="form-control" id="cupom" placeholder="Código do cupom">
-                                        <button class="btn btn-outline-primary" dmx-on:click="aplicar_cupom()">Aplicar</button>
-                                    </div>
                                 </div>
+
                                 <!-- Total -->
-                                <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-3" dmx-hide="datastore_carrinho.data.where('cupom', Empt()).length.isEmpty()"><input type="text" class="form-control" id="cupom_code" placeholder="Código do cupom" name="cupom"><button class="btn btn-outline-primary" dmx-on:click="cupom.submit()">Aplicar</button></div>
+                                <div class="d-flex align-items-center justify-content-end mt-2 mb-2 pt-1 pb-1 gap-2">
                                     <h6 class="mb-0">Total</h6>
-                                    <h5 class="text-primary mb-0">{{datastore_carrinho.data.sum(`item_valor`)}}</h5>
+                                    <h5 class="text-primary mb-0">{{datastore_carrinho.data.sum(`item_valor`).formatCurrency('R$ ', ',', '.', 2)}}</h5>
                                 </div>
                             </div>
 
                             <!-- Opções de Pagamento -->
                             <div class="payment-options">
                                 <h5 class="fw-bold mb-3">Forma de Pagamento</h5>
+                                <h5 class="fw-bold mb-3">{{credito.data.status_pagamento}}</h5>
                                 <ul class="nav nav-pills mb-4 gap-3 justify-content-start">
                                     <li class="nav-item">
                                         <button class="nav-link active px-4" data-bs-toggle="pill" data-bs-target="#pix">
@@ -226,36 +237,70 @@
 
                                     <!-- Cartão -->
                                     <div class="tab-pane fade" id="cartao">
-                                        <form id="cc_form" is="dmx-serverconnect-form" method="post" action="/api/payment/credit" dmx-on:success="payment_success()" dmx-on:error="payment_error()">
+                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="run({condition:{outputType:'boolean',if:`credito.data.status_pagamento`}})" dmx-on:error="status_pagamento.setValue(2);pagamento.show()">
+                                            <dmx-form-data id="inp_evento" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
+                                            <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
+                                            <dmx-form-data id="inp_desconto" name="desconto_aplicado" dmx-bind:data="cupom.data.evento.valor_cupom"></dmx-form-data>
                                             <div class="row g-3">
                                                 <div class="col-12">
                                                     <label class="form-label">Número do Cartão</label>
-                                                    <input type="text" class="form-control" name="card_number" required data-msg-required="Informe o número do cartão">
+                                                    <input type="text" class="form-control" name="numero_cartao" id="numero_cartao" maxlength="19" required="" data-msg-required="Informe o número do cartão" placeholder="0000 0000 0000 0000" oninput="formatCardNumber(this)">
+
+                                                    <div class="col-12 mt-2 mb-2">
+                                                        <label class="form-label">Nome no Cartão</label>
+                                                        <input type="text" class="form-control" name="nome_cartao" required="" data-msg-required="Informe o nome no cartão">
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-6">
+                                                            <label class="form-label">CVV</label>
+                                                            <input type="text" class="form-control" name="codigo_seguranca" required="" data-msg-required="Informe o CVV" maxlength="3" oninput="this.value = this.value.replace(/\D/g, '')">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label class="form-label">Validade (MM/AA)</label>
+                                                            <input type="text" class="form-control" name="validade" required="" data-msg-required="Informe a validade" maxlength="5" placeholder="MM/AA" oninput="formatDate(this)">
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+                                                    <div class="col-12 mb-2">
+                                                        <label class="form-label">Parcelas</label>
+                                                        <select class="form-select" name="qtide_parcelas" required="" dmx-bind:options="parcelamento.data.parcelamento.data" optiontext="{{ qtide }}x R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : ((datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100))) / qtide.toNumber())).formatCurrency('R$ ', ',', '.', 2) }} - Total: R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : (datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100)))).formatCurrency('R$ ', ',', '.', 2) }}" optionvalue="qtide">
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-primary w-100" dmx-on:click="status_pagamento.setValue(1);pagamento.show()">
+                                                            Pagar com Cartão
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-12">
-                                                    <label class="form-label">Nome no Cartão</label>
-                                                    <input type="text" class="form-control" name="card_name" required data-msg-required="Informe o nome no cartão">
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label">Validade (MM/AA)</label>
-                                                    <input type="text" class="form-control" name="card_expiry" required data-msg-required="Informe a validade">
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label">CVV</label>
-                                                    <input type="text" class="form-control" name="card_cvv" required data-msg-required="Informe o CVV">
-                                                </div>
-                                                <div class="col-12">
-                                                    <label class="form-label">Parcelas</label>
-                                                    <select class="form-select" name="parcelamentos" required="" dmx-bind:options="parcelamento.data.parcelamento.data" optiontext="{{ qtide }}x R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : ((datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100))) / qtide.toNumber())).formatCurrency('R$ ', ',', '.', 2) }} - Total: R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : (datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100)))).formatCurrency('R$ ', ',', '.', 2) }}
-" optionvalue="qtide">
-                                                    </select>
-                                                </div>
-                                                <div class="col-12">
-                                                    <button type="submit" class="btn btn-primary w-100">
-                                                        Pagar com Cartão
-                                                    </button>
-                                                </div>
-                                            </div>
+
+                                                <script>
+                                                    function formatCardNumber(input) {
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 16);
+    value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    input.value = value;
+}
+
+function formatDate(input) {
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 4);
+    
+    if (value.length > 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2);
+        let month = parseInt(value.substring(0, 2));
+        if (month > 12) {
+            value = '12' + value.substring(2);
+        }
+    }
+    
+    input.value = value;
+}
+                                                </script>
                                         </form>
                                     </div>
 
@@ -274,18 +319,8 @@
                         </div>
 
                         <!-- Alert de Sucesso -->
-                        <div class="alert alert-success alert-dismissible fade" role="alert" id="payment_success">
-                            <i class="fas fa-check-circle me-2"></i>
-                            <strong>Pagamento realizado com sucesso!</strong> Seus ingressos foram enviados para seu e-mail.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
 
                         <!-- Alert de Erro -->
-                        <div class="alert alert-danger alert-dismissible fade" role="alert" id="payment_error">
-                            <i class="fas fa-exclamation-circle me-2"></i>
-                            <strong>Erro no pagamento!</strong> Por favor, verifique os dados e tente novamente.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
                     </div>
                     <div class="card-body p-4">
                         <h2 class="fw-bold mb-4">Sobre o Evento</h2>
@@ -412,21 +447,12 @@
     </div>
 </body>
 
-<!-- javascript -->
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/gumshoe.js"></script>
-<!-- SLIDER -->
-<script src="assets/js/tiny-slider.js "></script>
-<!-- Lightbox -->
-<script src="assets/js/tobii.min.js"></script>
-<script src="assets/js/shuffle.min.js"></script>
-<!-- Feather icon -->
-<script src="assets/js/feather.min.js"></script>
-<!-- Main Js -->
-<script src="assets/js/plugins.init.js"></script>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/plugins.init.js"></script>
-<script src="assets/js/app.js"></script>
+<!-- Se necessário, scripts específicos só para esta página que não estão no layout principal -->
+<script>
+    dmx.Formatter('string','formatDateLocale', function(val, format){
+        return moment(val).format(format);
+    })
+</script>
 
 <style>
     .ticket-item {
@@ -475,9 +501,3 @@
         transform: translateX(5px);
     }
 </style>
-
-<script>
-    dmx.Formatter('string','formatDateLocale', function(val, format){
-        return moment(val).format(format);
-    })
-</script>

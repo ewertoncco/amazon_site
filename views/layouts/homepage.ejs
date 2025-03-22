@@ -56,7 +56,6 @@
   <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake@2.5.2/browser.min.js" defer></script>
   <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
   <script src="/dmxAppConnect/dmxMoment/dmxMoment.js" defer></script>
-  <script src="/formatFunctions.js" defer></script>
 
   <style>
     .navbar-nav .nav-item {
@@ -166,73 +165,52 @@
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body pt-0 pb-0 ps-3 pe-3" dmx-show="datastore_carrinho.data.isEmpty()">
-          <div class="card-body pt-2">
-            <div class="text-center p-4">
-              <div class="mb-3">
-                <i class="fas fa-shopping-cart fa-4x text-muted"></i>
-              </div>
-              <h4 class="text-muted">Seu carrinho está vazio</h4>
-              <p class="mb-0">Adicione ingressos para continuar.</p>
+        <div class="modal-body">
+          <div dmx-show="datastore_carrinho.data.isEmpty()" class="text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-shopping-cart fa-4x text-muted"></i>
             </div>
+            <h4 class="text-muted">Seu carrinho está vazio</h4>
+            <p class="mb-0">Adicione ingressos para continuar.</p>
           </div>
-        </div>
-        <div class="modal-body pt-0 pb-0 ps-3 pe-3" dmx-hide="datastore_carrinho.data.isEmpty()">
-          <div class="card-body pt-2">
+          <div dmx-hide="datastore_carrinho.data.isEmpty()">
             <div class="table-responsive">
-              <table class="table table-hover m-0">
-                <tbody is="dmx-repeat" id="itens_carrinho" dmx-bind:repeat="datastore_carrinho.data">
+              <table class="table table-hover align-middle">
+                <thead>
                   <tr>
-                    <td class="w-70 w-75">
-                      <h4 class="m-0 fw-medium">{{item_nome}}</h4>
-                    </td>
-                    <td class="text-center w-15 w-25">
-                      <span class="text-primary">R$ </span>{{item_valor}}
-                    </td>
-                    <td class="text-center">
-                      <button class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id})">
-                        <i class="fas fa-trash-alt text-danger"></i>
-                      </button>
-                    </td>
+                    <th>Ingresso</th>
+                    <th>Detalhes</th>
+                    <th class="text-end">Valor</th>
+                    <th class="text-center">Ações</th>
                   </tr>
+                </thead>
+                <tbody is="dmx-repeat" id="repeat1" dmx-bind:repeat="datastore_carrinho.data">
                   <tr>
-                    <td colspan="3">
-                      <div class="row g-2 justify-content-start">
-
-                        <div class="col-md-7">
-                          <div class="input-group input-group-sm mb-1">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            <input type="text" class="form-control" placeholder="Nome do titular" dmx-bind:value="nome" dmx-on:change="datastore_carrinho.update({$id: $id},{nome: $event.target.value})" required>
-                          </div>
-                        </div>
-                        <div class="col-md-5">
-                          <div class="input-group input-group-sm mb-1">
-                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                            <input type="text" class="form-control" placeholder="CPF do titular" dmx-bind:value="cpf" onkeyup="formatCPF(this)" dmx-on:change="datastore_carrinho.update({$id: $id},{cpf: $event.target.value})" required>
-                          </div>
-                        </div>
-                        <div class="col-md-7">
-                          <div class="input-group input-group-sm mb-1">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" class="form-control" placeholder="Email do titular" dmx-bind:value="email" dmx-on:change="datastore_carrinho.update({$id: $id},{email: $event.target.value})" required>
-                          </div>
-                        </div>
-                        <div class="col-md-5">
-                          <div class="input-group input-group-sm mb-1">
-                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                            <input type="text" class="form-control" placeholder="Telefone do titular" dmx-bind:value="telefone" onkeyup="formatTelefone(this)" dmx-on:change="datastore_carrinho.update({$id: $id},{telefone: $event.target.value})" required>
-                          </div>
-                        </div><button class="btn btn-sm text-start text-bg-light text-primary mb-1" dmx-on:click="datastore_carrinho.update({$id: $id}, {nome: user.data.user.usuario_nome, cpf: user.data.user.usuario_cpf, email: user.data.user.usuario_email, telefone: user.data.user.usuario_telefone})" dmx-show="!datastore_carrinho.data.where('cpf', user.data.user.usuario_cpf).hasItems()">
-                          <i class="fas fa-user-edit me-1"></i> Completar com meus dados
-                        </button>
-
+                    <td>
+                      <strong>{{item_nome}}</strong>
+                    </td>
+                    <td>
+                      <div dmx-show="mesa==true">
+                        <div dmx-show="nome">Titular: {{nome}}</div>
+                        <div dmx-show="email">Email: {{email}}</div>
+                        <div dmx-show="telefone">Telefone: {{telefone}}</div>
+                        <div dmx-show="cpf">CPF: {{cpf}}</div>
                       </div>
+                      <div dmx-show="mesa!=true">
+                        Ingresso Individual
+                      </div>
+                    </td>
+                    <td class="text-end fw-bold">{{item_valor.formatCurrency('R$ ', ',', '.', 2)}}</td>
+                    <td class="text-center">
+                      <button class="btn btn-sm btn-outline-danger" dmx-on:click="datastore_carrinho.delete({$id: id, item_id: id})">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="d-flex justify-content-between align-items-center border-top mt-3 mb-2 pt-3">
+            <div class="d-flex justify-content-between align-items-center mt-3 border-top pt-3">
               <h5 class="mb-0">Total:</h5>
               <h4 class="text-primary mb-0" id="total_carrinho" dmx-bind:value="datastore_carrinho.data.sum('item_valor')">
                 {{datastore_carrinho.data.sum('item_valor').formatCurrency('R$ ', ',', '.', 2)}}
@@ -241,11 +219,9 @@
           </div>
         </div>
         <div class="modal-footer bg-light" dmx-hide="datastore_carrinho.data.isEmpty()">
-          <button type="button" class="btn btn-info gap-1" data-bs-dismiss="modal">
-            <i class="fas fa-cart-plus me-1"></i>Continuar Comprando
-          </button>
-          <a href="/comprar" internal="true" class="btn btn-success gap-1" dmx-on:click="carrinho.hide()">
-            <i class="fas fa-credit-card me-1"></i>Finalizar Compra
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuar Comprando</button>
+          <a href="/comprar" internal="true" class="btn btn-primary" dmx-on:click="carrinho.hide()">
+            <i class="fas fa-credit-card me-2"></i>Finalizar Compra
           </a>
         </div>
       </div>

@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "cupom"
+      },
+      {
+        "type": "text",
+        "name": "evento"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "evento",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "eventos",
+              "column": "valor_cupom"
+            },
+            {
+              "table": "eventos",
+              "column": "codigo_cupom"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_POST.evento}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_POST.cupom}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "eventos"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select \"valor_cupom\", \"codigo_cupom\" from \"eventos\" where \"eventos\".\"uuid\" = ? and \"eventos\".\"codigo_cupom\" = ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "eventos.uuid",
+                "field": "eventos.uuid",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_POST.evento}}",
+                "data": {
+                  "table": "eventos",
+                  "column": "uuid",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "text",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "default": "gen_random_uuid()",
+                    "name": "uuid"
+                  }
+                },
+                "operation": "="
+              },
+              {
+                "id": "eventos.codigo_cupom",
+                "field": "eventos.codigo_cupom",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_POST.cupom}}",
+                "data": {
+                  "table": "eventos",
+                  "column": "codigo_cupom",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "text",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "codigo_cupom"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          }
+        }
+      },
+      "meta": [
+        {
+          "type": "number",
+          "name": "valor_cupom"
+        },
+        {
+          "type": "text",
+          "name": "codigo_cupom"
+        }
+      ],
+      "outputType": "object",
+      "output": true
+    }
+  }
+}

@@ -1,0 +1,49 @@
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="teste" appconnect="local" components="{dmxFormatter:{}}" -->
+<meta name="ac:route" content="/teste">
+
+<!-- Shopping List Data Store -->
+<dmx-value id="shopping_list" dmx-bind:value="[
+  {id: 1, name: 'Organic Vegetables', category: 'Produce', quantity: 2, unit: 'kg', price: 12.99, checked: false},
+  {id: 2, name: 'Free Range Eggs', category: 'Dairy', quantity: 1, unit: 'dozen', price: 5.99, checked: false},
+  {id: 3, name: 'Whole Grain Bread', category: 'Bakery', quantity: 1, unit: 'loaf', price: 4.50, checked: false},
+  {id: 4, name: 'Wild Caught Salmon', category: 'Seafood', quantity: 500, unit: 'g', price: 15.99, checked: false},
+  {id: 5, name: 'Greek Yogurt', category: 'Dairy', quantity: 2, unit: 'tubs', price: 6.99, checked: false}
+]"></dmx-value>
+
+<div class="container py-5">
+    <!-- Elegant Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 mb-3">Gourmet Shopping List</h1>
+        <p class="lead text-muted">Curate your perfect grocery experience with our elegant shopping companion</p>
+    </div>
+
+    <!-- Shopping List Card -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <!-- List Header with Total -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 mb-0">Your Shopping List</h2>
+                <div class="text-end">
+                    <p class="mb-0 text-muted">Total Items: <span dmx-text="shopping_list.value.length"></span></p>
+                    <p class="mb-0 fs-5">Total: <span dmx-text="shopping_list.value.sum('price').formatCurrency('$')"></span></p>
+                </div>
+            </div>
+
+            <!-- Shopping List Items -->
+            <div is="dmx-repeat" id="list_items" dmx-bind:repeat="shopping_list.value">
+                <div class="d-flex align-items-center py-3 border-bottom">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" dmx-bind:checked="checked" dmx-on:change="shopping_list.value[index].checked = checked">
+                    </div>
+                    <div class="ms-3 flex-grow-1">
+                        <h3 class="h6 mb-0" dmx-class:text-decoration-line-through="checked">{{name}}</h3>
+                        <small class="text-muted">{{category}} • {{quantity}} {{unit}}</small>
+                    </div>
+                    <div class="text-end">
+                        <p class="mb-0 fw-bold" dmx-text="price.formatCurrency('$')"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
