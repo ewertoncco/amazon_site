@@ -1321,81 +1321,6 @@
         },
         "parent": "eventos"
       },
-      "organizador": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "criado_em": {
-            "db": {
-              "type": "timestamp",
-              "default": "knex.fn.now()",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "nome": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "logo": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          }
-        },
-        "sub": {
-          "organizador_dados": "organizador_id"
-        },
-        "refs": {
-          "eventos": "organizador_id"
-        }
-      },
-      "status_publicacao": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "status": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          }
-        },
-        "refs": {
-          "noticias": "status_publicacao_id",
-          "eventos": "status_id"
-        }
-      },
       "usuarios": {
         "db": {
           "schema": "public"
@@ -1605,15 +1530,6 @@
               "unique": false,
               "nullable": true
             }
-          },
-          "uuid": {
-            "db": {
-              "type": "text",
-              "default": "gen_random_uuid()",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
           }
         },
         "refs": {
@@ -1626,6 +1542,81 @@
           "vendas": "usuario_id",
           "evento_checklist": "finalizada_por",
           "eventos": "usuario_id"
+        }
+      },
+      "organizador": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "criado_em": {
+            "db": {
+              "type": "timestamp",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "logo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "sub": {
+          "organizador_dados": "organizador_id"
+        },
+        "refs": {
+          "eventos": "organizador_id"
+        }
+      },
+      "status_publicacao": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "status": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          }
+        },
+        "refs": {
+          "noticias": "status_publicacao_id",
+          "eventos": "status_id"
         }
       },
       "eventos": {
@@ -1868,9 +1859,19 @@
               "nullable": true
             }
           },
+          "uuid": {
+            "db": {
+              "type": "uuid",
+              "default": "gen_random_uuid()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
           "divulgacao": {
             "db": {
               "type": "boolean",
+              "default": "false",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1883,15 +1884,6 @@
               "unique": false,
               "nullable": true
             }
-          },
-          "uuid": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true,
-              "default": "gen_random_uuid()"
-            }
           }
         },
         "sub": {
@@ -1901,46 +1893,6 @@
         },
         "refs": {
           "vendas": "evento_id"
-        }
-      },
-      "parcelamento": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "juros": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "qtide": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "parcelamento": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          }
         }
       }
     },
