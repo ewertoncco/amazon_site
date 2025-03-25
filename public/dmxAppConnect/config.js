@@ -49,7 +49,7 @@ dmx.config({
       },
       {
         "type": "text",
-        "name": "step"
+        "name": "venda"
       }
     ]
   },

@@ -46,6 +46,18 @@
           {
             "type": "text",
             "name": "email"
+          },
+          {
+            "type": "number",
+            "name": "evento"
+          },
+          {
+            "type": "number",
+            "name": "identity"
+          },
+          {
+            "type": "number",
+            "name": "1"
           }
         ]
       },
@@ -72,6 +84,10 @@
       {
         "type": "text",
         "name": "validade"
+      },
+      {
+        "type": "number",
+        "name": "id"
       }
     ]
   },
@@ -479,7 +495,6 @@
             "query": "select * from \"organizador\" where \"organizador\".\"id\" = ?"
           }
         },
-        "output": true,
         "meta": [
           {
             "type": "number",
@@ -598,18 +613,7 @@
             "name": "parcelamento"
           }
         ],
-        "outputType": "object",
-        "output": true
-      },
-      {
-        "name": "qrcode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{UUID}}"
-        },
-        "meta": [],
-        "outputType": "text"
+        "outputType": "object"
       },
       {
         "name": "lista_produtos",
@@ -620,6 +624,77 @@
         "outputType": "array"
       },
       {
+        "name": "carrinho",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "carrinho",
+                "column": "evento_id",
+                "type": "number",
+                "value": "{{evento.id}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "usuario_id",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "status_pagamento_id",
+                "type": "number",
+                "value": "1"
+              },
+              {
+                "table": "carrinho",
+                "column": "qtide_parcelas",
+                "type": "number",
+                "value": "{{$_POST.qtide_parcelas}}"
+              }
+            ],
+            "table": "carrinho",
+            "returning": "id",
+            "query": "insert into \"carrinho\" (\"evento_id\", \"qtide_parcelas\", \"status_pagamento_id\", \"usuario_id\") values (?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{evento.id}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.qtide_parcelas}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
+      },
+      {
         "name": "itens_vendidos",
         "module": "core",
         "action": "repeat",
@@ -628,6 +703,16 @@
           "outputFields": [],
           "exec": {
             "steps": [
+              {
+                "name": "qrcode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{UUID}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
               {
                 "name": "produto",
                 "module": "dbconnector",
@@ -719,8 +804,7 @@
                     "name": "nome"
                   }
                 ],
-                "outputType": "object",
-                "output": true
+                "outputType": "object"
               },
               {
                 "name": "",
@@ -940,48 +1024,6 @@
                             "values": [
                               {
                                 "table": "vendas",
-                                "column": "forma_pagamento_id",
-                                "type": "number",
-                                "value": "2"
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "valor_final",
-                                "type": "number",
-                                "value": "{{produto.valor}}"
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "cupom_codigo",
-                                "type": "text",
-                                "value": "0"
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "desconto_aplicado",
-                                "type": "number",
-                                "value": "0"
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "qtide_parcelas",
-                                "type": "number",
-                                "value": "{{$_POST.qtide_parcelas}}"
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "qrcode",
-                                "type": "text",
-                                "value": "{{qrcode}}"
-                              },
-                              {
-                                "table": "vendas",
-                                "column": "status_pagamento_id",
-                                "type": "number",
-                                "value": "1"
-                              },
-                              {
-                                "table": "vendas",
                                 "column": "participante_nome",
                                 "type": "text",
                                 "value": "{{nome}}"
@@ -1006,12 +1048,6 @@
                               },
                               {
                                 "table": "vendas",
-                                "column": "usuario_id",
-                                "type": "number",
-                                "value": "{{identity}}"
-                              },
-                              {
-                                "table": "vendas",
                                 "column": "item_id",
                                 "type": "number",
                                 "value": "{{produto.id}}"
@@ -1024,103 +1060,73 @@
                               },
                               {
                                 "table": "vendas",
-                                "column": "cupom_utilizado",
-                                "type": "boolean",
-                                "value": "false"
-                              },
-                              {
-                                "table": "vendas",
                                 "column": "check_in",
                                 "type": "boolean",
                                 "value": "false"
                               },
                               {
                                 "table": "vendas",
-                                "column": "evento_id",
+                                "column": "carrinho",
                                 "type": "number",
-                                "value": "{{evento.id}}"
+                                "value": "{{carrinho.identity}}"
                               },
                               {
                                 "table": "vendas",
-                                "column": "valor_original",
-                                "type": "number",
-                                "value": "{{produto.valor}}"
+                                "column": "qrcode",
+                                "type": "text",
+                                "value": "{{qrcode}}"
                               }
                             ],
                             "table": "vendas",
                             "returning": "id",
-                            "query": "insert into \"vendas\" (\"categoria_id\", \"check_in\", \"cupom_codigo\", \"cupom_utilizado\", \"desconto_aplicado\", \"evento_id\", \"forma_pagamento_id\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\", \"qtide_parcelas\", \"status_pagamento_id\", \"usuario_id\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                            "query": "insert into \"vendas\" (\"carrinho\", \"categoria_id\", \"check_in\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\") values (?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
                             "params": [
                               {
                                 "name": ":P1",
-                                "type": "expression",
-                                "value": "{{produto.valor}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P2",
-                                "type": "expression",
-                                "value": "{{$_POST.qtide_parcelas}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P3",
-                                "type": "expression",
-                                "value": "{{qrcode}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P4",
                                 "type": "expression",
                                 "value": "{{nome}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P5",
+                                "name": ":P2",
                                 "type": "expression",
                                 "value": "{{telefone}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P6",
+                                "name": ":P3",
                                 "type": "expression",
                                 "value": "{{cpf}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P7",
+                                "name": ":P4",
                                 "type": "expression",
                                 "value": "{{email}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P8",
-                                "type": "expression",
-                                "value": "{{identity}}",
-                                "test": ""
-                              },
-                              {
-                                "name": ":P9",
+                                "name": ":P5",
                                 "type": "expression",
                                 "value": "{{produto.id}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P10",
+                                "name": ":P6",
                                 "type": "expression",
                                 "value": "{{produto.tipo_item}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P11",
+                                "name": ":P7",
                                 "type": "expression",
-                                "value": "{{evento.id}}",
+                                "value": "{{carrinho.identity}}",
                                 "test": ""
                               },
                               {
-                                "name": ":P12",
+                                "name": ":P8",
                                 "type": "expression",
-                                "value": "{{produto.valor}}",
+                                "value": "{{qrcode}}",
                                 "test": ""
                               }
                             ]
@@ -1136,7 +1142,6 @@
                             "type": "number"
                           }
                         ],
-                        "output": true,
                         "collapsed": true
                       },
                       {
@@ -1177,42 +1182,6 @@
           {
             "name": "$value",
             "type": "object"
-          },
-          {
-            "name": "produto",
-            "type": "object",
-            "sub": [
-              {
-                "type": "number",
-                "name": "valor"
-              },
-              {
-                "type": "number",
-                "name": "id"
-              },
-              {
-                "type": "number",
-                "name": "tipo_item"
-              },
-              {
-                "type": "text",
-                "name": "nome"
-              }
-            ]
-          },
-          {
-            "name": "vendas_sem_cupom",
-            "type": "text",
-            "sub": [
-              {
-                "name": "identity",
-                "type": "text"
-              },
-              {
-                "name": "affected",
-                "type": "number"
-              }
-            ]
           }
         ],
         "outputType": "array"
@@ -1224,12 +1193,11 @@
         "options": {
           "ref": "lista_produtos"
         },
-        "output": true,
         "meta": [],
         "outputType": "array"
       },
       {
-        "name": "safe2pay_pix",
+        "name": "safe2pay",
         "module": "api",
         "action": "send",
         "options": {
@@ -1237,9 +1205,9 @@
           "dataType": "json",
           "data": {
             "IsSandbox": true,
-            "Application": "{{evento.evento_nome}}",
+            "Application": "{{evento.titulo}}",
             "Vendor": "{{organizador.nome}}",
-            "CallbackUrl": "https://webhook.site/e9f0c4b9-d5c0-473c-ad77-00f1491414aa",
+            "CallbackUrl": "https://291a-192-144-124-59.ngrok-free.app/api/safe2pay/safe2pay",
             "PaymentMethod": "2",
             "Reference": "{{itens_vendidos[0].$name}}",
             "Customer": {
@@ -1339,7 +1307,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "timeout": 10000
         },
         "meta": [
           {
@@ -1400,18 +1369,34 @@
           }
         ],
         "outputType": "object",
-        "output": true,
         "collapsed": true
+      },
+      {
+        "name": "status",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": {
+            "erro": "{{safe2pay.data.HasError}}",
+            "erro2": "{{IdTransaction}}",
+            "status": "{{safe2pay.data.ResponseDetail.Status}}",
+            "description": "{{safe2pay.data.ResponseDetail.Description}}",
+            "id": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
+          }
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "object"
       },
       {
         "name": "",
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{safe2pay_pix.data.HasError==false}}",
+          "if": "{{safe2pay.data.HasError==true}}",
           "then": {
             "steps": {
-              "name": "atualizar_pagamento",
+              "name": "carrinho_recusado",
               "module": "dbupdater",
               "action": "update",
               "options": {
@@ -1420,48 +1405,48 @@
                   "type": "update",
                   "values": [
                     {
-                      "table": "vendas",
-                      "column": "pag_json",
-                      "type": "json",
-                      "value": "{{safe2pay_pix.data.ResponseDetail}}"
-                    },
-                    {
-                      "table": "vendas",
-                      "column": "id_transaction",
+                      "table": "carrinho",
+                      "column": "transacao_id",
                       "type": "number",
-                      "value": "{{safe2pay_pix.data.ResponseDetail.IdTransaction}}"
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
                     },
                     {
-                      "table": "vendas",
-                      "column": "has_error",
+                      "table": "carrinho",
+                      "column": "erro",
                       "type": "boolean",
-                      "value": "{{safe2pay_pix.data.HasError}}"
+                      "value": "{{safe2pay.data.HasError}}"
                     },
                     {
-                      "table": "vendas",
-                      "column": "description",
+                      "table": "carrinho",
+                      "column": "json",
                       "type": "text",
-                      "value": "{{safe2pay_pix.data.ResponseDetail.Description}}"
+                      "value": "{{safe2pay.data.ResponseDetail}}"
                     },
                     {
-                      "table": "vendas",
+                      "table": "carrinho",
                       "column": "status_pagamento_id",
                       "type": "number",
-                      "value": "{{safe2pay_pix.data.ResponseDetail.Status}}"
+                      "value": "{{safe2pay.data.ResponseDetail.Status}}"
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "resposta_pagamento",
+                      "type": "text",
+                      "value": "{{safe2pay.data.ResponseDetail.Description}}"
                     }
                   ],
-                  "table": "vendas",
+                  "table": "carrinho",
                   "wheres": {
                     "condition": "AND",
                     "rules": [
                       {
-                        "id": "qrcode",
-                        "field": "qrcode",
-                        "type": "string",
+                        "id": "id",
+                        "field": "id",
+                        "type": "double",
                         "operator": "equal",
-                        "value": "{{qrcode}}",
+                        "value": "{{carrinho.identity}}",
                         "data": {
-                          "column": "qrcode"
+                          "column": "id"
                         },
                         "operation": "="
                       }
@@ -1470,43 +1455,43 @@
                     "valid": true
                   },
                   "returning": "id",
-                  "query": "update \"vendas\" set \"pag_json\" = ?, \"id_transaction\" = ?, \"has_error\" = ?, \"description\" = ?, \"status_pagamento_id\" = ? where \"qrcode\" = ? returning \"id\"",
+                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ?, \"json\" = ?, \"status_pagamento_id\" = ?, \"resposta_pagamento\" = ? where \"id\" = ? returning \"id\"",
                   "params": [
                     {
                       "name": ":P1",
                       "type": "expression",
-                      "value": "{{safe2pay_pix.data.ResponseDetail}}",
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}",
                       "test": ""
                     },
                     {
                       "name": ":P2",
                       "type": "expression",
-                      "value": "{{safe2pay_pix.data.ResponseDetail.IdTransaction}}",
+                      "value": "{{safe2pay.data.HasError}}",
                       "test": ""
                     },
                     {
                       "name": ":P3",
                       "type": "expression",
-                      "value": "{{safe2pay_pix.data.HasError}}",
+                      "value": "{{safe2pay.data.ResponseDetail}}",
                       "test": ""
                     },
                     {
                       "name": ":P4",
                       "type": "expression",
-                      "value": "{{safe2pay_pix.data.ResponseDetail.Description}}",
+                      "value": "{{safe2pay.data.ResponseDetail.Status}}",
                       "test": ""
                     },
                     {
                       "name": ":P5",
                       "type": "expression",
-                      "value": "{{safe2pay_pix.data.ResponseDetail.Status}}",
+                      "value": "{{safe2pay.data.ResponseDetail.Description}}",
                       "test": ""
                     },
                     {
                       "operator": "equal",
                       "type": "expression",
                       "name": ":P6",
-                      "value": "{{qrcode}}",
+                      "value": "{{carrinho.identity}}",
                       "test": ""
                     }
                   ]
@@ -1517,12 +1502,13 @@
                   "name": "affected",
                   "type": "number"
                 }
-              ]
+              ],
+              "collapsed": true
             }
           },
           "else": {
             "steps": {
-              "name": "atualizar_pagamento",
+              "name": "carrinho_aceito",
               "module": "dbupdater",
               "action": "update",
               "options": {
@@ -1531,39 +1517,30 @@
                   "type": "update",
                   "values": [
                     {
-                      "table": "vendas",
-                      "column": "pag_json",
-                      "type": "json",
-                      "value": "{{safe2pay_pix.data}}",
-                      "recid": 1
+                      "table": "carrinho",
+                      "column": "transacao_id",
+                      "type": "number",
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
                     },
                     {
-                      "table": "vendas",
-                      "column": "has_error",
+                      "table": "carrinho",
+                      "column": "erro",
                       "type": "boolean",
-                      "value": "{{safe2pay_pix.data.Error}}",
-                      "recid": 2
-                    },
-                    {
-                      "table": "vendas",
-                      "column": "error_description",
-                      "type": "text",
-                      "value": "{{safe2pay_pix.data.Error}}",
-                      "recid": 3
+                      "value": "{{safe2pay.data.HasError}}"
                     }
                   ],
-                  "table": "vendas",
+                  "table": "carrinho",
                   "wheres": {
                     "condition": "AND",
                     "rules": [
                       {
-                        "id": "qrcode",
-                        "field": "qrcode",
-                        "type": "string",
+                        "id": "id",
+                        "field": "id",
+                        "type": "double",
                         "operator": "equal",
-                        "value": "{{qrcode}}",
+                        "value": "{{carrinho.identity}}",
                         "data": {
-                          "column": "qrcode"
+                          "column": "id"
                         },
                         "operation": "="
                       }
@@ -1572,31 +1549,25 @@
                     "valid": true
                   },
                   "returning": "id",
-                  "query": "update \"vendas\" set \"pag_json\" = ?, \"has_error\" = ?, \"error_description\" = ? where \"qrcode\" = ? returning \"id\"",
+                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ? where \"id\" = ? returning \"id\"",
                   "params": [
                     {
                       "name": ":P1",
                       "type": "expression",
-                      "value": "{{safe2pay_pix.data}}",
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}",
                       "test": ""
                     },
                     {
                       "name": ":P2",
                       "type": "expression",
-                      "value": "{{safe2pay_pix.data.Error}}",
-                      "test": ""
-                    },
-                    {
-                      "name": ":P3",
-                      "type": "expression",
-                      "value": "{{safe2pay_pix.data.Error}}",
+                      "value": "{{safe2pay.data.HasError}}",
                       "test": ""
                     },
                     {
                       "operator": "equal",
                       "type": "expression",
-                      "name": ":P4",
-                      "value": "{{qrcode}}",
+                      "name": ":P3",
+                      "value": "{{carrinho.identity}}",
                       "test": ""
                     }
                   ]
@@ -1611,7 +1582,18 @@
             }
           }
         },
-        "outputType": "boolean",
+        "outputType": "boolean"
+      },
+      {
+        "name": "emit",
+        "module": "sockets",
+        "action": "emit",
+        "options": {
+          "eventName": "status_pagamento",
+          "params": {
+            "venda": "{{carrinho.identity}}"
+          }
+        },
         "disabled": true
       }
     ]

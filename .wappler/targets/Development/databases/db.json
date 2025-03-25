@@ -28,7 +28,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -120,7 +120,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -225,7 +225,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -409,7 +409,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -479,9 +479,6 @@
               "nullable": false
             }
           }
-        },
-        "refs": {
-          "vendas": "forma_pagamento_id"
         }
       },
       "notificacoes": {
@@ -499,7 +496,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -602,7 +599,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -677,7 +674,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -810,7 +807,32 @@
           }
         },
         "refs": {
-          "vendas": "status_pagamento_id"
+          "carrinho": "status_pagamento_id"
+        }
+      },
+      "tipo_despesa": {
+        "db": {},
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "despesa": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          }
+        },
+        "refs": {
+          "eventos_despesas": "tipo_despesa_id"
         }
       },
       "vendas": {
@@ -828,7 +850,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -855,32 +877,6 @@
               "onDelete": "NO ACTION"
             }
           },
-          "evento_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "unique": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "eventos",
-              "referenceType": "integer",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
-          "usuario_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "unique": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "usuarios",
-              "referenceType": "integer",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
           "categoria_id": {
             "db": {
               "type": "reference",
@@ -892,75 +888,6 @@
               "referenceType": "integer",
               "onUpdate": "NO ACTION",
               "onDelete": "NO ACTION"
-            }
-          },
-          "forma_pagamento_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "unique": false,
-              "nullable": true,
-              "referenceType": "integer",
-              "references": "id",
-              "inTable": "forma_pagamento",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
-          "status_pagamento_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "unique": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "status_pagamento",
-              "referenceType": "integer",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
-          "valor_original": {
-            "db": {
-              "type": "decimal",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "desconto_aplicado": {
-            "db": {
-              "type": "decimal",
-              "default": 0,
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "valor_final": {
-            "db": {
-              "type": "decimal",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "cupom_utilizado": {
-            "db": {
-              "type": "boolean",
-              "default": "false",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "cupom_codigo": {
-            "db": {
-              "type": "text",
-              "default": 0,
-              "primary": false,
-              "unique": false,
-              "nullable": true
             }
           },
           "participante_nome": {
@@ -988,72 +915,6 @@
             }
           },
           "participante_email": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "pix_key": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "pix_qrcode": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "pag_json": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "erro": {
-            "db": {
-              "type": "boolean",
-              "default": "false",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "mensagem_transacao": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "qtide_parcelas": {
-            "db": {
-              "type": "integer",
-              "default": 1,
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "transacao_id": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "qrcode": {
             "db": {
               "type": "text",
               "primary": false,
@@ -1090,6 +951,27 @@
           "data_troca": {
             "db": {
               "type": "date",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "carrinho": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": false,
+              "references": "id",
+              "inTable": "carrinho",
+              "referenceType": "integer",
+              "onUpdate": "CASCADE",
+              "onDelete": "CASCADE"
+            }
+          },
+          "qrcode": {
+            "db": {
+              "type": "text",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1171,31 +1053,6 @@
           }
         ]
       },
-      "tipo_despesa": {
-        "db": {},
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "despesa": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          }
-        },
-        "refs": {
-          "eventos_despesas": "tipo_despesa_id"
-        }
-      },
       "evento_checklist": {
         "db": {},
         "columns": {
@@ -1211,7 +1068,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1308,7 +1165,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1379,7 +1236,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1589,9 +1446,9 @@
           "noticias": "criado_por",
           "notificacoes": "criado_por",
           "notificacoes_nao_lidas": "usuario_id",
-          "vendas": "usuario_id",
           "evento_checklist": "finalizada_por",
-          "eventos": "usuario_id"
+          "eventos": "usuario_id",
+          "carrinho": "usuario_id"
         }
       },
       "eventos": {
@@ -1622,7 +1479,7 @@
           "criado_em": {
             "db": {
               "type": "timestamp",
-              "default": "knex.fn.now()",
+              "default": "now()",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1864,7 +1721,176 @@
           "evento_checklist": "evento_id"
         },
         "refs": {
-          "vendas": "evento_id"
+          "carrinho": "evento_id"
+        }
+      },
+      "carrinho": {
+        "db": {},
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "criado_em": {
+            "db": {
+              "type": "timestamp",
+              "default": "now()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "atualizado_em": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "evento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": false,
+              "references": "id",
+              "inTable": "eventos",
+              "referenceType": "integer",
+              "onUpdate": "SET NULL",
+              "onDelete": "SET NULL"
+            }
+          },
+          "usuario_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": false,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "CASCADE",
+              "onDelete": "CASCADE"
+            }
+          },
+          "status_pagamento_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": false,
+              "references": "id",
+              "inTable": "status_pagamento",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "transacao_id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "resposta_pagamento": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "taxa": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "erro": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "qtide_parcelas": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pix_key": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pix_qrcode": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "json": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "valor_original": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "valor_final": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "desconto_aplicado": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "cupom_codigo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "refs": {
+          "vendas": "carrinho"
         }
       },
       "parcelamento": {

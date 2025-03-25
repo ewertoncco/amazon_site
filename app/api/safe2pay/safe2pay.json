@@ -1,0 +1,226 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "IdTransaction"
+      },
+      {
+        "type": "text",
+        "name": "TransactionStatus.Id"
+      },
+      {
+        "type": "text",
+        "name": "TransactionStatus.Name"
+      },
+      {
+        "type": "number",
+        "name": "CheckingAccounts.Tax"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "number",
+        "name": "TransactionStatus"
+      },
+      {
+        "type": "number",
+        "name": "CheckingAccounts"
+      },
+      {
+        "type": "number",
+        "name": "Amount"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "deb",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": {
+            "IdTransaction": 110282009,
+            "TransactionStatus": {
+              "Id": 3,
+              "Code": "3",
+              "Name": "Autorizado"
+            },
+            "PaymentMethod": {
+              "Id": 2,
+              "Code": "2",
+              "Name": "Cartão de Crédito",
+              "Show": false,
+              "IsEnabled": false
+            },
+            "Application": "Festival de Rock 2025",
+            "Vendor": "Eventos Top Ltda",
+            "Amount": 150,
+            "PaymentDate": "2025-03-24T22:05:04.803",
+            "IncluedDate": "2025-03-24T22:05:03.243",
+            "InstallmentQuantity": 1,
+            "SecretKey": "C1BA4CC3BDD14D518E3848025AFA9D2F94EB6F38E8EE4335873C451398146616",
+            "TaxValue": 12.9,
+            "NetValue": 0,
+            "Reference": "",
+            "Tid": "0324100504091",
+            "AuthorizationCode": "035923",
+            "Splits": [
+              {
+                "IdTransactionSplitter": 110282014,
+                "IdReceiver": 191055,
+                "CodeTaxType": 2,
+                "Identity": "19639842000116",
+                "Name": "W27 SOLUCOES LTDA",
+                "IsPayTax": true,
+                "Amount": 9,
+                "CheckingAccounts": [
+                  {
+                    "Description": "",
+                    "Amount": 0,
+                    "Tax": 0,
+                    "IsTransferred": false,
+                    "ReleaseDate": "0001-01-01T00:00:00"
+                  }
+                ]
+              },
+              {
+                "IdTransactionSplitter": 110282015,
+                "IdReceiver": 404810,
+                "CodeTaxType": 1,
+                "Identity": "02679601904",
+                "Name": "EWERTON LUIZ OLIVEIRA",
+                "IsPayTax": false,
+                "Amount": 3,
+                "CheckingAccounts": [
+                  {
+                    "Description": "",
+                    "Amount": 0,
+                    "Tax": 0,
+                    "IsTransferred": false,
+                    "ReleaseDate": "0001-01-01T00:00:00"
+                  }
+                ]
+              }
+            ],
+            "IdMultiPaymentCharge": 0
+          }
+        },
+        "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "carrinho",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "carrinho",
+                "column": "atualizado_em",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "status_pagamento_id",
+                "type": "number",
+                "value": "{{$_POST.TransactionStatus.Id}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "resposta_pagamento",
+                "type": "text",
+                "value": "{{$_POST.TransactionStatus.Name}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "taxa",
+                "type": "number",
+                "value": "{{$_POST.CheckingAccounts.Tax}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "valor_original",
+                "type": "number",
+                "value": "{{$_POST.Amount}}"
+              }
+            ],
+            "table": "carrinho",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "transacao_id",
+                  "field": "transacao_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.IdTransaction}}",
+                  "data": {
+                    "column": "transacao_id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "id",
+            "query": "update \"carrinho\" set \"atualizado_em\" = ?, \"status_pagamento_id\" = ?, \"resposta_pagamento\" = ?, \"taxa\" = ?, \"valor_original\" = ? where \"transacao_id\" = ? returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.TransactionStatus.Id}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.TransactionStatus.Name}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.CheckingAccounts.Tax}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.Amount}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P6",
+                "value": "{{$_POST.IdTransaction}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

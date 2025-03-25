@@ -1,4 +1,8 @@
 <!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{}}" is="dmx-app" appconnect="local" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
+<script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun="true">{
+  run: {outputType: "text", action: "{{global.removeAll()}}"}
+}</script>
+<dmx-serverconnect id="carrinho" noload="true" url="/api/carrinho/atualiza_status" dmx-param:venda=""></dmx-serverconnect>
 
 <form id="cupom" is="dmx-serverconnect-form" method="post" action="/api/eventos/cupom" dmx-on:success="run({condition:{outputType:'boolean',if:`!cupom.data.evento.valor_cupom.Empt()`,then:{steps:{repeat:{name:'repeat',output:true,outputType:'array',repeat:`datastore_carrinho.data`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`datastore_carrinho.update({$id: $value.$id},{item_valor: $value.item_valor-((cupom.data.evento.valor_cupom*$value.item_valor)/100), cupom: cupom_code.value})`}}}}}}}})">
     <dmx-form-data id="inp_evento" name="evento" dmx-bind:data="query.evento"></dmx-form-data>
@@ -57,8 +61,7 @@
     <dmx-value id="var_contador" dmx-bind:value="0"></dmx-value>
 
 
-    <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: $event.evento_id})"></dmx-socket>
-    <dmx-value id="status_pagamento" dmx-bind:value="0"></dmx-value>
+    <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: $event.evento_id})" dmx-on:message.status_pagamento=""></dmx-socket>
 
     <!-- Modal do Carrinho -->
     <div class="modal fade" id="carrinho" tabindex="-1" aria-labelledby="carrinhoLabel" aria-hidden="true" is="dmx-bs5-modal">
@@ -383,17 +386,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body pt-2" dmx-show="global.data.status_pagamento==2">
-                        <div class="text-center p-4">
-                            <div class="mb-3">
-                                <i class="fas fa-spinner fa-4x text-muted"></i>
-                            </div>
-                            <h4 class="text-muted">Processando pagamento</h4>
-                            <p class="mb-0">Aguarde</p>
-                        </div>
+                    <div class="card-body text-center" dmx-show="global.data.status_pagamento==2" id="processando"><i class="fas fa-spinner fa-4x text-muted"></i>
+                        <h4 class="text-muted">Processando pagamento</h4>
+                        <p class="mb-0">Aguarde</p>
+                    </div>
+                    <div class="card-body text-center" dmx-show="global.data.status_pagamento==3" id="aprovado"><i class="fas fa-check fa-4x text-success"></i>
+                        <h4 class="text-muted">Processando pagamento</h4>
+                        <p class="mb-0">Aguarde</p>
                     </div>
                     <!-- Seção de Pagamento -->
-                    <div class="card-body p-4" id="secao_pagamento" dmx-show="global.data.pagamento">
+                    <div class="card-body p-4" id="secao_pagamento" dmx-hide="!global.data.pagamento">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h2 class="fw-bold mb-0">Pagamento</h2>
                             <button class="btn btn-outline-primary" dmx-on:click="global.set('pagamento', false)">
@@ -470,7 +472,7 @@
 
                                     <!-- Cartão -->
                                     <div class="tab-pane fade" id="cartao">
-                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="" dmx-on:error="status_pagamento.setValue(2);pagamento.show()">
+                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="venda.load({codigo: 1})" dmx-on:error="">
                                             <dmx-form-data id="inp_evento" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
                                             <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
                                             <dmx-form-data id="inp_desconto" name="desconto_aplicado" dmx-bind:data="cupom.data.evento.valor_cupom"></dmx-form-data>
@@ -526,7 +528,7 @@ function formatDate(input) {
 }
                                                 </script>
                                                 <div class="col-12">
-                                                    <button type="submit" class="btn btn-primary w-100" dmx-on:click="status_pagamento.setValue(2)">
+                                                    <button type="submit" class="btn btn-primary w-100" dmx-on:click="global.set('status_pagamento',2);global.set('pagamento',false)">
                                                         Pagar com Cartão
                                                     </button>
                                                 </div>

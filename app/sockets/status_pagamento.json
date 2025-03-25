@@ -1,8 +1,23 @@
 {
-  "name": "emit",
-  "module": "sockets",
-  "action": "emit",
-  "options": {
-    "eventName": "status_pagamento"
+  "meta": {
+    "$_PARAM": [
+      {
+        "type": "text",
+        "name": "venda"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "emit",
+      "module": "sockets",
+      "action": "emit",
+      "options": {
+        "eventName": "status_pagamento",
+        "params": {
+          "venda": "{{$_PARAM.venda}}"
+        }
+      }
+    }
   }
 }
