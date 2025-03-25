@@ -1,5 +1,5 @@
 <!-- Wappler include head-page="layouts/dashboard" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="compras" appConnect="local" components="{dmxFormatter:{}}" -->
-<dmx-serverconnect id="sc_compras" url="/api/usuarios/meus_itens"></dmx-serverconnect>
+<dmx-serverconnect id="compras" url="/api/compras/compras" dmx-param:offset="compras.data.minhas_compras.offset" dmx-param:limit="compras.data.minhas_compras.limit"></dmx-serverconnect>
 <meta name="ac:route" content="/compras">
 
 <div class=" py-4 h-100 container">
@@ -14,7 +14,7 @@
         <div class="table-responsive">
             <table class="table table-hover m-0 table-actions-bar">
 
-                <tbody is="dmx-repeat" id="compras" dmx-bind:repeat="sc_compras.data.vendas.data" key="id">
+                <tbody is="dmx-repeat" id="compras" key="id" dmx-bind:repeat="compras.data.minhas_compras.data">
                     <tr>
                         <td class="mt-1 mb-1">
                             <img src="/assets/uploads/banners_eventos/8a82b8f2-d8f0-426f-9bc7-b9e4898e90bf.png" alt="contact-img" title="contact-img" class="avatar-sm" dmx-bind:src="evento_banner_principal">

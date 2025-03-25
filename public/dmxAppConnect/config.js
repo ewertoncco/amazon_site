@@ -346,39 +346,49 @@ dmx.config({
         },
         {
           "type": "datetime",
-          "name": "data_criacao"
+          "name": "criado_em"
         },
         {
           "type": "number",
-          "name": "evento_id"
+          "name": "transacao_id"
         },
         {
           "type": "number",
           "name": "valor_final"
         },
         {
-          "type": "text",
-          "name": "nome_participante"
-        },
-        {
-          "type": "text",
-          "name": "cpf_participante"
-        },
-        {
-          "type": "text",
-          "name": "email_participante"
-        },
-        {
-          "type": "text",
-          "name": "telefone_participante"
-        },
-        {
-          "type": "datetime",
-          "name": "data_resgate"
-        },
-        {
-          "type": "text",
-          "name": "qrcode"
+          "name": "vendas",
+          "type": "array",
+          "sub": [
+            {
+              "type": "text",
+              "name": "participante_nome"
+            },
+            {
+              "type": "text",
+              "name": "participante_telefone"
+            },
+            {
+              "type": "text",
+              "name": "participante_cpf"
+            },
+            {
+              "type": "text",
+              "name": "participante_email"
+            },
+            {
+              "type": "boolean",
+              "name": "check_in"
+            },
+            {
+              "type": "datetime",
+              "name": "hora_check_in"
+            },
+            {
+              "type": "text",
+              "name": "qrcode"
+            }
+          ]
         }
       ],
       "outputType": "array"
