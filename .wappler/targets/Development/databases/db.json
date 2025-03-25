@@ -14,7 +14,9 @@
     ],
     "tables": {
       "logs": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -106,7 +108,9 @@
         }
       },
       "eventos_despesas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -211,7 +215,9 @@
         "parent": "eventos"
       },
       "eventos_itens": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -369,7 +375,9 @@
         }
       },
       "categoria_item": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -395,7 +403,9 @@
         }
       },
       "noticias": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -460,7 +470,9 @@
         }
       },
       "forma_pagamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -479,10 +491,15 @@
               "nullable": false
             }
           }
+        },
+        "refs": {
+          "carrinho": "forma_pagamento"
         }
       },
       "notificacoes": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -585,7 +602,9 @@
         }
       },
       "notificacoes_nao_lidas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -635,7 +654,9 @@
         "parent": "notificacoes"
       },
       "genero": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -660,7 +681,9 @@
         }
       },
       "organizador_dados": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -786,7 +809,9 @@
         "parent": "organizador"
       },
       "status_pagamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -811,7 +836,9 @@
         }
       },
       "tipo_despesa": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -836,7 +863,9 @@
         }
       },
       "vendas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1054,7 +1083,9 @@
         ]
       },
       "evento_checklist": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1151,7 +1182,9 @@
         "parent": "eventos"
       },
       "organizador": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1196,7 +1229,9 @@
         }
       },
       "status_publicacao": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1222,7 +1257,9 @@
         }
       },
       "usuarios": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1452,7 +1489,9 @@
         }
       },
       "eventos": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1725,7 +1764,9 @@
         }
       },
       "carrinho": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1887,6 +1928,19 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "forma_pagamento": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "forma_pagamento",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
           }
         },
         "refs": {
@@ -1894,7 +1948,9 @@
         }
       },
       "parcelamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {

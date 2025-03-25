@@ -3,7 +3,15 @@
     "$_PARAM": [
       {
         "type": "text",
-        "name": "venda"
+        "name": "transacao"
+      },
+      {
+        "type": "text",
+        "name": "status_pagamento"
+      },
+      {
+        "type": "text",
+        "name": "mensagem"
       }
     ]
   },
@@ -15,7 +23,10 @@
       "options": {
         "eventName": "status_pagamento",
         "params": {
-          "venda": "{{$_PARAM.venda}}"
+          "venda": "{{$_PARAM.venda}}",
+          "transacao": "{{$_PARAM.transacao}}",
+          "status_pagamento": "{{$_PARAM.status_pagamento}}",
+          "mensagem": "{{$_PARAM.mensagem}}"
         }
       }
     }

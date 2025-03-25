@@ -50,6 +50,14 @@ dmx.config({
       {
         "type": "text",
         "name": "venda"
+      },
+      {
+        "type": "text",
+        "name": "transacao_id"
+      },
+      {
+        "type": "text",
+        "name": "mensagem"
       }
     ]
   },

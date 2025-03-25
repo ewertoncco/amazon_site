@@ -1,8 +1,8 @@
 <!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{}}" is="dmx-app" appconnect="local" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
+<dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
 <script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun="true">{
   run: {outputType: "text", action: "{{global.removeAll()}}"}
 }</script>
-<dmx-serverconnect id="carrinho" noload="true" url="/api/carrinho/atualiza_status" dmx-param:venda=""></dmx-serverconnect>
 
 <form id="cupom" is="dmx-serverconnect-form" method="post" action="/api/eventos/cupom" dmx-on:success="run({condition:{outputType:'boolean',if:`!cupom.data.evento.valor_cupom.Empt()`,then:{steps:{repeat:{name:'repeat',output:true,outputType:'array',repeat:`datastore_carrinho.data`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`datastore_carrinho.update({$id: $value.$id},{item_valor: $value.item_valor-((cupom.data.evento.valor_cupom*$value.item_valor)/100), cupom: cupom_code.value})`}}}}}}}})">
     <dmx-form-data id="inp_evento" name="evento" dmx-bind:data="query.evento"></dmx-form-data>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="modal-body" dmx-show="user_logado.value==1&amp;&amp;sc_usuario_logado.data.query.isEmpty()">
                     <h3 class="text-center mb-2">Login</h3>
-                    <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Usuário logado');modal_nao_logado.hide()">
+                    <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Usuário logado');modal_nao_logado.hide();user.load({})">
                         <div class="form-group mb-3">
                             <label for="inp_email">E-mail</label>
                             <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">
@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" id="inp_lembre-me" name="lembre-me">
+                                <input class="form-check-input" type="checkbox" value="true" id="inp_lembre-me" name="lembre-me">
                                 <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
                             </div>
                         </div>
@@ -61,7 +61,8 @@
     <dmx-value id="var_contador" dmx-bind:value="0"></dmx-value>
 
 
-    <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: $event.evento_id})" dmx-on:message.status_pagamento=""></dmx-socket>
+    <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="evento.load({evento: $event.evento_id})"></dmx-socket>
+    <dmx-socket id="status_pag" dmx-on:message.status_pagamento="run({condition:{outputType:'boolean',if:`$event.transacao==global.data.transacao_id`,then:{steps:{run:{outputType:'text',action:`global.set(\'status_pagamento\',$event.status_pagamento);global.set(\'mensagem\',$event.mensagem)`}}}}})"></dmx-socket>
 
     <!-- Modal do Carrinho -->
     <div class="modal fade" id="carrinho" tabindex="-1" aria-labelledby="carrinhoLabel" aria-hidden="true" is="dmx-bs5-modal">
@@ -151,7 +152,7 @@
                     <button type="button" class="btn gap-1 btn-outline-link" data-bs-dismiss="modal">
                         <i class="fas fa-cart-plus me-1"></i>Continuar Comprando
                     </button>
-                    <button class="btn gap-1 btn-primary" dmx-on:click="global.set('pagamento', true);carrinho.hide();document.getElementById('secao_pagamento').scrollIntoView({behavior: 'smooth'})">
+                    <button class="btn gap-1 btn-primary" data-scroll-to="pagamento" dmx-on:click="global.set('pagamento', true);carrinho.hide()">
                         <i class="fas fa-credit-card me-1"></i>Ir para Pagamento
                     </button>
                 </div>
@@ -249,7 +250,7 @@
                     </div>
                     <div class="col">
                         <div class="sticky-bottom bg-white" dmx-show="!datastore_carrinho.data.isEmpty()">
-                            <button class="btn btn-primary w-100" dmx-on:click="global.set('pagamento', true);document.getElementById('secao_pagamento').scrollIntoView({behavior: 'smooth'})">
+                            <button class="btn btn-primary w-100 mt-2" data-scroll-to="pagamento" dmx-on:click="global.set('pagamento', true)">
                                 <i class="fas fa-credit-card me-2"></i>Ir para Pagamento
                             </button>
                         </div>
@@ -263,9 +264,63 @@
         </div>
 
         <!-- Seção Inferior - Descrição e FAQ -->
-        <div class="row justify-content-center mt-xxl-n5">
+        <section>
+            <div class="row">
+                <div class="col-12" dmx-show="global.data.status_pagamento==2">
+                    <div class="alert alert-info p-3 d-flex justify-content-center flex-column align-items-center" role="alert">
+
+                        <div class="text-center mt-5 mb-5">
+                            <div class="spinner-grow mb-3" role="status">
+                            </div>
+                            <h4 class="alert-heading text-black text-center">Processando seu pagamento ....</h4>
+                            <p class="text-black-50 text-center">Seu pagamento esta&nbsp;</p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-12" dmx-show="global.data.status_pagamento==1">
+                    <div class="alert alert-info d-flex justify-content-center flex-column align-items-center" role="alert">
+
+                        <div class="text-center mt-5 mb-5">
+                            <img alt="QR Code PIX" class="img-fluid mb-3" dmx-bind:src="pag_pix.data.qrcode" style="max-height: 250px;">
+                            <div class="spinner-grow mb-0" role="status">
+                            </div>
+                            <h4 class="alert-heading text-black text-center">Use o Qcode ou copie o código abaixo</h4>
+                            <div class="d-flex"><button class="btn btn-outline-primary" dmx-on:click="copy_pix_code()">
+                                    <i class="fas fa-copy"></i>
+                                </button><input type="text" class="form-control" readonly="" dmx-bind:value="pag_pix.data.key"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-12" dmx-show="global.data.status_pagamento==3">
+                    <div class="alert alert-primary d-flex p-3 mb-0 flex-column" role="alert">
+                        <div class="text-center mt-5 mb-5">
+                            <h4 class="alert-heading">Pagamento confirmado</h4>
+                            <p>Recebemos o seu pagamento e seu ticket logo estará disponível</p>
+                            <button type="button" class="btn btn-primary btn-sm">Ver minhas compras</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" dmx-show="global.data.status_pagamento&gt;3">
+                    <div class="d-flex flex-column justify-content-center align-items-center gap-1 mt-2 mb-2 p-5" id="erro">
+                        <i class="fas fa-exclamation fa-4x text-danger"></i>
+                        <h4 class="text-muted">Opss...</h4>
+                        <p class="mb-0">{{global.data.mensagem}}</p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="row justify-content-center mt-xxl">
             <div class="col-lg-10">
                 <div class="card border-0 shadow-sm rounded-4">
+
+
+
+
                     <!-- Seção de Sobre o Evento -->
                     <div class="card-body p-4" id="sobre_evento" dmx-hide="global.data.pagamento">
                         <h2 class="fw-bold mb-4">Sobre o Evento</h2>
@@ -386,14 +441,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body text-center" dmx-show="global.data.status_pagamento==2" id="processando"><i class="fas fa-spinner fa-4x text-muted"></i>
-                        <h4 class="text-muted">Processando pagamento</h4>
-                        <p class="mb-0">Aguarde</p>
-                    </div>
-                    <div class="card-body text-center" dmx-show="global.data.status_pagamento==3" id="aprovado"><i class="fas fa-check fa-4x text-success"></i>
-                        <h4 class="text-muted">Processando pagamento</h4>
-                        <p class="mb-0">Aguarde</p>
-                    </div>
                     <!-- Seção de Pagamento -->
                     <div class="card-body p-4" id="secao_pagamento" dmx-hide="!global.data.pagamento">
                         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -456,52 +503,58 @@
                                 <div class="tab-content">
                                     <!-- PIX -->
                                     <div class="tab-pane fade show active" id="pix">
+                                        <form id="pag_pix" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/pix">
+                                            <dmx-form-data id="inp_evento1" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
+                                            <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
+                                            <dmx-form-data id="inp_desconto" name="desconto_aplicado" dmx-bind:data="cupom.data.evento.valor_cupom"></dmx-form-data>
+                                            <button class="btn btn-primary w-100 mt-0" data-scroll-to="pagamento" dmx-on:click="global.set('status_pagamento',1);global.set('pagamento',false)" type="submit">Pagar com PIX</button>
+                                        </form>
                                         <div class="text-center mb-4">
-                                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PIX_KEY_HERE" alt="QR Code PIX" class="img-fluid mb-3">
+
                                             <div class="input-group">
-                                                <input type="text" class="form-control" value="00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426655440000" readonly>
-                                                <button class="btn btn-outline-primary" dmx-on:click="copy_pix_code()">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
+
+
                                             </div>
-                                            <button class="btn btn-primary w-100 mt-4" dmx-on:click="confirm_pix_payment()">
-                                                Confirmar Pagamento PIX
-                                            </button>
+
                                         </div>
                                     </div>
 
                                     <!-- Cartão -->
                                     <div class="tab-pane fade" id="cartao">
-                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="venda.load({codigo: 1})" dmx-on:error="">
-                                            <dmx-form-data id="inp_evento" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
-                                            <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
-                                            <dmx-form-data id="inp_desconto" name="desconto_aplicado" dmx-bind:data="cupom.data.evento.valor_cupom"></dmx-form-data>
+                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="global.set('transacao_id',credito.data.transacao);datastore_carrinho.clear()" dmx-on:error="">
+                                            <dmx-form-data id="inp_evento2" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
+                                            <dmx-form-data id="inp_itens_vendidos2" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
+                                            <dmx-form-data id="inp_desconto2" name="desconto_aplicado" dmx-bind:data="cupom.data.evento.valor_cupom"></dmx-form-data>
                                             <div class="row g-3">
                                                 <div class="col-12">
                                                     <label class="form-label">Número do Cartão</label>
                                                     <input type="text" class="form-control" name="numero_cartao" id="numero_cartao" maxlength="19" required="" data-msg-required="Informe o número do cartão" placeholder="0000 0000 0000 0000" oninput="formatCardNumber(this)">
 
-                                                    <div class="col-12">
-                                                        <label class="form-label">Nome no Cartão</label>
-                                                        <input type="text" class="form-control" name="nome_cartao" required="" data-msg-required="Informe o nome no cartão">
-                                                    </div>
 
-                                                    <div class="col-6">
-                                                        <label class="form-label">Validade (MM/AA)</label>
-                                                        <input type="text" class="form-control" name="validade" required="" data-msg-required="Informe a validade" maxlength="5" placeholder="MM/AA" oninput="formatDate(this)">
-                                                    </div>
 
-                                                    <div class="col-6">
-                                                        <label class="form-label">CVV</label>
-                                                        <input type="text" class="form-control" name="codigo_seguranca" required="" data-msg-required="Informe o CVV" maxlength="3" oninput="this.value = this.value.replace(/\D/g, '')">
-                                                    </div>
 
-                                                    <div class="col-12">
-                                                        <label class="form-label">Parcelas</label>
-                                                        <select class="form-select" name="qtide_parcelas" required="" dmx-bind:options="parcelamento.data.parcelamento.data" optiontext="{{ qtide }}x R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : ((datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100))) / qtide.toNumber())).formatCurrency('R$ ', ',', '.', 2) }} - Total: R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : (datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100)))).formatCurrency('R$ ', ',', '.', 2) }}" optionvalue="qtide">
-                                                        </select>
-                                                    </div>
 
+
+
+
+
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">Nome no Cartão</label>
+                                                    <input type="text" class="form-control" name="nome_cartao" required="" data-msg-required="Informe o nome no cartão">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label">CVV</label>
+                                                    <input type="text" class="form-control" name="codigo_seguranca" required="" data-msg-required="Informe o CVV" maxlength="3" oninput="this.value = this.value.replace(/\D/g, '')">
+                                                </div>
+                                                <div class="col">
+                                                    <label class="form-label">Validade (MM/AA)</label>
+                                                    <input type="text" class="form-control" name="validade" required="" data-msg-required="Informe a validade" maxlength="5" placeholder="MM/AA" oninput="formatDate(this)">
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">Parcelas</label>
+                                                    <select class="form-select" name="qtide_parcelas" required="" dmx-bind:options="parcelamento.data.parcelamento.data" optiontext="{{ qtide }}x R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : ((datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100))) / qtide.toNumber())).formatCurrency('R$ ', ',', '.', 2) }} - Total: R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : (datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100)))).formatCurrency('R$ ', ',', '.', 2) }}" optionvalue="qtide">
+                                                    </select>
                                                 </div>
 
                                                 <script>
@@ -527,8 +580,8 @@ function formatDate(input) {
     input.value = value;
 }
                                                 </script>
-                                                <div class="col-12">
-                                                    <button type="submit" class="btn btn-primary w-100" dmx-on:click="global.set('status_pagamento',2);global.set('pagamento',false)">
+                                                <div class="col">
+                                                    <button type="submit" class="btn btn-primary w-100" data-scroll-to="pagamento" dmx-on:click="global.set('status_pagamento',2);global.set('pagamento',false)" id="pagar_cartao">
                                                         Pagar com Cartão
                                                     </button>
                                                 </div>
@@ -561,6 +614,32 @@ function formatDate(input) {
     dmx.Formatter('string','formatDateLocale', function(val, format){
         return moment(val).format(format);
     })
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Função para fazer scroll suave considerando o header fixo
+        function smoothScroll(targetElement) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // Adiciona o evento de click no botão de pagamento
+        const btnPagarCartao = document.getElementById('pagar_cartao');
+        if (btnPagarCartao) {
+            btnPagarCartao.addEventListener('click', function(e) {
+                setTimeout(() => {
+                    const targetElement = document.querySelector('section');
+                    if (targetElement) {
+                        smoothScroll(targetElement);
+                    }
+                }, 150);
+            });
+        }
+    });
 </script>
 
 <style>

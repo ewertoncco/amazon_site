@@ -67,26 +67,6 @@
       },
       {
         "type": "number",
-        "name": "qtide_parcelas"
-      },
-      {
-        "type": "text",
-        "name": "nome_cartao"
-      },
-      {
-        "type": "text",
-        "name": "numero_cartao"
-      },
-      {
-        "type": "text",
-        "name": "codigo_seguranca"
-      },
-      {
-        "type": "text",
-        "name": "validade"
-      },
-      {
-        "type": "number",
         "name": "id"
       }
     ]
@@ -578,44 +558,6 @@
         "outputType": "object"
       },
       {
-        "name": "parcelamento",
-        "module": "dbconnector",
-        "action": "single",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "select",
-            "columns": [],
-            "params": [],
-            "table": {
-              "name": "parcelamento"
-            },
-            "primary": "id",
-            "joins": [],
-            "query": "select * from \"parcelamento\""
-          }
-        },
-        "meta": [
-          {
-            "type": "number",
-            "name": "id"
-          },
-          {
-            "type": "number",
-            "name": "juros"
-          },
-          {
-            "type": "number",
-            "name": "qtide"
-          },
-          {
-            "type": "text",
-            "name": "parcelamento"
-          }
-        ],
-        "outputType": "object"
-      },
-      {
         "name": "lista_produtos",
         "module": "arraylist",
         "action": "create",
@@ -652,14 +594,14 @@
               },
               {
                 "table": "carrinho",
-                "column": "qtide_parcelas",
+                "column": "forma_pagamento",
                 "type": "number",
-                "value": "{{$_POST.qtide_parcelas}}"
+                "value": "1"
               }
             ],
             "table": "carrinho",
             "returning": "id",
-            "query": "insert into \"carrinho\" (\"evento_id\", \"qtide_parcelas\", \"status_pagamento_id\", \"usuario_id\") values (?, ?, ?, ?) returning \"id\"",
+            "query": "insert into \"carrinho\" (\"evento_id\", \"forma_pagamento\", \"status_pagamento_id\", \"usuario_id\") values (?, ?, ?, ?) returning \"id\"",
             "params": [
               {
                 "name": ":P1",
@@ -671,12 +613,6 @@
                 "name": ":P2",
                 "type": "expression",
                 "value": "{{identity}}",
-                "test": ""
-              },
-              {
-                "name": ":P3",
-                "type": "expression",
-                "value": "{{$_POST.qtide_parcelas}}",
                 "test": ""
               }
             ]
@@ -1026,55 +962,64 @@
                                 "table": "vendas",
                                 "column": "participante_nome",
                                 "type": "text",
-                                "value": "{{nome}}"
+                                "value": "{{nome}}",
+                                "recid": 1
                               },
                               {
                                 "table": "vendas",
                                 "column": "participante_telefone",
                                 "type": "text",
-                                "value": "{{telefone}}"
+                                "value": "{{telefone}}",
+                                "recid": 2
                               },
                               {
                                 "table": "vendas",
                                 "column": "participante_cpf",
                                 "type": "text",
-                                "value": "{{cpf}}"
+                                "value": "{{cpf}}",
+                                "recid": 3
                               },
                               {
                                 "table": "vendas",
                                 "column": "participante_email",
                                 "type": "text",
-                                "value": "{{email}}"
+                                "value": "{{email}}",
+                                "recid": 4
                               },
                               {
                                 "table": "vendas",
                                 "column": "item_id",
                                 "type": "number",
-                                "value": "{{produto.id}}"
+                                "value": "{{produto.id}}",
+                                "recid": 5
                               },
                               {
                                 "table": "vendas",
                                 "column": "categoria_id",
                                 "type": "number",
-                                "value": "{{produto.tipo_item}}"
+                                "value": "{{produto.tipo_item}}",
+                                "recid": 6
                               },
                               {
                                 "table": "vendas",
                                 "column": "check_in",
                                 "type": "boolean",
-                                "value": "false"
+                                "value": "false",
+                                "recid": 7
                               },
                               {
                                 "table": "vendas",
                                 "column": "carrinho",
                                 "type": "number",
-                                "value": "{{carrinho.identity}}"
+                                "value": "{{carrinho.identity}}",
+                                "recid": 8
                               },
                               {
                                 "table": "vendas",
                                 "column": "qrcode",
                                 "type": "text",
-                                "value": "{{qrcode}}"
+                                "value": "{{qrcode}}",
+                                "recid": 9
                               }
                             ],
                             "table": "vendas",
@@ -1204,12 +1149,12 @@
           "method": "POST",
           "dataType": "json",
           "data": {
-            "IsSandbox": true,
+            "IsSandbox": false,
             "Application": "{{evento.titulo}}",
             "Vendor": "{{organizador.nome}}",
             "CallbackUrl": "https://4e30-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
-            "PaymentMethod": "2",
-            "Reference": "{{itens_vendidos[0].$name}}",
+            "PaymentMethod": "6",
+            "Reference": "{{evento.titulo}}",
             "Customer": {
               "Name": "{{usuario.usuario_nome}}",
               "Identity": "{{usuario.usuario_cpf}}",
@@ -1226,15 +1171,6 @@
               }
             },
             "Products": "{{Products}}",
-            "PaymentObject": {
-              "Holder": "{{$_POST.nome_cartao}}",
-              "CardNumber": "{{$_POST.numero_cartao}}",
-              "ExpirationDate": "{{$_POST.validade.split('/')[0] + '/20' + $_POST.validade.split('/')[1]}}",
-              "SecurityCode": "{{$_POST.codigo_seguranca}}",
-              "InstallmentQuantity": 1,
-              "IsApplyInterest": false,
-              "InterestRate": 0
-            },
             "Splits": [
               {
                 "CodeTaxType": 1,
@@ -1248,7 +1184,7 @@
           "url": "https://payment.safe2pay.com.br/v2/Payment",
           "headers": {
             "ContentType": "application/json",
-            "x-api-key": "05852EB824374491B20A16258FC8AA68"
+            "x-api-key": "{{organizador.dados[0].token}}"
           },
           "schema": [
             {
@@ -1372,6 +1308,30 @@
         "collapsed": true
       },
       {
+        "name": "tudo",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data}}"
+        },
+        "meta": [
+          {
+            "name": "HasError",
+            "type": "boolean"
+          },
+          {
+            "name": "ErrorCode",
+            "type": "text"
+          },
+          {
+            "name": "Error",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": true
+      },
+      {
         "name": "transacao",
         "module": "core",
         "action": "setvalue",
@@ -1438,6 +1398,142 @@
         ],
         "output": true,
         "outputType": "number"
+      },
+      {
+        "name": "qrcode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data.ResponseDetail.QrCode}}"
+        },
+        "meta": [
+          {
+            "name": "data",
+            "type": "object",
+            "sub": [
+              {
+                "name": "HasError",
+                "type": "boolean"
+              },
+              {
+                "name": "ErrorCode",
+                "type": "text"
+              },
+              {
+                "name": "Error",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "name": "headers",
+            "type": "object",
+            "sub": [
+              {
+                "name": "content-encoding",
+                "type": "text"
+              },
+              {
+                "name": "content-type",
+                "type": "text"
+              },
+              {
+                "name": "date",
+                "type": "text"
+              },
+              {
+                "name": "strict-transport-security",
+                "type": "text"
+              },
+              {
+                "name": "transfer-encoding",
+                "type": "text"
+              },
+              {
+                "name": "vary",
+                "type": "text"
+              },
+              {
+                "name": "x-correlation-id",
+                "type": "text"
+              },
+              {
+                "name": "x-powered-by",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "key",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data.ResponseDetail.Key}}"
+        },
+        "meta": [
+          {
+            "name": "data",
+            "type": "object",
+            "sub": [
+              {
+                "name": "HasError",
+                "type": "boolean"
+              },
+              {
+                "name": "ErrorCode",
+                "type": "text"
+              },
+              {
+                "name": "Error",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "name": "headers",
+            "type": "object",
+            "sub": [
+              {
+                "name": "content-encoding",
+                "type": "text"
+              },
+              {
+                "name": "content-type",
+                "type": "text"
+              },
+              {
+                "name": "date",
+                "type": "text"
+              },
+              {
+                "name": "strict-transport-security",
+                "type": "text"
+              },
+              {
+                "name": "transfer-encoding",
+                "type": "text"
+              },
+              {
+                "name": "vary",
+                "type": "text"
+              },
+              {
+                "name": "x-correlation-id",
+                "type": "text"
+              },
+              {
+                "name": "x-powered-by",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "outputType": "text",
+        "output": true
       },
       {
         "name": "",
@@ -1580,6 +1676,20 @@
                       "type": "boolean",
                       "value": "{{safe2pay.data.HasError}}",
                       "recid": 2
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "pix_key",
+                      "type": "text",
+                      "value": "{{safe2pay.data.ResponseDetail.Key}}",
+                      "recid": 3
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "pix_qrcode",
+                      "type": "text",
+                      "value": "{{safe2pay.data.ResponseDetail.QrCode}}",
+                      "recid": 4
                     }
                   ],
                   "table": "carrinho",
@@ -1602,7 +1712,7 @@
                     "valid": true
                   },
                   "returning": "id",
-                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ? where \"id\" = ? returning \"id\"",
+                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ?, \"pix_key\" = ?, \"pix_qrcode\" = ? where \"id\" = ? returning \"id\"",
                   "params": [
                     {
                       "name": ":P1",
@@ -1617,9 +1727,21 @@
                       "test": ""
                     },
                     {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.ResponseDetail.Key}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.ResponseDetail.QrCode}}",
+                      "test": ""
+                    },
+                    {
                       "operator": "equal",
                       "type": "expression",
-                      "name": ":P3",
+                      "name": ":P5",
                       "value": "{{carrinho.identity}}",
                       "test": ""
                     }
@@ -1636,18 +1758,6 @@
           }
         },
         "outputType": "boolean"
-      },
-      {
-        "name": "emit",
-        "module": "sockets",
-        "action": "emit",
-        "options": {
-          "eventName": "status_pagamento",
-          "params": {
-            "venda": "{{carrinho.identity}}"
-          }
-        },
-        "disabled": true
       }
     ]
   }

@@ -3,7 +3,7 @@
     "$_GET": [
       {
         "type": "text",
-        "name": "venda"
+        "name": "transacao"
       }
     ]
   },
@@ -35,7 +35,7 @@
               "operator": "equal",
               "type": "expression",
               "name": ":P1",
-              "value": "{{$_GET.venda}}",
+              "value": "{{$_GET.transacao}}",
               "test": ""
             }
           ],
@@ -48,22 +48,21 @@
             "condition": "AND",
             "rules": [
               {
-                "id": "carrinho.id",
-                "field": "carrinho.id",
+                "id": "carrinho.transacao_id",
+                "field": "carrinho.transacao_id",
                 "type": "double",
                 "operator": "equal",
-                "value": "{{$_GET.venda}}",
+                "value": "{{$_GET.transacao}}",
                 "data": {
                   "table": "carrinho",
-                  "column": "id",
+                  "column": "transacao_id",
                   "type": "number",
                   "columnObj": {
-                    "type": "increments",
-                    "default": "",
-                    "primary": true,
-                    "unique": true,
-                    "nullable": false,
-                    "name": "id"
+                    "type": "integer",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "transacao_id"
                   }
                 },
                 "operation": "="
@@ -72,7 +71,7 @@
             "conditional": null,
             "valid": true
           },
-          "query": "select \"resposta_pagamento\", \"transacao_id\", \"status_pagamento_id\" from \"carrinho\" where \"carrinho\".\"id\" = ?"
+          "query": "select \"resposta_pagamento\", \"transacao_id\", \"status_pagamento_id\" from \"carrinho\" where \"carrinho\".\"transacao_id\" = ?"
         }
       },
       "output": true,
