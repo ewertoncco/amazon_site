@@ -19,3 +19,98 @@
     border-color: #d0d2d5;
     background-color: #fefefe
 }
+
+/* Estilos personalizados */
+
+:root {
+  --bs-primary: #6d8dcc !important;
+  --bs-primary-rgb: 109, 141, 204 !important;
+  --bs-primary-text-emphasis: #5d78ae !important;
+  --bs-primary-bg-subtle: #e9edf7 !important;
+  --bs-primary-border-subtle: #c1d0ed !important;
+  --bs-link-color: #6d8dcc !important;
+  --bs-link-color-rgb: 109, 141, 204 !important;
+  --bs-link-hover-color: #5d78ae !important;
+  --bs-link-hover-color-rgb: 93, 120, 174 !important;
+  --bs-focus-ring-color: rgba(109, 141, 204, 0.25) !important;
+}
+
+:root[data-menu-color=light] {
+  --bs-menu-item-hover-color: #6d8dcc !important;
+  --bs-menu-item-hover-bg: rgba(109, 141, 204, 0.1) !important;
+  --bs-menu-item-active-color: #6d8dcc !important;
+  --bs-menu-item-active-bg: rgba(109, 141, 204, 0.1) !important;
+}
+
+:root[data-menu-color=brand] {
+  --bs-menu-bg: #6d8dcc !important;
+}
+
+:root[data-topbar-color=light] {
+  --bs-topbar-item-hover-color: #6d8dcc !important;
+}
+
+:root[data-topbar-color=brand] {
+  --bs-topbar-bg: #6d8dcc !important;
+  --bs-topbar-search-bg: #5c7dc1 !important;
+}
+
+/* Sobrescrever classes Bootstrap */
+.btn-primary,
+.bg-primary {
+  background-color: #6d8dcc !important;
+  border-color: #6d8dcc !important;
+}
+
+.text-primary {
+  color: #6d8dcc !important;
+}
+
+.border-primary {
+  border-color: #6d8dcc !important;
+}
+
+/* Classes específicas que possam usar a cor primária */
+.btn-soft-primary {
+  background-color: rgba(109, 141, 204, 0.15) !important;
+  color: #6d8dcc !important;
+}
+
+.btn-outline-primary {
+  border-color: #6d8dcc !important;
+  color: #6d8dcc !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: #6d8dcc !important;
+  color: #fff !important;
+}
+
+.nav-pills .nav-link.active, 
+.nav-pills .show>.nav-link {
+  background-color: #6d8dcc !important;
+}
+
+.page-item.active .page-link {
+  background-color: #6d8dcc !important;
+  border-color: #6d8dcc !important;
+}
+
+.page-link {
+  color: #6d8dcc !important;
+}
+
+.form-check-input:checked {
+  background-color: #6d8dcc !important;
+  border-color: #6d8dcc !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #6d8dcc !important;
+}
+
+.progress-bar {
+  background-color: #6d8dcc !important;
+}

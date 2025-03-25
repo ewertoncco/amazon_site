@@ -53,12 +53,76 @@
 
   <script src="/dmxAppConnect/dmxSummernote/dmxSummernote.js" defer></script>
   <script src="/dmxAppConnect/dmxSummernote/lang/summernote-pt-BR.min.js" defer></script>
+  
+  <style>
+    /* Preloader para SPA */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+    }
+
+    .preloader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .preloader-content {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--bs-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Efeito de blur no conteúdo enquanto carrega */
+    .content-loading {
+      filter: blur(1px);
+      pointer-events: none;
+    }
+  </style>
 </head>
 
-<body is="dmx-app" id="dashboard">
+<body is="dmx-app" id="dashboard" spa="true">
   <dmx-notifications id="notifies1"></dmx-notifications>
   <div is="dmx-browser" id="browser1"></div>
   <dmx-serverconnect id="sc_usuario_logado" url="/api/usuarios/usuario_logado"></dmx-serverconnect>
+  
+  <!-- Preloader para SPA -->
+  <div id="app-preloader" class="preloader">
+    <div class="preloader-content">
+      <div class="spinner"></div>
+    </div>
+  </div>
+  
   <!-- Begin page -->
   <div class="wrapper">
 
@@ -421,7 +485,9 @@
 
       </div>
       <div class="container-fluid">
-        <%- await include(content, locals) %>
+        <div is="dmx-view" id="content">
+          <%- await include(content, locals) %>
+        </div>
       </div>
       <!-- container -->
 
@@ -462,6 +528,106 @@
 
   <!-- App js -->
   <script src="assets/js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const preloader = document.getElementById('app-preloader');
+      const content = document.querySelector('.container-fluid');
+
+      // Adiciona classe de blur ao conteúdo
+      if (content) content.classList.add('content-loading');
+
+      let loadingTimeout;
+
+      function hidePreloader() {
+        preloader.classList.add('loaded');
+        if (content) content.classList.remove('content-loading');
+      }
+
+      function checkAllRequestsComplete() {
+        clearTimeout(loadingTimeout);
+
+        // Verifica serverConnects que estão carregando
+        const pendingRequests = Array.from(document.querySelectorAll('[is="dmx-serverconnect"]'))
+          .filter(el => el.hasAttribute('url') && !el.hasAttribute('noload'))
+          .map(el => dmx.app.get(el.id))
+          .filter(sc => sc);
+
+        if (pendingRequests.length === 0) {
+          hidePreloader();
+          return;
+        }
+
+        // Verifica se todas as requisições foram completadas
+        const allComplete = pendingRequests.every(sc => 
+          sc.data || sc.lastError || !sc.loading
+        );
+
+        if (allComplete) {
+          setTimeout(hidePreloader, 300);
+        } else {
+          // Fallback para garantir que o preloader não fique preso
+          loadingTimeout = setTimeout(hidePreloader, 3000);
+        }
+      }
+
+      // Monitora mudanças no DOM para serverConnects
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList') {
+            const serverConnects = mutation.target.querySelectorAll('[is="dmx-serverconnect"]');
+            serverConnects.forEach(sc => {
+              const component = dmx.app.get(sc.id);
+              if (component && !component._preloaderBound) {
+                component._preloaderBound = true;
+                component.addEventListener('success', checkAllRequestsComplete);
+                component.addEventListener('error', checkAllRequestsComplete);
+              }
+            });
+          }
+        });
+      });
+
+      // Observa mudanças no DOM
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+
+      // Checa as requisições iniciais
+      setTimeout(checkAllRequestsComplete, 500);
+
+      // Fallback final
+      window.addEventListener('load', function() {
+        setTimeout(hidePreloader, 3000);
+      });
+      
+      // Função para processar links internos
+      function setupInternalLinks() {
+        // Processa todos os links internos no documento
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+          if (!link.hasAttribute('dmx-on:click') && !link.getAttribute('href').startsWith('//') && !link.getAttribute('href').includes('://')) {
+            const href = link.getAttribute('href');
+            link.setAttribute('dmx-on:click', `browser1.goto('${href}'); return false;`);
+            link.setAttribute('internal', 'true');
+          }
+        });
+      }
+      
+      // Configura links internos após carregamento
+      setupInternalLinks();
+      
+      // Observe navegação para configurar links em conteúdo dinâmico
+      const contentElement = document.getElementById('content');
+      if (contentElement) {
+        const contentObserver = new MutationObserver(setupInternalLinks);
+        contentObserver.observe(contentElement, { 
+          childList: true, 
+          subtree: true 
+        });
+      }
+    });
+  </script>
 
 </body>
 

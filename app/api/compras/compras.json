@@ -45,6 +45,10 @@
             {
               "table": "carrinho",
               "column": "valor_final"
+            },
+            {
+              "table": "carrinho",
+              "column": "forma_pagamento"
             }
           ],
           "params": [
@@ -61,7 +65,7 @@
           },
           "primary": "id",
           "joins": [],
-          "query": "select \"id\", \"criado_em\", \"transacao_id\", \"valor_final\" from \"carrinho\" where \"carrinho\".\"usuario_id\" = ? and \"carrinho\".\"status_pagamento_id\" = ? limit ?",
+          "query": "select \"id\", \"criado_em\", \"transacao_id\", \"valor_final\", \"forma_pagamento\" from \"carrinho\" where \"carrinho\".\"usuario_id\" = ? and \"carrinho\".\"status_pagamento_id\" = ? limit ?",
           "wheres": {
             "condition": "AND",
             "rules": [
@@ -155,12 +159,17 @@
                 {
                   "table": "vendas",
                   "column": "qrcode"
+                },
+                {
+                  "table": "vendas",
+                  "column": "id",
+                  "alias": "vendas_id"
                 }
               ],
               "params": [],
               "primary": "id",
               "joins": [],
-              "query": "select \"participante_nome\", \"participante_telefone\", \"participante_cpf\", \"participante_email\", \"check_in\", \"hora_check_in\", \"qrcode\" from \"vendas\" as \"vendas\""
+              "query": "select \"participante_nome\", \"participante_telefone\", \"participante_cpf\", \"participante_email\", \"check_in\", \"hora_check_in\", \"qrcode\", \"id\" as \"vendas_id\" from \"vendas\" as \"vendas\""
             }
           }
         }
@@ -236,6 +245,10 @@
               "name": "valor_final"
             },
             {
+              "type": "number",
+              "name": "forma_pagamento"
+            },
+            {
               "name": "vendas",
               "type": "array",
               "sub": [
@@ -266,6 +279,10 @@
                 {
                   "type": "text",
                   "name": "qrcode"
+                },
+                {
+                  "type": "number",
+                  "name": "vendas_id"
                 }
               ]
             }

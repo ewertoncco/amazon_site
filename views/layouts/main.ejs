@@ -31,7 +31,7 @@
   <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
 </head>
 
-<body is="dmx-app" id="main">
+<body is="dmx-app" id="main" spa="true">
   <div is="dmx-browser" id="browser1"></div>
   <main is="dmx-view" id="content">
     <%- await include(content, locals); %>

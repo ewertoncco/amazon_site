@@ -58,6 +58,9 @@
   <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
   <script src="/dmxAppConnect/dmxMoment/dmxMoment.js" defer></script>
 
+  <!-- Tema personalizado - deve ser o último para sobrescrever as outras definições -->
+  <link rel="stylesheet" href="/css/style.css" />
+
   <style>
     .navbar-nav .nav-item {
       margin: 0 5px;
@@ -174,10 +177,18 @@
     <header class="fixed-top bg-white shadow">
       <nav class="navbar navbar-expand-lg navbar-light py-2">
         <div class="container">
-          <a class="navbar-brand" href="/" internal="true">
+          <a class="navbar-brand" href="/" dmx-on:click="browser1.goto('/'); return false;" internal="true">
             <img src="/assets/images/logo-dark.png" alt="Logo" height="40">
           </a>
-          <div class="d-flex align-items-center order-lg-last">
+          <div class="d-flex d-lg-none align-items-center">
+            <button class="btn position-relative me-2 p-1" type="button">
+              <i class="fas fa-bell fa-lg"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6 fw-medium">3</span>
+            </button>
+            <button class="btn position-relative me-3 p-1" type="button" data-bs-toggle="modal" data-bs-target="#carrinho" dmx-show="!datastore_carrinho.data.isEmpty()">
+              <i class="fas fa-shopping-cart fa-lg"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary fs-6 fw-medium">{{datastore_carrinho.data.length}}</span>
+            </button>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -185,32 +196,29 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
               <li class="nav-item">
-                <a class="nav-link" href="/#evento" dmx-class:active="browser1.location.hash == '#evento'">Eventos</a>
+                <a class="nav-link" href="/#evento" dmx-on:click="browser1.goto('/#evento'); return false;" dmx-class:active="browser1.location.hash == '#evento'">Eventos</a>
               </li>
               <li class="nav-item" dmx-show="!user.data.identity.isEmpty()">
-                <a class="nav-link" href="/compras" internal="true" dmx-class:active="browser1.location.pathname == '/meus-ingressos'">Minha compras</a>
+                <a class="nav-link" href="/compras" dmx-on:click="browser1.goto('/compras'); return false;" dmx-class:active="browser1.location.pathname == '/compras'">Minhas compras</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/#faq" dmx-class:active="browser1.location.hash == '#faq'">Dúvidas</a>
+                <a class="nav-link" href="/#faq" dmx-on:click="browser1.goto('/#faq'); return false;" dmx-class:active="browser1.location.hash == '#faq'">Dúvidas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/#contato" dmx-class:active="browser1.location.hash == '#contato'">Contato</a>
-              </li>
-              <li class="nav-item" dmx-show="!user.data.identity.isEmpty() && user.data.user.adm == 1">
-                <a class="nav-link" href="/adm" internal="true" dmx-class:active="browser1.location.pathname == '/adm'">
-                  <i class="fas fa-cogs me-1"></i>Administração
-                </a>
+                <a class="nav-link" href="/#contato" dmx-on:click="browser1.goto('/#contato'); return false;" dmx-class:active="browser1.location.hash == '#contato'">Contato</a>
               </li>
             </ul>
-            <div class="d-none d-lg-flex align-items-center">
-              <button class="btn position-relative me-3 p-1" type="button">
-                <i class="fas fa-bell fa-lg"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6 fw-medium">3</span>
-              </button>
-              <button class="btn position-relative me-3 p-1" type="button" data-bs-toggle="modal" data-bs-target="#carrinho" dmx-show="browser1.location.pathname.startsWith('/evento') && !datastore_carrinho.data.isEmpty()">
-                <i class="fas fa-shopping-cart fa-lg"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary fs-6 fw-medium">{{datastore_carrinho.data.length}}</span>
-              </button>
+            <div class="d-flex align-items-center">
+              <div class="d-none d-lg-flex me-3">
+                <button class="btn position-relative me-2 p-1" type="button">
+                  <i class="fas fa-bell fa-lg"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6 fw-medium">3</span>
+                </button>
+                <button class="btn position-relative me-2 p-1" type="button" data-bs-toggle="modal" data-bs-target="#carrinho" dmx-show="!datastore_carrinho.data.isEmpty()">
+                  <i class="fas fa-shopping-cart fa-lg"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary fs-6 fw-medium">{{datastore_carrinho.data.length}}</span>
+                </button>
+              </div>
               <button id="btn1" class="btn text-bg-primary" dmx-on:click="browser1.goto('/login')" dmx-show="user.data.identity.isEmpty()">Login</button>
               <div class="dropdown" dmx-show="!user.data.identity.isEmpty()">
                 <button class="btn dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">
@@ -218,8 +226,8 @@
                   <span class="d-none d-lg-inline">{{user.data.user.usuario_apelido}}</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="/perfil" internal="true"><i class="fas fa-user me-2"></i>Perfil</a></li>
-                  <li dmx-show="user.data.user.adm == 1"><a class="dropdown-item" href="/adm" internal="true"><i class="fas fa-cogs me-2"></i>Administração</a></li>
+                  <li><a class="dropdown-item" href="/perfil" dmx-on:click="browser1.goto('/perfil'); return false;"><i class="fas fa-user me-2"></i>Perfil</a></li>
+                  <li dmx-show="user.data.user.adm == 1"><a class="dropdown-item" href="/adm" dmx-on:click="browser1.goto('/adm'); return false;"><i class="fas fa-cogs me-2"></i>Administração</a></li>
                   <li><a class="dropdown-item" href="#" dmx-on:click="logout.submit()"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
                 </ul>
               </div>
@@ -336,11 +344,26 @@
         setTimeout(hidePreloader, 3000);
       });
       
-      // Adiciona atributo internal="true" a todos os links que apontam para rotas internas
-      document.querySelectorAll('a[href^="/"]').forEach(link => {
-        if (!link.hasAttribute('internal') && !link.getAttribute('href').startsWith('//') && !link.getAttribute('href').includes('://')) {
-          link.setAttribute('internal', 'true');
-        }
+      // Função para processar links internos
+      function setupInternalLinks() {
+        // Processa todos os links internos no documento
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+          if (!link.hasAttribute('dmx-on:click') && !link.getAttribute('href').startsWith('//') && !link.getAttribute('href').includes('://')) {
+            const href = link.getAttribute('href');
+            link.setAttribute('dmx-on:click', `browser1.goto('${href}'); return false;`);
+            link.setAttribute('internal', 'true');
+          }
+        });
+      }
+      
+      // Configura links internos após carregamento
+      setupInternalLinks();
+      
+      // Observe navegação para configurar links em conteúdo dinâmico
+      const contentObserver = new MutationObserver(setupInternalLinks);
+      contentObserver.observe(document.getElementById('content'), { 
+        childList: true, 
+        subtree: true 
       });
     });
   </script>

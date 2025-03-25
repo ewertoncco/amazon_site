@@ -47,7 +47,7 @@
       "layout": "homepage"
     },
     {
-      "path": "/ingresso/:ingresso",
+      "path": "/ingresso/:qrcode",
       "page": "ingresso",
       "layout": "homepage"
     },

@@ -1,0 +1,246 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "qrcode"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "compra",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "vendas",
+              "column": "qrcode"
+            },
+            {
+              "table": "vendas",
+              "column": "participante_nome"
+            },
+            {
+              "table": "vendas",
+              "column": "participante_telefone"
+            },
+            {
+              "table": "vendas",
+              "column": "participante_cpf"
+            },
+            {
+              "table": "vendas",
+              "column": "participante_email"
+            },
+            {
+              "table": "vendas",
+              "column": "qrcode"
+            },
+            {
+              "table": "vendas",
+              "column": "check_in"
+            },
+            {
+              "table": "vendas",
+              "column": "hora_check_in"
+            },
+            {
+              "table": "item",
+              "column": "nome"
+            },
+            {
+              "table": "evento",
+              "column": "titulo"
+            },
+            {
+              "table": "evento",
+              "column": "data_hora"
+            },
+            {
+              "table": "evento",
+              "column": "local"
+            },
+            {
+              "table": "evento",
+              "column": "banner"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.qrcode}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "vendas"
+          },
+          "primary": "id",
+          "joins": [
+            {
+              "table": "eventos_itens",
+              "column": "*",
+              "alias": "item",
+              "type": "LEFT",
+              "clauses": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "table": "item",
+                    "column": "id",
+                    "operator": "equal",
+                    "operation": "=",
+                    "value": {
+                      "table": "vendas",
+                      "column": "item_id"
+                    }
+                  }
+                ]
+              },
+              "primary": "id"
+            },
+            {
+              "table": "eventos",
+              "column": "*",
+              "alias": "evento",
+              "type": "LEFT",
+              "clauses": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "table": "evento",
+                    "column": "id",
+                    "operator": "equal",
+                    "operation": "=",
+                    "value": {
+                      "table": "item",
+                      "column": "evento_id"
+                    }
+                  }
+                ]
+              },
+              "primary": "id",
+              "sub": {
+                "carrinho": {
+                  "type": "select",
+                  "table": {
+                    "name": "carrinho",
+                    "alias": "carrinho"
+                  },
+                  "key": "evento_id",
+                  "columns": [
+                    {
+                      "table": "carrinho",
+                      "column": "transacao_id"
+                    }
+                  ],
+                  "params": [],
+                  "primary": "id",
+                  "joins": [],
+                  "query": "select \"transacao_id\" from \"carrinho\" as \"carrinho\""
+                }
+              }
+            }
+          ],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "vendas.qrcode",
+                "field": "vendas.qrcode",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.qrcode}}",
+                "data": {
+                  "table": "vendas",
+                  "column": "qrcode",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "text",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "qrcode"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select \"vendas\".\"qrcode\", \"vendas\".\"participante_nome\", \"vendas\".\"participante_telefone\", \"vendas\".\"participante_cpf\", \"vendas\".\"participante_email\", \"vendas\".\"qrcode\", \"vendas\".\"check_in\", \"vendas\".\"hora_check_in\", \"item\".\"nome\", \"evento\".\"titulo\", \"evento\".\"data_hora\", \"evento\".\"local\", \"evento\".\"banner\" from \"vendas\" left join \"eventos_itens\" as \"item\" on \"item\".\"id\" = \"vendas\".\"item_id\" left join \"eventos\" as \"evento\" on \"evento\".\"id\" = \"item\".\"evento_id\" where \"vendas\".\"qrcode\" = ?"
+        }
+      },
+      "meta": [
+        {
+          "type": "text",
+          "name": "qrcode"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "boolean",
+          "name": "check_in"
+        },
+        {
+          "type": "datetime",
+          "name": "hora_check_in"
+        },
+        {
+          "type": "text",
+          "name": "nome"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "name": "carrinho",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "transacao_id"
+            }
+          ]
+        },
+        {
+          "type": "datetime",
+          "name": "data_hora"
+        },
+        {
+          "type": "text",
+          "name": "local"
+        },
+        {
+          "type": "text",
+          "name": "banner"
+        }
+      ],
+      "outputType": "object",
+      "output": true
+    }
+  }
+}

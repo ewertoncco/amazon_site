@@ -392,6 +392,39 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "itens_carrinho": {
+      "meta": [
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "boolean",
+          "name": "check_in"
+        },
+        {
+          "type": "datetime",
+          "name": "hora_check_in"
+        },
+        {
+          "type": "text",
+          "name": "qrcode"
+        }
+      ],
+      "outputType": "array"
     }
   }
 });

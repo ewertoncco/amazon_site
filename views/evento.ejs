@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{}}" is="dmx-app" appconnect="local" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{}}" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
 <dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
 <script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun="true">{
   run: {outputType: "text", action: "{{global.removeAll()}}"}
@@ -162,9 +162,9 @@
 
     <div class="container-fluid">
         <div class="row">
-            <h4 class="fw-bold text-dark display-6 text-center mb-4">{{evento.data.evento.titulo}}</h4>
+            <h4 class="fw-bold display-6 text-center mb-4 text-secondary-emphasis">{{evento.data.evento.titulo}}</h4>
         </div>
-        <div class="row justify-content-between align-items-start py-3 flex-column flex-lg-row">
+        <div class="row justify-content-between align-items-start py-3 flex-column flex-lg-row" dmx-hide="global.data.pagamento">
             <!-- Coluna Central - Imagem -->
             <div class="col-12 col-lg-3 mb-4 mb-lg-0">
                 <img dmx-bind:src="evento.data.evento.banner" class="w-100 rounded-3 h-auto" alt="Banner do evento" style="height: 350px; object-fit: contain; max-height: 400px;">
@@ -230,7 +230,7 @@
                             <div class="ticket-item bg-white rounded-3 border pt-2 pb-2 ps-3 pe-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h5 class="fw-bold mb-0">{{nome}}</h5>
+                                        <h5 class="fw-bold mb-0 text-secondary-emphasis">{{nome}}</h5>
                                         <h4 class="text-primary mt-1 mb-1">{{(valor.toNumber()).formatCurrency('R$ ', ',', '.', 2)}}</h4>
                                         <small class="text-muted d-block">até {{final_vendas.formatDateLocale('LLL')}}</small>
                                         <div class="d-flex align-items-center gap-2">
@@ -300,7 +300,7 @@
                         <div class="text-center mt-5 mb-5">
                             <h4 class="alert-heading">Pagamento confirmado</h4>
                             <p>Recebemos o seu pagamento e seu ticket logo estará disponível</p>
-                            <button type="button" class="btn btn-primary btn-sm">Ver minhas compras</button>
+                            <button type="button" class="btn btn-primary btn-sm" dmx-on:click="browser1.goto('/compras'); return false;">Ver minhas compras</button>
                         </div>
                     </div>
                 </div>
