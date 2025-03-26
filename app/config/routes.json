@@ -37,17 +37,22 @@
       "layout": "homepage"
     },
     {
-      "path": "/admin/home",
+      "path": "/home",
       "page": "admin/home",
       "layout": "admin"
     },
     {
-      "path": "/admin/adm_evento",
+      "path": "/adm",
+      "page": "admin/home",
+      "layout": "admin"
+    },
+    {
+      "path": "/adm_evento",
       "page": "admin/adm_evento",
       "layout": "admin"
     },
     {
-      "path": "/admin/adm_eventos",
+      "path": "/adm_eventos",
       "page": "admin/adm_eventos",
       "layout": "admin"
     }

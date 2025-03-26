@@ -1,461 +1,148 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="adm_eventos" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
-<meta name="ac:route" content="/admin/adm_eventos">
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" id="adm_eventos" components="{dmxBootstrap5Navigation:{}}" is="dmx-app" appConnect="local" -->
+<dmx-value id="status" dmx-bind:value="2"></dmx-value>
+<script>
+  // Configuração para o tema que impede erro de JSON
+window.defaultConfig = {
+  theme: 'light',
+  layout: {
+    mode: 'fluid'
+  },
+  topbar: {
+    color: 'light'
+  },
+  menu: {
+    color: 'dark'
+  },
+  sidenav: {
+    size: 'default'
+  }
+};
+window.config = JSON.parse(JSON.stringify(window.defaultConfig));
+</script>
+<script src="/dmxAppConnect/dmxAppConnect.js"></script>
+<dmx-serverconnect id="eventos" url="/api/eventos/eventos_lista" dmx-param:status="status.value"></dmx-serverconnect>
+
+
+<meta name="ac:route" content="/adm_eventos">
 
 <div class="page-heading">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0">Gerenciamento de Eventos</h3>
-        <div>
-            <a href="/admin/adm_evento/novo" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Novo Evento</a>
-        </div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">Gerenciamento de Eventos</h3>
+    <div>
+      <a href="/adm_evento/novo" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Novo Evento</a>
     </div>
+  </div>
 
-    <!-- Nav tabs para alternar entre as categorias de eventos -->
-    <ul class="nav nav-tabs mb-4" id="eventTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="online-tab" data-bs-toggle="tab" data-bs-target="#online-events" type="button" role="tab" aria-controls="online-events" aria-selected="true">
-                <i class="fas fa-globe me-1"></i> Eventos Online
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="finished-tab" data-bs-toggle="tab" data-bs-target="#finished-events" type="button" role="tab" aria-controls="finished-events" aria-selected="false">
-                <i class="fas fa-calendar-check me-1"></i> Eventos Finalizados
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-events" type="button" role="tab" aria-controls="all-events" aria-selected="false">
-                <i class="fas fa-calendar-alt me-1"></i> Todos os Eventos
-            </button>
-        </li>
-    </ul>
+  <!-- Nav tabs para alternar entre as categorias de eventos -->
+  <ul class="nav nav-tabs mb-4" id="eventTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="online-tab" type="button" dmx-on:click="status.setValue(2);eventos.load({})">
+        <i class="fas fa-globe me-1"></i> Eventos Online
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="finished-tab" type="button" dmx-on:click="status.setValue(4);eventos.load({})">
+        <i class="fas fa-calendar-check me-1"></i> Eventos Finalizados
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="all-tab" type="button" dmx-on:click="status.setValue();eventos.load({})">
+        <i class="fas fa-calendar-alt me-1"></i> Todos os Eventos
+      </button>
+    </li>
+    <li class="nav-item ms-auto">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Buscar evento...">
+        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+      </div>
+    </li>
+  </ul>
 
-    <!-- Conteúdo das abas -->
-    <div class="tab-content">
-        <!-- Eventos Online (em destaque) -->
-        <div class="tab-pane fade show active" id="online-events" role="tabpanel" aria-labelledby="online-tab">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h4 class="mb-0"><i class="fas fa-globe text-primary me-2"></i>Eventos Online</h4>
+  <!-- Conteúdo único que será atualizado via filtro -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th width="60">Banner</th>
+              <th>Nome do Evento</th>
+              <th class="text-center">Data e Horário</th>
+              <th>Público</th>
+              <th>Status</th>
+              <th>Destaque</th>
+              <th width="120">Exibição</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody is="dmx-repeat" id="lista_eventos" dmx-bind:repeat="eventos.data.eventos_lista.data" key="id">
+            <tr>
+              <td>
+                <img alt="Evento 1" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" dmx-bind:src="banner">
+              </td>
+              <td>
+                <h5 class="mb-0">{{titulo}}</h5>
+              </td>
+              <td class="text-center">
+                <div><i class="far fa-calendar-alt me-1"></i>{{data_hora.formatDate('dd/MM/yy')}}</div>
+                <small><i class="far fa-clock me-1"></i>{{data_hora.formatDate('HH:mm')}}</small>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-users me-2"></i>
+                  <span>{{quantidade_vendas}} vendas</span>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th width="60">Banner</th>
-                                    <th>Nome do Evento</th>
-                                    <th>Data e Horário</th>
-                                    <th>Público</th>
-                                    <th>Status</th>
-                                    <th>Destaque</th>
-                                    <th>Tempo Exibição</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Evento 1 -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento1.jpg" alt="Evento 1" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Loulou Players 🎵 🌴</h6>
-                                        <small class="text-muted">Yellow Club</small>
-                                    </td>
-                                    <td>
-                                        <div>31/12/2023</div>
-                                        <small>22:00</small>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">320 confirmados</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="status1" checked>
-                                            <label class="form-check-label" for="status1">Ativo</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="destaque1" checked>
-                                            <label class="form-check-label" for="destaque1">Sim</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-group input-group-sm">
-                                            <input type="number" class="form-control" value="5" min="1" max="30">
-                                            <span class="input-group-text">seg</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/adm_evento/1" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-
-                                <!-- Evento 2 -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento2.jpg" alt="Evento 2" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Festival de Verão</h6>
-                                        <small class="text-muted">Praia da Reserva</small>
-                                    </td>
-                                    <td>
-                                        <div>15/01/2024</div>
-                                        <small>14:00</small>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">450 confirmados</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 45%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="status2" checked>
-                                            <label class="form-check-label" for="status2">Ativo</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="destaque2" checked>
-                                            <label class="form-check-label" for="destaque2">Sim</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-group input-group-sm">
-                                            <input type="number" class="form-control" value="8" min="1" max="30">
-                                            <span class="input-group-text">seg</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/adm_evento/2" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-
-                                <!-- Evento 3 -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento3.jpg" alt="Evento 3" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Noite do Rock</h6>
-                                        <small class="text-muted">The Basement</small>
-                                    </td>
-                                    <td>
-                                        <div>10/02/2024</div>
-                                        <small>20:30</small>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">180 confirmados</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="status3" checked>
-                                            <label class="form-check-label" for="status3">Ativo</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="destaque3">
-                                            <label class="form-check-label" for="destaque3">Não</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-group input-group-sm">
-                                            <input type="number" class="form-control" value="0" min="0" max="30" disabled>
-                                            <span class="input-group-text">seg</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/adm_evento/3" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+              </td>
+              <td>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="status1" checked="" dmx-bind:checked="status_id==2">
+                  <label class="form-check-label" for="status1"><i class="fas fa-circle me-1" style="color: #28a745; font-size: 10px;"></i>Ativo</label>
                 </div>
-            </div>
-        </div>
-
-        <!-- Eventos Finalizados -->
-        <div class="tab-pane fade" id="finished-events" role="tabpanel" aria-labelledby="finished-tab">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h4 class="mb-0"><i class="fas fa-calendar-check text-success me-2"></i>Eventos Finalizados</h4>
+              </td>
+              <td>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="destaque1" checked="" value="true" dmx-bind:checked="destaque">
+                  <label class="form-check-label" for="destaque1"><i class="fas fa-star me-1" style="color: #ffc107;"></i>Sim</label>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th width="60">Banner</th>
-                                    <th>Nome do Evento</th>
-                                    <th>Data e Horário</th>
-                                    <th>Faturamento</th>
-                                    <th>Ingressos Vendidos</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Evento 1 -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento4.jpg" alt="Evento 4" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Show de Jazz</h6>
-                                        <small class="text-muted">Blue Note</small>
-                                    </td>
-                                    <td>
-                                        <div>15/10/2023</div>
-                                        <small>19:30</small>
-                                    </td>
-                                    <td>R$ 8.750,00</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">250 de 250</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/adm_evento/4" class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></a>
-                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
-                                    </td>
-                                </tr>
-
-                                <!-- Evento 2 -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento5.jpg" alt="Evento 5" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Festival de Cinema</h6>
-                                        <small class="text-muted">Centro Cultural</small>
-                                    </td>
-                                    <td>
-                                        <div>05/11/2023</div>
-                                        <small>16:00</small>
-                                    </td>
-                                    <td>R$ 5.200,00</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">130 de 200</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 65%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/adm_evento/5" class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></a>
-                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+              </td>
+              <td>
+                <div class="input-group input-group-sm">
+                  <input type="number" class="form-control" value="5" dmx-bind:value="segundos_destaque">
+                  <span class="input-group-text">seg</span>
                 </div>
-            </div>
-        </div>
-
-        <!-- Todos os Eventos -->
-        <div class="tab-pane fade" id="all-events" role="tabpanel" aria-labelledby="all-tab">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0"><i class="fas fa-calendar-alt text-info me-2"></i>Todos os Eventos</h4>
-                        <div class="input-group" style="width: 300px;">
-                            <input type="text" class="form-control" placeholder="Buscar evento...">
-                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th width="60">Banner</th>
-                                    <th>Nome do Evento</th>
-                                    <th>Data e Horário</th>
-                                    <th>Status</th>
-                                    <th>Ingressos Vendidos</th>
-                                    <th>Destaque</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Evento 1 (Online) -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento1.jpg" alt="Evento 1" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Loulou Players 🎵 🌴</h6>
-                                        <small class="text-muted">Yellow Club</small>
-                                    </td>
-                                    <td>
-                                        <div>31/12/2023</div>
-                                        <small>22:00</small>
-                                    </td>
-                                    <td><span class="badge bg-success">Ativo</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">320 de 500</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-primary">Destaque</span></td>
-                                    <td>
-                                        <a href="/admin/adm_evento/1" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-
-                                <!-- Evento 2 (Online) -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento2.jpg" alt="Evento 2" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Festival de Verão</h6>
-                                        <small class="text-muted">Praia da Reserva</small>
-                                    </td>
-                                    <td>
-                                        <div>15/01/2024</div>
-                                        <small>14:00</small>
-                                    </td>
-                                    <td><span class="badge bg-success">Ativo</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">450 de 1000</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 45%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-primary">Destaque</span></td>
-                                    <td>
-                                        <a href="/admin/adm_evento/2" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-
-                                <!-- Evento 3 (Online) -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento3.jpg" alt="Evento 3" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Noite do Rock</h6>
-                                        <small class="text-muted">The Basement</small>
-                                    </td>
-                                    <td>
-                                        <div>10/02/2024</div>
-                                        <small>20:30</small>
-                                    </td>
-                                    <td><span class="badge bg-success">Ativo</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">180 de 600</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-secondary">Normal</span></td>
-                                    <td>
-                                        <a href="/admin/adm_evento/3" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-
-                                <!-- Evento 4 (Finalizado) -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento4.jpg" alt="Evento 4" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Show de Jazz</h6>
-                                        <small class="text-muted">Blue Note</small>
-                                    </td>
-                                    <td>
-                                        <div>15/10/2023</div>
-                                        <small>19:30</small>
-                                    </td>
-                                    <td><span class="badge bg-secondary">Finalizado</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">250 de 250</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-secondary">Normal</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
-                                    </td>
-                                </tr>
-
-                                <!-- Evento 5 (Finalizado) -->
-                                <tr>
-                                    <td>
-                                        <img src="assets/images/eventos/evento5.jpg" alt="Evento 5" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">Festival de Cinema</h6>
-                                        <small class="text-muted">Centro Cultural</small>
-                                    </td>
-                                    <td>
-                                        <div>05/11/2023</div>
-                                        <small>16:00</small>
-                                    </td>
-                                    <td><span class="badge bg-secondary">Finalizado</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">130 de 200</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 65%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-secondary">Normal</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+              </td>
+              <td>
+                <button id="btn_ver" class="btn btn-light btn-sm">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Paginação -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <small class="text-muted">Mostrando 1-10 de 50 eventos</small>
+        <nav aria-label="Navegação da lista">
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                <i class="fas fa-chevron-left"></i>
+              </a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Modal para Adicionar Novo Evento -->
@@ -479,7 +166,7 @@
             <span class="badge bg-secondary">4. Opções Adicionais</span>
           </div>
         </div>
-        
+
         <form id="novoEventoForm">
           <!-- Steps Container -->
           <div class="steps-container">
@@ -488,7 +175,7 @@
               <div class="card border-0">
                 <div class="card-body">
                   <h5 class="card-title mb-4"><i class="fas fa-info-circle me-2"></i>Informações Básicas</h5>
-                  
+
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <label for="titulo" class="form-label">Título do Evento*</label>
@@ -499,7 +186,7 @@
                       <input type="text" class="form-control" id="sub_titulo" name="sub_titulo" placeholder="Ex: Inovações e tendências">
                     </div>
                   </div>
-                  
+
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <label for="data_hora" class="form-label">Data e Hora*</label>
@@ -510,7 +197,7 @@
                       <input type="text" class="form-control" id="local" name="local" placeholder="Ex: Centro de Convenções SP" required>
                     </div>
                   </div>
-                  
+
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <label for="slug" class="form-label">Slug URL*</label>
@@ -529,13 +216,13 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Step 2: Descrição e Detalhes -->
             <div class="step" id="step2" style="display: none;">
               <div class="card border-0">
                 <div class="card-body">
                   <h5 class="card-title mb-4"><i class="fas fa-align-left me-2"></i>Descrição e Detalhes</h5>
-                  
+
                   <div class="row mb-3">
                     <div class="col-12">
                       <div class="form-check form-switch mb-2">
@@ -548,7 +235,7 @@
                       <textarea class="form-control" id="descricao" name="descricao" rows="6" placeholder="Descreva seu evento com detalhes, emojis são bem-vindos!"></textarea>
                     </div>
                   </div>
-                  
+
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-check form-switch mb-2">
@@ -576,13 +263,13 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Step 3: Configurações de Pagamento -->
             <div class="step" id="step3" style="display: none;">
               <div class="card border-0">
                 <div class="card-body">
                   <h5 class="card-title mb-4"><i class="fas fa-credit-card me-2"></i>Configurações de Pagamento</h5>
-                  
+
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <h6>Métodos de Pagamento</h6>
@@ -626,13 +313,13 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Step 4: Opções Adicionais -->
             <div class="step" id="step4" style="display: none;">
               <div class="card border-0">
                 <div class="card-body">
                   <h5 class="card-title mb-4"><i class="fas fa-cog me-2"></i>Opções Adicionais</h5>
-                  
+
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <h6>Políticas de Ingressos</h6>
@@ -658,7 +345,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-check form-switch mb-2">
@@ -721,7 +408,7 @@
     const whatsappConfigContainer = document.getElementById('whatsappConfigContainer');
     
     // Atualizar botão "Novo Evento" para abrir o modal
-    const novoEventoBtn = document.querySelector('a[href="/admin/adm_evento/novo"]');
+    const novoEventoBtn = document.querySelector('a[href="/adm_evento/novo"]');
     if (novoEventoBtn) {
       novoEventoBtn.setAttribute('href', '#');
       novoEventoBtn.setAttribute('data-bs-toggle', 'modal');

@@ -426,5 +426,136 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "adm_eventos": {
+    "lista_eventos": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "number",
+          "name": "organizador_id"
+        },
+        {
+          "type": "datetime",
+          "name": "criado_em"
+        },
+        {
+          "type": "number",
+          "name": "usuario_id"
+        },
+        {
+          "type": "number",
+          "name": "status_id"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "type": "text",
+          "name": "sub_titulo"
+        },
+        {
+          "type": "boolean",
+          "name": "mostrar_descricao"
+        },
+        {
+          "type": "text",
+          "name": "descricao"
+        },
+        {
+          "type": "datetime",
+          "name": "data_hora"
+        },
+        {
+          "type": "text",
+          "name": "local"
+        },
+        {
+          "type": "text",
+          "name": "banner"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_mapa"
+        },
+        {
+          "type": "text",
+          "name": "mapa_imagem"
+        },
+        {
+          "type": "boolean",
+          "name": "destaque"
+        },
+        {
+          "type": "boolean",
+          "name": "pode_alterar_ingresso"
+        },
+        {
+          "type": "boolean",
+          "name": "pode_devolver_ingresso"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_pix"
+        },
+        {
+          "type": "boolean",
+          "name": "aceita_cartao"
+        },
+        {
+          "type": "number",
+          "name": "parcelas_cartao"
+        },
+        {
+          "type": "text",
+          "name": "slug"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_whatsapp"
+        },
+        {
+          "type": "text",
+          "name": "numero_whatsapp"
+        },
+        {
+          "type": "boolean",
+          "name": "tem_cupom"
+        },
+        {
+          "type": "text",
+          "name": "codigo_cupom"
+        },
+        {
+          "type": "number",
+          "name": "valor_cupom"
+        },
+        {
+          "type": "text",
+          "name": "uuid"
+        },
+        {
+          "type": "boolean",
+          "name": "divulgacao"
+        },
+        {
+          "type": "number",
+          "name": "segundos_destaque"
+        },
+        {
+          "type": "number",
+          "name": "quantidade_vendas"
+        },
+        {
+          "type": "number",
+          "name": "total_vendas"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });

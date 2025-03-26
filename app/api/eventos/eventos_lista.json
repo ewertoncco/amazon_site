@@ -1,0 +1,269 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "eventos_lista",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "view_eventos_adm",
+              "column": "*"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.status}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "view_eventos_adm"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select * from \"view_eventos_adm\" where \"view_eventos_adm\".\"status_id\" = ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "view_eventos_adm.status_id",
+                "field": "view_eventos_adm.status_id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.status}}",
+                "data": {
+                  "table": "view_eventos_adm",
+                  "column": "status_id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "status_id"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": "{{$_GET.status}}",
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "id"
+            },
+            {
+              "type": "number",
+              "name": "organizador_id"
+            },
+            {
+              "type": "datetime",
+              "name": "criado_em"
+            },
+            {
+              "type": "number",
+              "name": "usuario_id"
+            },
+            {
+              "type": "number",
+              "name": "status_id"
+            },
+            {
+              "type": "text",
+              "name": "titulo"
+            },
+            {
+              "type": "text",
+              "name": "sub_titulo"
+            },
+            {
+              "type": "boolean",
+              "name": "mostrar_descricao"
+            },
+            {
+              "type": "text",
+              "name": "descricao"
+            },
+            {
+              "type": "datetime",
+              "name": "data_hora"
+            },
+            {
+              "type": "text",
+              "name": "local"
+            },
+            {
+              "type": "text",
+              "name": "banner"
+            },
+            {
+              "type": "boolean",
+              "name": "tem_mapa"
+            },
+            {
+              "type": "text",
+              "name": "mapa_imagem"
+            },
+            {
+              "type": "boolean",
+              "name": "destaque"
+            },
+            {
+              "type": "boolean",
+              "name": "pode_alterar_ingresso"
+            },
+            {
+              "type": "boolean",
+              "name": "pode_devolver_ingresso"
+            },
+            {
+              "type": "boolean",
+              "name": "aceita_pix"
+            },
+            {
+              "type": "boolean",
+              "name": "aceita_cartao"
+            },
+            {
+              "type": "number",
+              "name": "parcelas_cartao"
+            },
+            {
+              "type": "text",
+              "name": "slug"
+            },
+            {
+              "type": "boolean",
+              "name": "tem_whatsapp"
+            },
+            {
+              "type": "text",
+              "name": "numero_whatsapp"
+            },
+            {
+              "type": "boolean",
+              "name": "tem_cupom"
+            },
+            {
+              "type": "text",
+              "name": "codigo_cupom"
+            },
+            {
+              "type": "number",
+              "name": "valor_cupom"
+            },
+            {
+              "type": "text",
+              "name": "uuid"
+            },
+            {
+              "type": "boolean",
+              "name": "divulgacao"
+            },
+            {
+              "type": "number",
+              "name": "segundos_destaque"
+            },
+            {
+              "type": "number",
+              "name": "quantidade_vendas"
+            },
+            {
+              "type": "number",
+              "name": "total_vendas"
+            }
+          ]
+        }
+      ],
+      "outputType": "object",
+      "collapsed": true
+    }
+  }
+}
