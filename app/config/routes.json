@@ -16,21 +16,6 @@
       "layout": "homepage"
     },
     {
-      "path": "/home",
-      "page": "home",
-      "layout": "dashboard"
-    },
-    {
-      "path": "/eventos",
-      "page": "eventos",
-      "layout": "dashboard"
-    },
-    {
-      "path": "/adm_evento/:id_evento",
-      "page": "adm_evento",
-      "layout": "dashboard"
-    },
-    {
       "path": "/cadastro",
       "page": "cadastro",
       "layout": "main"
@@ -52,9 +37,27 @@
       "layout": "homepage"
     },
     {
-      "path": "/adm",
-      "page": "adm",
-      "layout": "homepage"
+      "path": "/admin/home",
+      "page": "admin/home",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/adm_evento",
+      "page": "admin/adm_evento",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/adm_eventos",
+      "page": "admin/adm_eventos",
+      "layout": "admin"
     }
-  ]
+  ],
+  "layouts": {
+    "homepage": {
+      "data": {}
+    },
+    "admin": {
+      "data": {}
+    }
+  }
 }

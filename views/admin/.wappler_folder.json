@@ -1,0 +1,18 @@
+{
+  "teste.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "home.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "adm_evento.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "adm_eventos.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  }
+}

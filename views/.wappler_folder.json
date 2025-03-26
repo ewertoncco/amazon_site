@@ -54,5 +54,8 @@
   "primeira.ejs": {
     "layoutPage": "homepage",
     "description": ""
+  },
+  "adm.ejs": {
+    "layoutPage": "admin"
   }
 }

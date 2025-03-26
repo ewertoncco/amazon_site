@@ -1,0 +1,866 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="adm_eventos" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
+<meta name="ac:route" content="/admin/adm_eventos">
+
+<div class="page-heading">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Gerenciamento de Eventos</h3>
+        <div>
+            <a href="/admin/adm_evento/novo" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Novo Evento</a>
+        </div>
+    </div>
+
+    <!-- Nav tabs para alternar entre as categorias de eventos -->
+    <ul class="nav nav-tabs mb-4" id="eventTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="online-tab" data-bs-toggle="tab" data-bs-target="#online-events" type="button" role="tab" aria-controls="online-events" aria-selected="true">
+                <i class="fas fa-globe me-1"></i> Eventos Online
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="finished-tab" data-bs-toggle="tab" data-bs-target="#finished-events" type="button" role="tab" aria-controls="finished-events" aria-selected="false">
+                <i class="fas fa-calendar-check me-1"></i> Eventos Finalizados
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-events" type="button" role="tab" aria-controls="all-events" aria-selected="false">
+                <i class="fas fa-calendar-alt me-1"></i> Todos os Eventos
+            </button>
+        </li>
+    </ul>
+
+    <!-- Conteúdo das abas -->
+    <div class="tab-content">
+        <!-- Eventos Online (em destaque) -->
+        <div class="tab-pane fade show active" id="online-events" role="tabpanel" aria-labelledby="online-tab">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0"><i class="fas fa-globe text-primary me-2"></i>Eventos Online</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th width="60">Banner</th>
+                                    <th>Nome do Evento</th>
+                                    <th>Data e Horário</th>
+                                    <th>Público</th>
+                                    <th>Status</th>
+                                    <th>Destaque</th>
+                                    <th>Tempo Exibição</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Evento 1 -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento1.jpg" alt="Evento 1" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Loulou Players 🎵 🌴</h6>
+                                        <small class="text-muted">Yellow Club</small>
+                                    </td>
+                                    <td>
+                                        <div>31/12/2023</div>
+                                        <small>22:00</small>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">320 confirmados</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="status1" checked>
+                                            <label class="form-check-label" for="status1">Ativo</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="destaque1" checked>
+                                            <label class="form-check-label" for="destaque1">Sim</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input type="number" class="form-control" value="5" min="1" max="30">
+                                            <span class="input-group-text">seg</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/adm_evento/1" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+
+                                <!-- Evento 2 -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento2.jpg" alt="Evento 2" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Festival de Verão</h6>
+                                        <small class="text-muted">Praia da Reserva</small>
+                                    </td>
+                                    <td>
+                                        <div>15/01/2024</div>
+                                        <small>14:00</small>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">450 confirmados</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 45%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="status2" checked>
+                                            <label class="form-check-label" for="status2">Ativo</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="destaque2" checked>
+                                            <label class="form-check-label" for="destaque2">Sim</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input type="number" class="form-control" value="8" min="1" max="30">
+                                            <span class="input-group-text">seg</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/adm_evento/2" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+
+                                <!-- Evento 3 -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento3.jpg" alt="Evento 3" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Noite do Rock</h6>
+                                        <small class="text-muted">The Basement</small>
+                                    </td>
+                                    <td>
+                                        <div>10/02/2024</div>
+                                        <small>20:30</small>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">180 confirmados</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="status3" checked>
+                                            <label class="form-check-label" for="status3">Ativo</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="destaque3">
+                                            <label class="form-check-label" for="destaque3">Não</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input type="number" class="form-control" value="0" min="0" max="30" disabled>
+                                            <span class="input-group-text">seg</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/adm_evento/3" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Eventos Finalizados -->
+        <div class="tab-pane fade" id="finished-events" role="tabpanel" aria-labelledby="finished-tab">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0"><i class="fas fa-calendar-check text-success me-2"></i>Eventos Finalizados</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th width="60">Banner</th>
+                                    <th>Nome do Evento</th>
+                                    <th>Data e Horário</th>
+                                    <th>Faturamento</th>
+                                    <th>Ingressos Vendidos</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Evento 1 -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento4.jpg" alt="Evento 4" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Show de Jazz</h6>
+                                        <small class="text-muted">Blue Note</small>
+                                    </td>
+                                    <td>
+                                        <div>15/10/2023</div>
+                                        <small>19:30</small>
+                                    </td>
+                                    <td>R$ 8.750,00</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">250 de 250</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/adm_evento/4" class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></a>
+                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
+                                    </td>
+                                </tr>
+
+                                <!-- Evento 2 -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento5.jpg" alt="Evento 5" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Festival de Cinema</h6>
+                                        <small class="text-muted">Centro Cultural</small>
+                                    </td>
+                                    <td>
+                                        <div>05/11/2023</div>
+                                        <small>16:00</small>
+                                    </td>
+                                    <td>R$ 5.200,00</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">130 de 200</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 65%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/adm_evento/5" class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></a>
+                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Todos os Eventos -->
+        <div class="tab-pane fade" id="all-events" role="tabpanel" aria-labelledby="all-tab">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0"><i class="fas fa-calendar-alt text-info me-2"></i>Todos os Eventos</h4>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Buscar evento...">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th width="60">Banner</th>
+                                    <th>Nome do Evento</th>
+                                    <th>Data e Horário</th>
+                                    <th>Status</th>
+                                    <th>Ingressos Vendidos</th>
+                                    <th>Destaque</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Evento 1 (Online) -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento1.jpg" alt="Evento 1" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Loulou Players 🎵 🌴</h6>
+                                        <small class="text-muted">Yellow Club</small>
+                                    </td>
+                                    <td>
+                                        <div>31/12/2023</div>
+                                        <small>22:00</small>
+                                    </td>
+                                    <td><span class="badge bg-success">Ativo</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">320 de 500</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-primary">Destaque</span></td>
+                                    <td>
+                                        <a href="/admin/adm_evento/1" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+
+                                <!-- Evento 2 (Online) -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento2.jpg" alt="Evento 2" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Festival de Verão</h6>
+                                        <small class="text-muted">Praia da Reserva</small>
+                                    </td>
+                                    <td>
+                                        <div>15/01/2024</div>
+                                        <small>14:00</small>
+                                    </td>
+                                    <td><span class="badge bg-success">Ativo</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">450 de 1000</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 45%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-primary">Destaque</span></td>
+                                    <td>
+                                        <a href="/admin/adm_evento/2" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+
+                                <!-- Evento 3 (Online) -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento3.jpg" alt="Evento 3" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Noite do Rock</h6>
+                                        <small class="text-muted">The Basement</small>
+                                    </td>
+                                    <td>
+                                        <div>10/02/2024</div>
+                                        <small>20:30</small>
+                                    </td>
+                                    <td><span class="badge bg-success">Ativo</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">180 de 600</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-secondary">Normal</span></td>
+                                    <td>
+                                        <a href="/admin/adm_evento/3" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+
+                                <!-- Evento 4 (Finalizado) -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento4.jpg" alt="Evento 4" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Show de Jazz</h6>
+                                        <small class="text-muted">Blue Note</small>
+                                    </td>
+                                    <td>
+                                        <div>15/10/2023</div>
+                                        <small>19:30</small>
+                                    </td>
+                                    <td><span class="badge bg-secondary">Finalizado</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">250 de 250</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-secondary">Normal</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
+                                    </td>
+                                </tr>
+
+                                <!-- Evento 5 (Finalizado) -->
+                                <tr>
+                                    <td>
+                                        <img src="assets/images/eventos/evento5.jpg" alt="Evento 5" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">Festival de Cinema</h6>
+                                        <small class="text-muted">Centro Cultural</small>
+                                    </td>
+                                    <td>
+                                        <div>05/11/2023</div>
+                                        <small>16:00</small>
+                                    </td>
+                                    <td><span class="badge bg-secondary">Finalizado</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">130 de 200</span>
+                                            <div class="progress w-100" style="height: 6px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 65%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-secondary">Normal</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-file-pdf"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Adicionar Novo Evento -->
+<div class="modal fade" id="novoEventoModal" tabindex="-1" aria-labelledby="novoEventoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="novoEventoModalLabel"><i class="fas fa-calendar-plus me-2"></i>Adicionar Novo Evento</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body p-0">
+        <!-- Progress Bar -->
+        <div class="px-3 pt-3">
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="d-flex justify-content-between mt-1 mb-3">
+            <span class="badge bg-primary">1. Informações Básicas</span>
+            <span class="badge bg-secondary">2. Descrição e Detalhes</span>
+            <span class="badge bg-secondary">3. Configurações de Pagamento</span>
+            <span class="badge bg-secondary">4. Opções Adicionais</span>
+          </div>
+        </div>
+        
+        <form id="novoEventoForm">
+          <!-- Steps Container -->
+          <div class="steps-container">
+            <!-- Step 1: Informações Básicas -->
+            <div class="step active" id="step1">
+              <div class="card border-0">
+                <div class="card-body">
+                  <h5 class="card-title mb-4"><i class="fas fa-info-circle me-2"></i>Informações Básicas</h5>
+                  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="titulo" class="form-label">Título do Evento*</label>
+                      <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ex: Feira de Tecnologia 2025" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="sub_titulo" class="form-label">Subtítulo</label>
+                      <input type="text" class="form-control" id="sub_titulo" name="sub_titulo" placeholder="Ex: Inovações e tendências">
+                    </div>
+                  </div>
+                  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="data_hora" class="form-label">Data e Hora*</label>
+                      <input type="datetime-local" class="form-control" id="data_hora" name="data_hora" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="local" class="form-label">Local*</label>
+                      <input type="text" class="form-control" id="local" name="local" placeholder="Ex: Centro de Convenções SP" required>
+                    </div>
+                  </div>
+                  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="slug" class="form-label">Slug URL*</label>
+                      <div class="input-group">
+                        <span class="input-group-text">evento/</span>
+                        <input type="text" class="form-control" id="slug" name="slug" placeholder="feira-tecnologia-2025" required>
+                      </div>
+                      <div class="form-text">URL amigável do evento (sem espaços ou caracteres especiais)</div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="banner" class="form-label">Banner do Evento*</label>
+                      <input type="file" class="form-control" id="banner" name="banner" accept="image/*" required>
+                      <div class="form-text">Tamanho recomendado: 1200 x 600 pixels</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 2: Descrição e Detalhes -->
+            <div class="step" id="step2" style="display: none;">
+              <div class="card border-0">
+                <div class="card-body">
+                  <h5 class="card-title mb-4"><i class="fas fa-align-left me-2"></i>Descrição e Detalhes</h5>
+                  
+                  <div class="row mb-3">
+                    <div class="col-12">
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="mostrar_descricao" name="mostrar_descricao" checked>
+                        <label class="form-check-label" for="mostrar_descricao">Mostrar descrição na página do evento</label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="descricao" class="form-label">Descrição Detalhada</label>
+                      <textarea class="form-control" id="descricao" name="descricao" rows="6" placeholder="Descreva seu evento com detalhes, emojis são bem-vindos!"></textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="tem_mapa" name="tem_mapa">
+                        <label class="form-check-label" for="tem_mapa">Incluir mapa do evento</label>
+                      </div>
+                      <div id="mapaUploadContainer" style="display: none;">
+                        <label for="mapa_imagem" class="form-label">Imagem do Mapa</label>
+                        <input type="file" class="form-control" id="mapa_imagem" name="mapa_imagem" accept="image/*">
+                        <div class="form-text">Mapa do local ou planta do evento</div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="destaque" name="destaque" checked>
+                        <label class="form-check-label" for="destaque">Destacar na página inicial</label>
+                      </div>
+                      <div id="destaqueConfigContainer">
+                        <label for="segundos_destaque" class="form-label">Tempo de exibição (milissegundos)</label>
+                        <input type="number" class="form-control" id="segundos_destaque" name="segundos_destaque" value="5000" min="1000" step="500">
+                        <div class="form-text">Tempo que o evento ficará visível no carrossel de destaques</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 3: Configurações de Pagamento -->
+            <div class="step" id="step3" style="display: none;">
+              <div class="card border-0">
+                <div class="card-body">
+                  <h5 class="card-title mb-4"><i class="fas fa-credit-card me-2"></i>Configurações de Pagamento</h5>
+                  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <h6>Métodos de Pagamento</h6>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="aceita_pix" name="aceita_pix" checked>
+                        <label class="form-check-label" for="aceita_pix">Aceitar pagamento via PIX</label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="aceita_cartao" name="aceita_cartao">
+                        <label class="form-check-label" for="aceita_cartao">Aceitar pagamento via Cartão</label>
+                      </div>
+                      <div id="cartoesConfigContainer" style="display: none;">
+                        <label for="parcelas_cartao" class="form-label">Número máximo de parcelas</label>
+                        <select class="form-select" id="parcelas_cartao" name="parcelas_cartao">
+                          <option value="1">1x (à vista)</option>
+                          <option value="2">2x</option>
+                          <option value="3">3x</option>
+                          <option value="6">6x</option>
+                          <option value="12">12x</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <h6>Cupom de Desconto</h6>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="tem_cupom" name="tem_cupom">
+                        <label class="form-check-label" for="tem_cupom">Oferecer cupom de desconto</label>
+                      </div>
+                      <div id="cupomConfigContainer" style="display: none;">
+                        <div class="mb-2">
+                          <label for="codigo_cupom" class="form-label">Código do cupom</label>
+                          <input type="text" class="form-control" id="codigo_cupom" name="codigo_cupom" placeholder="Ex: TECH2025">
+                        </div>
+                        <div>
+                          <label for="valor_cupom" class="form-label">Valor do desconto (%)</label>
+                          <input type="number" class="form-control" id="valor_cupom" name="valor_cupom" min="1" max="100" placeholder="10">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 4: Opções Adicionais -->
+            <div class="step" id="step4" style="display: none;">
+              <div class="card border-0">
+                <div class="card-body">
+                  <h5 class="card-title mb-4"><i class="fas fa-cog me-2"></i>Opções Adicionais</h5>
+                  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <h6>Políticas de Ingressos</h6>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="pode_alterar_ingresso" name="pode_alterar_ingresso" checked>
+                        <label class="form-check-label" for="pode_alterar_ingresso">Permitir alteração de ingressos</label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="pode_devolver_ingresso" name="pode_devolver_ingresso">
+                        <label class="form-check-label" for="pode_devolver_ingresso">Permitir devolução de ingressos</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <h6>Suporte via WhatsApp</h6>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="tem_whatsapp" name="tem_whatsapp">
+                        <label class="form-check-label" for="tem_whatsapp">Oferecer suporte via WhatsApp</label>
+                      </div>
+                      <div id="whatsappConfigContainer" style="display: none;">
+                        <label for="numero_whatsapp" class="form-label">Número do WhatsApp</label>
+                        <input type="tel" class="form-control" id="numero_whatsapp" name="numero_whatsapp" placeholder="Ex: 11912345678">
+                        <div class="form-text">Digite apenas números</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="divulgacao" name="divulgacao">
+                        <label class="form-check-label" for="divulgacao">Incluir em campanhas de divulgação</label>
+                      </div>
+                      <div class="form-text">Seu evento poderá ser promovido em nossos canais de marketing</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-secondary" id="prevStepBtn" disabled><i class="fas fa-arrow-left me-1"></i> Anterior</button>
+        <div>
+          <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="nextStepBtn">Próximo <i class="fas fa-arrow-right ms-1"></i></button>
+          <button type="button" class="btn btn-success" id="submitBtn" style="display: none;"><i class="fas fa-check me-1"></i> Criar Evento</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts adicionais para o modal multi-etapas -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Inicialização do Bootstrap Tabs
+    var triggerTabList = [].slice.call(document.querySelectorAll('#eventTabs button'))
+    triggerTabList.forEach(function(triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl)
+      triggerEl.addEventListener('click', function(event) {
+        event.preventDefault()
+        tabTrigger.show()
+      })
+    })
+    
+    // Elementos do modal
+    const modal = document.getElementById('novoEventoModal');
+    const steps = document.querySelectorAll('.step');
+    const progressBar = document.querySelector('.progress-bar');
+    const stepBadges = document.querySelectorAll('.badge');
+    const prevBtn = document.getElementById('prevStepBtn');
+    const nextBtn = document.getElementById('nextStepBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Campos com containers condicionais
+    const temMapaCheckbox = document.getElementById('tem_mapa');
+    const mapaUploadContainer = document.getElementById('mapaUploadContainer');
+    const destaqueCheckbox = document.getElementById('destaque');
+    const destaqueConfigContainer = document.getElementById('destaqueConfigContainer');
+    const aceitaCartaoCheckbox = document.getElementById('aceita_cartao');
+    const cartoesConfigContainer = document.getElementById('cartoesConfigContainer');
+    const temCupomCheckbox = document.getElementById('tem_cupom');
+    const cupomConfigContainer = document.getElementById('cupomConfigContainer');
+    const temWhatsappCheckbox = document.getElementById('tem_whatsapp');
+    const whatsappConfigContainer = document.getElementById('whatsappConfigContainer');
+    
+    // Atualizar botão "Novo Evento" para abrir o modal
+    const novoEventoBtn = document.querySelector('a[href="/admin/adm_evento/novo"]');
+    if (novoEventoBtn) {
+      novoEventoBtn.setAttribute('href', '#');
+      novoEventoBtn.setAttribute('data-bs-toggle', 'modal');
+      novoEventoBtn.setAttribute('data-bs-target', '#novoEventoModal');
+    }
+    
+    let currentStep = 0;
+    const totalSteps = steps.length;
+    
+    // Mostrar/esconder campos condicionais
+    temMapaCheckbox.addEventListener('change', function() {
+      mapaUploadContainer.style.display = this.checked ? 'block' : 'none';
+    });
+    
+    destaqueCheckbox.addEventListener('change', function() {
+      destaqueConfigContainer.style.display = this.checked ? 'block' : 'none';
+    });
+    
+    aceitaCartaoCheckbox.addEventListener('change', function() {
+      cartoesConfigContainer.style.display = this.checked ? 'block' : 'none';
+    });
+    
+    temCupomCheckbox.addEventListener('change', function() {
+      cupomConfigContainer.style.display = this.checked ? 'block' : 'none';
+    });
+    
+    temWhatsappCheckbox.addEventListener('change', function() {
+      whatsappConfigContainer.style.display = this.checked ? 'block' : 'none';
+    });
+    
+    // Função para atualizar a exibição dos passos
+    function updateStepDisplay() {
+      steps.forEach((step, index) => {
+        step.style.display = index === currentStep ? 'block' : 'none';
+      });
+      
+      // Atualizar a barra de progresso
+      const progressPercentage = ((currentStep + 1) / totalSteps) * 100;
+      progressBar.style.width = `${progressPercentage}%`;
+      progressBar.setAttribute('aria-valuenow', progressPercentage);
+      
+      // Atualizar os badges dos passos
+      stepBadges.forEach((badge, index) => {
+        if (index <= currentStep) {
+          badge.classList.remove('bg-secondary');
+          badge.classList.add('bg-primary');
+        } else {
+          badge.classList.remove('bg-primary');
+          badge.classList.add('bg-secondary');
+        }
+      });
+      
+      // Atualizar os botões de navegação
+      prevBtn.disabled = currentStep === 0;
+      
+      if (currentStep === totalSteps - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+      } else {
+        nextBtn.style.display = 'inline-block';
+        submitBtn.style.display = 'none';
+      }
+    }
+    
+    // Botão Próximo
+    nextBtn.addEventListener('click', function() {
+      if (validateCurrentStep()) {
+        currentStep++;
+        if (currentStep >= totalSteps) {
+          currentStep = totalSteps - 1;
+        }
+        updateStepDisplay();
+      }
+    });
+    
+    // Botão Anterior
+    prevBtn.addEventListener('click', function() {
+      currentStep--;
+      if (currentStep < 0) {
+        currentStep = 0;
+      }
+      updateStepDisplay();
+    });
+    
+    // Validação básica do formulário por passo
+    function validateCurrentStep() {
+      const currentStepEl = steps[currentStep];
+      const requiredFields = currentStepEl.querySelectorAll('[required]');
+      let isValid = true;
+      
+      requiredFields.forEach(field => {
+        if (!field.value) {
+          field.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          field.classList.remove('is-invalid');
+        }
+      });
+      
+      return isValid;
+    }
+    
+    // Botão Criar Evento (envio do formulário)
+    submitBtn.addEventListener('click', function() {
+      if (validateCurrentStep()) {
+        // Aqui você pode adicionar o código para enviar o formulário via AJAX
+        alert('Evento criado com sucesso!');
+        // Fechar o modal e resetar o formulário
+        const modalInstance = bootstrap.Modal.getInstance(modal);
+        modalInstance.hide();
+        document.getElementById('novoEventoForm').reset();
+        currentStep = 0;
+        updateStepDisplay();
+      }
+    });
+    
+    // Resetar o formulário ao fechar o modal
+    modal.addEventListener('hidden.bs.modal', function() {
+      document.getElementById('novoEventoForm').reset();
+      currentStep = 0;
+      updateStepDisplay();
+      
+      // Resetar os containers condicionais
+      mapaUploadContainer.style.display = 'none';
+      destaqueConfigContainer.style.display = 'block';
+      cartoesConfigContainer.style.display = 'none';
+      cupomConfigContainer.style.display = 'none';
+      whatsappConfigContainer.style.display = 'none';
+    });
+    
+    // Gerar slug automaticamente a partir do título
+    const tituloInput = document.getElementById('titulo');
+    const slugInput = document.getElementById('slug');
+    
+    tituloInput.addEventListener('input', function() {
+      slugInput.value = tituloInput.value
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-');
+    });
+  });
+</script>
