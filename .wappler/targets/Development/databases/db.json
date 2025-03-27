@@ -1205,53 +1205,6 @@
         },
         "parent": "eventos"
       },
-      "organizador": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "criado_em": {
-            "db": {
-              "type": "timestamp",
-              "default": "now()",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "nome": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "logo": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          }
-        },
-        "sub": {
-          "organizador_dados": "organizador_id"
-        },
-        "refs": {
-          "eventos": "organizador_id"
-        }
-      },
       "status_publicacao": {
         "db": {
           "schema": "public"
@@ -1509,7 +1462,8 @@
           "notificacoes_nao_lidas": "usuario_id",
           "evento_checklist": "finalizada_por",
           "eventos": "usuario_id",
-          "carrinho": "usuario_id"
+          "carrinho": "usuario_id",
+          "organizador": "pertence_usuario"
         }
       },
       "eventos": {
@@ -1945,6 +1899,66 @@
         },
         "refs": {
           "vendas": "carrinho"
+        }
+      },
+      "organizador": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "criado_em": {
+            "db": {
+              "type": "timestamp",
+              "default": "now()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "logo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pertence_usuario": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": false,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "SET DEFAULT",
+              "onDelete": "SET DEFAULT"
+            }
+          }
+        },
+        "sub": {
+          "organizador_dados": "organizador_id"
+        },
+        "refs": {
+          "eventos": "organizador_id"
         }
       },
       "parcelamento": {

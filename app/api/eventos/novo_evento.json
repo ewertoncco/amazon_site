@@ -1,0 +1,525 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "status_id"
+      },
+      {
+        "type": "text",
+        "name": "titulo"
+      },
+      {
+        "type": "text",
+        "name": "sub_titulo"
+      },
+      {
+        "type": "boolean",
+        "name": "mostrar_descricao"
+      },
+      {
+        "type": "text",
+        "name": "descricao"
+      },
+      {
+        "type": "datetime",
+        "name": "data_hora"
+      },
+      {
+        "type": "text",
+        "name": "local"
+      },
+      {
+        "type": "text",
+        "name": "banner"
+      },
+      {
+        "type": "boolean",
+        "name": "tem_mapa"
+      },
+      {
+        "type": "text",
+        "name": "mapa_imagem"
+      },
+      {
+        "type": "boolean",
+        "name": "destaque"
+      },
+      {
+        "type": "boolean",
+        "name": "pode_alterar_ingresso"
+      },
+      {
+        "type": "boolean",
+        "name": "pode_devolver_ingresso"
+      },
+      {
+        "type": "boolean",
+        "name": "aceita_pix"
+      },
+      {
+        "type": "boolean",
+        "name": "aceita_cartao"
+      },
+      {
+        "type": "number",
+        "name": "parcelas_cartao"
+      },
+      {
+        "type": "text",
+        "name": "slug"
+      },
+      {
+        "type": "boolean",
+        "name": "tem_whatsapp"
+      },
+      {
+        "type": "text",
+        "name": "numero_whatsapp"
+      },
+      {
+        "type": "boolean",
+        "name": "tem_cupom"
+      },
+      {
+        "type": "text",
+        "name": "codigo_cupom"
+      },
+      {
+        "type": "number",
+        "name": "valor_cupom"
+      },
+      {
+        "type": "boolean",
+        "name": "divulgacao"
+      },
+      {
+        "type": "number",
+        "name": "segundos_destaque"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "organizador",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "organizador",
+                "column": "id"
+              },
+              {
+                "table": "organizador",
+                "column": "nome"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "organizador"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select \"id\", \"nome\" from \"organizador\" where \"organizador\".\"pertence_usuario\" = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "organizador.pertence_usuario",
+                  "field": "organizador.pertence_usuario",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "organizador",
+                    "column": "pertence_usuario",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "references": "id",
+                      "inTable": "usuarios",
+                      "referenceType": "integer",
+                      "onUpdate": "SET DEFAULT",
+                      "onDelete": "SET DEFAULT",
+                      "name": "pertence_usuario"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "nome"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "novo_evento",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "eventos",
+                "column": "organizador_id",
+                "type": "number",
+                "value": "{{organizador.id}}"
+              },
+              {
+                "table": "eventos",
+                "column": "usuario_id",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "eventos",
+                "column": "status_id",
+                "type": "number",
+                "value": "{{$_POST.status_id}}"
+              },
+              {
+                "table": "eventos",
+                "column": "titulo",
+                "type": "text",
+                "value": "{{$_POST.titulo}}"
+              },
+              {
+                "table": "eventos",
+                "column": "sub_titulo",
+                "type": "text",
+                "value": "{{$_POST.sub_titulo}}"
+              },
+              {
+                "table": "eventos",
+                "column": "mostrar_descricao",
+                "type": "boolean",
+                "value": "{{$_POST.mostrar_descricao || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "descricao",
+                "type": "text",
+                "value": "{{$_POST.descricao}}"
+              },
+              {
+                "table": "eventos",
+                "column": "data_hora",
+                "type": "datetime",
+                "value": "{{$_POST.data_hora}}"
+              },
+              {
+                "table": "eventos",
+                "column": "local",
+                "type": "text",
+                "value": "{{$_POST.local}}"
+              },
+              {
+                "table": "eventos",
+                "column": "banner",
+                "type": "text",
+                "value": "{{$_POST.banner}}"
+              },
+              {
+                "table": "eventos",
+                "column": "tem_mapa",
+                "type": "boolean",
+                "value": "{{$_POST.tem_mapa || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "mapa_imagem",
+                "type": "text",
+                "value": "{{$_POST.mapa_imagem}}"
+              },
+              {
+                "table": "eventos",
+                "column": "destaque",
+                "type": "boolean",
+                "value": "{{$_POST.destaque || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "pode_alterar_ingresso",
+                "type": "boolean",
+                "value": "{{$_POST.pode_alterar_ingresso || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "pode_devolver_ingresso",
+                "type": "boolean",
+                "value": "{{$_POST.pode_devolver_ingresso || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "aceita_pix",
+                "type": "boolean",
+                "value": "{{$_POST.aceita_pix || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "aceita_cartao",
+                "type": "boolean",
+                "value": "{{$_POST.aceita_cartao || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "parcelas_cartao",
+                "type": "number",
+                "value": "{{$_POST.parcelas_cartao}}"
+              },
+              {
+                "table": "eventos",
+                "column": "slug",
+                "type": "text",
+                "value": "{{$_POST.slug}}"
+              },
+              {
+                "table": "eventos",
+                "column": "tem_whatsapp",
+                "type": "boolean",
+                "value": "{{$_POST.tem_whatsapp || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "numero_whatsapp",
+                "type": "text",
+                "value": "{{$_POST.numero_whatsapp}}"
+              },
+              {
+                "table": "eventos",
+                "column": "tem_cupom",
+                "type": "boolean",
+                "value": "{{$_POST.tem_cupom || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "codigo_cupom",
+                "type": "text",
+                "value": "{{$_POST.codigo_cupom}}"
+              },
+              {
+                "table": "eventos",
+                "column": "valor_cupom",
+                "type": "number",
+                "value": "{{$_POST.valor_cupom}}"
+              },
+              {
+                "table": "eventos",
+                "column": "divulgacao",
+                "type": "boolean",
+                "value": "{{$_POST.divulgacao || faslse}}"
+              },
+              {
+                "table": "eventos",
+                "column": "segundos_destaque",
+                "type": "number",
+                "value": "{{$_POST.segundos_destaque}}"
+              }
+            ],
+            "table": "eventos",
+            "returning": "id",
+            "query": "insert into \"eventos\" (\"aceita_cartao\", \"aceita_pix\", \"banner\", \"codigo_cupom\", \"data_hora\", \"descricao\", \"destaque\", \"divulgacao\", \"local\", \"mapa_imagem\", \"mostrar_descricao\", \"numero_whatsapp\", \"organizador_id\", \"parcelas_cartao\", \"pode_alterar_ingresso\", \"pode_devolver_ingresso\", \"segundos_destaque\", \"slug\", \"status_id\", \"sub_titulo\", \"tem_cupom\", \"tem_mapa\", \"tem_whatsapp\", \"titulo\", \"usuario_id\", \"valor_cupom\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{organizador.id}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.status_id}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.titulo}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.sub_titulo}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.mostrar_descricao || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST.descricao}}",
+                "test": ""
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{$_POST.data_hora}}",
+                "test": ""
+              },
+              {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.local}}",
+                "test": ""
+              },
+              {
+                "name": ":P10",
+                "type": "expression",
+                "value": "{{$_POST.banner}}",
+                "test": ""
+              },
+              {
+                "name": ":P11",
+                "type": "expression",
+                "value": "{{$_POST.tem_mapa || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P12",
+                "type": "expression",
+                "value": "{{$_POST.mapa_imagem}}",
+                "test": ""
+              },
+              {
+                "name": ":P13",
+                "type": "expression",
+                "value": "{{$_POST.destaque || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P14",
+                "type": "expression",
+                "value": "{{$_POST.pode_alterar_ingresso || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P15",
+                "type": "expression",
+                "value": "{{$_POST.pode_devolver_ingresso || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P16",
+                "type": "expression",
+                "value": "{{$_POST.aceita_pix || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P17",
+                "type": "expression",
+                "value": "{{$_POST.aceita_cartao || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P18",
+                "type": "expression",
+                "value": "{{$_POST.parcelas_cartao}}",
+                "test": ""
+              },
+              {
+                "name": ":P19",
+                "type": "expression",
+                "value": "{{$_POST.slug}}",
+                "test": ""
+              },
+              {
+                "name": ":P20",
+                "type": "expression",
+                "value": "{{$_POST.tem_whatsapp || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P21",
+                "type": "expression",
+                "value": "{{$_POST.numero_whatsapp}}",
+                "test": ""
+              },
+              {
+                "name": ":P22",
+                "type": "expression",
+                "value": "{{$_POST.tem_cupom || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P23",
+                "type": "expression",
+                "value": "{{$_POST.codigo_cupom}}",
+                "test": ""
+              },
+              {
+                "name": ":P24",
+                "type": "expression",
+                "value": "{{$_POST.valor_cupom}}",
+                "test": ""
+              },
+              {
+                "name": ":P25",
+                "type": "expression",
+                "value": "{{$_POST.divulgacao || faslse}}",
+                "test": ""
+              },
+              {
+                "name": ":P26",
+                "type": "expression",
+                "value": "{{$_POST.segundos_destaque}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

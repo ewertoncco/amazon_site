@@ -1,5 +1,5 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" id="adm_eventos" components="{dmxBootstrap5Navigation:{}}" is="dmx-app" appConnect="local" -->
-<dmx-value id="status" dmx-bind:value="2"></dmx-value>
+<dmx-serverconnect id="eventos" url="/api/eventos/eventos_lista" dmx-param:status="status_evento.value"></dmx-serverconnect><dmx-value id="status_evento" dmx-bind:value="2"></dmx-value>
 <script>
   // Configuração para o tema que impede erro de JSON
 window.defaultConfig = {
@@ -20,14 +20,14 @@ window.defaultConfig = {
 window.config = JSON.parse(JSON.stringify(window.defaultConfig));
 </script>
 <script src="/dmxAppConnect/dmxAppConnect.js"></script>
-<dmx-serverconnect id="eventos" url="/api/eventos/eventos_lista" dmx-param:status="status.value"></dmx-serverconnect>
+
 
 
 <meta name="ac:route" content="/adm_eventos">
 
 <div class="page-heading">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="mb-0">Gerenciamento de Eventos</h3>
+    <h3 class="mb-0">Eventos</h3>
     <div>
       <a href="/adm_evento/novo" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Novo Evento</a>
     </div>
@@ -36,17 +36,22 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
   <!-- Nav tabs para alternar entre as categorias de eventos -->
   <ul class="nav nav-tabs mb-4" id="eventTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="online-tab" type="button" dmx-on:click="status.setValue(2);eventos.load({})">
+      <button class="nav-link" id="online-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue(2)">
         <i class="fas fa-globe me-1"></i> Eventos Online
       </button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="finished-tab" type="button" dmx-on:click="status.setValue(4);eventos.load({})">
-        <i class="fas fa-calendar-check me-1"></i> Eventos Finalizados
+      <button class="nav-link" id="rascunho-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue(1)">
+        <i class="fas fa-edit me-1"></i> Rascunhos
       </button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="all-tab" type="button" dmx-on:click="status.setValue();eventos.load({})">
+      <button class="nav-link" id="finished-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue(4)">
+        <i class="fas fa-calendar-check me-1"></i> Finalizados
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="all-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue()">
         <i class="fas fa-calendar-alt me-1"></i> Todos os Eventos
       </button>
     </li>
@@ -95,7 +100,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
               </td>
               <td>
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="status1" checked="" dmx-bind:checked="status_id==2">
+                  <input class="form-check-input" type="checkbox" role="switch" id="status1" checked="" dmx-bind:checked="status_id==2" value="true">
                   <label class="form-check-label" for="status1"><i class="fas fa-circle me-1" style="color: #28a745; font-size: 10px;"></i>Ativo</label>
                 </div>
               </td>
@@ -112,16 +117,27 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                 </div>
               </td>
               <td>
-                <button id="btn_ver" class="btn btn-light btn-sm">
+                <button id="btn_ver" class="btn btn-light">
                   <i class="fas fa-eye"></i>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+
+        <!-- Mensagem para quando não há eventos -->
+        <div class="text-center py-5" dmx-show="!eventos.data.eventos_lista.data.length">
+          <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+          <h4 class="text-muted">Nenhum evento encontrado</h4>
+          <p class="text-muted">Não existem eventos com o filtro selecionado</p>
+          <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoEventoModal">
+            <i class="fas fa-plus me-1"></i> Criar novo evento
+          </button>
+        </div>
       </div>
-      <!-- Paginação -->
-      <div class="d-flex justify-content-between align-items-center mt-3">
+
+      <!-- Paginação - só exibir quando há eventos -->
+      <div class="d-flex justify-content-between align-items-center mt-3" dmx-show="eventos.data.eventos_lista.data.length">
         <small class="text-muted">Mostrando 1-10 de 50 eventos</small>
         <nav aria-label="Navegação da lista">
           <ul class="pagination pagination-sm mb-0">
@@ -150,24 +166,24 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="novoEventoModalLabel"><i class="fas fa-calendar-plus me-2"></i>Adicionar Novo Evento</h5>
+        <h5 class="modal-title text-white" id="novoEventoModalLabel"><i class="fas fa-calendar-plus me-2"></i>Adicionar Novo Evento</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
       <div class="modal-body p-0">
         <!-- Progress Bar -->
         <div class="px-3 pt-3">
-          <div class="progress" style="height: 8px;">
+          <div class="progress mb-2" style="height: 8px;">
             <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
           <div class="d-flex justify-content-between mt-1 mb-3">
-            <span class="badge bg-primary">1. Informações Básicas</span>
-            <span class="badge bg-secondary">2. Descrição e Detalhes</span>
-            <span class="badge bg-secondary">3. Configurações de Pagamento</span>
-            <span class="badge bg-secondary">4. Opções Adicionais</span>
+            <span class="badge bg-primary p-2">1. Informações Básicas</span>
+            <span class="badge bg-secondary p-2">2. Descrição e Detalhes</span>
+            <span class="badge bg-secondary p-2">3. Configurações de Pagamento</span>
+            <span class="badge bg-secondary p-2">4. Opções Adicionais</span>
           </div>
         </div>
 
-        <form id="novoEventoForm">
+        <form id="novoEventoForm" is="dmx-serverconnect-form" method="post" action="/api/eventos/novo_evento" dmx-on:success="notifies1.success('Fechooo')">
           <!-- Steps Container -->
           <div class="steps-container">
             <!-- Step 1: Informações Básicas -->
@@ -226,7 +242,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                   <div class="row mb-3">
                     <div class="col-12">
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="mostrar_descricao" name="mostrar_descricao" checked>
+                        <input class="form-check-input" type="checkbox" id="mostrar_descricao" name="mostrar_descricao" checked="" value="true">
                         <label class="form-check-label" for="mostrar_descricao">Mostrar descrição na página do evento</label>
                       </div>
                     </div>
@@ -239,7 +255,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="tem_mapa" name="tem_mapa">
+                        <input class="form-check-input" type="checkbox" id="tem_mapa" name="tem_mapa" value="true">
                         <label class="form-check-label" for="tem_mapa">Incluir mapa do evento</label>
                       </div>
                       <div id="mapaUploadContainer" style="display: none;">
@@ -250,7 +266,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                     </div>
                     <div class="col-md-6">
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="destaque" name="destaque" checked>
+                        <input class="form-check-input" type="checkbox" id="destaque" name="destaque" checked="" value="true">
                         <label class="form-check-label" for="destaque">Destacar na página inicial</label>
                       </div>
                       <div id="destaqueConfigContainer">
@@ -274,11 +290,11 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                     <div class="col-md-6">
                       <h6>Métodos de Pagamento</h6>
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="aceita_pix" name="aceita_pix" checked>
+                        <input class="form-check-input" type="checkbox" id="aceita_pix" name="aceita_pix" checked="" value="true">
                         <label class="form-check-label" for="aceita_pix">Aceitar pagamento via PIX</label>
                       </div>
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="aceita_cartao" name="aceita_cartao">
+                        <input class="form-check-input" type="checkbox" id="aceita_cartao" name="aceita_cartao" value="true">
                         <label class="form-check-label" for="aceita_cartao">Aceitar pagamento via Cartão</label>
                       </div>
                       <div id="cartoesConfigContainer" style="display: none;">
@@ -295,7 +311,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                     <div class="col-md-6">
                       <h6>Cupom de Desconto</h6>
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="tem_cupom" name="tem_cupom">
+                        <input class="form-check-input" type="checkbox" id="tem_cupom" name="tem_cupom" value="true">
                         <label class="form-check-label" for="tem_cupom">Oferecer cupom de desconto</label>
                       </div>
                       <div id="cupomConfigContainer" style="display: none;">
@@ -324,18 +340,18 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                     <div class="col-md-6">
                       <h6>Políticas de Ingressos</h6>
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="pode_alterar_ingresso" name="pode_alterar_ingresso" checked>
+                        <input class="form-check-input" type="checkbox" id="pode_alterar_ingresso" name="pode_alterar_ingresso" checked="" value="true">
                         <label class="form-check-label" for="pode_alterar_ingresso">Permitir alteração de ingressos</label>
                       </div>
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="pode_devolver_ingresso" name="pode_devolver_ingresso">
+                        <input class="form-check-input" type="checkbox" id="pode_devolver_ingresso" name="pode_devolver_ingresso" value="true">
                         <label class="form-check-label" for="pode_devolver_ingresso">Permitir devolução de ingressos</label>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <h6>Suporte via WhatsApp</h6>
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="tem_whatsapp" name="tem_whatsapp">
+                        <input class="form-check-input" type="checkbox" id="tem_whatsapp" name="tem_whatsapp" value="true">
                         <label class="form-check-label" for="tem_whatsapp">Oferecer suporte via WhatsApp</label>
                       </div>
                       <div id="whatsappConfigContainer" style="display: none;">
@@ -349,7 +365,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="divulgacao" name="divulgacao">
+                        <input class="form-check-input" type="checkbox" id="divulgacao" name="divulgacao" value="true">
                         <label class="form-check-label" for="divulgacao">Incluir em campanhas de divulgação</label>
                       </div>
                       <div class="form-text">Seu evento poderá ser promovido em nossos canais de marketing</div>
@@ -366,7 +382,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
         <div>
           <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
           <button type="button" class="btn btn-primary" id="nextStepBtn">Próximo <i class="fas fa-arrow-right ms-1"></i></button>
-          <button type="button" class="btn btn-success" id="submitBtn" style="display: none;"><i class="fas fa-check me-1"></i> Criar Evento</button>
+          <button class="btn btn-success" id="submitBtn" style="display: none;" dmx-on:click="novoEventoForm.submit()"><i class="fas fa-check me-1"></i> Criar Evento</button>
         </div>
       </div>
     </div>
@@ -378,13 +394,22 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
   document.addEventListener('DOMContentLoaded', function() {
     // Inicialização do Bootstrap Tabs
     var triggerTabList = [].slice.call(document.querySelectorAll('#eventTabs button'))
+    
+    // Definir o primeiro tab como ativo
+    document.getElementById('online-tab').classList.add('active');
+    
     triggerTabList.forEach(function(triggerEl) {
-      var tabTrigger = new bootstrap.Tab(triggerEl)
+      // Adicionar event listener para click que ativa o tab
       triggerEl.addEventListener('click', function(event) {
-        event.preventDefault()
-        tabTrigger.show()
-      })
-    })
+        // Remover classe active de todos os tabs
+        triggerTabList.forEach(function(el) {
+          el.classList.remove('active');
+        });
+        
+        // Adicionar classe active no tab clicado
+        this.classList.add('active');
+      });
+    });
     
     // Elementos do modal
     const modal = document.getElementById('novoEventoModal');
@@ -393,7 +418,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
     const stepBadges = document.querySelectorAll('.badge');
     const prevBtn = document.getElementById('prevStepBtn');
     const nextBtn = document.getElementById('nextStepBtn');
-    const submitBtn = document.getElementById('submitBtn');
+    
     
     // Campos com containers condicionais
     const temMapaCheckbox = document.getElementById('tem_mapa');
@@ -511,19 +536,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
       return isValid;
     }
     
-    // Botão Criar Evento (envio do formulário)
-    submitBtn.addEventListener('click', function() {
-      if (validateCurrentStep()) {
-        // Aqui você pode adicionar o código para enviar o formulário via AJAX
-        alert('Evento criado com sucesso!');
-        // Fechar o modal e resetar o formulário
-        const modalInstance = bootstrap.Modal.getInstance(modal);
-        modalInstance.hide();
-        document.getElementById('novoEventoForm').reset();
-        currentStep = 0;
-        updateStepDisplay();
-      }
-    });
+    
     
     // Resetar o formulário ao fechar o modal
     modal.addEventListener('hidden.bs.modal', function() {
