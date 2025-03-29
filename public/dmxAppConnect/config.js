@@ -32,6 +32,10 @@ dmx.config({
       {
         "type": "boolean",
         "name": "mesa"
+      },
+      {
+        "type": "text",
+        "name": "cupom"
       }
     ],
     "sessionStorage": [
