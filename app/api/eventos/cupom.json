@@ -51,7 +51,7 @@
           },
           "primary": "id",
           "joins": [],
-          "query": "select \"valor_cupom\", \"codigo_cupom\" from \"eventos\" where \"eventos\".\"uuid\" = ? and \"eventos\".\"codigo_cupom\" = ?",
+          "query": "select \"valor_cupom\", \"codigo_cupom\" from \"eventos\" where \"eventos\".\"uuid\" = ? and \"eventos\".\"codigo_cupom\" = ? and \"eventos\".\"tem_cupom\" = ?",
           "wheres": {
             "condition": "AND",
             "rules": [
@@ -92,6 +92,27 @@
                     "unique": false,
                     "nullable": true,
                     "name": "codigo_cupom"
+                  }
+                },
+                "operation": "="
+              },
+              {
+                "id": "eventos.tem_cupom",
+                "field": "eventos.tem_cupom",
+                "type": "boolean",
+                "operator": "equal",
+                "value": true,
+                "data": {
+                  "table": "eventos",
+                  "column": "tem_cupom",
+                  "type": "boolean",
+                  "columnObj": {
+                    "type": "boolean",
+                    "default": "false",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "tem_cupom"
                   }
                 },
                 "operation": "="

@@ -34,8 +34,12 @@ dmx.config({
         "name": "mesa"
       },
       {
-        "type": "text",
+        "type": "boolean",
         "name": "cupom"
+      },
+      {
+        "type": "number",
+        "name": "desconto"
       }
     ],
     "sessionStorage": [
@@ -62,6 +66,14 @@ dmx.config({
       {
         "type": "text",
         "name": "mensagem"
+      },
+      {
+        "type": "boolean",
+        "name": "tem_cupom"
+      },
+      {
+        "type": "text",
+        "name": "codigo_cupom"
       }
     ]
   },
@@ -561,5 +573,94 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "evento": {
+    "inp_cupom": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "inp_desconto2": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "inputData1": {
+      "meta": null,
+      "outputType": "boolean"
+    },
+    "itens_venda": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "nome"
+        },
+        {
+          "type": "number",
+          "name": "qtide_cadastrada"
+        },
+        {
+          "type": "datetime",
+          "name": "inicio_vendas"
+        },
+        {
+          "type": "datetime",
+          "name": "final_vendas"
+        },
+        {
+          "type": "number",
+          "name": "valor"
+        },
+        {
+          "type": "number",
+          "name": "ordem"
+        },
+        {
+          "type": "boolean",
+          "name": "is_mesa"
+        },
+        {
+          "type": "number",
+          "name": "qtide_mesa"
+        },
+        {
+          "type": "number",
+          "name": "tipo_item"
+        },
+        {
+          "type": "boolean",
+          "name": "quase_acabando"
+        },
+        {
+          "type": "number",
+          "name": "contagem_regressiva"
+        }
+      ],
+      "outputType": "array"
+    },
+    "flow1": {
+      "meta": {},
+      "local": [
+        {
+          "name": "",
+          "type": "boolean",
+          "metaData": {
+            "condition": {}
+          }
+        }
+      ]
+    },
+    "query": [
+      {
+        "type": "text",
+        "name": "evento"
+      }
+    ]
   }
 });

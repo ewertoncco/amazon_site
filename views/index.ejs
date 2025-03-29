@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/homepage" bootstrap5="custom" components="{dmxSwiper:{},dmxFormatter:{},dmxTyped:{},dmxSlideshow:{},dmxFormRepeat:{},dmxPdfCreator:{},dmxMoment:{}}" fontawesome_6="local" moment_2="local with locales" -->
+<!-- Wappler include head-page="layouts/homepage" bootstrap5="custom" components="{dmxSwiper:{},dmxFormatter:{},dmxTyped:{},dmxSlideshow:{},dmxFormRepeat:{},dmxPdfCreator:{},dmxMoment:{},dmxBrowser:{},dmxRouting:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{}}" fontawesome_6="local" moment_2="local with locales" is="dmx-app" appConnect="local" -->
 <script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun="true">{
   run: {outputType: "text", action: "{{datastore_carrinho.clear()}}"}
 }</script>
@@ -8,7 +8,7 @@
 <meta name="ac:route" content="/">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body>
+<body is="dmx-app" id="index" spa="true">
 
     <main class="mt-2 pt-2">
         <section id="destaque" class="d-flex align-items-center" style="min-height: 80vh;">

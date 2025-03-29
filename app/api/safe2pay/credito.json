@@ -62,8 +62,8 @@
         ]
       },
       {
-        "type": "number",
-        "name": "desconto_aplicado"
+        "type": "boolean",
+        "name": "tem_cupom"
       },
       {
         "type": "number",
@@ -88,6 +88,10 @@
       {
         "type": "number",
         "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "codigo_cupom"
       }
     ]
   },
@@ -767,14 +771,31 @@
         "output": true
       },
       {
-        "name": "cupom_venda",
+        "name": "debug",
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": false
+          "value": {
+            "codigo_front": "{{$_POST.codigo_cupom}}",
+            "cupom_front": "{{$_POST.tem_cupom}}",
+            "codigo_evento": "{{evento.codigo_cupom}}",
+            "cupom_evento": "{{evento.tem_cupom}}"
+          }
         },
         "meta": [],
-        "outputType": "boolean"
+        "outputType": "object",
+        "disabled": true
+      },
+      {
+        "name": "cupom_aplicado",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{(evento.tem_cupom == true && $_POST.codigo_cupom==evento.codigo_cupom)?true:false}}"
+        },
+        "meta": [],
+        "outputType": "boolean",
+        "output": true
       },
       {
         "name": "itens_vendidos",
@@ -893,19 +914,9 @@
                 "module": "core",
                 "action": "condition",
                 "options": {
-                  "if": "{{cupom!=null&&!cupom.isEmpty()&&evento.tem_cupom}}",
+                  "if": "{{cupom_aplicado==true}}",
                   "then": {
                     "steps": [
-                      {
-                        "name": "cupom_venda",
-                        "module": "core",
-                        "action": "setvalue",
-                        "options": {
-                          "value": true
-                        },
-                        "meta": [],
-                        "outputType": "boolean"
-                      },
                       {
                         "name": "vendas_com_cupom",
                         "module": "dbupdater",
@@ -979,13 +990,13 @@
                                 "table": "vendas",
                                 "column": "valor_final",
                                 "type": "number",
-                                "value": "{{produto.valor-(produto.valor*evento.valor_cupom)}}"
+                                "value": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "desconto",
                                 "type": "number",
-                                "value": "{{(produto.valor*evento.valor_cupom)}}"
+                                "value": "{{(produto.valor*evento.valor_cupom)/100}}"
                               }
                             ],
                             "table": "vendas",
@@ -1049,13 +1060,13 @@
                               {
                                 "name": ":P10",
                                 "type": "expression",
-                                "value": "{{produto.valor-(produto.valor*evento.valor_cupom)}}",
+                                "value": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}",
                                 "test": ""
                               },
                               {
                                 "name": ":P11",
                                 "type": "expression",
-                                "value": "{{(produto.valor*evento.valor_cupom)}}",
+                                "value": "{{(produto.valor*evento.valor_cupom)/100}}",
                                 "test": ""
                               }
                             ]
@@ -1823,7 +1834,7 @@
                       "table": "carrinho",
                       "column": "cupom",
                       "type": "boolean",
-                      "value": "{{cupom_venda}}"
+                      "value": "{{cupom_aplicado}}"
                     }
                   ],
                   "table": "carrinho",
@@ -1857,7 +1868,7 @@
                     {
                       "name": ":P2",
                       "type": "expression",
-                      "value": "{{cupom_venda}}",
+                      "value": "{{cupom_aplicado}}",
                       "test": ""
                     },
                     {

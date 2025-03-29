@@ -1,10 +1,23 @@
-<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{}}" bootstrap5="custom" moment_2="local with locales" lang="pt" -->
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{},dmxFormRepeat:{},dmxBrowser:{},dmxRouting:{}}" bootstrap5="custom" moment_2="local with locales" lang="pt" is="dmx-app" appConnect="local" -->
 <dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
 <script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun="true">{
-  run: {outputType: "text", action: "{{global.removeAll()}}"}
+  condition: {
+    outputType: "boolean",
+    if: "{{query.evento.isEmpty()}}",
+    then: {
+      steps: {
+        run: {outputType: "text", action: "{{browser1.goto('/')}}"}
+      }
+    },
+    else: {
+      steps: {
+        run: {name: "del", outputType: "text", action: "{{global.removeAll()}}"}
+      }
+    }
+  }
 }</script>
 
-<form id="cupom" is="dmx-serverconnect-form" method="post" action="/api/eventos/cupom" dmx-on:success="run({condition:{outputType:'boolean',if:`!cupom.data.evento.valor_cupom.Empt()`,then:{steps:{repeat:{name:'repeat',output:true,outputType:'array',repeat:`datastore_carrinho.data`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`datastore_carrinho.update({$id: $value.$id},{item_valor: $value.item_valor-((cupom.data.evento.valor_cupom*$value.item_valor)/100), cupom: cupom_code.value})`}}}}}}}})">
+<form id="cupom" is="dmx-serverconnect-form" method="post" action="/api/eventos/cupom" dmx-on:success="run({condition:{outputType:'boolean',if:`!cupom.data.evento.valor_cupom.Empt()`,then:{steps:[{run:{outputType:'text',action:`global.set(\'codigo_cupom\',cupom.data.evento.codigo_cupom);global.set(\'tem_cupom\',true)`}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`datastore_carrinho.data`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`datastore_carrinho.update({$id: $value.$id},{item_valor: $value.item_valor-((cupom.data.evento.valor_cupom*$value.item_valor)/100), cupom: true, desconto: ((cupom.data.evento.valor_cupom*$value.item_valor)/100)})`}}}}}]}}})">
     <dmx-form-data id="inp_evento" name="evento" dmx-bind:data="query.evento"></dmx-form-data>
     <dmx-form-data id="inp_cupom" name="cupom" dmx-bind:data="cupom_code.value"></dmx-form-data>
 </form>
@@ -16,7 +29,7 @@
 
 <dmx-serverconnect id="parcelamento" url="/api/eventos/parcelamento"></dmx-serverconnect>
 
-<body>
+<body is="dmx-app" id="evento" spa="true">
 
     <div class="modal" id="modal_nao_logado" is="dmx-bs5-modal" tabindex="-1">
         <div class="modal-dialog" role="document">
@@ -62,7 +75,7 @@
 
 
     <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="evento.load({evento: $event.evento_id})"></dmx-socket>
-    <dmx-socket id="status_pag" dmx-on:message.status_pagamento="run({condition:{outputType:'boolean',if:`$event.transacao==global.data.transacao_id`,then:{steps:{run:{outputType:'text',action:`global.set(\'status_pagamento\',$event.status_pagamento);global.set(\'mensagem\',$event.mensagem)`}}}}})"></dmx-socket>
+    <dmx-socket id="status_pag" dmx-on:message.status_pagamento="run({condition:{outputType:'boolean',if:`$event.transacao==global.data.transacao_id`,then:{steps:{run:{outputType:'text',action:`global.set(\'status_pagamento\',$event.status_pagamento);global.set(\'mensagem\',$event.mensagem);evento.load({evento: query.evento})`}}}}})"></dmx-socket>
 
     <!-- Modal do Carrinho -->
     <div class="modal fade" id="carrinho" tabindex="-1" aria-labelledby="carrinhoLabel" aria-hidden="true" is="dmx-bs5-modal">
@@ -225,7 +238,7 @@
             <!-- Coluna de Ingressos -->
             <div class="col-12 col-lg-4">
                 <div class="tickets-list position-relative">
-                    <div class="row g-1" is="dmx-repeat" id="itens_venda" dmx-bind:repeat="evento.data.evento.itens">
+                    <div class="row g-1" is="dmx-repeat" id="itens_venda" dmx-bind:repeat="evento.data.itens">
                         <div class="col-12">
                             <div class="ticket-item bg-white rounded-3 border pt-2 pb-2 ps-3 pe-3">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -237,7 +250,8 @@
                                             <span class="badge bg-primary mt-2 d-flex align-items-center gap-1" style="width: fit-content" dmx-show="is_mesa">
                                                 <i class="fas fa-users"></i>
                                                 {{qtide_mesa}} lugares
-                                            </span><span class="badge bg-danger mt-2" style="width: fit-content">Quase acabando</span>
+                                            </span><span class="badge bg-danger mt-2" style="width: fit-content" dmx-show="quase_acabando==true">Quase acabando</span>
+                                            <span class="badge bg-info mt-2" style="width: fit-content">Termina em {{contagem_regressiva}} dias</span>
 
                                         </div>
                                     </div>
@@ -461,8 +475,11 @@
                                             <td>
                                                 <h6 class="mb-0">{{item_nome}}</h6>
                                                 <small class="text-muted">Titular: {{nome || 'Não informado'}}</small>
+
                                             </td>
-                                            <td class="text-end">{{item_valor.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</td>
+                                            <td class="text-end">
+                                                <h6 class="mb-0">{{item_valor.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</h6><small class="text-danger" dmx-show="desconto">Desconto cupom: -{{desconto.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</small>
+                                            </td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
@@ -475,7 +492,7 @@
                             </div>
 
                             <!-- Cupom de desconto -->
-                            <div class="d-flex gap-3 mb-4">
+                            <div class="d-flex gap-3 mb-4" dmx-hide="global.data.tem_cupom">
                                 <input type="text" class="form-control" id="cupom_code" placeholder="Código do cupom" name="cupom">
                                 <button class="btn btn-outline-primary" dmx-on:click="cupom.submit()">Aplicar</button>
                             </div>
@@ -522,10 +539,11 @@
 
                                     <!-- Cartão -->
                                     <div class="tab-pane fade" id="cartao">
-                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="global.set('transacao_id',credito.data.transacao);datastore_carrinho.clear()" dmx-on:error="">
+                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="global.set('transacao_id',credito.data.transacao);datastore_carrinho.clear();global.remove('codigo_cupom');global.remove('tem_cupom')" dmx-on:error="">
+                                            <dmx-form-data id="inputData1" name="tem_cupom" dmx-bind:data="global.data.tem_cupom"></dmx-form-data>
                                             <dmx-form-data id="inp_evento2" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
                                             <dmx-form-data id="inp_itens_vendidos2" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
-                                            <dmx-form-data id="inp_desconto2" name="desconto_aplicado" dmx-bind:data="cupom.data.evento.valor_cupom"></dmx-form-data>
+                                            <dmx-form-data id="inp_desconto2" name="codigo_cupom" dmx-bind:data="global.data.codigo_cupom"></dmx-form-data>
                                             <div class="row g-3">
                                                 <div class="col-12">
                                                     <label class="form-label">Número do Cartão</label>
