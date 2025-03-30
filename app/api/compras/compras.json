@@ -44,11 +44,12 @@
             },
             {
               "table": "carrinho",
-              "column": "valor_final"
+              "column": "forma_pagamento"
             },
             {
               "table": "carrinho",
-              "column": "forma_pagamento"
+              "column": "total_bruto",
+              "alias": "total_carrinho"
             }
           ],
           "params": [
@@ -65,7 +66,7 @@
           },
           "primary": "id",
           "joins": [],
-          "query": "select \"id\", \"criado_em\", \"transacao_id\", \"valor_final\", \"forma_pagamento\" from \"carrinho\" where \"carrinho\".\"usuario_id\" = ? and \"carrinho\".\"status_pagamento_id\" = ? limit ?",
+          "query": "select \"id\", \"criado_em\", \"transacao_id\", \"forma_pagamento\", \"total_bruto\" as \"total_carrinho\" from \"carrinho\" where \"carrinho\".\"usuario_id\" = ? and \"carrinho\".\"status_pagamento_id\" = ? order by \"criado_em\" DESC limit ?",
           "wheres": {
             "condition": "AND",
             "rules": [
@@ -92,7 +93,8 @@
                     "name": "usuario_id"
                   }
                 },
-                "operation": "="
+                "operation": "=",
+                "table": "carrinho"
               },
               {
                 "id": "carrinho.status_pagamento_id",
@@ -117,7 +119,8 @@
                     "name": "status_pagamento_id"
                   }
                 },
-                "operation": "="
+                "operation": "=",
+                "table": "carrinho"
               }
             ],
             "conditional": null,
@@ -164,14 +167,25 @@
                   "table": "vendas",
                   "column": "id",
                   "alias": "vendas_id"
+                },
+                {
+                  "table": "vendas",
+                  "column": "valor_final"
                 }
               ],
               "params": [],
               "primary": "id",
               "joins": [],
-              "query": "select \"participante_nome\", \"participante_telefone\", \"participante_cpf\", \"participante_email\", \"check_in\", \"hora_check_in\", \"qrcode\", \"id\" as \"vendas_id\" from \"vendas\" as \"vendas\""
+              "query": "select \"participante_nome\", \"participante_telefone\", \"participante_cpf\", \"participante_email\", \"check_in\", \"hora_check_in\", \"qrcode\", \"id\" as \"vendas_id\", \"valor_final\" from \"vendas\" as \"vendas\""
             }
-          }
+          },
+          "orders": [
+            {
+              "table": "carrinho",
+              "column": "criado_em",
+              "direction": "DESC"
+            }
+          ]
         }
       },
       "output": true,
@@ -242,11 +256,11 @@
             },
             {
               "type": "number",
-              "name": "valor_final"
+              "name": "forma_pagamento"
             },
             {
               "type": "number",
-              "name": "forma_pagamento"
+              "name": "total_carrinho"
             },
             {
               "name": "vendas",
@@ -283,6 +297,10 @@
                 {
                   "type": "number",
                   "name": "vendas_id"
+                },
+                {
+                  "type": "number",
+                  "name": "valor_final"
                 }
               ]
             }

@@ -771,22 +771,6 @@
         "output": true
       },
       {
-        "name": "debug",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": {
-            "codigo_front": "{{$_POST.codigo_cupom}}",
-            "cupom_front": "{{$_POST.tem_cupom}}",
-            "codigo_evento": "{{evento.codigo_cupom}}",
-            "cupom_evento": "{{evento.tem_cupom}}"
-          }
-        },
-        "meta": [],
-        "outputType": "object",
-        "disabled": true
-      },
-      {
         "name": "cupom_aplicado",
         "module": "core",
         "action": "setvalue",
@@ -1093,7 +1077,7 @@
                           "value": {
                             "Code": "{{produto.id}}",
                             "Description": "{{produto.nome}}",
-                            "UnitPrice": "{{produto.valor}}",
+                            "UnitPrice": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}",
                             "Quantity": 1
                           }
                         },
@@ -1334,7 +1318,7 @@
                   "IsSandbox": true,
                   "Application": "{{evento.titulo}}",
                   "Vendor": "{{organizador.nome}}",
-                  "CallbackUrl": "https://0bf2-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
+                  "CallbackUrl": "https://62f9-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
                   "PaymentMethod": "2",
                   "Reference": "{{evento.titulo}}",
                   "Customer": {
@@ -1435,7 +1419,7 @@
                     ]
                   }
                 ],
-                "timeout": 10000
+                "timeout": 20000
               },
               "meta": [
                 {
@@ -1511,7 +1495,7 @@
                   "IsSandbox": true,
                   "Application": "{{evento.titulo}}",
                   "Vendor": "{{organizador.nome}}",
-                  "CallbackUrl": "https://0bf2-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
+                  "CallbackUrl": "https://62f9-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
                   "PaymentMethod": "2",
                   "Reference": "{{evento.titulo}}",
                   "Customer": {
@@ -1612,7 +1596,7 @@
                     ]
                   }
                 ],
-                "timeout": 10000
+                "timeout": 20000
               },
               "meta": [
                 {

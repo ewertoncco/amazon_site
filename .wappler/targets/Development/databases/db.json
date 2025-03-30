@@ -1454,8 +1454,8 @@
           "notificacoes_nao_lidas": "usuario_id",
           "evento_checklist": "finalizada_por",
           "eventos": "usuario_id",
-          "organizador": "pertence_usuario",
           "carrinho": "usuario_id",
+          "organizador": "pertence_usuario",
           "meus_indicados": "meu_id"
         }
       },
@@ -1734,67 +1734,6 @@
           "carrinho": "evento_id"
         }
       },
-      "organizador": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "criado_em": {
-            "db": {
-              "type": "timestamp",
-              "default": "now()",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "nome": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "logo": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "pertence_usuario": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "unique": false,
-              "nullable": false,
-              "references": "id",
-              "inTable": "usuarios",
-              "referenceType": "integer",
-              "onUpdate": "SET DEFAULT",
-              "onDelete": "SET DEFAULT"
-            }
-          }
-        },
-        "sub": {
-          "organizador_dados": "organizador_id"
-        },
-        "refs": {
-          "eventos": "organizador_id",
-          "meus_indicados": "organizador_id"
-        }
-      },
       "carrinho": {
         "db": {
           "schema": "public"
@@ -1936,7 +1875,7 @@
           },
           "total_bruto": {
             "db": {
-              "type": "integer",
+              "type": "decimal",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1944,7 +1883,7 @@
           },
           "total_taxas_transacao": {
             "db": {
-              "type": "integer",
+              "type": "decimal",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1952,7 +1891,7 @@
           },
           "total_plataforma": {
             "db": {
-              "type": "integer",
+              "type": "decimal",
               "primary": false,
               "unique": false,
               "nullable": true
@@ -1969,6 +1908,67 @@
         },
         "refs": {
           "vendas": "carrinho"
+        }
+      },
+      "organizador": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "criado_em": {
+            "db": {
+              "type": "timestamp",
+              "default": "now()",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "logo": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pertence_usuario": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": false,
+              "references": "id",
+              "inTable": "usuarios",
+              "referenceType": "integer",
+              "onUpdate": "SET DEFAULT",
+              "onDelete": "SET DEFAULT"
+            }
+          }
+        },
+        "sub": {
+          "organizador_dados": "organizador_id"
+        },
+        "refs": {
+          "eventos": "organizador_id",
+          "meus_indicados": "organizador_id"
         }
       },
       "parcelamento": {
@@ -2058,6 +2058,39 @@
               "referenceType": "integer",
               "onUpdate": "NO ACTION",
               "onDelete": "CASCADE"
+            }
+          }
+        }
+      },
+      "sessions": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "sid": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "sess": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "expired": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": false
             }
           }
         }

@@ -1,6 +1,12 @@
 {
   "debug": true,
   "secret": "6aBQFh3XbspSGdp",
+  "session": {
+    "store": {
+      "$type": "database",
+      "knex": "db"
+    }
+  },
   "env": {
     "TZ": "America/Sao_Paulo"
   }

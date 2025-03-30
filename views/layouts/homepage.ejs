@@ -162,7 +162,7 @@
     </div>
   </div>
 
-  <form id="logout" is="dmx-serverconnect-form" method="post" action="/api/usuarios/logout" dmx-on:success="user.reset();browser1.goto('/index');notifies1.info('Você foi desconectado!')"></form>
+  <form id="logout" is="dmx-serverconnect-form" method="post" action="/api/usuarios/logout" dmx-on:success="browser1.goto('/',true);user.reset();notifies1.info('Você foi desconectado!')"></form>
   <dmx-datetime id="hoje"></dmx-datetime>
 
   <dmx-datastore id="datastore_carrinho"></dmx-datastore>
@@ -177,7 +177,7 @@
     <header class="fixed-top bg-white shadow">
       <nav class="navbar navbar-expand-lg navbar-light py-2">
         <div class="container">
-          <a class="navbar-brand" href="/" dmx-on:click="browser1.goto('/'); return false;" internal="true">
+          <a class="navbar-brand" dmx-bind:href="/" internal="true">
             <img src="/assets/images/logo-dark.png" alt="Logo" height="40">
           </a>
           <div class="d-flex d-lg-none align-items-center">
@@ -199,7 +199,7 @@
                 <a class="nav-link" href="/#evento" dmx-on:click="browser1.goto('/#evento'); return false;" dmx-class:active="browser1.location.hash == '#evento'">Eventos</a>
               </li>
               <li class="nav-item" dmx-show="!user.data.identity.isEmpty()">
-                <a class="nav-link" href="/compras" dmx-on:click="browser1.goto('/compras'); return false;" dmx-class:active="browser1.location.pathname == '/compras'">Minhas compras</a>
+                <a class="nav-link" href="/compras" dmx-on:click="browser1.goto('/compras',true)" dmx-class:active="browser1.location.pathname == '/compras'">Minhas compras</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/#faq" dmx-on:click="browser1.goto('/#faq'); return false;" dmx-class:active="browser1.location.hash == '#faq'">Dúvidas</a>
@@ -227,7 +227,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li><a class="dropdown-item" href="/perfil" dmx-on:click="browser1.goto('/perfil'); return false;"><i class="fas fa-user me-2"></i>Perfil</a></li>
-                  <li dmx-show="user.data.user.adm == 1"><a class="dropdown-item" href="/adm" dmx-on:click="browser1.goto('/adm'); return false;"><i class="fas fa-cogs me-2"></i>Administração</a></li>
+                  <li dmx-show="user.data.user.adm == 1"></li>
                   <li><a class="dropdown-item" href="#" dmx-on:click="logout.submit()"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
                 </ul>
               </div>

@@ -62,12 +62,36 @@
         ]
       },
       {
+        "type": "boolean",
+        "name": "tem_cupom"
+      },
+      {
         "type": "number",
-        "name": "desconto_aplicado"
+        "name": "qtide_parcelas"
+      },
+      {
+        "type": "text",
+        "name": "nome_cartao"
+      },
+      {
+        "type": "text",
+        "name": "numero_cartao"
+      },
+      {
+        "type": "text",
+        "name": "codigo_seguranca"
+      },
+      {
+        "type": "text",
+        "name": "validade"
       },
       {
         "type": "number",
         "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "codigo_cupom"
       }
     ]
   },
@@ -493,6 +517,10 @@
             "name": "logo"
           },
           {
+            "type": "number",
+            "name": "pertence_usuario"
+          },
+          {
             "name": "dados",
             "type": "array",
             "sub": [
@@ -556,6 +584,100 @@
           }
         ],
         "outputType": "object"
+      },
+      {
+        "name": "parcelamento",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [],
+            "params": [],
+            "table": {
+              "name": "parcelamento"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select * from \"parcelamento\"",
+            "limit": "{{evento.parcelas_cartao}}"
+          }
+        },
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "number",
+                "name": "juros"
+              },
+              {
+                "type": "number",
+                "name": "qtide"
+              },
+              {
+                "type": "text",
+                "name": "parcelamento"
+              }
+            ]
+          }
+        ],
+        "outputType": "object",
+        "type": "dbconnector_paged_select"
       },
       {
         "name": "lista_produtos",
@@ -628,6 +750,17 @@
             "type": "number"
           }
         ],
+        "output": true
+      },
+      {
+        "name": "cupom_aplicado",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{(evento.tem_cupom == true && $_POST.codigo_cupom==evento.codigo_cupom)?true:false}}"
+        },
+        "meta": [],
+        "outputType": "boolean",
         "output": true
       },
       {
@@ -740,217 +873,19 @@
                     "name": "nome"
                   }
                 ],
-                "outputType": "object"
+                "outputType": "object",
+                "output": false
               },
               {
                 "name": "",
                 "module": "core",
                 "action": "condition",
                 "options": {
-                  "if": "{{tem_cupom==true&&codigo_cupom==evento.codigo_cupom&&evento.tem_cupom==true}}",
+                  "if": "{{cupom_aplicado==true}}",
                   "then": {
-                    "steps": {
-                      "name": "vendas",
-                      "module": "dbupdater",
-                      "action": "insert",
-                      "options": {
-                        "connection": "db",
-                        "sql": {
-                          "type": "insert",
-                          "values": [
-                            {
-                              "table": "vendas",
-                              "column": "evento_id",
-                              "type": "number",
-                              "value": "{{$_POST.evento_id}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "usuarios_id",
-                              "type": "number",
-                              "value": "{{identity}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "evento_produtos_id",
-                              "type": "number",
-                              "value": "{{produto.id}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "status_pagamento",
-                              "type": "number",
-                              "value": "1"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "forma_pagamento_id",
-                              "type": "number",
-                              "value": "2"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "valor_original",
-                              "type": "number",
-                              "value": "{{produto.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "valor_final",
-                              "type": "number",
-                              "value": "{{produto.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "cupom_codigo",
-                              "type": "text",
-                              "value": "{{evento.codigo_cupom}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "desconto_aplicado",
-                              "type": "number",
-                              "value": "{{produto.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "nome_participante",
-                              "type": "text",
-                              "value": "{{itens_vendidos.nome}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "cpf_participante",
-                              "type": "text",
-                              "value": "{{itens_vendidos.cpf}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "email_participante",
-                              "type": "text",
-                              "value": "{{itens_vendidos.email}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "telefone_participante",
-                              "type": "text",
-                              "value": "{{itens_vendidos.telefone}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "qtide_parcelas",
-                              "type": "number",
-                              "value": "{{$_POST.qtide_parcelas}}"
-                            },
-                            {
-                              "table": "vendas",
-                              "column": "qrcode",
-                              "type": "text",
-                              "value": "{{qrcode}}"
-                            }
-                          ],
-                          "table": "vendas",
-                          "returning": "id",
-                          "query": "insert into \"vendas\" (\"cpf_participante\", \"cupom_codigo\", \"desconto_aplicado\", \"email_participante\", \"evento_id\", \"evento_produtos_id\", \"forma_pagamento_id\", \"nome_participante\", \"qrcode\", \"qtide_parcelas\", \"status_pagamento\", \"telefone_participante\", \"usuarios_id\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
-                          "params": [
-                            {
-                              "name": ":P1",
-                              "type": "expression",
-                              "value": "{{$_POST.evento_id}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P2",
-                              "type": "expression",
-                              "value": "{{identity}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P3",
-                              "type": "expression",
-                              "value": "{{produto.id}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P4",
-                              "type": "expression",
-                              "value": "{{produto.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P5",
-                              "type": "expression",
-                              "value": "{{produto.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P6",
-                              "type": "expression",
-                              "value": "{{evento.codigo_cupom}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P7",
-                              "type": "expression",
-                              "value": "{{produto.valor.replace(',', '').replace('.', '').replace('R$', '').toNumber()}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P8",
-                              "type": "expression",
-                              "value": "{{itens_vendidos.nome}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P9",
-                              "type": "expression",
-                              "value": "{{itens_vendidos.cpf}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P10",
-                              "type": "expression",
-                              "value": "{{itens_vendidos.email}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P11",
-                              "type": "expression",
-                              "value": "{{itens_vendidos.telefone}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P12",
-                              "type": "expression",
-                              "value": "{{$_POST.qtide_parcelas}}",
-                              "test": ""
-                            },
-                            {
-                              "name": ":P13",
-                              "type": "expression",
-                              "value": "{{qrcode}}",
-                              "test": ""
-                            }
-                          ]
-                        }
-                      },
-                      "meta": [
-                        {
-                          "name": "identity",
-                          "type": "text"
-                        },
-                        {
-                          "name": "affected",
-                          "type": "number"
-                        }
-                      ],
-                      "disabled": true
-                    }
-                  },
-                  "else": {
                     "steps": [
                       {
-                        "name": "vendas_sem_cupom",
+                        "name": "vendas_com_cupom",
                         "module": "dbupdater",
                         "action": "insert",
                         "options": {
@@ -962,69 +897,78 @@
                                 "table": "vendas",
                                 "column": "participante_nome",
                                 "type": "text",
-                                "value": "{{nome}}",
-                                "recid": 1
+                                "value": "{{nome}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "participante_telefone",
                                 "type": "text",
-                                "value": "{{telefone}}",
-                                "recid": 2
+                                "value": "{{telefone}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "participante_cpf",
                                 "type": "text",
-                                "value": "{{cpf}}",
-                                "recid": 3
+                                "value": "{{cpf}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "participante_email",
                                 "type": "text",
-                                "value": "{{email}}",
-                                "recid": 4
+                                "value": "{{email}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "item_id",
                                 "type": "number",
-                                "value": "{{produto.id}}",
-                                "recid": 5
+                                "value": "{{produto.id}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "categoria_id",
                                 "type": "number",
-                                "value": "{{produto.tipo_item}}",
-                                "recid": 6
+                                "value": "{{produto.tipo_item}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "check_in",
                                 "type": "boolean",
-                                "value": "false",
-                                "recid": 7
+                                "value": "false"
                               },
                               {
                                 "table": "vendas",
                                 "column": "carrinho",
                                 "type": "number",
-                                "value": "{{carrinho.identity}}",
-                                "recid": 8
+                                "value": "{{carrinho.identity}}"
                               },
                               {
                                 "table": "vendas",
                                 "column": "qrcode",
                                 "type": "text",
-                                "value": "{{qrcode}}",
-                                "recid": 9
+                                "value": "{{qrcode}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_original",
+                                "type": "number",
+                                "value": "{{produto.valor}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_final",
+                                "type": "number",
+                                "value": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "desconto",
+                                "type": "number",
+                                "value": "{{(produto.valor*evento.valor_cupom)/100}}"
                               }
                             ],
                             "table": "vendas",
                             "returning": "id",
-                            "query": "insert into \"vendas\" (\"carrinho\", \"categoria_id\", \"check_in\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\") values (?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                            "query": "insert into \"vendas\" (\"carrinho\", \"categoria_id\", \"check_in\", \"desconto\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
                             "params": [
                               {
                                 "name": ":P1",
@@ -1073,6 +1017,205 @@
                                 "type": "expression",
                                 "value": "{{qrcode}}",
                                 "test": ""
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P11",
+                                "type": "expression",
+                                "value": "{{(produto.valor*evento.valor_cupom)/100}}",
+                                "test": ""
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ],
+                        "collapsed": true
+                      },
+                      {
+                        "name": "",
+                        "module": "arraylist",
+                        "action": "add",
+                        "options": {
+                          "ref": "lista_produtos",
+                          "value": {
+                            "Code": "{{produto.id}}",
+                            "Description": "{{produto.nome}}",
+                            "UnitPrice": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}",
+                            "Quantity": 1
+                          }
+                        },
+                        "collapsed": true,
+                        "output": false
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": [
+                      {
+                        "name": "vendas_sem_cupom",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "vendas",
+                                "column": "participante_nome",
+                                "type": "text",
+                                "value": "{{nome}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_telefone",
+                                "type": "text",
+                                "value": "{{telefone}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_cpf",
+                                "type": "text",
+                                "value": "{{cpf}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_email",
+                                "type": "text",
+                                "value": "{{email}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "item_id",
+                                "type": "number",
+                                "value": "{{produto.id}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "categoria_id",
+                                "type": "number",
+                                "value": "{{produto.tipo_item}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "check_in",
+                                "type": "boolean",
+                                "value": "false"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "carrinho",
+                                "type": "number",
+                                "value": "{{carrinho.identity}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "qrcode",
+                                "type": "text",
+                                "value": "{{qrcode}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_original",
+                                "type": "number",
+                                "value": "{{produto.valor}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_final",
+                                "type": "number",
+                                "value": "{{produto.valor}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "desconto",
+                                "type": "number",
+                                "value": "0"
+                              }
+                            ],
+                            "table": "vendas",
+                            "returning": "id",
+                            "query": "insert into \"vendas\" (\"carrinho\", \"categoria_id\", \"check_in\", \"desconto\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{nome}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{telefone}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{cpf}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{email}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{produto.id}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{produto.tipo_item}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{carrinho.identity}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{qrcode}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
+                                "test": ""
                               }
                             ]
                           }
@@ -1101,12 +1244,14 @@
                             "UnitPrice": "{{produto.valor}}",
                             "Quantity": 1
                           }
-                        }
+                        },
+                        "output": false
                       }
                     ]
                   }
                 },
-                "outputType": "boolean"
+                "outputType": "boolean",
+                "output": false
               }
             ]
           }
@@ -1142,194 +1287,354 @@
         "outputType": "array"
       },
       {
-        "name": "safe2pay",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "method": "POST",
-          "dataType": "json",
-          "data": {
-            "IsSandbox": false,
-            "Application": "{{evento.titulo}}",
-            "Vendor": "{{organizador.nome}}",
-            "CallbackUrl": "https://4e30-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
-            "PaymentMethod": "6",
-            "Reference": "{{evento.titulo}}",
-            "Customer": {
-              "Name": "{{usuario.usuario_nome}}",
-              "Identity": "{{usuario.usuario_cpf}}",
-              "Phone": "{{usuario.usuario_telefone}}",
-              "Email": "{{usuario.usuario_email}}",
-              "Address": {
-                "ZipCode": "{{usuario.end_cep}}",
-                "Street": "{{usuario.end_rua}}",
-                "Number": "{{usuario.end_numero}}",
-                "District": "{{usuario.end_bairro}}",
-                "CityName": "{{usuario.end_cidade}}",
-                "StateInitials": "{{usuario.end_estado}}",
-                "CountryName": "Brasil"
-              }
-            },
-            "Products": "{{Products}}",
-            "Splits": [
-              {
-                "CodeTaxType": 1,
-                "IdReceiver": "404810",
-                "Name": "EWERTON LUIZ OLIVEIRA",
-                "IsPayTax": false,
-                "Amount": 3
-              }
-            ]
-          },
-          "url": "https://payment.safe2pay.com.br/v2/Payment",
-          "headers": {
-            "ContentType": "application/json",
-            "x-api-key": "{{organizador.dados[0].token}}"
-          },
-          "schema": [
-            {
-              "type": "object",
-              "name": "data",
-              "sub": [
-                {
-                  "type": "boolean",
-                  "name": "HasError"
-                },
-                {
-                  "type": "text",
-                  "name": "ErrorCode"
-                },
-                {
-                  "type": "text",
-                  "name": "Error"
-                }
-              ]
-            },
-            {
-              "type": "object",
-              "name": "headers",
-              "sub": [
-                {
-                  "type": "text",
-                  "name": "content-encoding"
-                },
-                {
-                  "type": "text",
-                  "name": "content-type"
-                },
-                {
-                  "type": "text",
-                  "name": "date"
-                },
-                {
-                  "type": "text",
-                  "name": "strict-transport-security"
-                },
-                {
-                  "type": "text",
-                  "name": "transfer-encoding"
-                },
-                {
-                  "type": "text",
-                  "name": "vary"
-                },
-                {
-                  "type": "text",
-                  "name": "x-correlation-id"
-                },
-                {
-                  "type": "text",
-                  "name": "x-powered-by"
-                }
-              ]
-            }
-          ],
-          "timeout": 10000
-        },
-        "meta": [
-          {
-            "type": "object",
-            "name": "data",
-            "sub": [
-              {
-                "type": "boolean",
-                "name": "HasError"
-              },
-              {
-                "type": "text",
-                "name": "ErrorCode"
-              },
-              {
-                "type": "text",
-                "name": "Error"
-              }
-            ]
-          },
-          {
-            "type": "object",
-            "name": "headers",
-            "sub": [
-              {
-                "type": "text",
-                "name": "content-encoding"
-              },
-              {
-                "type": "text",
-                "name": "content-type"
-              },
-              {
-                "type": "text",
-                "name": "date"
-              },
-              {
-                "type": "text",
-                "name": "strict-transport-security"
-              },
-              {
-                "type": "text",
-                "name": "transfer-encoding"
-              },
-              {
-                "type": "text",
-                "name": "vary"
-              },
-              {
-                "type": "text",
-                "name": "x-correlation-id"
-              },
-              {
-                "type": "text",
-                "name": "x-powered-by"
-              }
-            ]
-          }
-        ],
-        "outputType": "object",
-        "collapsed": true
-      },
-      {
-        "name": "tudo",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{safe2pay.data}}"
-        },
-        "meta": [
-          {
-            "name": "HasError",
-            "type": "boolean"
+          "if": "{{organizador.dados[0].tem_cashback}}",
+          "then": {
+            "steps": {
+              "name": "safe2pay",
+              "module": "api",
+              "action": "send",
+              "options": {
+                "method": "POST",
+                "dataType": "json",
+                "data": {
+                  "IsSandbox": false,
+                  "Application": "{{evento.titulo}}",
+                  "Vendor": "{{organizador.nome}}",
+                  "CallbackUrl": "https://62f9-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
+                  "PaymentMethod": "6",
+                  "Reference": "{{evento.titulo}}",
+                  "Customer": {
+                    "Name": "{{usuario.usuario_nome}}",
+                    "Identity": "{{usuario.usuario_cpf}}",
+                    "Phone": "{{usuario.usuario_telefone}}",
+                    "Email": "{{usuario.usuario_email}}",
+                    "Address": {
+                      "ZipCode": "{{usuario.end_cep}}",
+                      "Street": "{{usuario.end_rua}}",
+                      "Number": "{{usuario.end_numero}}",
+                      "District": "{{usuario.end_bairro}}",
+                      "CityName": "{{usuario.end_cidade}}",
+                      "StateInitials": "{{usuario.end_estado}}",
+                      "CountryName": "Brasil"
+                    }
+                  },
+                  "Products": "{{Products}}",
+                  "Splits": [
+                    {
+                      "CodeTaxType": 1,
+                      "IdReceiver": "404810",
+                      "Name": "EWERTON LUIZ OLIVEIRA",
+                      "IsPayTax": false,
+                      "Amount": 3
+                    }
+                  ]
+                },
+                "url": "https://payment.safe2pay.com.br/v2/Payment",
+                "headers": {
+                  "ContentType": "application/json",
+                  "x-api-key": "4C8ADD5A097B4F50BE93F7EF72AB873C"
+                },
+                "schema": [
+                  {
+                    "type": "object",
+                    "name": "data",
+                    "sub": [
+                      {
+                        "type": "boolean",
+                        "name": "HasError"
+                      },
+                      {
+                        "type": "text",
+                        "name": "ErrorCode"
+                      },
+                      {
+                        "type": "text",
+                        "name": "Error"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "name": "headers",
+                    "sub": [
+                      {
+                        "type": "text",
+                        "name": "content-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "content-type"
+                      },
+                      {
+                        "type": "text",
+                        "name": "date"
+                      },
+                      {
+                        "type": "text",
+                        "name": "strict-transport-security"
+                      },
+                      {
+                        "type": "text",
+                        "name": "transfer-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "vary"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-correlation-id"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-powered-by"
+                      }
+                    ]
+                  }
+                ],
+                "timeout": 20000,
+                "passErrors": false
+              },
+              "meta": [
+                {
+                  "type": "object",
+                  "name": "data",
+                  "sub": [
+                    {
+                      "type": "boolean",
+                      "name": "HasError"
+                    },
+                    {
+                      "type": "text",
+                      "name": "ErrorCode"
+                    },
+                    {
+                      "type": "text",
+                      "name": "Error"
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "name": "headers",
+                  "sub": [
+                    {
+                      "type": "text",
+                      "name": "content-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "content-type"
+                    },
+                    {
+                      "type": "text",
+                      "name": "date"
+                    },
+                    {
+                      "type": "text",
+                      "name": "strict-transport-security"
+                    },
+                    {
+                      "type": "text",
+                      "name": "transfer-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "vary"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-correlation-id"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-powered-by"
+                    }
+                  ]
+                }
+              ],
+              "outputType": "object",
+              "collapsed": true,
+              "output": true
+            }
           },
-          {
-            "name": "ErrorCode",
-            "type": "text"
-          },
-          {
-            "name": "Error",
-            "type": "text"
+          "else": {
+            "steps": {
+              "name": "safe2pay",
+              "module": "api",
+              "action": "send",
+              "options": {
+                "method": "POST",
+                "dataType": "json",
+                "data": {
+                  "IsSandbox": false,
+                  "Application": "{{evento.titulo}}",
+                  "Vendor": "{{organizador.nome}}",
+                  "CallbackUrl": "https://62f9-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
+                  "PaymentMethod": "6",
+                  "Reference": "{{evento.titulo}}",
+                  "Customer": {
+                    "Name": "{{usuario.usuario_nome}}",
+                    "Identity": "{{usuario.usuario_cpf}}",
+                    "Phone": "{{usuario.usuario_telefone}}",
+                    "Email": "{{usuario.usuario_email}}",
+                    "Address": {
+                      "ZipCode": "{{usuario.end_cep}}",
+                      "Street": "{{usuario.end_rua}}",
+                      "Number": "{{usuario.end_numero}}",
+                      "District": "{{usuario.end_bairro}}",
+                      "CityName": "{{usuario.end_cidade}}",
+                      "StateInitials": "{{usuario.end_estado}}",
+                      "CountryName": "Brasil"
+                    }
+                  },
+                  "Products": "{{Products}}",
+                  "Splits": [
+                    {
+                      "CodeTaxType": 1,
+                      "IdReceiver": "404810",
+                      "Name": "EWERTON LUIZ OLIVEIRA",
+                      "IsPayTax": false,
+                      "Amount": 3
+                    }
+                  ]
+                },
+                "url": "https://payment.safe2pay.com.br/v2/Payment",
+                "headers": {
+                  "ContentType": "application/json",
+                  "x-api-key": "4C8ADD5A097B4F50BE93F7EF72AB873C"
+                },
+                "schema": [
+                  {
+                    "type": "object",
+                    "name": "data",
+                    "sub": [
+                      {
+                        "type": "boolean",
+                        "name": "HasError"
+                      },
+                      {
+                        "type": "text",
+                        "name": "ErrorCode"
+                      },
+                      {
+                        "type": "text",
+                        "name": "Error"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "name": "headers",
+                    "sub": [
+                      {
+                        "type": "text",
+                        "name": "content-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "content-type"
+                      },
+                      {
+                        "type": "text",
+                        "name": "date"
+                      },
+                      {
+                        "type": "text",
+                        "name": "strict-transport-security"
+                      },
+                      {
+                        "type": "text",
+                        "name": "transfer-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "vary"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-correlation-id"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-powered-by"
+                      }
+                    ]
+                  }
+                ],
+                "timeout": 20000,
+                "passErrors": false
+              },
+              "meta": [
+                {
+                  "type": "object",
+                  "name": "data",
+                  "sub": [
+                    {
+                      "type": "boolean",
+                      "name": "HasError"
+                    },
+                    {
+                      "type": "text",
+                      "name": "ErrorCode"
+                    },
+                    {
+                      "type": "text",
+                      "name": "Error"
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "name": "headers",
+                  "sub": [
+                    {
+                      "type": "text",
+                      "name": "content-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "content-type"
+                    },
+                    {
+                      "type": "text",
+                      "name": "date"
+                    },
+                    {
+                      "type": "text",
+                      "name": "strict-transport-security"
+                    },
+                    {
+                      "type": "text",
+                      "name": "transfer-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "vary"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-correlation-id"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-powered-by"
+                    }
+                  ]
+                }
+              ],
+              "outputType": "object",
+              "collapsed": true,
+              "output": true
+            }
           }
-        ],
-        "outputType": "text",
-        "output": true
+        },
+        "outputType": "boolean",
+        "output": false
       },
       {
         "name": "transacao",
@@ -1338,64 +1643,7 @@
         "options": {
           "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
         },
-        "meta": [
-          {
-            "name": "data",
-            "type": "object",
-            "sub": [
-              {
-                "name": "HasError",
-                "type": "boolean"
-              },
-              {
-                "name": "ErrorCode",
-                "type": "text"
-              },
-              {
-                "name": "Error",
-                "type": "text"
-              }
-            ]
-          },
-          {
-            "name": "headers",
-            "type": "object",
-            "sub": [
-              {
-                "name": "content-encoding",
-                "type": "text"
-              },
-              {
-                "name": "content-type",
-                "type": "text"
-              },
-              {
-                "name": "date",
-                "type": "text"
-              },
-              {
-                "name": "strict-transport-security",
-                "type": "text"
-              },
-              {
-                "name": "transfer-encoding",
-                "type": "text"
-              },
-              {
-                "name": "vary",
-                "type": "text"
-              },
-              {
-                "name": "x-correlation-id",
-                "type": "text"
-              },
-              {
-                "name": "x-powered-by",
-                "type": "text"
-              }
-            ]
-          }
-        ],
+        "meta": [],
         "output": true,
         "outputType": "number"
       },
@@ -1406,64 +1654,7 @@
         "options": {
           "value": "{{safe2pay.data.ResponseDetail.QrCode}}"
         },
-        "meta": [
-          {
-            "name": "data",
-            "type": "object",
-            "sub": [
-              {
-                "name": "HasError",
-                "type": "boolean"
-              },
-              {
-                "name": "ErrorCode",
-                "type": "text"
-              },
-              {
-                "name": "Error",
-                "type": "text"
-              }
-            ]
-          },
-          {
-            "name": "headers",
-            "type": "object",
-            "sub": [
-              {
-                "name": "content-encoding",
-                "type": "text"
-              },
-              {
-                "name": "content-type",
-                "type": "text"
-              },
-              {
-                "name": "date",
-                "type": "text"
-              },
-              {
-                "name": "strict-transport-security",
-                "type": "text"
-              },
-              {
-                "name": "transfer-encoding",
-                "type": "text"
-              },
-              {
-                "name": "vary",
-                "type": "text"
-              },
-              {
-                "name": "x-correlation-id",
-                "type": "text"
-              },
-              {
-                "name": "x-powered-by",
-                "type": "text"
-              }
-            ]
-          }
-        ],
+        "meta": [],
         "outputType": "text",
         "output": true
       },
@@ -1474,66 +1665,20 @@
         "options": {
           "value": "{{safe2pay.data.ResponseDetail.Key}}"
         },
-        "meta": [
-          {
-            "name": "data",
-            "type": "object",
-            "sub": [
-              {
-                "name": "HasError",
-                "type": "boolean"
-              },
-              {
-                "name": "ErrorCode",
-                "type": "text"
-              },
-              {
-                "name": "Error",
-                "type": "text"
-              }
-            ]
-          },
-          {
-            "name": "headers",
-            "type": "object",
-            "sub": [
-              {
-                "name": "content-encoding",
-                "type": "text"
-              },
-              {
-                "name": "content-type",
-                "type": "text"
-              },
-              {
-                "name": "date",
-                "type": "text"
-              },
-              {
-                "name": "strict-transport-security",
-                "type": "text"
-              },
-              {
-                "name": "transfer-encoding",
-                "type": "text"
-              },
-              {
-                "name": "vary",
-                "type": "text"
-              },
-              {
-                "name": "x-correlation-id",
-                "type": "text"
-              },
-              {
-                "name": "x-powered-by",
-                "type": "text"
-              }
-            ]
-          }
-        ],
+        "meta": [],
         "outputType": "text",
         "output": true
+      },
+      {
+        "name": "transacao",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "number"
       },
       {
         "name": "",
@@ -1667,29 +1812,19 @@
                       "table": "carrinho",
                       "column": "transacao_id",
                       "type": "number",
-                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}",
-                      "recid": 1
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
                     },
                     {
                       "table": "carrinho",
                       "column": "erro",
                       "type": "boolean",
-                      "value": "{{safe2pay.data.HasError}}",
-                      "recid": 2
+                      "value": "false"
                     },
                     {
                       "table": "carrinho",
-                      "column": "pix_key",
-                      "type": "text",
-                      "value": "{{safe2pay.data.ResponseDetail.Key}}",
-                      "recid": 3
-                    },
-                    {
-                      "table": "carrinho",
-                      "column": "pix_qrcode",
-                      "type": "text",
-                      "value": "{{safe2pay.data.ResponseDetail.QrCode}}",
-                      "recid": 4
+                      "column": "cupom",
+                      "type": "boolean",
+                      "value": "{{cupom_aplicado}}"
                     }
                   ],
                   "table": "carrinho",
@@ -1712,7 +1847,7 @@
                     "valid": true
                   },
                   "returning": "id",
-                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ?, \"pix_key\" = ?, \"pix_qrcode\" = ? where \"id\" = ? returning \"id\"",
+                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ?, \"cupom\" = ? where \"id\" = ? returning \"id\"",
                   "params": [
                     {
                       "name": ":P1",
@@ -1723,25 +1858,13 @@
                     {
                       "name": ":P2",
                       "type": "expression",
-                      "value": "{{safe2pay.data.HasError}}",
-                      "test": ""
-                    },
-                    {
-                      "name": ":P3",
-                      "type": "expression",
-                      "value": "{{safe2pay.data.ResponseDetail.Key}}",
-                      "test": ""
-                    },
-                    {
-                      "name": ":P4",
-                      "type": "expression",
-                      "value": "{{safe2pay.data.ResponseDetail.QrCode}}",
+                      "value": "{{cupom_aplicado}}",
                       "test": ""
                     },
                     {
                       "operator": "equal",
                       "type": "expression",
-                      "name": ":P5",
+                      "name": ":P3",
                       "value": "{{carrinho.identity}}",
                       "test": ""
                     }

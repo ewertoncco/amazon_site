@@ -12,129 +12,151 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "evento",
-      "module": "dbconnector",
-      "action": "single",
-      "options": {
-        "connection": "db",
-        "sql": {
-          "type": "select",
-          "columns": [
-            {
-              "table": "eventos",
-              "column": "valor_cupom"
-            },
-            {
-              "table": "eventos",
-              "column": "codigo_cupom"
-            }
-          ],
-          "params": [
-            {
-              "operator": "equal",
-              "type": "expression",
-              "name": ":P1",
-              "value": "{{$_POST.evento}}",
-              "test": ""
-            },
-            {
-              "operator": "equal",
-              "type": "expression",
-              "name": ":P2",
-              "value": "{{$_POST.cupom}}",
-              "test": ""
-            }
-          ],
-          "table": {
-            "name": "eventos"
-          },
-          "primary": "id",
-          "joins": [],
-          "query": "select \"valor_cupom\", \"codigo_cupom\" from \"eventos\" where \"eventos\".\"uuid\" = ? and \"eventos\".\"codigo_cupom\" = ? and \"eventos\".\"tem_cupom\" = ?",
-          "wheres": {
-            "condition": "AND",
-            "rules": [
+    "steps": [
+      {
+        "name": "evento",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
               {
-                "id": "eventos.uuid",
-                "field": "eventos.uuid",
-                "type": "string",
-                "operator": "equal",
-                "value": "{{$_POST.evento}}",
-                "data": {
-                  "table": "eventos",
-                  "column": "uuid",
-                  "type": "text",
-                  "columnObj": {
-                    "type": "text",
-                    "primary": false,
-                    "unique": false,
-                    "nullable": true,
-                    "default": "gen_random_uuid()",
-                    "name": "uuid"
-                  }
-                },
-                "operation": "="
+                "table": "eventos",
+                "column": "valor_cupom"
               },
               {
-                "id": "eventos.codigo_cupom",
-                "field": "eventos.codigo_cupom",
-                "type": "string",
-                "operator": "equal",
-                "value": "{{$_POST.cupom}}",
-                "data": {
-                  "table": "eventos",
-                  "column": "codigo_cupom",
-                  "type": "text",
-                  "columnObj": {
-                    "type": "text",
-                    "primary": false,
-                    "unique": false,
-                    "nullable": true,
-                    "name": "codigo_cupom"
-                  }
-                },
-                "operation": "="
-              },
-              {
-                "id": "eventos.tem_cupom",
-                "field": "eventos.tem_cupom",
-                "type": "boolean",
-                "operator": "equal",
-                "value": true,
-                "data": {
-                  "table": "eventos",
-                  "column": "tem_cupom",
-                  "type": "boolean",
-                  "columnObj": {
-                    "type": "boolean",
-                    "default": "false",
-                    "primary": false,
-                    "unique": false,
-                    "nullable": true,
-                    "name": "tem_cupom"
-                  }
-                },
-                "operation": "="
+                "table": "eventos",
+                "column": "codigo_cupom"
               }
             ],
-            "conditional": null,
-            "valid": true
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.evento}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_POST.cupom}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "eventos"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select \"valor_cupom\", \"codigo_cupom\" from \"eventos\" where \"eventos\".\"uuid\" = ? and \"eventos\".\"codigo_cupom\" = ? and \"eventos\".\"tem_cupom\" = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "eventos.uuid",
+                  "field": "eventos.uuid",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.evento}}",
+                  "data": {
+                    "table": "eventos",
+                    "column": "uuid",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "text",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "default": "gen_random_uuid()",
+                      "name": "uuid"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "eventos.codigo_cupom",
+                  "field": "eventos.codigo_cupom",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.cupom}}",
+                  "data": {
+                    "table": "eventos",
+                    "column": "codigo_cupom",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "text",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "codigo_cupom"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "eventos.tem_cupom",
+                  "field": "eventos.tem_cupom",
+                  "type": "boolean",
+                  "operator": "equal",
+                  "value": true,
+                  "data": {
+                    "table": "eventos",
+                    "column": "tem_cupom",
+                    "type": "boolean",
+                    "columnObj": {
+                      "type": "boolean",
+                      "default": "false",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "tem_cupom"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
           }
-        }
-      },
-      "meta": [
-        {
-          "type": "number",
-          "name": "valor_cupom"
         },
-        {
-          "type": "text",
-          "name": "codigo_cupom"
-        }
-      ],
-      "outputType": "object",
-      "output": true
-    }
+        "meta": [
+          {
+            "type": "number",
+            "name": "valor_cupom"
+          },
+          {
+            "type": "text",
+            "name": "codigo_cupom"
+          }
+        ],
+        "outputType": "object",
+        "output": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{!evento.valor_cupom}}",
+          "then": {
+            "steps": {
+              "name": "sem_cupom",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 404,
+                "data": "Código inválido"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
   }
 }

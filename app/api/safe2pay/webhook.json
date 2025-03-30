@@ -69,10 +69,24 @@
               },
               {
                 "table": "carrinho",
+                "column": "total_taxas_transacao",
+                "type": "number",
+                "value": "{{$_POST.TaxValue}}",
+                "condition": "{{$_POST.TaxValue}}"
+              },
+              {
+                "table": "carrinho",
                 "column": "total_plataforma",
                 "type": "number",
                 "value": "{{$_POST.NetValue}}",
                 "condition": "{{$_POST.NetValue}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "json",
+                "type": "text",
+                "value": "{{$_POST}}",
+                "condition": "{{$_POST}}"
               }
             ],
             "table": "carrinho",
@@ -95,7 +109,7 @@
               "valid": true
             },
             "returning": "id",
-            "query": "update \"carrinho\" set \"atualizado_em\" = ?, \"resposta_pagamento\" = ?, \"status_pagamento_id\" = ?, \"total_bruto\" = ?, \"total_plataforma\" = ? where \"transacao_id\" = ? returning \"id\"",
+            "query": "update \"carrinho\" set \"atualizado_em\" = ?, \"resposta_pagamento\" = ?, \"status_pagamento_id\" = ?, \"total_bruto\" = ?, \"total_taxas_transacao\" = ?, \"total_plataforma\" = ?, \"json\" = ? where \"transacao_id\" = ? returning \"id\"",
             "params": [
               {
                 "name": ":P1",
@@ -124,13 +138,25 @@
               {
                 "name": ":P5",
                 "type": "expression",
+                "value": "{{$_POST.TaxValue}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
                 "value": "{{$_POST.NetValue}}",
+                "test": ""
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST}}",
                 "test": ""
               },
               {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P6",
+                "name": ":P8",
                 "value": "{{$_POST.IdTransaction}}",
                 "test": ""
               }

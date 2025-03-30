@@ -58,7 +58,7 @@
                                             </div>
 
                                             <div class="text-center text-lg-start">
-                                                <a dmx-bind:href="'/evento/'+uuid" class="btn btn-primary btn-lg shadow rounded-4 animate__animated animate__fadeInUp animate__delay-5s px-4" internal="true" dmx-on:click="browser1.goto('/evento/'+uuid); return false;">
+                                                <a class="btn btn-primary btn-lg shadow rounded-4 animate__animated animate__fadeInUp animate__delay-5s px-4" dmx-bind:href="/evento/{{uuid}}" internal="true">
                                                     <i class="fas fa-ticket-alt me-2"></i>Comprar agora
                                                 </a>
                                             </div>
@@ -103,7 +103,7 @@
                                         <h3 class="card-title text-primary mb-2 fw-bold">{{titulo}}</h3>
                                         <p class="card-text text-muted mb-2"><i class="far fa-calendar-alt me-2"></i>22-24 de Março, 2024</p>
                                         <p class="card-text mb-3"><i class="fas fa-map-marker-alt me-2"></i>{{local}}</p>
-                                        <a dmx-bind:href="'/evento/'+uuid" class="btn btn-outline-primary rounded-4" internal="true" dmx-on:click="browser1.goto('/evento/'+uuid); return false;">
+                                        <a class="btn btn-outline-primary rounded-4" dmx-bind:href="/evento/{{uuid}}" internal="true">
                                             <i class="fas fa-info-circle me-2"></i>Saiba mais
                                         </a>
                                     </div>

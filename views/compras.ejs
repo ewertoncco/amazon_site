@@ -2,9 +2,9 @@
 <dmx-serverconnect id="compras" url="/api/compras/compras" dmx-param:offset="compras.data.minhas_compras.offset" dmx-param:limit="compras.data.minhas_compras.limit"></dmx-serverconnect>
 <meta name="ac:route" content="/compras">
 
-<div class="container py-4">
+<div class="container py-2">
     <!-- Header -->
-    <div class="text-center mb-4">
+    <div class="text-center mb-2">
         <h1 class="h3 mb-3">Minhas compras</h1>
     </div>
 
@@ -12,26 +12,26 @@
     <div is="dmx-repeat" id="lista_compras" dmx-bind:repeat="compras.data.minhas_compras.data">
         <div class="card mb-4 shadow-sm">
             <!-- Cabeçalho do Carrinho -->
-            <div class="card-header bg-light">
+            <div class="card-header text-bg-primary">
                 <div class="row align-items-center">
                     <div class="col-md-3">
-                        <small class="text-muted">Data da Compra:</small>
+                        <small class="text-white">Data da Compra:</small>
                         <div class="fw-bold">{{criado_em.formatDate("dd/MM/yyyy HH:mm")}}</div>
                     </div>
-                    <div class="col-md-3">
-                        <small class="text-muted">Valor Total:</small>
-                        <div class="fw-bold">R$ {{valor_final}}</div>
+                    <div class="col-md-3 col-4">
+                        <small class="text-text-white">Valor Total:</small>
+                        <div class="fw-bold">R$ {{total_carrinho}}</div>
                     </div>
-                    <div class="col-md-3">
-                        <small class="text-muted">Nº Transação:</small>
+                    <div class="col-md-3 col-4">
+                        <small class="text-text-white">Nº Transação:</small>
                         <div class="fw-bold">{{transacao_id}}</div>
                     </div>
-                    <div class="col-md-3 text-end">
+                    <div class="col-md-3 text-sm-end col-4 text-end">
                         <span class="payment-icon" dmx-show="forma_pagamento==1">
                             <i class="fas fa-qrcode fa-lg text-success" title="Pago com PIX"></i>
                         </span>
                         <span class="payment-icon" dmx-show="forma_pagamento==2">
-                            <i class="fas fa-credit-card fa-lg text-primary" title="Pago com Cartão de Crédito"></i>
+                            <i class="fas fa-credit-card fa-lg text-white" title="Pago com Cartão de Crédito"></i>
                         </span>
                     </div>
                 </div>
@@ -41,19 +41,20 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead class="table-light">
+                        <thead class="table-light align-middle">
                             <tr>
                                 <th>Participante</th>
-                                <th>CPF</th>
+                                <th class="d-none d-sm-table-cell">CPF</th>
                                 <th class="text-center">Check-in</th>
-                                <th class="text-center">Horário Check-in</th>
+                                <th class="text-center d-none d-sm-table-cell">Horário Check-in</th>
+                                <th class="text-center d-none d-sm-table-cell">Valor</th>
                                 <th class="text-center">Ações</th>
                             </tr>
                         </thead>
-                        <tbody is="dmx-repeat" id="itens_carrinho" dmx-bind:repeat="vendas" key="vendas_id">
+                        <tbody is="dmx-repeat" id="itens_carrinho" dmx-bind:repeat="vendas" key="id">
                             <tr>
                                 <td>{{participante_nome}}</td>
-                                <td>{{participante_cpf}}</td>
+                                <td class="d-none d-sm-table-cell">{{participante_cpf}}</td>
                                 <td class="text-center">
                                     <span dmx-show="check_in" class="text-success">
                                         <i class="fas fa-check-circle fa-lg" title="Check-in realizado"></i>
@@ -62,11 +63,12 @@
                                         <i class="fas fa-times-circle fa-lg" title="Check-in pendente"></i>
                                     </span>
                                 </td>
-                                <td class="text-center">{{hora_check_in.formatDate("dd/MM/yyyy HH:mm")}}</td>
+                                <td class="text-center d-none d-sm-table-cell">{{hora_check_in.formatDate("dd/MM/yyyy HH:mm")||'--'}}</td>
+                                <td class="text-center d-none d-sm-table-cell">{{valor_final}}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-primary" dmx-on:click="browser1.goto('/ingresso/'+qrcode); return false;">
+                                    <button class="btn btn-sm btn-outline-primary" dmx-on:click="browser1.goto('/ingresso/'+qrcode);">
                                         <i class="fas fa-ticket-alt me-1"></i>
-                                        Ver Ingresso
+                                        Ingresso
                                     </button>
                                 </td>
                             </tr>
