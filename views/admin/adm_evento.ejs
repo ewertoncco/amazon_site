@@ -1,9 +1,10 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="adm_eventos" appConnect="local" -->
-<meta name="ac:route" content="/admin/adm_eventos">
+<dmx-serverconnect id="evento" url="/api/eventos/evento_adm" dmx-param:evento="query.evento"></dmx-serverconnect>
+<meta name="ac:route" content="/adm_evento/:evento">
 
 <div class="page-heading">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0">Loulou Players 🎵 🌴</h3>
+        <h3 class="mb-0">{{evento.data.evento.titulo}}</h3>
         <div>
             <a href="#" class="btn btn-primary me-2"><i class="fas fa-edit me-1"></i> Editar</a>
             <a href="#" class="btn btn-primary me-2"><i class="fas fa-edit me-1"></i> Editar</a>
@@ -16,7 +17,7 @@
         <!-- Card 1: Transações -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon purple me-3">
                             <i class="fas fa-shopping-bag"></i>
@@ -33,7 +34,7 @@
         <!-- Card 2: Valor -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon purple me-3">
                             <i class="fas fa-dollar-sign"></i>
@@ -50,7 +51,7 @@
         <!-- Card 3: Qtide PIX -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon teal me-3">
                             <i class="fas fa-qrcode"></i>
@@ -67,7 +68,7 @@
         <!-- Card 4: Total Pix -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon teal me-3">
                             <i class="fas fa-dollar-sign"></i>
@@ -84,7 +85,7 @@
         <!-- Card 5: Qtide Crédito -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon purple me-3">
                             <i class="fas fa-credit-card"></i>
@@ -101,7 +102,7 @@
         <!-- Card 6: Valor Crédito -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon purple me-3">
                             <i class="fas fa-credit-card"></i>
@@ -118,7 +119,7 @@
         <!-- Card 7: Cortesias -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon red me-3">
                             <i class="fas fa-gift"></i>
@@ -135,7 +136,7 @@
         <!-- Card 8: Devoluções -->
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card card-statistic">
-                <div class="card-body p-4">
+                <div class="card-body p-2">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon red me-3">
                             <i class="fas fa-undo"></i>
@@ -151,21 +152,21 @@
     </div>
 
     <!-- Seção de Ingressos Cadastrados -->
-    <div class="row mt-4">
+    <div class="row mt-2">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h4>Ingressos cadastrados</h4>
+                <div class="card-header pt-2 pb-0">
+                    <h3>Ingressos cadastrados</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body pt-0">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover table-sm">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
                                     <th>Valor</th>
-                                    <th>Início vendas</th>
-                                    <th>Final vendas</th>
+                                    <th>Início</th>
+                                    <th>Final</th>
                                     <th>Progresso</th>
                                     <th>Vendas</th>
                                     <th>Cortesias</th>
@@ -180,7 +181,7 @@
                                     <td>31/10 20:04</td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <span class="me-2">4 de 100</span>
+                                            <span class="me-2">4 / 100</span>
                                             <div class="progress w-100" style="height: 6px;">
                                                 <div class="progress-bar bg-success" role="progressbar" style="width: 4%"></div>
                                             </div>
@@ -265,8 +266,8 @@
         justify-content: center;
         width: 50px;
         height: 50px;
-        border-radius: 10px;
-        font-size: 20px;
+        border-radius: 15px;
+        font-size: 1.1rem;
         color: white;
     }
 
@@ -284,7 +285,7 @@
 
     .card-statistic {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
+        border-radius: 15px;
         border: none;
         margin-bottom: 24px;
         transition: all 0.3s ease;
@@ -295,12 +296,52 @@
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     }
 
+    .card-statistic h6 {
+        font-size: 0.75rem;
+        color: #596780;
+    }
+
+    .card-statistic h3 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #596780;
+    }
+
+    .page-heading h3 {
+        font-size: 1.1rem;
+        color: #596780;
+        font-weight: 600;
+    }
+
+    .card-header h4 {
+        font-size: 0.95rem;
+        color: #596780;
+        font-weight: 600;
+    }
+
     .progress {
-        border-radius: 10px;
+        border-radius: 12px;
         background-color: #f0f0f0;
+    }
+
+    .table {
+        font-size: 0.92rem;
+        color: #596780;
     }
 
     .table> :not(caption)>*>* {
         padding: 0.75rem 1.25rem;
+    }
+
+    .card-body {
+        color: #596780;
+    }
+
+    .text-muted {
+        color: #999 !important;
+    }
+
+    .text-primary {
+        color: #4489e4 !important;
     }
 </style>

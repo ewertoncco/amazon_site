@@ -1,4 +1,54 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" id="adm_eventos" components="{dmxBootstrap5Navigation:{}}" is="dmx-app" appConnect="local" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" id="adm_eventos" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" is="dmx-app" appConnect="local" -->
+<!-- Estilos específicos para esta página -->
+<style>
+  :root {
+    --bs-primary: #4489e4 !important;
+    --primary-color: #4489e4 !important;
+  }
+
+  .btn-primary {
+    background-color: #4489e4 !important;
+    border-color: #4489e4 !important;
+    border-radius: 4px !important;
+    /* Botão mais quadrado */
+  }
+
+  .btn {
+    border-radius: 4px !important;
+    /* Aplicar em todos os botões */
+  }
+
+  .bg-primary {
+    background-color: #4489e4 !important;
+  }
+
+  .form-check-input:checked,
+  .form-switch .form-check-input:checked {
+    background-color: #32c861 !important;
+    border-color: #32c861 !important;
+  }
+
+  .page-item.active .page-link,
+  .pagination .active>.page-link,
+  .active>.page-link {
+    background-color: #4489e4 !important;
+    border-color: #4489e4 !important;
+  }
+
+  .progress-bar {
+    background-color: #4489e4 !important;
+  }
+
+  /* Ajuste para o modal */
+  .modal-content {
+    border-radius: 6px !important;
+  }
+
+  .modal-header {
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+  }
+</style>
 <dmx-serverconnect id="eventos" url="/api/eventos/eventos_lista" dmx-param:status="status_evento.value"></dmx-serverconnect><dmx-value id="status_evento" dmx-bind:value="2"></dmx-value>
 <script>
   // Configuração para o tema que impede erro de JSON
@@ -29,7 +79,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0">Eventos</h3>
     <div>
-      <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novoEventoModal"><i class="fas fa-plus me-1"></i> Novo Evento</a>
+      <a class="btn btn-primary" dmx-on:click="novoEventoModal.show()"><i class="fas fa-plus me-1"></i> Novo Evento</a>
     </div>
   </div>
 
@@ -117,7 +167,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                 </div>
               </td>
               <td>
-                <button id="btn_ver" class="btn btn-light">
+                <button id="btn_ver" class="btn btn-light" dmx-on:click="browser1.goto('/adm_evento/'+uuid,true)">
                   <i class="fas fa-eye"></i>
                 </button>
               </td>
@@ -162,10 +212,10 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
 </div>
 
 <!-- Modal para Adicionar Novo Evento -->
-<div class="modal fade" id="novoEventoModal" tabindex="-1" aria-labelledby="novoEventoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+<div class="modal fade" id="novoEventoModal" is="dmx-bs5-modal" tabindex="-1" aria-labelledby="novoEventoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header bg-primary text-white">
+      <div class="modal-header bg-primary text-white" style="background-color: #4489e4 !important;">
         <h5 class="modal-title text-white" id="novoEventoModalLabel"><i class="fas fa-calendar-plus me-2"></i>Adicionar Novo Evento</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
@@ -173,17 +223,11 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
         <!-- Progress Bar -->
         <div class="px-3 pt-3">
           <div class="progress mb-2" style="height: 8px;">
-            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <div class="d-flex justify-content-between mt-1 mb-3">
-            <span class="badge bg-primary p-2">1. Informações Básicas</span>
-            <span class="badge bg-secondary p-2">2. Descrição e Detalhes</span>
-            <span class="badge bg-secondary p-2">3. Configurações de Pagamento</span>
-            <span class="badge bg-secondary p-2">4. Opções Adicionais</span>
+            <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
         </div>
 
-        <form id="novoEventoForm" is="dmx-serverconnect-form" method="post" action="/api/eventos/novo_evento" dmx-on:success="notifies1.success('Fechooo')">
+        <form id="novoEventoForm" is="dmx-serverconnect-form" method="post" action="/api/eventos/novo_evento" dmx-on:success="notifies1.success('Evento criado com sucesso!');novoEventoModal.hide();eventos.load({})">
           <!-- Steps Container -->
           <div class="steps-container">
             <!-- Step 1: Informações Básicas -->
@@ -223,18 +267,55 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                       </div>
                       <div class="form-text">URL amigável do evento (sem espaços ou caracteres especiais)</div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Elementos Gráficos -->
+            <div class="step" id="step2" style="display: none;">
+              <div class="card border-0">
+                <div class="card-body">
+                  <h5 class="card-title mb-4"><i class="fas fa-images me-2"></i>Elementos Gráficos</h5>
+
+                  <div class="row mb-3">
                     <div class="col-md-6">
                       <label for="banner" class="form-label">Banner do Evento*</label>
-                      <input type="file" class="form-control" id="banner" name="banner" accept="image/*" required>
-                      <div class="form-text">Tamanho recomendado: 1200 x 600 pixels</div>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="flex-grow-1">
+                          <input type="file" class="form-control" id="banner" name="banner" accept="image/*" required onchange="previewImage(this, 'bannerPreview')">
+                        </div>
+                        <div id="bannerPreview" style="width: 60px; height: 106px; overflow: hidden; display: none;">
+                          <img src="" class="img-fluid border rounded" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                      </div>
+                      <div class="form-text">1080 x 1920 pixels (Igual Stories do Insta). Tam. Max. 1MB</div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="tem_mapa" name="tem_mapa" value="true">
+                        <label class="form-check-label" for="tem_mapa">Incluir mapa do evento</label>
+                      </div>
+                      <div id="mapaUploadContainer" style="display: none;">
+                        <label for="mapa_imagem" class="form-label">Imagem do Mapa</label>
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="flex-grow-1">
+                            <input type="file" class="form-control" id="mapa_imagem" name="mapa_imagem" accept="image/*" onchange="previewImage(this, 'mapaPreview')">
+                          </div>
+                          <div id="mapaPreview" style="width: 106px; height: 60px; overflow: hidden; display: none;">
+                            <img src="" class="img-fluid border rounded" style="width: 100%; height: 100%; object-fit: cover;">
+                          </div>
+                        </div>
+                        <div class="form-text">1920 x 1080 pixels. Tam. Max. 1MB</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Step 2: Descrição e Detalhes -->
-            <div class="step" id="step2" style="display: none;">
+            <!-- Step 3: Descrição e Detalhes -->
+            <div class="step" id="step3" style="display: none;">
               <div class="card border-0">
                 <div class="card-body">
                   <h5 class="card-title mb-4"><i class="fas fa-align-left me-2"></i>Descrição e Detalhes</h5>
@@ -249,46 +330,38 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                     <div class="col-12">
                       <label for="descricao" class="form-label">Descrição Detalhada</label>
                       <textarea class="form-control" id="descricao" name="descricao" rows="6" placeholder="Descreva seu evento com detalhes, emojis são bem-vindos!"></textarea>
+                      <div class="invalid-feedback">A descrição detalhada é obrigatória quando "Mostrar descrição" está ativado</div>
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <div class="col-md-6">
-                      <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="tem_mapa" name="tem_mapa" value="true">
-                        <label class="form-check-label" for="tem_mapa">Incluir mapa do evento</label>
-                      </div>
-                      <div id="mapaUploadContainer" style="display: none;">
-                        <label for="mapa_imagem" class="form-label">Imagem do Mapa</label>
-                        <input type="file" class="form-control" id="mapa_imagem" name="mapa_imagem" accept="image/*">
-                        <div class="form-text">Mapa do local ou planta do evento</div>
-                      </div>
-                    </div>
                     <div class="col-md-6">
                       <div class="form-check form-switch mb-2">
                         <input class="form-check-input" type="checkbox" id="destaque" name="destaque" checked="" value="true">
                         <label class="form-check-label" for="destaque">Destacar na página inicial</label>
                       </div>
                       <div id="destaqueConfigContainer">
-                        <label for="segundos_destaque" class="form-label">Tempo de exibição (milissegundos)</label>
-                        <input type="number" class="form-control" id="segundos_destaque" name="segundos_destaque" value="5000" min="1000" step="500">
+
+
                         <div class="form-text">Tempo que o evento ficará visível no carrossel de destaques</div>
                       </div>
+                    </div>
+                    <div class="col"><input type="number" class="form-control" id="segundos_destaque" name="segundos_destaque" value="5000" min="1000" step="500"><label for="segundos_destaque" class="form-label">Tempo de exibição (milissegundos)</label>
+                      <div class="invalid-feedback">O tempo de exibição é obrigatório quando "Destacar na página inicial" está ativado</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Step 3: Configurações de Pagamento -->
-            <div class="step" id="step3" style="display: none;">
+            <!-- Step 4: Configurações de Pagamento -->
+            <div class="step" id="step4" style="display: none;">
               <div class="card border-0">
                 <div class="card-body">
                   <h5 class="card-title mb-4"><i class="fas fa-credit-card me-2"></i>Configurações de Pagamento</h5>
 
                   <div class="row mb-3">
                     <div class="col-md-6">
-                      <h6>Métodos de Pagamento</h6>
                       <div class="form-check form-switch mb-2">
                         <input class="form-check-input" type="checkbox" id="aceita_pix" name="aceita_pix" checked="" value="true">
                         <label class="form-check-label" for="aceita_pix">Aceitar pagamento via PIX</label>
@@ -309,7 +382,6 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <h6>Cupom de Desconto</h6>
                       <div class="form-check form-switch mb-2">
                         <input class="form-check-input" type="checkbox" id="tem_cupom" name="tem_cupom" value="true">
                         <label class="form-check-label" for="tem_cupom">Oferecer cupom de desconto</label>
@@ -317,11 +389,13 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                       <div id="cupomConfigContainer" style="display: none;">
                         <div class="mb-2">
                           <label for="codigo_cupom" class="form-label">Código do cupom</label>
-                          <input type="text" class="form-control" id="codigo_cupom" name="codigo_cupom" placeholder="Ex: TECH2025">
+                          <input type="text" class="form-control" id="codigo_cupom" name="codigo_cupom" placeholder="Ex: TECH2025" oninput="this.value = this.value.replace(/\s+/g, '').toUpperCase()">
+                          <div class="invalid-feedback">Código do cupom é obrigatório</div>
                         </div>
                         <div>
                           <label for="valor_cupom" class="form-label">Valor do desconto (%)</label>
-                          <input type="number" class="form-control" id="valor_cupom" name="valor_cupom" min="1" max="100" placeholder="10">
+                          <input type="number" class="form-control" id="valor_cupom" name="valor_cupom" min="1" max="100" placeholder="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                          <div class="invalid-feedback">Valor do desconto é obrigatório (apenas números)</div>
                         </div>
                       </div>
                     </div>
@@ -330,8 +404,8 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
               </div>
             </div>
 
-            <!-- Step 4: Opções Adicionais -->
-            <div class="step" id="step4" style="display: none;">
+            <!-- Step 5: Opções Adicionais -->
+            <div class="step" id="step5" style="display: none;">
               <div class="card border-0">
                 <div class="card-body">
                   <h5 class="card-title mb-4"><i class="fas fa-cog me-2"></i>Opções Adicionais</h5>
@@ -343,7 +417,7 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                         <input class="form-check-input" type="checkbox" id="pode_alterar_ingresso" name="pode_alterar_ingresso" checked="" value="true">
                         <label class="form-check-label" for="pode_alterar_ingresso">Permitir alteração de ingressos</label>
                       </div>
-                      <div class="form-check form-switch mb-2">
+                      <div class="form-check form-switch mt-4 mb-2">
                         <input class="form-check-input" type="checkbox" id="pode_devolver_ingresso" name="pode_devolver_ingresso" value="true">
                         <label class="form-check-label" for="pode_devolver_ingresso">Permitir devolução de ingressos</label>
                       </div>
@@ -366,9 +440,16 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
                     <div class="col-md-6">
                       <div class="form-check form-switch mb-2">
                         <input class="form-check-input" type="checkbox" id="divulgacao" name="divulgacao" value="true">
-                        <label class="form-check-label" for="divulgacao">Incluir em campanhas de divulgação</label>
+                        <label class="form-check-label" for="divulgacao">Apenas divulgação</label>
                       </div>
-                      <div class="form-text">Seu evento poderá ser promovido em nossos canais de marketing</div>
+                      <div class="form-text">Quando não há vendas, selecionar essa opção</div>
+                    </div>
+                    <div class="col">
+                      <select id="select_status" class="form-select" name="status_id" dmx-bind:value="2">
+                        <option value="1">Rascunho</option>
+                        <option value="2">Publicar agora</option>
+                      </select>
+                      <small id="bs5-form-group-help1" class="form-text text-muted">Rascunho o evento é criado, mas não fica visível publicamente</small>
                     </div>
                   </div>
                 </div>
@@ -377,12 +458,13 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
           </div>
         </form>
       </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-secondary" id="prevStepBtn" disabled><i class="fas fa-arrow-left me-1"></i> Anterior</button>
+      <div class="modal-footer justify-content-between text-end">
         <div>
-          <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="prevStepBtn"><i class="fas fa-arrow-left me-1"></i> Anterior</button>
+        </div>
+        <div>
           <button type="button" class="btn btn-primary" id="nextStepBtn">Próximo <i class="fas fa-arrow-right ms-1"></i></button>
-          <button class="btn btn-success" id="submitBtn" style="display: none;" dmx-on:click="novoEventoForm.submit()"><i class="fas fa-check me-1"></i> Criar Evento</button>
+          <button class="btn btn-primary" id="submitBtn" style="display: none;" dmx-on:click="novoEventoForm.submit()"><i class="fas fa-check me-1"></i> Criar Evento</button>
         </div>
       </div>
     </div>
@@ -397,6 +479,26 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
     
     // Definir o primeiro tab como ativo
     document.getElementById('online-tab').classList.add('active');
+    
+    // Função para preview de imagens
+    window.previewImage = function(input, previewId) {
+      const preview = document.getElementById(previewId);
+      const previewImg = preview.querySelector('img');
+      
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          previewImg.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        previewImg.src = '';
+        preview.style.display = 'none';
+      }
+    };
     
     triggerTabList.forEach(function(triggerEl) {
       // Adicionar event listener para click que ativa o tab
@@ -415,20 +517,24 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
     const modal = document.getElementById('novoEventoModal');
     const steps = document.querySelectorAll('.step');
     const progressBar = document.querySelector('.progress-bar');
-    const stepBadges = document.querySelectorAll('.badge');
     const prevBtn = document.getElementById('prevStepBtn');
     const nextBtn = document.getElementById('nextStepBtn');
-    
+    const submitBtn = document.getElementById('submitBtn');
     
     // Campos com containers condicionais
     const temMapaCheckbox = document.getElementById('tem_mapa');
     const mapaUploadContainer = document.getElementById('mapaUploadContainer');
     const destaqueCheckbox = document.getElementById('destaque');
     const destaqueConfigContainer = document.getElementById('destaqueConfigContainer');
+    const segundosDestaqueInput = document.getElementById('segundos_destaque');
+    const mostrarDescricaoCheckbox = document.getElementById('mostrar_descricao');
+    const descricaoTextarea = document.getElementById('descricao');
     const aceitaCartaoCheckbox = document.getElementById('aceita_cartao');
     const cartoesConfigContainer = document.getElementById('cartoesConfigContainer');
     const temCupomCheckbox = document.getElementById('tem_cupom');
     const cupomConfigContainer = document.getElementById('cupomConfigContainer');
+    const codigoCupomInput = document.getElementById('codigo_cupom');
+    const valorCupomInput = document.getElementById('valor_cupom');
     const temWhatsappCheckbox = document.getElementById('tem_whatsapp');
     const whatsappConfigContainer = document.getElementById('whatsappConfigContainer');
     
@@ -450,6 +556,21 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
     
     destaqueCheckbox.addEventListener('change', function() {
       destaqueConfigContainer.style.display = this.checked ? 'block' : 'none';
+      if (this.checked) {
+        segundosDestaqueInput.setAttribute('required', '');
+      } else {
+        segundosDestaqueInput.removeAttribute('required');
+        segundosDestaqueInput.classList.remove('is-invalid');
+      }
+    });
+    
+    mostrarDescricaoCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        descricaoTextarea.setAttribute('required', '');
+      } else {
+        descricaoTextarea.removeAttribute('required');
+        descricaoTextarea.classList.remove('is-invalid');
+      }
     });
     
     aceitaCartaoCheckbox.addEventListener('change', function() {
@@ -458,11 +579,41 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
     
     temCupomCheckbox.addEventListener('change', function() {
       cupomConfigContainer.style.display = this.checked ? 'block' : 'none';
+      if (this.checked) {
+        codigoCupomInput.setAttribute('required', '');
+        valorCupomInput.setAttribute('required', '');
+      } else {
+        codigoCupomInput.removeAttribute('required');
+        valorCupomInput.removeAttribute('required');
+        codigoCupomInput.value = '';
+        valorCupomInput.value = '';
+        codigoCupomInput.classList.remove('is-invalid');
+        valorCupomInput.classList.remove('is-invalid');
+      }
+    });
+    
+    // Formatar o código do cupom (maiúsculas e sem espaços)
+    codigoCupomInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\s+/g, '').toUpperCase();
+    });
+    
+    // Garantir que o valor do desconto seja apenas numérico
+    valorCupomInput.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '');
     });
     
     temWhatsappCheckbox.addEventListener('change', function() {
       whatsappConfigContainer.style.display = this.checked ? 'block' : 'none';
     });
+    
+    // Definir os valores iniciais para os campos obrigatórios condicionais
+    if (mostrarDescricaoCheckbox.checked) {
+      descricaoTextarea.setAttribute('required', '');
+    }
+    
+    if (destaqueCheckbox.checked) {
+      segundosDestaqueInput.setAttribute('required', '');
+    }
     
     // Função para atualizar a exibição dos passos
     function updateStepDisplay() {
@@ -475,18 +626,8 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
       progressBar.style.width = `${progressPercentage}%`;
       progressBar.setAttribute('aria-valuenow', progressPercentage);
       
-      // Atualizar os badges dos passos
-      stepBadges.forEach((badge, index) => {
-        if (index <= currentStep) {
-          badge.classList.remove('bg-secondary');
-          badge.classList.add('bg-primary');
-        } else {
-          badge.classList.remove('bg-primary');
-          badge.classList.add('bg-secondary');
-        }
-      });
-      
       // Atualizar os botões de navegação
+      prevBtn.style.visibility = currentStep === 0 ? 'hidden' : 'visible';
       prevBtn.disabled = currentStep === 0;
       
       if (currentStep === totalSteps - 1) {
@@ -533,10 +674,45 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
         }
       });
       
+      // Validação específica para o cupom de desconto
+      if (currentStep === 3 && temCupomCheckbox.checked) {
+        if (!codigoCupomInput.value) {
+          codigoCupomInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          codigoCupomInput.classList.remove('is-invalid');
+        }
+        
+        if (!valorCupomInput.value) {
+          valorCupomInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          valorCupomInput.classList.remove('is-invalid');
+        }
+      }
+      
+      // Validação específica para a descrição
+      if (currentStep === 2 && mostrarDescricaoCheckbox.checked) {
+        if (!descricaoTextarea.value.trim()) {
+          descricaoTextarea.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          descricaoTextarea.classList.remove('is-invalid');
+        }
+      }
+      
+      // Validação específica para o tempo de destaque
+      if (currentStep === 2 && destaqueCheckbox.checked) {
+        if (!segundosDestaqueInput.value || segundosDestaqueInput.value < 1000) {
+          segundosDestaqueInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          segundosDestaqueInput.classList.remove('is-invalid');
+        }
+      }
+      
       return isValid;
     }
-    
-    
     
     // Resetar o formulário ao fechar o modal
     modal.addEventListener('hidden.bs.modal', function() {
@@ -550,6 +726,10 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
       cartoesConfigContainer.style.display = 'none';
       cupomConfigContainer.style.display = 'none';
       whatsappConfigContainer.style.display = 'none';
+      
+      // Resetar previews de imagens
+      document.getElementById('bannerPreview').style.display = 'none';
+      document.getElementById('mapaPreview').style.display = 'none';
     });
     
     // Gerar slug automaticamente a partir do título
@@ -562,5 +742,8 @@ window.config = JSON.parse(JSON.stringify(window.defaultConfig));
         .replace(/[^\w\s-]/g, '')
         .replace(/\s+/g, '-');
     });
+    
+    // Inicializar a visualização do passo
+    updateStepDisplay();
   });
 </script>

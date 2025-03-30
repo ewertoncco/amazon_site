@@ -33,6 +33,9 @@
   <!-- Perfect Scrollbar -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.min.css">
 
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet" type="text/css" />
+
   <!-- DMX Scripts -->
   <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
   <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
@@ -51,11 +54,11 @@
     :root {
       --sidebar-width: 260px;
       --sidebar-width-sm: 75px;
-      --primary-color: #435ebe;
+      --primary-color: #4489e4;
       --heading-color: #25396f;
       --sidebar-bg: #f2f7ff;
       --sidebar-item-hover: #e0e7fd;
-      --sidebar-item-active: #435ebe;
+      --sidebar-item-active: #4489e4;
       --sidebar-item-active-color: #fff;
     }
 
@@ -181,7 +184,11 @@
     .btn-primary {
       background-color: var(--primary-color);
       border-color: var(--primary-color);
-      border-radius: 10px;
+      border-radius: 4px;
+    }
+
+    .btn {
+      border-radius: 4px;
     }
 
     .page-title {
@@ -198,8 +205,8 @@
     }
 
     .dropdown-menu.show {
-      transform: translate(0, 62px) !important;
-      border-radius: 12px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .avatar {
@@ -267,7 +274,36 @@
       filter: blur(1px);
       pointer-events: none;
     }
+
+    /* Cores personalizadas para elementos específicos */
+    .form-check-input:checked, 
+    .form-switch .form-check-input:checked {
+      background-color: #32c861 !important;
+      border-color: #32c861 !important;
+    }
+    
+    .page-item.active .page-link {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+    
+    .pagination .active > .page-link,
+    .active > .page-link {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+    
+    .badge-success,
+    .bg-success,
+    .status-active {
+      background-color: #32c861 !important;
+    }
+    
+    .text-success {
+      color: #32c861 !important;
+    }
   </style>
+  <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
 </head>
 
 <body is="dmx-app" id="admin" spa="true" base="true">

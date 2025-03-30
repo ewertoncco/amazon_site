@@ -102,6 +102,81 @@
   "exec": {
     "steps": [
       {
+        "name": "upload_banner",
+        "module": "upload",
+        "action": "upload",
+        "options": {
+          "fields": "{{$_POST.banner}}",
+          "path": "/public/assets/uploads/banners_eventos",
+          "template": "{guid}{ext}"
+        },
+        "meta": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "path",
+            "type": "text"
+          },
+          {
+            "name": "url",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "text"
+          },
+          {
+            "name": "error",
+            "type": "number"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "upload_mapa",
+        "module": "upload",
+        "action": "upload",
+        "options": {
+          "fields": "{{$_POST.mapa_imagem}}",
+          "path": "/public/assets/uploads/mapas_eventos",
+          "template": "{guid}{ext}"
+        },
+        "meta": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "path",
+            "type": "text"
+          },
+          {
+            "name": "url",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "text"
+          },
+          {
+            "name": "error",
+            "type": "number"
+          }
+        ],
+        "outputType": "array",
+        "collapsed": true
+      },
+      {
         "name": "organizador",
         "module": "dbconnector",
         "action": "single",
@@ -178,7 +253,8 @@
             "name": "nome"
           }
         ],
-        "outputType": "object"
+        "outputType": "object",
+        "output": true
       },
       {
         "name": "novo_evento",
@@ -247,7 +323,8 @@
                 "table": "eventos",
                 "column": "banner",
                 "type": "text",
-                "value": "{{$_POST.banner}}"
+                "value": "{{upload_banner.url}}",
+                "condition": "{{$_POST.banner}}"
               },
               {
                 "table": "eventos",
@@ -259,7 +336,8 @@
                 "table": "eventos",
                 "column": "mapa_imagem",
                 "type": "text",
-                "value": "{{$_POST.mapa_imagem}}"
+                "value": "{{upload_mapa.url}}",
+                "condition": "{{$_POST.mapa_imagem}}"
               },
               {
                 "table": "eventos",
@@ -295,7 +373,8 @@
                 "table": "eventos",
                 "column": "parcelas_cartao",
                 "type": "number",
-                "value": "{{$_POST.parcelas_cartao}}"
+                "value": "{{$_POST.parcelas_cartao}}",
+                "condition": "{{$_POST.parcelas_cartao}}"
               },
               {
                 "table": "eventos",
@@ -331,7 +410,8 @@
                 "table": "eventos",
                 "column": "valor_cupom",
                 "type": "number",
-                "value": "{{$_POST.valor_cupom}}"
+                "value": "{{$_POST.valor_cupom}}",
+                "condition": "{{$_POST.valor_cupom}}"
               },
               {
                 "table": "eventos",
@@ -407,7 +487,7 @@
               {
                 "name": ":P10",
                 "type": "expression",
-                "value": "{{$_POST.banner}}",
+                "value": "{{upload_banner.url}}",
                 "test": ""
               },
               {
@@ -419,7 +499,7 @@
               {
                 "name": ":P12",
                 "type": "expression",
-                "value": "{{$_POST.mapa_imagem}}",
+                "value": "{{upload_mapa.url}}",
                 "test": ""
               },
               {
@@ -518,7 +598,8 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "output": true
       }
     ]
   }
