@@ -14,5 +14,13 @@
   "adm_eventos.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "homepage.ejs": {
+    "layoutPage": "layoutadm",
+    "description": ""
+  },
+  "eventos_adm.ejs": {
+    "layoutPage": "layoutadm",
+    "description": ""
   }
 }

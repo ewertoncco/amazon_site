@@ -1,0 +1,322 @@
+<!-- Wappler include head-page="layouts/layoutadm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="homepage" appconnect="local" -->
+<dmx-serverconnect id="serverconnect1" url="/api/eventos/eventos_lista"></dmx-serverconnect>
+<meta name="ac:route" content="/admin/homepage">
+
+<div class="page-heading">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">Home</h3>
+  </div>
+
+  <div class="row">
+    <!-- Card 1: Transações -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon purple me-3">
+              <i class="fas fa-shopping-bag"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">Transações</h6>
+              <h3 class="fw-bold mb-0">28</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Devoluções -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon purple me-3">
+              <i class="fas fa-undo"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">Devoluções</h6>
+              <h3 class="fw-bold mb-0">2</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Cortesias -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon teal me-3">
+              <i class="fas fa-ticket-alt"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">Cortesias</h6>
+              <h3 class="fw-bold mb-0">22</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Usuários -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon teal me-3">
+              <i class="fas fa-users"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">Usuários</h6>
+              <h3 class="fw-bold mb-0">1321</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Crédito -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon purple me-3">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">Crédito</h6>
+              <h3 class="fw-bold mb-0">6</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6: Pix -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon purple me-3">
+              <i class="fas fa-qrcode"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">Pix</h6>
+              <h3 class="fw-bold mb-0">R$ 189,00</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 7: Eventos -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon red me-3">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">Eventos</h6>
+              <h3 class="fw-bold mb-0">47</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8: XXXX -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card card-statistic">
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center">
+            <div class="stats-icon red me-3">
+              <i class="fas fa-sync"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-0">XXXX</h6>
+              <h3 class="fw-bold mb-0">0</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção de Últimas Vendas -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>Últimas Vendas</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Valor</th>
+                  <th>Início vendas</th>
+                  <th>Final vendas</th>
+                  <th>Progresso</th>
+                  <th>Vendas</th>
+                  <th>Cortesias</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mesa Promo (4 ingressos)</td>
+                  <td>R$ 200,00</td>
+                  <td>12/10 20:04</td>
+                  <td>31/10 20:04</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="me-2">4 de 100</span>
+                      <div class="progress w-100" style="height: 6px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 4%"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>200</td>
+                  <td>0</td>
+                  <td>
+                    <a href="#"><i class="fas fa-edit text-primary"></i></a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Backstage DJ</td>
+                  <td>R$ 0,00</td>
+                  <td>25/10 15:53</td>
+                  <td>25/10 15:53</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="me-2">1 de 20</span>
+                      <div class="progress w-100" style="height: 6px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 5%"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>
+                    <a href="#"><i class="fas fa-edit text-primary"></i></a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ingresso Área VIP Promo</td>
+                  <td>R$ 60,00</td>
+                  <td>12/10 19:59</td>
+                  <td>30/10 15:00</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="me-2">0 de 20</span>
+                      <div class="progress w-100" style="height: 6px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>
+                    <a href="#"><i class="fas fa-edit text-primary"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stats-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    color: white;
+  }
+
+  .stats-icon.purple {
+    background-color: #9694ff;
+  }
+
+  .stats-icon.teal {
+    background-color: #20c997;
+  }
+
+  .stats-icon.red {
+    background-color: #ff7976;
+  }
+
+  .card-statistic {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    border: none;
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+  }
+
+  .card-statistic:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-statistic h6 {
+    font-size: 0.75rem;
+    color: #596780;
+  }
+
+  .card-statistic h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #596780;
+  }
+
+  .page-heading h3 {
+    font-size: 1.1rem;
+    color: #596780;
+    font-weight: 600;
+  }
+
+  .card-header h4 {
+    font-size: 0.95rem;
+    color: #596780;
+    font-weight: 600;
+  }
+
+  .progress {
+    border-radius: 12px;
+    background-color: #f0f0f0;
+  }
+
+  .table {
+    font-size: 0.92rem;
+    color: #596780;
+  }
+
+  .table> :not(caption)>*>* {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .card-body {
+    color: #596780;
+  }
+
+  .text-muted {
+    color: #999 !important;
+  }
+
+  .text-primary {
+    color: #435ebe !important;
+  }
+</style>

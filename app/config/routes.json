@@ -55,6 +55,16 @@
       "path": "/adm_eventos",
       "page": "admin/adm_eventos",
       "layout": "admin"
+    },
+    {
+      "path": "/homepage",
+      "page": "admin/homepage",
+      "layout": "layoutadm"
+    },
+    {
+      "path": "/eventos_adm",
+      "page": "admin/eventos_adm",
+      "layout": "layoutadm"
     }
   ],
   "layouts": {
