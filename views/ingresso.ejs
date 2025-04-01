@@ -1,55 +1,170 @@
-<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="ingresso" appConnect="local" -->
-<meta name="ac:route" content="/ingresso">
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" bootstrap5="custom" -->
+<dmx-serverconnect id="compra" url="/api/compras/compra" dmx-param:ingresso="query.ingresso" dmx-param:codigo="query.qrcode" dmx-param:qrcode="query.qrcode"></dmx-serverconnect>
+<meta name="ac:route" content="/ingresso/:qrcode">
 
-<body class="bg-light">
-    <div class="container py-4">
-        <div class="card shadow-sm">
-            <div class="card-body text-center">
-                <!-- Cabeçalho do Ingresso -->
-                <div class="border-bottom pb-3">
-                    <h1 class="display-6 fw-bold text-primary mb-1">Nome do Ingresso</h1>
-                    <h2 class="h5 text-muted">Nome do evento</h2>
-                </div>
+<style>
+    .bg-ingresso-header {
+        background-color: #6d8dcc !important;
+    }
 
-                <!-- Detalhes do Evento -->
-                <div class="row gap-3">
-                    <div class="col-12">
-                        <div class="d-flex justify-content-around p-2 flex-column">
-                            <h4 class="mb-0 text-muted"><span class="fw-bold">Horário:</span> 16:00</h4>
-                            <h4 class="mt-2 mb-2 text-muted"><span class="fw-bold">Data:</span> 15/09/2024</h4>
-                            <h4 class="mb-0 text-muted"><span class="fw-bold">Local:</span> Amazon</h4>
+    .text-ingresso-primary {
+        color: #6d8dcc !important;
+    }
+</style>
+
+<div class="container py-4" style="max-width: 430px;">
+    <!-- Card do Ingresso -->
+    <div id="ticket-card" class="card shadow-lg" style="min-height: 85vh; border-radius: 20px; position: relative;">
+        <!-- Cabeçalho do Ingresso -->
+        <div class="card-header text-center p-4 bg-ingresso-header" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
+            <h1 class="text-white mb-1 fs-3 fw-bold">{{compra.data.compra.nome}}</h1>
+            <h2 class="text-white-50 fs-5">{{compra.data.compra.titulo}}</h2>
+        </div>
+
+        <div class="card-body text-center p-4">
+            <!-- QR Code em Destaque -->
+            <div class="my-4">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={{compra.data.compra.qrcode}}" alt="QR Code do Ingresso" class="img-fluid" style="max-width: 250px;">
+                <p class="small text-muted mt-2">{{compra.data.compra.carrinho[0].transacao_id}}</p>
+            </div>
+
+            <!-- Dados do Participante -->
+            <div class="mb-4 bg-light p-3 rounded-3">
+                <h3 class="fs-3 fw-bold text-ingresso-primary mb-1">{{compra.data.compra.participante_nome}}</h3>
+                <p class="text-muted mb-0 fs-5">CPF: {{compra.data.compra.participante_cpf}}</p>
+            </div>
+
+            <!-- Detalhes do Evento com Banner -->
+            <div class="border-top pt-4">
+                <div class="row g-3">
+                    <div class="col-12 rounded-3 p-0 overflow-hidden">
+                        <div class="row g-0">
+                            <!-- Informações à esquerda -->
+                            <div class="col-8 p-3 text-start">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-map-marker-alt me-2 fs-5 text-ingresso-primary"></i>
+                                    <span class="fs-5">{{compra.data.compra.local}}</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="far fa-calendar me-2 fs-5 text-ingresso-primary"></i>
+                                    <span class="fs-5">{{compra.data.compra.data_hora.formatDate("dd/MM/yyyy")}}</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="far fa-clock me-2 fs-5 text-ingresso-primary"></i>
+                                    <span class="fs-5">{{compra.data.compra.data_hora.formatDate("HH:mm")}}</span>
+                                </div>
+                            </div>
+                            <!-- Banner à direita -->
+                            <div class="col-4 p-0">
+                                <img dmx-bind:src="compra.data.compra.banner" class="img-fluid" style="height: 120px; object-fit: cover;" alt="Banner do evento">
+                            </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
+            </div>
 
-
-                <!-- QR Code -->
-                <div class="py-3">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TICKET123456789" alt="QR Code do Ingresso" class="img-fluid mb-3">
-                    <p class="small text-muted mb-0">TICKET123456789</p>
-                </div>
-
-                <!-- Dados do Usuário -->
-                <div class="bg-light p-3 rounded mt-3">
-                    <h3 class="text-muted">Participante</h3>
-                    <h3 class="mb-1"><span class="fw-bold">Nome:</span> João Silva Santos</h3>
-                    <h3 class="mb-1"><span class="fw-bold">CPF:</span> 123.456.789-00</h3>
-                </div>
-
-                <!-- Informações Adicionais -->
-                <div class="mt-4 pt-3 border-top">
-                    <small class="text-muted">
-                        Este ingresso é pessoal e somente a pessoal indicada poderá usar.<br>
-                        Apresente o ingresso juntamente com seu documento na entrada do evento.
-                    </small>
-                </div>
+            <!-- Informações Adicionais -->
+            <div class="mt-4 pt-3 border-top">
+                <small class="text-muted">
+                    Este ingresso é pessoal e intransferível.<br>
+                    Apresente este QR Code e um documento com foto na entrada.
+                </small>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        <!-- Botão de Download Flutuante -->
+        <button class="btn rounded-circle shadow-sm position-absolute text-white bg-ingresso-header" style="width: 50px; height: 50px; right: 15px; bottom: 15px; border: none;" onclick="generatePDF()">
+            <i class="fas fa-download"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function generatePDF() {
+        // Esconde temporariamente o botão para o PDF
+        const downloadBtn = document.querySelector('.btn.rounded-circle');
+        downloadBtn.style.display = 'none';
+        
+        const element = document.getElementById('ticket-card');
+        
+        // Armazenar o estilo original
+        const originalStyles = {
+            position: element.style.position,
+            height: element.style.height,
+            minHeight: element.style.minHeight,
+            overflow: element.style.overflow,
+            width: element.style.width,
+            maxWidth: element.style.maxWidth
+        };
+        
+        // Ajustar o estilo para garantir que todo o conteúdo seja capturado
+        element.style.position = 'relative';
+        element.style.height = 'auto';
+        element.style.minHeight = 'auto';
+        element.style.overflow = 'visible';
+        
+        // Cria um wrapper para controlar o tamanho do PDF
+        const wrapper = document.createElement('div');
+        wrapper.style.width = '100%';
+        wrapper.style.padding = '0';
+        wrapper.style.margin = '0 auto';
+        wrapper.style.backgroundColor = '#fff';
+        
+        // Clona o ingresso para o wrapper
+        const clone = element.cloneNode(true);
+        clone.style.maxWidth = '100%';
+        clone.style.margin = '0 auto';
+        clone.style.boxShadow = 'none';
+        wrapper.appendChild(clone);
+        
+        document.body.appendChild(wrapper);
+        
+        // Configurações do PDF - aproximadamente 50% da largura de uma A4
+        // Uma A4 tem 210mm de largura, então usamos cerca de 105mm
+        const opt = {
+            margin: [5, 5, 5, 5], // topo, direita, baixo, esquerda em mm
+            filename: 'ingresso.pdf',
+            image: { type: 'jpeg', quality: 1.0 },
+            html2canvas: { 
+                scale: 2,
+                useCORS: true,
+                logging: true,
+                letterRendering: true,
+                scrollY: 0
+            },
+            jsPDF: { 
+                unit: 'mm', 
+                format: [105, 297], // 105mm ~= 50% da largura de uma A4 (210mm)
+                orientation: 'portrait',
+                compress: true
+            }
+        };
+
+        // Aguardar um momento para garantir que as imagens estejam carregadas
+        setTimeout(() => {
+            html2pdf()
+                .set(opt)
+                .from(wrapper)
+                .save()
+                .then(() => {
+                    // Remover o wrapper
+                    document.body.removeChild(wrapper);
+                    
+                    // Restaurar o estilo original
+                    element.style.position = originalStyles.position;
+                    element.style.height = originalStyles.height;
+                    element.style.minHeight = originalStyles.minHeight;
+                    element.style.overflow = originalStyles.overflow;
+                    element.style.width = originalStyles.width;
+                    element.style.maxWidth = originalStyles.maxWidth;
+                    
+                    // Restaura o botão depois de gerar o PDF
+                    setTimeout(() => {
+                        downloadBtn.style.display = 'block';
+                    }, 1000);
+                });
+        }, 500);
+    }
+</script>

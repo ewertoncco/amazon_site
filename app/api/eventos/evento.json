@@ -3,270 +3,374 @@
     "$_GET": [
       {
         "type": "text",
-        "name": "id_evento"
+        "name": "evento"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
       }
     ]
   },
   "exec": {
-    "steps": {
-      "name": "evento_front",
-      "module": "dbconnector",
-      "action": "single",
-      "options": {
-        "connection": "db",
-        "sql": {
-          "type": "select",
-          "columns": [
-            {
-              "table": "eventos",
-              "column": "evento_nome"
-            },
-            {
-              "table": "eventos",
-              "column": "evento_resumo"
-            },
-            {
-              "table": "eventos",
-              "column": "evento_descricao"
-            },
-            {
-              "table": "eventos",
-              "column": "evento_local"
-            },
-            {
-              "table": "eventos",
-              "column": "evento_banner_principal"
-            },
-            {
-              "table": "eventos",
-              "column": "evento_banner_secundario"
-            },
-            {
-              "table": "eventos",
-              "column": "tem_mapa"
-            },
-            {
-              "table": "eventos",
-              "column": "mapa_imagem"
-            },
-            {
-              "table": "eventos",
-              "column": "evento_data_hora"
-            },
-            {
-              "table": "eventos",
-              "column": "aceita_pix"
-            },
-            {
-              "table": "eventos",
-              "column": "aceita_cartao"
-            },
-            {
-              "table": "eventos",
-              "column": "qtide_parcelas_cartao"
-            },
-            {
-              "table": "eventos",
-              "column": "mostrar_sobre_evento"
-            },
-            {
-              "table": "eventos",
-              "column": "mostrar_whatsapp"
-            },
-            {
-              "table": "eventos",
-              "column": "numero_whatsapp"
-            },
-            {
-              "table": "eventos",
-              "column": "id"
-            }
-          ],
-          "params": [
-            {
-              "operator": "equal",
-              "type": "expression",
-              "name": ":P1",
-              "value": "{{$_GET.id_evento}}",
-              "test": ""
-            }
-          ],
-          "table": {
-            "name": "evento",
-            "alias": "eventos"
-          },
-          "primary": "id",
-          "joins": [],
-          "wheres": {
-            "condition": "AND",
-            "rules": [
+    "steps": [
+      {
+        "name": "evento",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
               {
-                "id": "eventos.id",
-                "field": "eventos.id",
-                "type": "double",
-                "operator": "equal",
-                "value": "{{$_GET.id_evento}}",
-                "data": {
-                  "table": "eventos",
-                  "column": "id",
-                  "type": "number",
-                  "columnObj": {
-                    "type": "increments",
-                    "default": "",
-                    "primary": true,
-                    "unique": true,
-                    "nullable": false,
-                    "name": "id"
-                  }
-                },
-                "operation": "="
+                "table": "eventos",
+                "column": "status_id"
+              },
+              {
+                "table": "eventos",
+                "column": "titulo"
+              },
+              {
+                "table": "eventos",
+                "column": "sub_titulo"
+              },
+              {
+                "table": "eventos",
+                "column": "mostrar_descricao"
+              },
+              {
+                "table": "eventos",
+                "column": "descricao"
+              },
+              {
+                "table": "eventos",
+                "column": "data_hora"
+              },
+              {
+                "table": "eventos",
+                "column": "local"
+              },
+              {
+                "table": "eventos",
+                "column": "banner"
+              },
+              {
+                "table": "eventos",
+                "column": "tem_mapa"
+              },
+              {
+                "table": "eventos",
+                "column": "mapa_imagem"
+              },
+              {
+                "table": "eventos",
+                "column": "destaque"
+              },
+              {
+                "table": "eventos",
+                "column": "pode_alterar_ingresso"
+              },
+              {
+                "table": "eventos",
+                "column": "pode_devolver_ingresso"
+              },
+              {
+                "table": "eventos",
+                "column": "aceita_pix"
+              },
+              {
+                "table": "eventos",
+                "column": "aceita_cartao"
+              },
+              {
+                "table": "eventos",
+                "column": "parcelas_cartao"
+              },
+              {
+                "table": "eventos",
+                "column": "slug"
+              },
+              {
+                "table": "eventos",
+                "column": "tem_whatsapp"
+              },
+              {
+                "table": "eventos",
+                "column": "numero_whatsapp"
+              },
+              {
+                "table": "eventos",
+                "column": "tem_cupom"
+              },
+              {
+                "table": "eventos",
+                "column": "divulgacao"
+              },
+              {
+                "table": "eventos",
+                "column": "uuid"
+              },
+              {
+                "table": "eventos",
+                "column": "id"
               }
             ],
-            "conditional": null,
-            "valid": true
-          },
-          "query": "select \"evento_nome\", \"evento_resumo\", \"evento_descricao\", \"evento_local\", \"evento_banner_principal\", \"evento_banner_secundario\", \"tem_mapa\", \"mapa_imagem\", \"evento_data_hora\", \"aceita_pix\", \"aceita_cartao\", \"qtide_parcelas_cartao\", \"mostrar_sobre_evento\", \"mostrar_whatsapp\", \"numero_whatsapp\", \"id\" from \"evento\" as \"eventos\" where \"eventos\".\"id\" = ?",
-          "sub": {
-            "produtos": {
-              "table": {
-                "name": "evento_produtos",
-                "alias": "produtos"
-              },
-              "key": "evento_id"
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.evento}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "eventos"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select \"status_id\", \"titulo\", \"sub_titulo\", \"mostrar_descricao\", \"descricao\", \"data_hora\", \"local\", \"banner\", \"tem_mapa\", \"mapa_imagem\", \"destaque\", \"pode_alterar_ingresso\", \"pode_devolver_ingresso\", \"aceita_pix\", \"aceita_cartao\", \"parcelas_cartao\", \"slug\", \"tem_whatsapp\", \"numero_whatsapp\", \"tem_cupom\", \"divulgacao\", \"uuid\", \"id\" from \"eventos\" where \"eventos\".\"uuid\" = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "eventos.uuid",
+                  "field": "eventos.uuid",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.evento}}",
+                  "data": {
+                    "table": "eventos",
+                    "column": "uuid",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "uuid",
+                      "default": "gen_random_uuid()",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "uuid"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "eventos"
+                }
+              ],
+              "conditional": null,
+              "valid": true
             }
           }
-        }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "status_id"
+          },
+          {
+            "type": "text",
+            "name": "titulo"
+          },
+          {
+            "type": "text",
+            "name": "sub_titulo"
+          },
+          {
+            "type": "boolean",
+            "name": "mostrar_descricao"
+          },
+          {
+            "type": "text",
+            "name": "descricao"
+          },
+          {
+            "type": "datetime",
+            "name": "data_hora"
+          },
+          {
+            "type": "text",
+            "name": "local"
+          },
+          {
+            "type": "text",
+            "name": "banner"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_mapa"
+          },
+          {
+            "type": "text",
+            "name": "mapa_imagem"
+          },
+          {
+            "type": "boolean",
+            "name": "destaque"
+          },
+          {
+            "type": "boolean",
+            "name": "pode_alterar_ingresso"
+          },
+          {
+            "type": "boolean",
+            "name": "pode_devolver_ingresso"
+          },
+          {
+            "type": "boolean",
+            "name": "aceita_pix"
+          },
+          {
+            "type": "boolean",
+            "name": "aceita_cartao"
+          },
+          {
+            "type": "number",
+            "name": "parcelas_cartao"
+          },
+          {
+            "type": "text",
+            "name": "slug"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_whatsapp"
+          },
+          {
+            "type": "text",
+            "name": "numero_whatsapp"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_cupom"
+          },
+          {
+            "type": "boolean",
+            "name": "divulgacao"
+          },
+          {
+            "type": "text",
+            "name": "uuid"
+          },
+          {
+            "type": "number",
+            "name": "id"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
       },
-      "output": true,
-      "meta": [
-        {
-          "type": "text",
-          "name": "evento_nome"
-        },
-        {
-          "type": "text",
-          "name": "evento_resumo"
-        },
-        {
-          "type": "text",
-          "name": "evento_descricao"
-        },
-        {
-          "type": "text",
-          "name": "evento_local"
-        },
-        {
-          "type": "text",
-          "name": "evento_banner_principal"
-        },
-        {
-          "type": "text",
-          "name": "evento_banner_secundario"
-        },
-        {
-          "type": "boolean",
-          "name": "tem_mapa"
-        },
-        {
-          "type": "text",
-          "name": "mapa_imagem"
-        },
-        {
-          "type": "datetime",
-          "name": "evento_data_hora"
-        },
-        {
-          "type": "boolean",
-          "name": "aceita_pix"
-        },
-        {
-          "type": "boolean",
-          "name": "aceita_cartao"
-        },
-        {
-          "type": "number",
-          "name": "qtide_parcelas_cartao"
-        },
-        {
-          "type": "boolean",
-          "name": "mostrar_sobre_evento"
-        },
-        {
-          "type": "boolean",
-          "name": "mostrar_whatsapp"
-        },
-        {
-          "type": "text",
-          "name": "numero_whatsapp"
-        },
-        {
-          "type": "number",
-          "name": "id"
-        },
-        {
-          "name": "produtos",
-          "type": "array",
-          "sub": [
-            {
-              "type": "number",
-              "name": "id"
+      {
+        "name": "itens",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{evento.id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "view_itens"
             },
-            {
-              "type": "datetime",
-              "name": "data_criacao"
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "view_itens.evento_id",
+                  "field": "view_itens.evento_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{evento.id}}",
+                  "data": {
+                    "table": "view_itens",
+                    "column": "evento_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "evento_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
             },
-            {
-              "type": "number",
-              "name": "usuario_id"
-            },
-            {
-              "type": "number",
-              "name": "evento_id"
-            },
-            {
-              "type": "text",
-              "name": "produto_nome"
-            },
-            {
-              "type": "number",
-              "name": "qtide_cadastrada"
-            },
-            {
-              "type": "datetime",
-              "name": "inicio_vendas"
-            },
-            {
-              "type": "datetime",
-              "name": "final_vendas"
-            },
-            {
-              "type": "number",
-              "name": "valor"
-            },
-            {
-              "type": "number",
-              "name": "ordem_lista"
-            },
-            {
-              "type": "boolean",
-              "name": "ativo"
-            },
-            {
-              "type": "boolean",
-              "name": "is_mesa"
-            },
-            {
-              "type": "number",
-              "name": "qtide_mesa"
-            },
-            {
-              "type": "boolean",
-              "name": "cortesia"
-            }
-          ]
-        }
-      ],
-      "outputType": "object"
-    }
+            "query": "select * from \"view_itens\" where \"view_itens\".\"evento_id\" = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "number",
+            "name": "evento_id"
+          },
+          {
+            "type": "text",
+            "name": "nome"
+          },
+          {
+            "type": "number",
+            "name": "qtide_cadastrada"
+          },
+          {
+            "type": "datetime",
+            "name": "inicio_vendas"
+          },
+          {
+            "type": "datetime",
+            "name": "final_vendas"
+          },
+          {
+            "type": "number",
+            "name": "valor"
+          },
+          {
+            "type": "number",
+            "name": "ordem"
+          },
+          {
+            "type": "boolean",
+            "name": "is_mesa"
+          },
+          {
+            "type": "number",
+            "name": "qtide_mesa"
+          },
+          {
+            "type": "number",
+            "name": "tipo_item"
+          },
+          {
+            "type": "boolean",
+            "name": "quase_acabando"
+          },
+          {
+            "type": "number",
+            "name": "contagem_regressiva"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
   }
 }

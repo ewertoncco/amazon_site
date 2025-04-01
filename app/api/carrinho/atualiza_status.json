@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "transacao"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "carrinho",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "carrinho",
+              "column": "resposta_pagamento"
+            },
+            {
+              "table": "carrinho",
+              "column": "transacao_id"
+            },
+            {
+              "table": "carrinho",
+              "column": "status_pagamento_id"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.transacao}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "carrinho"
+          },
+          "primary": "id",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "carrinho.transacao_id",
+                "field": "carrinho.transacao_id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.transacao}}",
+                "data": {
+                  "table": "carrinho",
+                  "column": "transacao_id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "transacao_id"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select \"resposta_pagamento\", \"transacao_id\", \"status_pagamento_id\" from \"carrinho\" where \"carrinho\".\"transacao_id\" = ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "text",
+          "name": "resposta_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "transacao_id"
+        },
+        {
+          "type": "number",
+          "name": "status_pagamento_id"
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

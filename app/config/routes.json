@@ -6,13 +6,9 @@
       "layout": "main"
     },
     {
-      "path": "/evento/:id_evento",
+      "path": "/evento/:evento",
       "page": "evento",
       "layout": "homepage"
-    },
-    {
-      "path": "/teste",
-      "page": "teste"
     },
     {
       "path": "/perfil",
@@ -20,40 +16,63 @@
       "layout": "homepage"
     },
     {
-      "path": "/home",
-      "page": "home",
-      "layout": "dashboard"
-    },
-    {
-      "path": "/eventos",
-      "page": "eventos",
-      "layout": "dashboard"
-    },
-    {
-      "path": "/adm_evento/:id_evento",
-      "page": "adm_evento",
-      "layout": "dashboard"
-    },
-    {
       "path": "/cadastro",
       "page": "cadastro",
       "layout": "main"
     },
     {
-      "path": "/index",
+      "path": "/",
       "page": "index",
       "layout": "homepage",
       "name": ""
     },
     {
-      "path": "/meus_ingressos",
-      "page": "meus_ingressos",
+      "path": "/compras",
+      "page": "compras",
       "layout": "homepage"
     },
     {
-      "path": "/ingresso",
+      "path": "/ingresso/:qrcode",
       "page": "ingresso",
       "layout": "homepage"
+    },
+    {
+      "path": "/adm",
+      "page": "admin/home",
+      "layout": "admin"
+    },
+    {
+      "path": "/evento_adm",
+      "page": "evento_adm",
+      "layout": "layoutadm"
+    },
+    {
+      "path": "/homepage",
+      "page": "homepage",
+      "layout": "layoutadm"
+    },
+    {
+      "path": "/eventos_adm",
+      "page": "eventos_adm",
+      "layout": "layoutadm"
+    },
+    {
+      "path": "/home",
+      "page": "home",
+      "layout": "layoutadm"
+    },
+    {
+      "path": "/admin/adm-eventos",
+      "page": "admin/adm-eventos",
+      "layout": "layoutadm"
     }
-  ]
+  ],
+  "layouts": {
+    "homepage": {
+      "data": {}
+    },
+    "admin": {
+      "data": {}
+    }
+  }
 }

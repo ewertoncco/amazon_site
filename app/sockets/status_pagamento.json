@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "$_PARAM": [
+      {
+        "type": "text",
+        "name": "transacao"
+      },
+      {
+        "type": "text",
+        "name": "status_pagamento"
+      },
+      {
+        "type": "text",
+        "name": "mensagem"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "emit",
+      "module": "sockets",
+      "action": "emit",
+      "options": {
+        "eventName": "status_pagamento",
+        "params": {
+          "venda": "{{$_PARAM.venda}}",
+          "transacao": "{{$_PARAM.transacao}}",
+          "status_pagamento": "{{$_PARAM.status_pagamento}}",
+          "mensagem": "{{$_PARAM.mensagem}}"
+        }
+      }
+    }
+  }
+}

@@ -1,475 +1,710 @@
-<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="index" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{}}" is="dmx-app" appConnect="local" bootstrap5="custom" -->
-
-<dmx-serverconnect id="sc_evento" url="/api/eventos/evento" dmx-param:id_evento="query.id_evento"></dmx-serverconnect>
-
+<!-- Wappler include head-page="layouts/homepage" fontawesome_5="cdn" id="evento" components="{dmxSlideshow:{},dmxFormatter:{},dmxSockets:{},dmxDatastore:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxMoment:{},dmxNotifications:{},dmxBootstrap5Alert:{},dmxBootstrap5Navigation:{},dmxFormRepeat:{},dmxBrowser:{},dmxRouting:{}}" bootstrap5="custom" moment_2="local with locales" lang="pt" is="dmx-app" appConnect="local" -->
 <dmx-value id="user_logado" dmx-bind:value="0"></dmx-value>
-<div class="modal" id="modal_nao_logado" is="dmx-bs5-modal" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
-                <h5 class="modal-title ms-2">ATENÇÃO</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" dmx-on:click="user_logado.setValue(0)"></button>
-            </div>
-            <div class="modal-body" dmx-hide="user_logado.value==1">
-                <h5 class="text-center">Você precisa estar logado para comprar ingressos</h5>
-            </div>
-            <div class="modal-body" dmx-show="user_logado.value==1&amp;&amp;sc_usuario_logado.data.query.isEmpty()">
-                <h3 class="text-center mb-2">Login</h3>
-                <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Usuário logado');modal_nao_logado.hide()">
-                    <div class="form-group mb-3">
-                        <label for="inp_email">E-mail</label>
-                        <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="inp_senha">Senha</label>
-                        <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
-                    </div>
-                    <div class="form-group mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="inp_lembre-me" name="lembre-me">
-                            <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
+<script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun="true">{
+  condition: {
+    outputType: "boolean",
+    if: "{{query.evento.isEmpty()}}",
+    then: {
+      steps: {
+        run: {outputType: "text", action: "{{browser1.goto('/')}}"}
+      }
+    },
+    else: {
+      steps: {
+        run: {name: "del", outputType: "text", action: "{{global.removeAll()}}"}
+      }
+    }
+  }
+}</script>
+
+<form id="cupom" is="dmx-serverconnect-form" method="post" action="/api/eventos/cupom" dmx-on:success="run({condition:{outputType:'boolean',if:`!cupom.data.evento.valor_cupom.Empt()`,then:{steps:[{run:{outputType:'text',action:`global.set(\'codigo_cupom\',cupom.data.evento.codigo_cupom);global.set(\'tem_cupom\',true)`}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`datastore_carrinho.data`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`datastore_carrinho.update({$id: $value.$id},{item_valor: $value.item_valor-((cupom.data.evento.valor_cupom*$value.item_valor)/100), cupom: true, desconto: ((cupom.data.evento.valor_cupom*$value.item_valor)/100)})`}}}}}]}}})" dmx-on:error="'erro'" dmx-on:forbidden="'for'">
+    <dmx-form-data id="inp_evento" name="evento" dmx-bind:data="query.evento"></dmx-form-data>
+    <dmx-form-data id="inp_cupom" name="cupom" dmx-bind:data="cupom_code.value"></dmx-form-data>
+</form>
+<dmx-serverconnect id="evento" url="/api/eventos/evento" dmx-param:evento="query.evento"></dmx-serverconnect>
+<dmx-moment id="moment1" locale="pt-br"></dmx-moment>
+<meta name="ac:route" content="/evento/:evento">
+
+
+
+<dmx-serverconnect id="parcelamento" url="/api/eventos/parcelamento"></dmx-serverconnect>
+
+<body is="dmx-app" id="evento" spa="true">
+
+    <div class="modal" id="modal_nao_logado" is="dmx-bs5-modal" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                    <h5 class="modal-title ms-2">ATENÇÃO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" dmx-on:click="user_logado.setValue(0)"></button>
+                </div>
+                <div class="modal-body" dmx-hide="user_logado.value==1">
+                    <h5 class="text-center">Você precisa estar logado para comprar ingressos</h5>
+                </div>
+                <div class="modal-body" dmx-show="user_logado.value==1&amp;&amp;sc_usuario_logado.data.query.isEmpty()">
+                    <h3 class="text-center mb-2">Login</h3>
+                    <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Usuário logado');modal_nao_logado.hide();user.load({})">
+                        <div class="form-group mb-3">
+                            <label for="inp_email">E-mail</label>
+                            <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">
                         </div>
-                    </div>
-                    <div class="form-group mb-3 text-end">
-                        <button type="submit" class="btn btn-primary width-lg" dmx-bind:disabled="state.executing">Entrar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer" dmx-hide="user_logado.value==1">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Não tenho cadastro</button>
-                <button type="button" class="btn btn-primary" dmx-on:click="user_logado.setValue(1)">Fazer login</button>
+                        <div class="form-group mb-3">
+                            <label for="inp_senha">Senha</label>
+                            <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="true" id="inp_lembre-me" name="lembre-me">
+                                <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 text-end">
+                            <button type="submit" class="btn btn-primary width-lg" dmx-bind:disabled="state.executing">Entrar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" dmx-hide="user_logado.value==1">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Não tenho cadastro</button>
+                    <button type="button" class="btn btn-primary" dmx-on:click="user_logado.setValue(1)">Fazer login</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<dmx-value id="var_contador" dmx-bind:value="0"></dmx-value>
+    <dmx-value id="var_contador" dmx-bind:value="0"></dmx-value>
 
 
-<dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="sc_evento.load({id_evento: $event.evento_id})"></dmx-socket>
-<dmx-value id="status_pagamento" dmx-bind:value="0"></dmx-value>
+    <dmx-socket id="socket_atualizar" dmx-on:message.atualizar_evento="evento.load({evento: $event.evento_id})"></dmx-socket>
+    <dmx-socket id="status_pag" dmx-on:message.status_pagamento="run({condition:{outputType:'boolean',if:`$event.transacao==global.data.transacao_id`,then:{steps:{run:{outputType:'text',action:`global.set(\'status_pagamento\',$event.status_pagamento);global.set(\'mensagem\',$event.mensagem);evento.load({evento: query.evento})`}}}}})"></dmx-socket>
 
+    <!-- Modal do Carrinho -->
+    <div class="modal fade" id="carrinho" tabindex="-1" aria-labelledby="carrinhoLabel" aria-hidden="true" is="dmx-bs5-modal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title text-white" id="carrinhoLabel">
+                        <i class="fas fa-shopping-cart me-2"></i>Seu Carrinho
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Carrinho vazio -->
+                <div class="modal-body pt-0 pb-0 ps-3 pe-3" dmx-show="datastore_carrinho.data.isEmpty()">
+                    <div class="card-body pt-2">
+                        <div class="text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-shopping-cart fa-4x text-muted"></i>
+                            </div>
+                            <h4 class="text-muted">Seu carrinho está vazio</h4>
+                            <p class="mb-0">Adicione ingressos para continuar.</p>
+                        </div>
+                    </div>
+                </div>
 
-<dmx-datetime id="var1"></dmx-datetime>
-
-<section id="ingressos" class="min-vh-100" dmx-show="step.value==1">
-    <div class="container">
-        <div class="row justify-content-between gap-3">
-            <div class="col-lg-6 col-xxl mt-xxl-0">
-                <div class="title-heading mt-5">
-                    <h3 class="mb-3 fw-normal" style="font-size: 30px;">Compre agora</h3>
-                    <div class="row" is="dmx-repeat" id="itens_venda" dmx-bind:repeat="sc_evento.data.evento_front.produtos">
-                        <div class="col-12">
-                            <div class="card shadow-sm mt-1 mb-1">
-                                <!-- Ajustadas margens menores -->
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <div class="d-flex flex-column">
-                                                <div class="d-flex justify-content-between">
-                                                    <h4 class="fw-bold mt-0 mb-0">{{produto_nome}}</h4>
+                <!-- Lista de itens do carrinho -->
+                <div class="modal-body pt-0 pb-0 ps-3 pe-3" dmx-hide="datastore_carrinho.data.isEmpty()">
+                    <div class="card-body pt-2">
+                        <div class="table-responsive">
+                            <table class="table table-hover m-0">
+                                <tbody is="dmx-repeat" id="itens_carrinho" dmx-bind:repeat="datastore_carrinho.data">
+                                    <tr>
+                                        <td class="w-70 w-75">
+                                            <h4 class="m-0 fw-medium">{{item_nome}}</h4>
+                                        </td>
+                                        <td class="text-center w-15 w-25">
+                                            <span class="text-primary">R$ </span>{{item_valor}}
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id})">
+                                                <i class="fas fa-trash-alt text-danger"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="row g-2 justify-content-start">
+                                                <div class="col-md-7">
+                                                    <div class="input-group input-group-sm mb-1">
+                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Nome do titular" dmx-bind:value="nome" dmx-on:change="datastore_carrinho.update({$id: $id},{nome: $event.target.value})" required>
+                                                    </div>
                                                 </div>
-                                                <h4 class="mt-1">{{(valor.toNumber() / 100).formatCurrency(' R$ ', ',', '.', 2)}}</h4>
-                                                <h6 class="mt-0 mb-0">até {{final_vendas.formatDate('dd MMMM yyyy HH:mm')}}</h6>
-                                                <h5 class="text-danger text-start mt-1">Quase acabando</h5>
-                                                <div class="d-flex">
-                                                    <h5 class="text-danger mt-0 mb-0 text-center">Termina em&nbsp;</h5>
-                                                    <h5 class="text-danger mt-0 mb-0 text-center">{{(((var1.datetime.secondsUntil(final_vendas))/ 86400)%365).floor()}} Dias</h5>
-                                                    <h5 class="text-danger mt-0 mb-0 ms-1 text-center"> {{(((var1.datetime.secondsUntil(final_vendas)/3600)%24)).floor()}} Horas</h5>
-                                                    <h5 class="text-danger mt-0 mb-0 ms-1 text-center"> {{(((var1.datetime.secondsUntil(final_vendas)/60)%60)).floor()}} minutos</h5>
+                                                <div class="col-md-5">
+                                                    <div class="input-group input-group-sm mb-1">
+                                                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                                        <input type="text" class="form-control" placeholder="CPF do titular" dmx-bind:value="cpf" onkeyup="formatCPF(this)" dmx-on:change="datastore_carrinho.update({$id: $id},{cpf: $event.target.value})" required>
+                                                    </div>
                                                 </div>
-
-                                                <input id="inp_produtoid" name="produtoid" type="hidden" dmx-bind:value="id">
-                                                <input id="inp_produto" name="produto" dmx-bind:value="produto_nome" type="hidden">
-                                                <input id="inp_valor" name="valor" type="hidden" dmx-bind:value="valor">
-                                                <input id="inp_qtide" name="qtide" type="hidden" value="1">
-                                                <input id="inp_subtotal" name="subtotal" type="hidden" dmx-bind:value="(valor * inp_qtide.value)">
-                                            </div>
-                                        </div>
-                                        <div class="align-self-center col-4">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <button id="btn_plus" class="btn" dmx-on:click="run({condition:{outputType:'boolean',if:`sc_usuario_logado.data.query.usuario_email`,then:{steps:[
-    {run:{outputType:'text',action:`validade_carrinho.setValue(data_hora.datetime.toDate().addMinutes(2).toDate())`}},
-    {condition:{outputType:'boolean',if:`is_mesa==true`,then:{steps:[
-        {run:{outputType:'text',action:`var_contador.setValue(0)`}},
-        {while:{condition:`var_contador.value<qtide_mesa`,exec:{steps:[
-            {run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},
-            {run:{outputType:'text',action:`var_contador.setValue(var_contador.value+1)`}}
-        ]}}},
-        {run:{outputType:'text',action:`carrinho.show()`}},
-        {run:{outputType:'text',action:`const select = document.getElementById('select_parcelamento'); if (select && select.dmx) { select.dmx.update(); }`}},
-        {run:{outputType:'text',action:`notifies1.success('Item inserido no carrinho')`}}
-    ]},else:{steps:[
-        {run:{outputType:'text',action:`datastore_carrinho.insert({item_id: id, item_valor: valor, item_nome: produto_nome})`}},
-        {run:{outputType:'text',action:`carrinho.show()`}},
-        {run:{outputType:'text',action:`const select = document.getElementById('select_parcelamento'); if (select && select.dmx) { select.dmx.update(); }`}},
-        {run:{outputType:'text',action:`notifies1.success('Item inserido no carrinho')`}}
-    ]}}}
-]},else:{steps:{run:{outputType:'text',action:`modal_nao_logado.show()`}}}}})">
-                                                    <i class="fas fa-cart-plus fa-2x text-primary"></i>
+                                                <div class="col-md-7">
+                                                    <div class="input-group input-group-sm mb-1">
+                                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                                        <input type="email" class="form-control" placeholder="Email do titular" dmx-bind:value="email" dmx-on:change="datastore_carrinho.update({$id: $id},{email: $event.target.value})" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="input-group input-group-sm mb-1">
+                                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Telefone do titular" dmx-bind:value="telefone" onkeyup="formatTelefone(this)" dmx-on:change="datastore_carrinho.update({$id: $id},{telefone: $event.target.value})" required>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-sm text-start text-bg-light text-primary mb-1" dmx-on:click="datastore_carrinho.update({$id: $id}, {nome: user.data.user.usuario_nome, cpf: user.data.user.usuario_cpf, email: user.data.user.usuario_email, telefone: user.data.user.usuario_telefone})" dmx-show="!datastore_carrinho.data.where('cpf', user.data.user.usuario_cpf).hasItems()">
+                                                    <i class="fas fa-user-edit me-1"></i> Completar com meus dados
                                                 </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center border-top mt-3 mb-2 pt-3">
+                            <h5 class="mb-0">Total:</h5>
+                            <h4 class="text-primary mb-0">{{datastore_carrinho.data.sum('item_valor').formatCurrency('R$ ', ',', '.', 2)}}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light" dmx-hide="datastore_carrinho.data.isEmpty()">
+                    <button type="button" class="btn gap-1 btn-outline-link" data-bs-dismiss="modal">
+                        <i class="fas fa-cart-plus me-1"></i>Continuar Comprando
+                    </button>
+                    <button class="btn gap-1 btn-primary" data-scroll-to="pagamento" dmx-on:click="global.set('pagamento', true);carrinho.hide()">
+                        <i class="fas fa-credit-card me-1"></i>Ir para Pagamento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <h4 class="fw-bold display-6 text-center mb-4 text-secondary-emphasis">{{evento.data.evento.titulo}}</h4>
+        </div>
+        <div class="row justify-content-between align-items-start py-3 flex-column flex-lg-row" dmx-hide="global.data.pagamento">
+            <!-- Coluna Central - Imagem -->
+            <div class="col-12 col-lg-3 mb-4 mb-lg-0">
+                <img dmx-bind:src="evento.data.evento.banner" class="w-100 rounded-3 h-auto" alt="Banner do evento" style="height: 350px; object-fit: contain; max-height: 400px;">
+            </div>
+
+            <!-- Coluna de Informações -->
+            <div class="col-12 col-lg-3 mb-4 mb-lg-0">
+                <div class="row mb-3">
+                    <div class="col">
+                        <h4 class="text-primary fw-bold">{{evento.data.evento.titulo}}</h4>
+                        <h5 class="text-primary">{{evento.data.evento.sub_titulo}}</h5>
+                    </div>
+                </div>
+                <div class="d-flex flex-column gap-1 mb-5">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-calendar-alt text-primary fa-fw fa-lg me-2"></i>
+                        <span class="fs-5">{{evento.data.evento.data_hora.formatDate('dd MMM yyyy')}}</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-clock text-primary fa-fw fa-lg me-2"></i>
+                        <span class="fs-5">{{evento.data.evento.data_hora.formatDate('HH:mm')}}</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-map-marker-alt text-primary fa-fw fa-lg me-2"></i>
+                        <span class="fs-5">{{evento.data.evento.local}}</span>
+                    </div>
+                </div>
+
+                <!-- Contador -->
+                <div class="row g-3">
+                    <div class="col-3">
+                        <div class="text-center">
+                            <h2 class="display-6 text-primary mb-0 fw-bold">{{(((hoje.datetime.secondsUntil(evento.data.evento.data_hora))/ 86400)%365).floor()}}</h2>
+                            <small class="text-muted">Dias</small>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="text-center">
+                            <h2 class="display-6 text-primary mb-0 fw-bold">{{(((hoje.datetime.secondsUntil(evento.data.evento.data_hora)/3600)%24)).floor()}}</h2>
+                            <small class="text-muted">Horas</small>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="text-center">
+                            <h2 class="display-6 text-primary mb-0 fw-bold">{{(((hoje.datetime.secondsUntil(evento.data.evento.data_hora)/60)%60)).floor()}}</h2>
+                            <small class="text-muted">Min</small>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="text-center">
+                            <h2 class="display-6 text-primary mb-0 fw-bold">{{(((hoje.datetime.secondsUntil(evento.data.evento.data_hora)%60))).floor()}}</h2>
+                            <small class="text-muted">Seg</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna de Ingressos -->
+            <div class="col-12 col-lg-4">
+                <div class="tickets-list position-relative">
+                    <div class="row g-1" is="dmx-repeat" id="itens_venda" dmx-bind:repeat="evento.data.itens">
+                        <div class="col-12">
+                            <div class="ticket-item bg-white rounded-3 border pt-2 pb-2 ps-3 pe-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="fw-bold mb-0 text-secondary-emphasis">{{nome}}</h5>
+                                        <h4 class="text-primary mt-1 mb-1">{{(valor.toNumber()).formatCurrency('R$ ', ',', '.', 2)}}</h4>
+                                        <small class="text-muted d-block">até {{final_vendas.formatDateLocale('LLL')}}</small>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary mt-2 d-flex align-items-center gap-1" style="width: fit-content" dmx-show="is_mesa">
+                                                <i class="fas fa-users"></i>
+                                                {{qtide_mesa}} lugares
+                                            </span><span class="badge bg-danger mt-2" style="width: fit-content" dmx-show="quase_acabando==true">Quase acabando</span>
+                                            <span class="badge bg-info mt-2" style="width: fit-content">Termina em {{contagem_regressiva}} dias</span>
+
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" dmx-on:click="run({condition:{outputType:'boolean',if:`user.data.identity.isEmpty()`,then:{steps:{run:{outputType:'text',action:`modal_nao_logado.show()`}}},else:{steps:[{condition:{outputType:'boolean',if:`is_mesa==true`,then:{steps:[{while:{condition:`var_contador.value<qtide_mesa`,exec:{steps:{condition:{outputType:'boolean',if:`var_contador.value>0`,then:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: 0, item_nome: nome, item_id: id, evento_id: query.evento, mesa: true, nome: 'Convidado '+var_contador.value, email: 'convidado@convite.com.br', telefone: '(00) 00000-0000', cpf: '000.000.000-00'});carrinho.show();total_carrinho.set('valor_total',total_carrinho.data.valor_total+valor);var_contador.setValue(var_contador.value+1);parcelamento.reset();parcelamento.load({});global.set('evento',query.evento)`}}},else:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: valor, item_nome: nome, item_id: id, evento_id: query.evento, mesa: true});carrinho.show();total_carrinho.set('valor_total',total_carrinho.data.valor_total+valor);var_contador.setValue(var_contador.value+1);parcelamento.reset();parcelamento.load({});global.set('evento',query.evento)`}}}}}}}},{run:{outputType:'text',action:`var_contador.setValue(0)`}}]},else:{steps:{run:{outputType:'text',action:`datastore_carrinho.insert({item_valor: valor, item_nome: nome, item_id: id, evento_id: query.evento, mesa: false});carrinho.show();total_carrinho.set('valor_total',total_carrinho.data.valor_total+valor);eventos.load({});parcelamento.reset();parcelamento.load({});global.set('evento',query.evento)`}}}}},{run:{outputType:'text',action:`limpar_carrinho.start()`}}]}}})" id="add_carrinho">
+                                        <i class="fas fa-cart-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="sticky-bottom bg-white" dmx-show="!datastore_carrinho.data.isEmpty()">
+                            <button class="btn btn-primary w-100 mt-2" data-scroll-to="pagamento" dmx-on:click="global.set('pagamento', true)">
+                                <i class="fas fa-credit-card me-2"></i>Ir para Pagamento
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
 
 
+            </div>
+
+        </div>
+
+        <!-- Seção Inferior - Descrição e FAQ -->
+        <section>
+            <div class="row">
+                <div class="col-12" dmx-show="global.data.status_pagamento==2">
+                    <div class="alert alert-info p-3 d-flex justify-content-center flex-column align-items-center" role="alert">
+
+                        <div class="text-center mt-5 mb-5">
+                            <div class="spinner-grow mb-3" role="status">
+                            </div>
+                            <h4 class="alert-heading text-black text-center">Processando seu pagamento ....</h4>
+                            <p class="text-black-50 text-center">Seu pagamento esta&nbsp;</p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-12" dmx-show="global.data.status_pagamento==1">
+                    <div class="alert alert-info d-flex justify-content-center flex-column align-items-center" role="alert">
+
+                        <div class="text-center mt-5 mb-5">
+                            <h4 class="fw-normal mt-2 mb-2" dmx-hide="!pag_pix.data.qrcode.isEmpty()">Gerando QRCODE...</h4>
+                            <div class="d-flex text-center justify-content-center w-100"><img alt="QR Code PIX" class="img-fluid mb-3" dmx-bind:src="pag_pix.data.qrcode" style="max-height: 250px;" dmx-show="!pag_pix.data.qrcode.isEmpty()"></div>
+
+                            <div class="spinner-grow mt-2 mb-2" role="status">
+                            </div>
+                            <h4 class="alert-heading text-black text-center">Use o Qcode ou copie o código abaixo</h4>
+                            <div class="d-flex"><button class="btn btn-outline-primary" dmx-on:click="browser1.writeTextToClipboard(inp_qrcode.value);notifies1.info('Código copiado!')">
+                                    <i class="fas fa-copy"></i>
+                                </button><input type="text" class="form-control" readonly="" dmx-bind:value="pag_pix.data.key" id="inp_qrcode"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-12" dmx-show="global.data.status_pagamento==3">
+                    <div class="alert alert-primary d-flex p-3 mb-0 flex-column" role="alert">
+                        <div class="text-center mt-5 mb-5">
+                            <h4 class="alert-heading">Pagamento confirmado</h4>
+                            <p>Recebemos o seu pagamento e seu ticket logo estará disponível</p>
+                            <button type="button" class="btn btn-primary btn-sm" dmx-on:click="browser1.goto('/compras',true)">Ver minhas compras</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" dmx-show="global.data.status_pagamento&gt;3">
+                    <div class="d-flex flex-column justify-content-center align-items-center gap-1 mt-2 mb-2 p-5" id="erro">
+                        <i class="fas fa-exclamation fa-4x text-danger"></i>
+                        <h4 class="text-muted">Opss...</h4>
+                        <p class="mb-0">{{global.data.mensagem}}</p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="row justify-content-center mt-xxl">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm rounded-4">
+
+
+
+
+                    <!-- Seção de Sobre o Evento -->
+                    <div class="card-body p-4" id="sobre_evento" dmx-hide="global.data.pagamento">
+                        <h2 class="fw-bold mb-4">Sobre o Evento</h2>
+                        <h5 class="text-primary mb-3">{{evento.data.evento.sub_titulo}}</h5>
+                        <p class="text-muted">{{evento.data.evento.descricao}}</p>
+
+                        <hr class="my-5">
+
+                        <h3 class="fw-bold mb-4">Informações Importantes</h3>
+                        <div id="faqContent" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                            <i class="fas fa-ticket-alt text-primary me-2"></i>Os ingressos são nominais?
+                                        </button>
+                                    </h3>
+                                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Sim. A entrada no evento só é permitida ao portador do ingresso, que deve apresentar um documento de identificação oficial correspondente ao CPF e nome registrados no ingresso.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                            <i class="fas fa-id-card text-primary me-2"></i>Porque o CPF no ingresso?
+                                        </button>
+                                    </h3>
+                                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Para as transações de compra, é utilizado o CPF do usuário logado. Certifique-se de que o CPF esteja corretamente preenchido para evitar problemas com o pagamento. Para fazer alterações, basta acessar o seu perfil.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                            <i class="fas fa-undo text-primary me-2"></i>Devolução e reembolso
+                                        </button>
+                                    </h3>
+                                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Você tem até 07 (sete) dias após a compra para solicitar a devolução do ingresso, exceto nos 02 (dois) dias que antecedem o evento. O reembolso é efetuado integralmente e de forma automática pelo método de pagamento utilizado, em até 10 dias.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                            <i class="fas fa-exchange-alt text-primary me-2"></i>Transferência do ingresso
+                                        </button>
+                                    </h3>
+                                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Você pode ceder o ingresso 01 (uma) única vez, desde que seja feito até 01 (um) dia antes do evento.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                            <i class="fas fa-search text-primary me-2"></i>Onde acho meu ingresso?
+                                        </button>
+                                    </h3>
+                                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Após a confirmação do pagamento, seus ingressos estarão disponíveis no aplicativo. Apresente-os junto com um documento de identificação na entrada do evento. Você pode baixá-los em PDF ou mostrá-los diretamente no aplicativo. Um QR Code será escaneado na entrada.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                            <i class="fas fa-headset text-primary me-2"></i>Suporte
+                                        </button>
+                                    </h3>
+                                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Nosso suporte está sempre à disposição para ajudar você com qualquer dúvida ou necessidade, garantindo uma experiência tranquila e segura.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                                            <i class="fas fa-shopping-cart text-primary me-2"></i>Como comprar ingressos?
+                                        </button>
+                                    </h3>
+                                    <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Escolha o evento desejado, selecione a quantidade de ingressos e clique em "Comprar". Siga as instruções para completar a compra.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                                            <i class="fas fa-credit-card text-primary me-2"></i>Quais são as formas de pagamento?
+                                        </button>
+                                    </h3>
+                                    <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Aceitamos pagamentos via PIX e cartão de crédito, com opções de parcelamento.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion" id="faqAccordion">
+                            <div class="accordion-item border-0">
+                                <h3 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqContent">
+                                        <i class="fas fa-question-circle text-primary me-2"></i>
+                                        Informações importantes
+                                    </button>
+                                </h3>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Seção de Pagamento -->
+                    <div class="card-body p-4" id="secao_pagamento" dmx-hide="!global.data.pagamento">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold mb-0">Pagamento</h2>
+                            <button class="btn btn-outline-primary" dmx-on:click="global.set('pagamento', false)">
+                                <i class="fas fa-arrow-left me-2"></i>Voltar para o Evento
+                            </button>
+                        </div>
+
+                        <!-- Resumo do Pedido -->
+                        <div class="order-summary mb-4">
+                            <h5 class="fw-bold mb-3">Resumo do Pedido</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody is="dmx-repeat" id="repeat_resumo" dmx-bind:repeat="datastore_carrinho.data">
+                                        <tr>
+                                            <td>
+                                                <h5 class="mb-0">{{item_nome}}</h5>
+                                                <small class="text-muted">Titular: {{nome || 'Não informado'}}</small>
+
+                                            </td>
+                                            <td class="text-end">
+                                                <h6 class="mb-0">{{item_valor.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</h6><small class="text-danger" dmx-show="desconto">Desconto cupom: -{{desconto.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</small>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-end"><strong class="text-primary">{{datastore_carrinho.data.sum('item_valor').formatCurrency('R$ ', ',', '.', 2)}}</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <!-- Cupom de desconto -->
+                            <div class="d-flex mb-3 flex-column" dmx-hide="global.data.tem_cupom">
+
+                                <div class="d-flex flex-row w-100 gap-3"><input type="text" class="form-control" id="cupom_code" placeholder="Código do cupom" name="cupom"><button class="btn btn-outline-primary" dmx-on:click="cupom.submit()">Aplicar</button></div>
+                                <h5 class="text-center text-danger mt-2">{{cupom.lastError.response}}</h5>
+
+
+                            </div>
+
+                            <!-- Opções de Pagamento -->
+                            <div class="payment-options">
+                                <h5 class="fw-bold mb-3">Forma de Pagamento</h5>
+                                <ul class="nav nav-pills mb-4 gap-3">
+                                    <li class="nav-item">
+                                        <button class="nav-link active px-4" data-bs-toggle="pill" data-bs-target="#pix">
+                                            <i class="fas fa-qrcode me-2"></i>PIX
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="nav-link px-4" data-bs-toggle="pill" data-bs-target="#cartao" dmx-on:click="parcelamento.reset();parcelamento.load({})">
+                                            <i class="fas fa-credit-card me-2"></i>Cartão
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <!-- PIX -->
+                                    <div class="tab-pane fade show active" id="pix">
+                                        <form id="pag_pix" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/pix" dmx-on:success="global.set('transacao_id',pag_pix.data.transacao);datastore_carrinho.clear()">
+                                            <dmx-form-data id="inp_evento1" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
+                                            <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
+                                            <dmx-form-data id="inp_desconto" name="desconto_aplicado" dmx-bind:data="cupom.data.evento.valor_cupom"></dmx-form-data>
+                                            <button class="btn btn-primary w-100 mt-0" data-scroll-to="pagamento" dmx-on:click="global.set('status_pagamento',1);global.set('pagamento',false)" type="submit">Pagar com PIX</button>
+                                        </form>
+                                        <div class="text-center mb-4">
+
+                                            <div class="input-group">
 
 
                                             </div>
+
                                         </div>
+                                    </div>
+
+                                    <!-- Cartão -->
+                                    <div class="tab-pane fade" id="cartao">
+                                        <form id="credito" is="dmx-serverconnect-form" method="post" action="/api/safe2pay/credito" dmx-on:success="global.set('transacao_id',credito.data.transacao);datastore_carrinho.clear();global.remove('codigo_cupom');global.remove('tem_cupom');credito.reset()" dmx-on:error="">
+                                            <dmx-form-data id="inputData1" name="tem_cupom" dmx-bind:data="global.data.tem_cupom"></dmx-form-data>
+                                            <dmx-form-data id="inp_evento2" name="evento_id" dmx-bind:data="query.evento"></dmx-form-data>
+                                            <dmx-form-data id="inp_itens_vendidos2" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
+                                            <dmx-form-data id="inp_desconto2" name="codigo_cupom" dmx-bind:data="global.data.codigo_cupom"></dmx-form-data>
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <label class="form-label">Número do Cartão</label>
+                                                    <input type="text" class="form-control" name="numero_cartao" id="numero_cartao" maxlength="19" required="" data-msg-required="Informe o número do cartão" placeholder="0000 0000 0000 0000" oninput="formatCardNumber(this)">
 
 
 
+
+
+
+
+
+
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">Nome no Cartão</label>
+                                                    <input type="text" class="form-control" name="nome_cartao" required="" data-msg-required="Informe o nome no cartão">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label">CVV</label>
+                                                    <input type="text" class="form-control" name="codigo_seguranca" required="" data-msg-required="Informe o CVV" maxlength="3" oninput="this.value = this.value.replace(/\D/g, '')">
+                                                </div>
+                                                <div class="col">
+                                                    <label class="form-label">Validade (MM/AA)</label>
+                                                    <input type="text" class="form-control" name="validade" required="" data-msg-required="Informe a validade" maxlength="5" placeholder="MM/AA" oninput="formatDate(this)">
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">Parcelas</label>
+                                                    <select class="form-select" name="qtide_parcelas" required="" dmx-bind:options="parcelamento.data.parcelamento.data" optiontext="{{ qtide }}x R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : ((datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100))) / qtide.toNumber())).formatCurrency('R$ ', ',', '.', 2) }} - Total: R$ {{ (qtide.toNumber() == 1 ? datastore_carrinho.data.sum('item_valor') : (datastore_carrinho.data.sum('item_valor') * (1 + (juros.toNumber() / 100)))).formatCurrency('R$ ', ',', '.', 2) }}" optionvalue="qtide">
+                                                    </select>
+                                                </div>
+
+                                                <script>
+                                                    function formatCardNumber(input) {
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 16);
+    value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    input.value = value;
+}
+
+function formatDate(input) {
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 4);
+    
+    if (value.length > 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2);
+        let month = parseInt(value.substring(0, 2));
+        if (month > 12) {
+            value = '12' + value.substring(2);
+        }
+    }
+    
+    input.value = value;
+}
+                                                </script>
+                                                <div class="col">
+                                                    <button type="submit" class="btn btn-primary w-100" data-scroll-to="pagamento" dmx-on:click="global.set('status_pagamento',2);global.set('pagamento',false)" id="pagar_cartao">
+                                                        Pagar com Cartão
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Boleto -->
+                                    <div class="tab-pane fade" id="boleto">
+                                        <div class="text-center">
+                                            <i class="fas fa-barcode fa-5x mb-3"></i>
+                                            <p class="mb-3">Após a geração do boleto, você terá até a data de vencimento para efetuar o pagamento em qualquer banco ou casa lotérica.</p>
+                                            <button class="btn btn-primary w-100" dmx-on:click="generate_boleto()">
+                                                <i class="fas fa-file-pdf me-2"></i>Gerar Boleto
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-8 mt-5" dmx-hide="!sc_evento.data.evento_front.produtos[0].id.isEmpty()">
-                            <div class="d-flex flex-column align-items-center gap-3">
-                                <i class="fas fa-exclamation fa-4x text-primary"></i>
-                                <h4 class="text-center text-muted">Nenhum item cadastrado <br>no momento</h4>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
                 </div>
             </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0 offset-1">
-                <div class="title-heading mt-5">
-                    <h2 class="fw-bold mt-5 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start" style="font-size: 40px;">{{sc_evento.data.evento_front.evento_nome}}</h2>
-                    <div class="d-flex align-items-center gap-3 mt-3 justify-content-center flex-row justify-content-md-start">
-                        <h4 class="sub-title mt-0 mb-0 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start"><i class="fas fa-calendar-alt text-primary"></i>&nbsp; {{sc_evento.data.evento_front.evento_data_hora.formatDate('dd MMM yyyy')}}&nbsp;</h4>
-                        <h4 class="sub-title mt-0 mb-0"><i class="fas fa-clock text-primary"></i>&nbsp; {{sc_evento.data.evento_front.evento_data_hora.formatDate('HH:mm')}}</h4>
-                    </div>
-
-
-
-                    <h5 class="fw-bold mt-2 text-center text-sm-center text-md-start text-lg-start text-xl-start text-xxl-start">{{sc_evento.data.evento_front.evento_resumo}}</h5>
-                    <h5 class="text-muted text-center text-md-start text-lg-start text-xl-start text-xxl-start mt-3">{{sc_evento.data.evento_front.evento_descricao}}</h5>
-
-                    <div class="row text-center mt-5 gx-2 justify-content-center justify-content-md-start justify-content-lg-start" dmx-hide="(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora)/60)%60)).floor()&lt;0">
-                        <div class="col-2 border-end">
-                            <div class="">
-                                <h2 id="days1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora))/ 86400)%365).floor()}}</h2>
-                                <h6 class="fw-light">Dias</h6>
-                            </div>
-                        </div>
-                        <div class="col-2 border-end">
-                            <div class="">
-                                <h2 id="hours1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora)/3600)%24)).floor()}}</h2>
-                                <h6 class="fw-light">Horas</h6>
-                            </div>
-                        </div>
-                        <div class="col-2 border-end">
-                            <div class="">
-                                <h2 id="minutes1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora)/60)%60)).floor()}}</h2>
-                                <h6 class="fw-light">Minutos</h6>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="">
-                                <h2 id="seconds1" class="text-primary fw-bold">{{(((var1.datetime.secondsUntil(sc_evento.data.evento_front.evento_data_hora)%60))).floor()}}</h2>
-                                <h6 class="fw-light">Segundos</h6>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <img dmx-bind:src="sc_evento.data.evento_front.evento_banner_principal" height="200">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
         </div>
-
     </div>
-</section>
-<section id="pagamento" class="w-100 mt-5 mb-5" dmx-show="step.value==2">
-    <div class="container">
-        <div class="row justify-content-between">
-            <div class="col-lg-6 col-xxl mt-xxl-0">
-                <div class="title-heading mt-5 text-center">
-                    <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+</body>
 
-                        <i class="fas fa-stopwatch fa-2x text-danger"></i>
-                        <h4 class="mt-0 mb-0 fw-bold">10:00</h4>
-                    </div>
-                    <h2 class="fw-bold mb-3" style="font-size: 40px;">Qual método de pagamento ?</h2>
-                    <div class="row shadow-sm rounded rounded-2 me-2 pt-3 pb-3 ps-2 pe-2 gap-4 bg-transparent">
-                        <div class="col-4">
-                            <div class="d-flex flex-row align-items-center justify-content-start gap-3 pt-2 pb-2 ps-2 pe-2 bordas">
+<!-- Se necessário, scripts específicos só para esta página que não estão no layout principal -->
+<script>
+    dmx.Formatter('string','formatDateLocale', function(val, format){
+        return moment(val).format(format);
+    })
 
-                                <img width="35" height="35" src="/assets/images/pix.png">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="check_pix" name="check_pix">
-                                    <label class="form-check-label" for="check_pix">Pix</label>
-                                </div>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Função para fazer scroll suave considerando o header fixo
+        function smoothScroll(targetElement) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
 
-
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex flex-row align-items-center justify-content-start gap-3">
-
-                                <img width="35" height="35" src="/assets/images/cartao.png">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="check_credito" name="check_credito" dmx-on:click="sc_parcelamento.reset();sc_parcelamento.load({})">
-                                    <label class="form-check-label" for="check_credito">Crédito</label>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <script>
-                            const check_credito = document.getElementById('check_credito');
-    const select_parcelamento = document.getElementById('select_parcelamento');
-
-    check_credito.addEventListener('change', function() {
-        if (check_credito.checked) {
-            // Reseta o select
-            select_parcelamento.value = "";
-            console.log("Checkbox marcado. Select resetado.");
-        } else {
-            console.log("Checkbox desmarcado.");
+        // Adiciona o evento de click no botão de pagamento
+        const btnPagarCartao = document.getElementById('pagar_cartao');
+        if (btnPagarCartao) {
+            btnPagarCartao.addEventListener('click', function(e) {
+                setTimeout(() => {
+                    const targetElement = document.querySelector('section');
+                    if (targetElement) {
+                        smoothScroll(targetElement);
+                    }
+                }, 150);
+            });
         }
     });
-                        </script>
+</script>
 
+<style>
+    .ticket-item {
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef !important;
+        position: relative;
+        overflow: hidden;
+    }
 
-                        <div class="col-12">
-                            <div class="d-flex flex-row align-items-center justify-content-start gap-3">
+    .ticket-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-color: var(--bs-primary) !important;
+    }
 
-                                <img width="35" height="35" src="/assets/images/boleto.png">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="check_boleto" name="check_boleto">
-                                    <label class="form-check-label" for="check_boleto">Boleto</label>
-                                </div>
+    .ticket-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--bs-primary);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+    }
 
+    .ticket-item:hover::before {
+        transform: scaleY(1);
+    }
 
-                            </div>
-                        </div>
-                    </div>
+    .ticket-item .btn {
+        transition: all 0.3s ease;
+    }
 
+    .ticket-item:hover .btn {
+        filter: brightness(0.9);
+        transform: scale(1.1);
+    }
 
+    .badge {
+        transition: all 0.3s ease;
+    }
 
-
-
-                </div>
-            </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0" id="credito" dmx-show="check_credito.checked">
-                <div class="card bg-transparent">
-                    <div class="card-body">
-                        <h4 class="card-title">Cartão de Crédito</h4>
-                        <form id="form_carrinho" is="dmx-serverconnect-form" novalidate="" method="post" action="/api/safe2pay/credito">
-                            <dmx-form-data id="inp_itens_vendidos" name="itens_vendidos" dmx-bind:data="datastore_carrinho.data"></dmx-form-data>
-                            <dmx-form-data id="evento_id" name="evento_id" dmx-bind:data="query.id_evento"></dmx-form-data>
-
-
-                            <div class="form-group mb-3"> <label for="inp_nome_cartao" class="form-label mt-1 mb-1">Nome no cartão</label>
-                                <input type="text" class="form-control border-b" id="inp_nome_cartao" name="nome_cartao" aria-describedby="input4_help" placeholder="0000 0000 0000 0000" is="dmx-input" value="">
-                            </div>
-                            <div class="form-group mb-3"> <label for="inp_numero_cartao" class="form-label mt-1 mb-1">Número do cartão</label>
-                                <input type="text" class="form-control" id="inp_numero_cartao" name="numero_cartao" aria-describedby="input4_help" is="dmx-input" value="">
-                            </div>
-                            <div class="form-group mb-3">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="inp_validade_cartao" class="form-label mt-1 mb-1">Validade</label>
-                                        <div class="d-flex flex-row gap-2"><input type="date" class="form-control" id="inp_validade_cartao" name="validade_cartao" aria-describedby="input4_help" placeholder="00 / 00" is="dmx-input" value="">
-                                        </div>
-                                    </div>
-                                    <div class="col"><label for="inp_codigo_seguranca" class="form-label mt-1 mb-1">Cód Segurança</label><input type="text" class="form-control" id="inp_codigo_seguranca" name="codigo_seguranca" aria-describedby="input4_help" is="dmx-input" value=""></div>
-                                </div>
-
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="input8" class="form-label mt-0 mb-1">Parcelamento</label>
-                                <select id="select_parcelamento" class="form-select" is="dmx-select" optiontext="numero_parcelas+'x '+(     
-        (numero_parcelas == 1 
-            ? datastore_carrinho.data.sum('item_valor') / 100 
-            : (datastore_carrinho.data.sum('item_valor') / 100) + 
-              ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros) 
-        ) / numero_parcelas 
-    ).formatCurrency('R$ ', ',', '.', 2)+' total '+
-    (numero_parcelas == 1 
-        ? datastore_carrinho.data.sum('item_valor') / 100 
-        : (datastore_carrinho.data.sum('item_valor') / 100) + 
-          ((datastore_carrinho.data.sum('item_valor') / 100) * taxa_juros)
-    ).formatCurrency('R$ ', ',', '.', 2);" dmx-bind:options="sc_parcelamento.data.query_parcelamento.data" optionvalue="numero_parcelas" name="qtide_parcelas">
-                                </select>
-
-                                <!-- </div-->
-                                <dmx-data-refresh id="refresh_parcelamento" dmx-on:updated="sc_parcelamento.load()"></dmx-data-refresh>
-
-
-
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <h6>Cupom desconto</h6>
-                                    <input id="cupom_desconto" name="cupom_desconto" type="text" class="form-control">
-                                </div>
-                                <div class="col-4 align-self-end"><button id="btn1" class="btn btn-primary text-center">Aplicar Cupom</button></div>
-                            </div>
-                        </form>
-                        <h4 class="card-title mt-3 mb-2">Total {{(datastore_carrinho.data.sum('item_valor').toNumber() / 100).formatCurrency('R$ ', ',', '.', 2)}}</h4>
-
-                        <button id="btn5" class="btn btn-success" is="dmx-button" value="" type="button" dmx-on:click="form_carrinho.submit();form_carrinho.reset();step.setValue(1);datastore_carrinho.clear()">Pagar</button>
-                        <button id="btn7" class="btn btn-outline-secondary" is="dmx-button" value="" type="button">Pagar com PIX&nbsp;</button>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0" id="pix" dmx-show="check_pix.checked">
-                <div class="card bg-transparent">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">Pagar com PIX</h4>
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_GQ8Q54rfcTxUXpKKs1GUisW059Mm-gzk7Q&amp;s">
-                        <h4 class="card-title">Total R$ 200</h4>
-                        <div class="d-flex justify-content-center"><button id="btn6" class="btn btn-success" is="dmx-button" value="" type="button"><i class="far fa-copy"></i>&nbsp; Copiar Código</button></div>
-
-
-                        <button id="btn6" class="btn btn-outline-secondary" is="dmx-button" value="" type="button">Pagar com PIX&nbsp;</button>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0" id="processando" dmx-show="status_pagamento.value==1">
-                <div class="card bg-transparent pt-2 pb-2">
-                    <h4 class="card-title text-center">Processando</h4><img class="card-img" src="/assets/images/loader.svg" width="150" height="150">
-                    <div class="card-body text-center">
-
-                        <h5 class="card-title">Aguarde... Estamos processando seu pagamento</h5>
-
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0" id="sucesso" dmx-show="status_pagamento.value==3">
-                <div class="card bg-transparent">
-                    <h4 class="card-title text-center">Confirmado</h4><img class="card-img" src="/assets/images/sucesso.svg" width="150" height="150">
-                    <div class="card-body text-center">
-
-                        <h5 class="card-title">Seu pagamento foi confirmado e seu ingresso estará disponível em breve</h5>
-
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xxl mt-xxl-0" id="erro" dmx-show="status_pagamento.value&gt;3">
-                <div class="card bg-transparent">
-                    <h4 class="card-title text-center">Falha no pagamento</h4><img class="card-img" src="/assets/images/erro.svg" width="150" height="150">
-                    <div class="card-body text-center">
-
-                        <h5 class="card-title">Não conseguimos processar o seu pagamento</h5>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-<section id="faq" class="w-100">
-    <div class="card-body text-center">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="text-center mt-3">
-                    <h3 class="fw-semibold">Perguntas frequentes</h3>
-                    <p class="text-muted mt-3 mb-2">Se você tem dúvidas, confira abaixo as respostas para as perguntas mais comuns. Caso não encontre o que procura, entre em contato conosco.</p>
-
-
-
-                </div>
-            </div><!-- end col -->
-        </div><!-- end row -->
-
-
-        <div class="row mt-4">
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/ingresso.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Os ingressos são nominais?</h4>
-                    <p class="mb-0">Sim. A entrada no evento só é permitida ao portador do ingresso, que deve apresentar um documento de identificação oficial correspondente ao CPF e nome registrados no ingresso.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/edit.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Porque o CPF no ingresso?</h4>
-                    <p class="mb-0">Para as transações de compra, é utilizado o CPF do usuário logado. Certifique-se de que o CPF esteja corretamente preenchido para evitar problemas com o pagamento. Para fazer alterações, basta acessar o seu perfil.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/devolver.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Devolução e reembolso</h4>
-                    <p class="mb-0">Você tem até 07 (sete) dias após a compra para solicitar a devolução do ingresso, exceto nos 02 (dois) dias que antecedem o evento. O reembolso é efetuado integralmente e de forma automática pelo método de pagamento utilizado, em até 10 dias.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-        </div>
-        <!-- end row -->
-
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/transferir.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Transferência do ingresso</h4>
-                    <p class="mb-0">Você pode ceder o ingresso 01 (uma) única vez, desde que seja feito até 01 (um) dia antes do evento.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/search.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Onde acho meu ingresso?</h4>
-                    <p class="mb-0">Após a confirmação do pagamento, seus ingressos estarão disponíveis no aplicativo. Apresente-os junto com um documento de identificação na entrada do evento. Você pode baixá-los em PDF ou mostrá-los diretamente no aplicativo. Um QR Code será escaneado na entrada.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-
-            <div class="col-lg-4">
-                <div class="faq-box text-center p-4">
-                    <img src="/assets/images/faq_icons/suporte.png" alt="icon" class="img-fluid avatar-md">
-                    <h4 class="mt-4 fw-semibold">Suporte</h4>
-                    <p class="mb-0">Nosso suporte está sempre à disposição para ajudar você com qualquer dúvida ou necessidade, garantindo uma experiência tranquila e segura.</p>
-                </div>
-            </div>
-            <!--/col-sm-4 -->
-        </div>
-        <!-- end row -->
-
-        <button type="button" class="btn btn-primary waves-effect waves-light mt-2 me-1"><i class="fab fa-whatsapp"></i>&nbsp;Entre em contato</button>
-    </div>
-</section>
-<meta name="ac:route" content="/evento/:id_evento">
-
-<!-- javascript -->
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/gumshoe.js"></script>
-<!-- SLIDER -->
-<script src="assets/js/tiny-slider.js "></script>
-<!-- Lightbox -->
-<script src="assets/js/tobii.min.js"></script>
-<script src="assets/js/shuffle.min.js"></script>
-<!-- Feather icon -->
-<script src="assets/js/feather.min.js"></script>
-<!-- Main Js -->
-<script src="assets/js/plugins.init.js"></script>
-<script src="assets/js/app.js"></script>
+    .ticket-item:hover .badge {
+        transform: translateX(5px);
+    }
+</style>

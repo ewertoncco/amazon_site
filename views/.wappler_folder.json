@@ -12,7 +12,7 @@
     "description": ""
   },
   "teste.ejs": {
-    "layoutPage": "",
+    "layoutPage": "main",
     "description": ""
   },
   "perfil.ejs": {
@@ -20,7 +20,7 @@
     "description": ""
   },
   "home.ejs": {
-    "layoutPage": "dashboard",
+    "layoutPage": "layoutadm",
     "description": ""
   },
   "eventos.ejs": {
@@ -43,12 +43,19 @@
     "layoutPage": "homepage",
     "description": ""
   },
-  "meus_ingressos.ejs": {
-    "layoutPage": "homepage",
-    "description": ""
-  },
   "ingresso.ejs": {
     "layoutPage": "homepage",
     "description": ""
+  },
+  "compras.ejs": {
+    "layoutPage": "homepage",
+    "description": ""
+  },
+  "primeira.ejs": {
+    "layoutPage": "homepage",
+    "description": ""
+  },
+  "adm.ejs": {
+    "layoutPage": "admin"
   }
 }

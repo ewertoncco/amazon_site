@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <script src="/dmxAppConnect/dmxAppConnect.js"></script>
+  <base href="/">
+  <meta charset="utf-8" />
+  <title>Amazon | Painel Administrativo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="Painel de administração para gerenciamento de eventos e ingressos" name="description" />
+  <meta content="Coderthemes" name="author" />
+
+  <!-- App favicon -->
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- App css -->
+  <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+  <!-- Icons css -->
+  <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- Fontawesome -->
+  <link rel="stylesheet" href="/fontawesome5/css/all.min.css" />
+
+  <!-- Perfect Scrollbar -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.min.css">
+
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet" type="text/css" />
+
+  <!-- DMX Scripts -->
+  <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
+  <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
+  <script src="/dmxAppConnect/dmxFormatter/dmxFormatter.js" defer></script>
+  <script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
+
+  <script src="/dmxAppConnect/dmxDatastore/dmxDatastore.js" defer></script>
+  <script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+  <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="/dmxAppConnect/dmxSockets/dmxSockets.js" defer></script>
+
+  <!-- Custom Mazer-like style -->
+  <style>
+    :root {
+      --sidebar-width: 260px;
+      --sidebar-width-sm: 75px;
+      --primary-color: #4489e4;
+      --heading-color: #25396f;
+      --sidebar-bg: #f2f7ff;
+      --sidebar-item-hover: #e0e7fd;
+      --sidebar-item-active: #4489e4;
+      --sidebar-item-active-color: #fff;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f5f7fc;
+      font-size: 0.95rem;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: var(--sidebar-width);
+      background-color: var(--sidebar-bg);
+      transition: all .3s ease;
+      z-index: 10;
+      overflow-y: auto;
+      border-radius: 0 15px 15px 0;
+    }
+
+    .sidebar.active {
+      width: var(--sidebar-width-sm);
+    }
+
+    .sidebar-header {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      margin-bottom: 10px;
+    }
+
+    .app-content {
+      margin-left: var(--sidebar-width);
+      padding: 2rem;
+      transition: margin-left .3s ease;
+      min-height: 100vh;
+    }
+
+    .sidebar.active+.app-content {
+      margin-left: var(--sidebar-width-sm);
+    }
+
+    .menu-header {
+      padding: 0 24px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #999;
+      font-weight: 600;
+      margin: 10px 0;
+    }
+
+    .sidebar-item {
+      list-style: none;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      padding: 10px 24px;
+      color: #596780;
+      transition: all .3s ease;
+      text-decoration: none;
+      border-radius: 8px;
+      margin: 0 5px;
+      font-size: 0.92rem;
+    }
+
+    .sidebar-link:hover {
+      background-color: var(--sidebar-item-hover);
+      color: var(--heading-color);
+    }
+
+    .sidebar-link i,
+    .sidebar-link svg {
+      width: 24px;
+      margin-right: 12px;
+      font-size: 1.1rem;
+    }
+
+    .sidebar-link.active {
+      background-color: var(--sidebar-item-active);
+      color: var(--sidebar-item-active-color);
+    }
+
+    .sidebar-title {
+      font-weight: 600;
+    }
+
+    .card {
+      border-radius: 15px;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      background-color: transparent;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1.5rem 1.5rem 1rem;
+      font-weight: 700;
+      color: var(--heading-color);
+      font-size: 1.1rem;
+    }
+
+    .navbar {
+      background-color: #fff;
+      height: 70px;
+      padding: 0 24px;
+      margin-left: var(--sidebar-width);
+      transition: margin-left .3s ease;
+      z-index: 5;
+      border-radius: 0 0 15px 15px;
+    }
+
+    .sidebar.active~.navbar {
+      margin-left: var(--sidebar-width-sm);
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    .btn {
+      border-radius: 4px;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      color: var(--heading-color);
+      font-weight: 700;
+    }
+
+    .burger-btn {
+      display: inline-block;
+      cursor: pointer;
+      padding: 10px 0;
+    }
+
+    .dropdown-menu.show {
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .badge {
+      border-radius: 12px;
+      font-size: 0.75rem;
+    }
+
+    /* Preloader para SPA */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+    }
+
+    .preloader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .preloader-content {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Efeito de blur no conteúdo enquanto carrega */
+    .content-loading {
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    /* Cores personalizadas para elementos específicos */
+    .form-check-input:checked,
+    .form-switch .form-check-input:checked {
+      background-color: #32c861 !important;
+      border-color: #32c861 !important;
+    }
+
+    .page-item.active .page-link {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    .pagination .active>.page-link,
+    .active>.page-link {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    .badge-success,
+    .bg-success,
+    .status-active {
+      background-color: #32c861 !important;
+    }
+
+    .text-success {
+      color: #32c861 !important;
+    }
+  </style>
+  <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
+</head>
+
+<body is="dmx-app" id="admin" spa="true" base="true">
+  <dmx-socket id="socket_notificacoes"></dmx-socket>
+  <dmx-session-manager id="session"></dmx-session-manager>
+  <dmx-notifications id="notifies1" position="bottom"></dmx-notifications>
+  <dmx-datetime id="hoje" interval="hours"></dmx-datetime>
+  <div is="dmx-browser" id="browser1"></div>
+  <dmx-serverconnect id="sc_user" url="/api/usuarios/user"></dmx-serverconnect>
+  <dmx-serverconnect id="sc_logout" url="/api/usuarios/logout" noload="true"></dmx-serverconnect>
+  <dmx-routehandler id="routehandler1"></dmx-routehandler>
+
+  <div id="app-preloader" class="preloader">
+    <div class="preloader-content">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <div id="app">
+    <!-- Sidebar Menu Start -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <a href="/home" internal="true">
+          <img src="assets/images/logo-dark.png" alt="Logo" height="50">
+        </a>
+      </div>
+
+      <div class="ps-3 mb-4">
+        <div class="d-flex align-items-center">
+          <div class="avatar me-3">
+            <img dmx-bind:src="sc_user.data.identity.isEmpty() ? 'assets/images/users/avatar-1.jpg' : sc_user.data.user.foto || 'assets/images/users/avatar-1.jpg'" alt="Avatar">
+          </div>
+          <div>
+            <h6 class="mb-0" dmx-text="sc_user.data.identity.isEmpty() ? 'Administrador' : sc_user.data.user.usuario_apelido">Administrador</h6>
+            <p class="mb-0 text-muted small">Admin</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-header">Geral</div>
+      <ul class="menu">
+        <li class="sidebar-item">
+          <a href="/home" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/home'" internal="true">
+            <i class="fas fa-home"></i>
+            <span class="sidebar-title">Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="/adm_eventos" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm_eventos'" internal="true">
+            <i class="fas fa-calendar-days"></i>
+            <span class="sidebar-title">Eventos</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="/adm/estorno" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/estorno'" internal="true">
+            <i class="fas fa-life-ring"></i>
+            <span class="sidebar-title">Estorno</span>
+            <span class="badge bg-danger rounded-pill ms-auto">01</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="/adm/financeiro" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/financeiro'" internal="true">
+            <i class="fas fa-file-invoice"></i>
+            <span class="sidebar-title">Financeiro</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="menu-header">Usuários</div>
+      <ul class="menu">
+        <li class="sidebar-item">
+          <a href="/adm/clientes" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/clientes'" internal="true">
+            <i class="fas fa-users"></i>
+            <span class="sidebar-title">Clientes</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="/adm/notificacoes" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/notificacoes'" internal="true">
+            <i class="fas fa-bell"></i>
+            <span class="sidebar-title">Notificações</span>
+            <span class="badge bg-primary rounded-pill ms-auto">12</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="menu-header">Configurações</div>
+      <ul class="menu">
+        <li class="sidebar-item">
+          <a href="/perfil" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/perfil'" internal="true">
+            <i class="fas fa-user-cog"></i>
+            <span class="sidebar-title">Meu Perfil</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="/site" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/site'" internal="true">
+            <i class="fas fa-globe"></i>
+            <span class="sidebar-title">Ver Site</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link" dmx-on:click="sc_logout.load({}); browser1.goto('/login')">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="sidebar-title">Sair</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Sidebar Menu End -->
+
+    <div class="app-content">
+      <div class="main-content">
+        <!-- Conteúdo da página será inserido aqui -->
+        <div is="dmx-view" id="content">
+          <%- await include(content, locals) %>
+        </div>
+      </div>
+
+      <!-- Footer Start -->
+      <footer class="mt-5">
+        <div class="text-center text-muted">
+          <p class="mb-0 small">&copy; 2024 Amazon Ingressos. Todos os direitos reservados.</p>
+        </div>
+      </footer>
+      <!-- end Footer -->
+    </div>
+
+    <!-- Vendor js -->
+    <script src="/assets/js/vendor.min.js"></script>
+
+    <!-- Perfect Scrollbar -->
+    <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/dist/perfect-scrollbar.min.js"></script>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+
+    <!-- App js -->
+    <script src="assets/js/app.js"></script>
+
+    <!-- Custom Mazer-like JS -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+      // Toggle sidebar
+      const toggleSidebar = document.getElementById('toggle-sidebar');
+      const sidebar = document.querySelector('.sidebar');
+      
+      if (toggleSidebar) {
+        toggleSidebar.addEventListener('click', function() {
+          sidebar.classList.toggle('active');
+        });
+      }
+      
+      // Initialize Perfect Scrollbar
+      const sidebarContainer = document.querySelector('.sidebar');
+      if (sidebarContainer) {
+        new PerfectScrollbar(sidebarContainer);
+      }
+      
+      // Gerenciamento do preloader
+      const preloader = document.getElementById('app-preloader');
+      const content = document.querySelector('.main-content');
+      
+      // Adiciona classe de blur ao conteúdo
+      if (content) content.classList.add('content-loading');
+      
+      function hidePreloader() {
+        preloader.classList.add('loaded');
+        if (content) content.classList.remove('content-loading');
+      }
+      
+      let initialRequestsChecked = false;
+      
+      function checkAllRequestsComplete() {
+        // Verifica serverConnects que estão carregando
+        const pendingRequests = Array.from(document.querySelectorAll('[is="dmx-serverconnect"]'))
+          .filter(el => el.hasAttribute('url') && !el.hasAttribute('noload'))
+          .map(el => dmx.app.get(el.id))
+          .filter(sc => sc);
+          
+        if (pendingRequests.length === 0) {
+          hidePreloader();
+          return;
+        }
+        
+        // Verifica se todas as requisições foram completadas
+        const allComplete = pendingRequests.every(sc => 
+          sc.data || sc.lastError || !sc.loading
+        );
+        
+        if (allComplete) {
+          setTimeout(hidePreloader, 300);
+        } else {
+          // Fallback para garantir que o preloader não fique preso
+          setTimeout(hidePreloader, 3000);
+        }
+      }
+      
+      // Monitora as requisições iniciais
+      const initialCheck = () => {
+          if (!initialRequestsChecked) {
+              checkAllRequestsComplete();
+              initialRequestsChecked = true;
+          }
+      };
+      
+      // Monitora mudanças no DOM para serverConnects
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList') {
+            const serverConnects = mutation.target.querySelectorAll('[is="dmx-serverconnect"]');
+            serverConnects.forEach(sc => {
+              const component = dmx.app.get(sc.id);
+              if (component && !component._preloaderBound) {
+                component._preloaderBound = true;
+                component.addEventListener('success', checkAllRequestsComplete);
+                component.addEventListener('error', checkAllRequestsComplete);
+              }
+            });
+          }
+        });
+      });
+      
+      // Observa mudanças no DOM
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+      
+      // Checa as requisições iniciais
+      setTimeout(initialCheck, 500);
+      
+      // Fallback final
+      window.addEventListener('load', function() {
+        setTimeout(hidePreloader, 3000);
+      });
+      
+      // Processar links internos
+      function setupInternalLinks() {
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+          if (!link.hasAttribute('dmx-on:click') && !link.getAttribute('href').startsWith('//') && !link.getAttribute('href').includes('://')) {
+            const href = link.getAttribute('href');
+            link.setAttribute('dmx-on:click', `browser1.goto('${href}'); return false;`);
+            link.setAttribute('internal', 'true');
+          }
+        });
+      }
+      
+      // Configura links internos
+      setupInternalLinks();
+      
+      // Observe navegação para configurar links em conteúdo dinâmico
+      const contentObserver = new MutationObserver(setupInternalLinks);
+      contentObserver.observe(document.querySelector('.main-content'), { 
+        childList: true, 
+        subtree: true 
+      });
+      
+      // Manipulador de eventos para navegação interna
+      document.addEventListener('click', function(e) {
+        const link = e.target.closest('a[internal="true"]');
+        if (link) {
+          e.preventDefault();
+          const href = link.getAttribute('href');
+          browser1.goto(href);
+        }
+      });
+      
+      // Atualiza ativo no menu com base na URL atual
+      function updateActiveMenu() {
+        const currentPath = location.pathname;
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === currentPath || currentPath.startsWith(href + '/')) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+      
+      // Atualiza o menu ao carregar
+      updateActiveMenu();
+      
+      // Atualiza o menu após cada navegação
+      window.addEventListener('popstate', updateActiveMenu);
+      
+      // Inicialização de SPA explícita
+      if (typeof dmx !== 'undefined' && dmx.app) {
+        dmx.app.initialize();
+      }
+    });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>

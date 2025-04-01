@@ -1,0 +1,1887 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "evento_id"
+      },
+      {
+        "type": "text",
+        "name": "itens_vendidos"
+      },
+      {
+        "type": "array",
+        "name": "record",
+        "sub": [
+          {
+            "type": "number",
+            "name": "$value"
+          },
+          {
+            "type": "number",
+            "name": "item_id"
+          },
+          {
+            "type": "text",
+            "name": "nome"
+          },
+          {
+            "type": "text",
+            "name": "telefone"
+          },
+          {
+            "type": "text",
+            "name": "cpf"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "number",
+            "name": "evento"
+          },
+          {
+            "type": "number",
+            "name": "identity"
+          },
+          {
+            "type": "number",
+            "name": "1"
+          }
+        ]
+      },
+      {
+        "type": "boolean",
+        "name": "tem_cupom"
+      },
+      {
+        "type": "number",
+        "name": "qtide_parcelas"
+      },
+      {
+        "type": "text",
+        "name": "nome_cartao"
+      },
+      {
+        "type": "text",
+        "name": "numero_cartao"
+      },
+      {
+        "type": "text",
+        "name": "codigo_seguranca"
+      },
+      {
+        "type": "text",
+        "name": "validade"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "codigo_cupom"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "usuario",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "usuarios"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select * from \"usuarios\" where \"usuarios\".\"id\" = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "usuarios.id",
+                  "field": "usuarios.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "usuarios",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "unique": true,
+                      "nullable": false,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "usuarios"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "datetime",
+            "name": "criado_em"
+          },
+          {
+            "type": "text",
+            "name": "senha"
+          },
+          {
+            "type": "text",
+            "name": "usuario_email"
+          },
+          {
+            "type": "text",
+            "name": "usuario_nome"
+          },
+          {
+            "type": "text",
+            "name": "usuario_apelido"
+          },
+          {
+            "type": "text",
+            "name": "usuario_telefone"
+          },
+          {
+            "type": "text",
+            "name": "usuario_cpf"
+          },
+          {
+            "type": "boolean",
+            "name": "ativo"
+          },
+          {
+            "type": "text",
+            "name": "end_rua"
+          },
+          {
+            "type": "text",
+            "name": "end_numero"
+          },
+          {
+            "type": "text",
+            "name": "end_bairro"
+          },
+          {
+            "type": "text",
+            "name": "end_cidade"
+          },
+          {
+            "type": "text",
+            "name": "end_estado"
+          },
+          {
+            "type": "text",
+            "name": "end_cep"
+          },
+          {
+            "type": "boolean",
+            "name": "notificacoes_email"
+          },
+          {
+            "type": "boolean",
+            "name": "notificacoes_push"
+          },
+          {
+            "type": "boolean",
+            "name": "notificacoes_whats"
+          },
+          {
+            "type": "text",
+            "name": "fcm_token"
+          },
+          {
+            "type": "text",
+            "name": "foto"
+          },
+          {
+            "type": "date",
+            "name": "data_nascimento"
+          },
+          {
+            "type": "number",
+            "name": "permissao"
+          },
+          {
+            "type": "number",
+            "name": "genero_id"
+          },
+          {
+            "type": "boolean",
+            "name": "senha_atualizada"
+          },
+          {
+            "type": "text",
+            "name": "uuid"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "evento",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.evento_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "eventos"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select * from \"eventos\" where \"eventos\".\"uuid\" = ?",
+            "orders": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "eventos.uuid",
+                  "field": "eventos.uuid",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.evento_id}}",
+                  "data": {
+                    "table": "eventos",
+                    "column": "uuid",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "uuid",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "default": "gen_random_uuid()",
+                      "name": "uuid"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "number",
+            "name": "organizador_id"
+          },
+          {
+            "type": "datetime",
+            "name": "criado_em"
+          },
+          {
+            "type": "number",
+            "name": "usuario_id"
+          },
+          {
+            "type": "number",
+            "name": "status_id"
+          },
+          {
+            "type": "text",
+            "name": "titulo"
+          },
+          {
+            "type": "text",
+            "name": "sub_titulo"
+          },
+          {
+            "type": "boolean",
+            "name": "mostrar_descricao"
+          },
+          {
+            "type": "text",
+            "name": "descricao"
+          },
+          {
+            "type": "datetime",
+            "name": "data_hora"
+          },
+          {
+            "type": "text",
+            "name": "local"
+          },
+          {
+            "type": "text",
+            "name": "banner"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_mapa"
+          },
+          {
+            "type": "text",
+            "name": "mapa_imagem"
+          },
+          {
+            "type": "boolean",
+            "name": "destaque"
+          },
+          {
+            "type": "boolean",
+            "name": "pode_alterar_ingresso"
+          },
+          {
+            "type": "boolean",
+            "name": "pode_devolver_ingresso"
+          },
+          {
+            "type": "boolean",
+            "name": "aceita_pix"
+          },
+          {
+            "type": "boolean",
+            "name": "aceita_cartao"
+          },
+          {
+            "type": "number",
+            "name": "parcelas_cartao"
+          },
+          {
+            "type": "text",
+            "name": "slug"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_whatsapp"
+          },
+          {
+            "type": "text",
+            "name": "numero_whatsapp"
+          },
+          {
+            "type": "boolean",
+            "name": "tem_cupom"
+          },
+          {
+            "type": "text",
+            "name": "codigo_cupom"
+          },
+          {
+            "type": "number",
+            "name": "valor_cupom"
+          },
+          {
+            "type": "text",
+            "name": "uuid"
+          },
+          {
+            "type": "boolean",
+            "name": "divulgacao"
+          },
+          {
+            "type": "number",
+            "name": "segundos_destaque"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "organizador",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "organizador",
+                "column": "*"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{evento.organizador_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "organizador"
+            },
+            "primary": "id",
+            "joins": [],
+            "sub": {
+              "dados": {
+                "table": {
+                  "name": "organizador_dados",
+                  "alias": "dados"
+                },
+                "key": "organizador_id"
+              }
+            },
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "organizador.id",
+                  "field": "organizador.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{evento.organizador_id}}",
+                  "data": {
+                    "table": "organizador",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "unique": true,
+                      "nullable": false,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select * from \"organizador\" where \"organizador\".\"id\" = ?"
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "datetime",
+            "name": "criado_em"
+          },
+          {
+            "type": "text",
+            "name": "nome"
+          },
+          {
+            "type": "text",
+            "name": "logo"
+          },
+          {
+            "type": "number",
+            "name": "pertence_usuario"
+          },
+          {
+            "name": "dados",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "datetime",
+                "name": "criado_em"
+              },
+              {
+                "type": "number",
+                "name": "organizador_id"
+              },
+              {
+                "type": "text",
+                "name": "razao_social"
+              },
+              {
+                "type": "text",
+                "name": "cnpj"
+              },
+              {
+                "type": "text",
+                "name": "token"
+              },
+              {
+                "type": "number",
+                "name": "id_receiver"
+              },
+              {
+                "type": "number",
+                "name": "cashback"
+              },
+              {
+                "type": "boolean",
+                "name": "tem_cashback"
+              },
+              {
+                "type": "text",
+                "name": "contato_telefone"
+              },
+              {
+                "type": "text",
+                "name": "contato_email"
+              },
+              {
+                "type": "text",
+                "name": "cidade"
+              },
+              {
+                "type": "text",
+                "name": "estado"
+              },
+              {
+                "type": "number",
+                "name": "taxa_juros"
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "parcelamento",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [],
+            "params": [],
+            "table": {
+              "name": "parcelamento"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "select * from \"parcelamento\"",
+            "limit": "{{evento.parcelas_cartao}}"
+          }
+        },
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "number",
+                "name": "juros"
+              },
+              {
+                "type": "number",
+                "name": "qtide"
+              },
+              {
+                "type": "text",
+                "name": "parcelamento"
+              }
+            ]
+          }
+        ],
+        "outputType": "object",
+        "type": "dbconnector_paged_select"
+      },
+      {
+        "name": "lista_produtos",
+        "module": "arraylist",
+        "action": "create",
+        "options": {},
+        "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "carrinho",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "carrinho",
+                "column": "evento_id",
+                "type": "number",
+                "value": "{{evento.id}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "usuario_id",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "status_pagamento_id",
+                "type": "number",
+                "value": "1"
+              },
+              {
+                "table": "carrinho",
+                "column": "forma_pagamento",
+                "type": "number",
+                "value": "1"
+              }
+            ],
+            "table": "carrinho",
+            "returning": "id",
+            "query": "insert into \"carrinho\" (\"evento_id\", \"forma_pagamento\", \"status_pagamento_id\", \"usuario_id\") values (?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{evento.id}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
+      },
+      {
+        "name": "cupom_aplicado",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{(evento.tem_cupom == true && $_POST.codigo_cupom==evento.codigo_cupom)?true:false}}"
+        },
+        "meta": [],
+        "outputType": "boolean",
+        "output": true
+      },
+      {
+        "name": "itens_vendidos",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{$_POST.itens_vendidos}}",
+          "outputFields": [],
+          "exec": {
+            "steps": [
+              {
+                "name": "qrcode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{UUID}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "produto",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "select",
+                    "columns": [
+                      {
+                        "table": "evento_produtos",
+                        "column": "valor"
+                      },
+                      {
+                        "table": "evento_produtos",
+                        "column": "id"
+                      },
+                      {
+                        "table": "evento_produtos",
+                        "column": "tipo_item"
+                      },
+                      {
+                        "table": "evento_produtos",
+                        "column": "nome"
+                      }
+                    ],
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{item_id}}",
+                        "test": ""
+                      }
+                    ],
+                    "table": {
+                      "name": "eventos_itens",
+                      "alias": "evento_produtos"
+                    },
+                    "primary": "id",
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "evento_produtos.id",
+                          "field": "evento_produtos.id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{item_id}}",
+                          "data": {
+                            "table": "evento_produtos",
+                            "column": "id",
+                            "type": "number",
+                            "columnObj": {
+                              "type": "increments",
+                              "default": "",
+                              "primary": true,
+                              "unique": true,
+                              "nullable": false,
+                              "name": "id"
+                            }
+                          },
+                          "operation": "=",
+                          "table": "evento_produtos"
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "select \"valor\", \"id\", \"tipo_item\", \"nome\" from \"eventos_itens\" as \"evento_produtos\" where \"evento_produtos\".\"id\" = ?"
+                  }
+                },
+                "meta": [
+                  {
+                    "type": "number",
+                    "name": "valor"
+                  },
+                  {
+                    "type": "number",
+                    "name": "id"
+                  },
+                  {
+                    "type": "number",
+                    "name": "tipo_item"
+                  },
+                  {
+                    "type": "text",
+                    "name": "nome"
+                  }
+                ],
+                "outputType": "object",
+                "output": false
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{cupom_aplicado==true}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "vendas_com_cupom",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "vendas",
+                                "column": "participante_nome",
+                                "type": "text",
+                                "value": "{{nome}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_telefone",
+                                "type": "text",
+                                "value": "{{telefone}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_cpf",
+                                "type": "text",
+                                "value": "{{cpf}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_email",
+                                "type": "text",
+                                "value": "{{email}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "item_id",
+                                "type": "number",
+                                "value": "{{produto.id}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "categoria_id",
+                                "type": "number",
+                                "value": "{{produto.tipo_item}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "check_in",
+                                "type": "boolean",
+                                "value": "false"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "carrinho",
+                                "type": "number",
+                                "value": "{{carrinho.identity}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "qrcode",
+                                "type": "text",
+                                "value": "{{qrcode}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_original",
+                                "type": "number",
+                                "value": "{{produto.valor}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_final",
+                                "type": "number",
+                                "value": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "desconto",
+                                "type": "number",
+                                "value": "{{(produto.valor*evento.valor_cupom)/100}}"
+                              }
+                            ],
+                            "table": "vendas",
+                            "returning": "id",
+                            "query": "insert into \"vendas\" (\"carrinho\", \"categoria_id\", \"check_in\", \"desconto\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{nome}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{telefone}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{cpf}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{email}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{produto.id}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{produto.tipo_item}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{carrinho.identity}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{qrcode}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P11",
+                                "type": "expression",
+                                "value": "{{(produto.valor*evento.valor_cupom)/100}}",
+                                "test": ""
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ],
+                        "collapsed": true
+                      },
+                      {
+                        "name": "",
+                        "module": "arraylist",
+                        "action": "add",
+                        "options": {
+                          "ref": "lista_produtos",
+                          "value": {
+                            "Code": "{{produto.id}}",
+                            "Description": "{{produto.nome}}",
+                            "UnitPrice": "{{produto.valor-((produto.valor*evento.valor_cupom)/100)}}",
+                            "Quantity": 1
+                          }
+                        },
+                        "collapsed": true,
+                        "output": false
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": [
+                      {
+                        "name": "vendas_sem_cupom",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "vendas",
+                                "column": "participante_nome",
+                                "type": "text",
+                                "value": "{{nome}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_telefone",
+                                "type": "text",
+                                "value": "{{telefone}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_cpf",
+                                "type": "text",
+                                "value": "{{cpf}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "participante_email",
+                                "type": "text",
+                                "value": "{{email}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "item_id",
+                                "type": "number",
+                                "value": "{{produto.id}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "categoria_id",
+                                "type": "number",
+                                "value": "{{produto.tipo_item}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "check_in",
+                                "type": "boolean",
+                                "value": "false"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "carrinho",
+                                "type": "number",
+                                "value": "{{carrinho.identity}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "qrcode",
+                                "type": "text",
+                                "value": "{{qrcode}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_original",
+                                "type": "number",
+                                "value": "{{produto.valor}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "valor_final",
+                                "type": "number",
+                                "value": "{{produto.valor}}"
+                              },
+                              {
+                                "table": "vendas",
+                                "column": "desconto",
+                                "type": "number",
+                                "value": "0"
+                              }
+                            ],
+                            "table": "vendas",
+                            "returning": "id",
+                            "query": "insert into \"vendas\" (\"carrinho\", \"categoria_id\", \"check_in\", \"desconto\", \"item_id\", \"participante_cpf\", \"participante_email\", \"participante_nome\", \"participante_telefone\", \"qrcode\", \"valor_final\", \"valor_original\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{nome}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{telefone}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{cpf}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{email}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{produto.id}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{produto.tipo_item}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{carrinho.identity}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{qrcode}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{produto.valor}}",
+                                "test": ""
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ],
+                        "collapsed": true
+                      },
+                      {
+                        "name": "",
+                        "module": "arraylist",
+                        "action": "add",
+                        "options": {
+                          "ref": "lista_produtos",
+                          "value": {
+                            "Code": "{{produto.id}}",
+                            "Description": "{{produto.nome}}",
+                            "UnitPrice": "{{produto.valor}}",
+                            "Quantity": 1
+                          }
+                        },
+                        "output": false
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean",
+                "output": false
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "Products",
+        "module": "arraylist",
+        "action": "value",
+        "options": {
+          "ref": "lista_produtos"
+        },
+        "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{organizador.dados[0].tem_cashback}}",
+          "then": {
+            "steps": {
+              "name": "safe2pay",
+              "module": "api",
+              "action": "send",
+              "options": {
+                "method": "POST",
+                "dataType": "json",
+                "data": {
+                  "IsSandbox": false,
+                  "Application": "{{evento.titulo}}",
+                  "Vendor": "{{organizador.nome}}",
+                  "CallbackUrl": "https://62f9-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
+                  "PaymentMethod": "6",
+                  "Reference": "{{evento.titulo}}",
+                  "Customer": {
+                    "Name": "{{usuario.usuario_nome}}",
+                    "Identity": "{{usuario.usuario_cpf}}",
+                    "Phone": "{{usuario.usuario_telefone}}",
+                    "Email": "{{usuario.usuario_email}}",
+                    "Address": {
+                      "ZipCode": "{{usuario.end_cep}}",
+                      "Street": "{{usuario.end_rua}}",
+                      "Number": "{{usuario.end_numero}}",
+                      "District": "{{usuario.end_bairro}}",
+                      "CityName": "{{usuario.end_cidade}}",
+                      "StateInitials": "{{usuario.end_estado}}",
+                      "CountryName": "Brasil"
+                    }
+                  },
+                  "Products": "{{Products}}",
+                  "Splits": [
+                    {
+                      "CodeTaxType": 1,
+                      "IdReceiver": "404810",
+                      "Name": "EWERTON LUIZ OLIVEIRA",
+                      "IsPayTax": false,
+                      "Amount": 3
+                    }
+                  ]
+                },
+                "url": "https://payment.safe2pay.com.br/v2/Payment",
+                "headers": {
+                  "ContentType": "application/json",
+                  "x-api-key": "4C8ADD5A097B4F50BE93F7EF72AB873C"
+                },
+                "schema": [
+                  {
+                    "type": "object",
+                    "name": "data",
+                    "sub": [
+                      {
+                        "type": "boolean",
+                        "name": "HasError"
+                      },
+                      {
+                        "type": "text",
+                        "name": "ErrorCode"
+                      },
+                      {
+                        "type": "text",
+                        "name": "Error"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "name": "headers",
+                    "sub": [
+                      {
+                        "type": "text",
+                        "name": "content-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "content-type"
+                      },
+                      {
+                        "type": "text",
+                        "name": "date"
+                      },
+                      {
+                        "type": "text",
+                        "name": "strict-transport-security"
+                      },
+                      {
+                        "type": "text",
+                        "name": "transfer-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "vary"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-correlation-id"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-powered-by"
+                      }
+                    ]
+                  }
+                ],
+                "timeout": 20000,
+                "passErrors": false
+              },
+              "meta": [
+                {
+                  "type": "object",
+                  "name": "data",
+                  "sub": [
+                    {
+                      "type": "boolean",
+                      "name": "HasError"
+                    },
+                    {
+                      "type": "text",
+                      "name": "ErrorCode"
+                    },
+                    {
+                      "type": "text",
+                      "name": "Error"
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "name": "headers",
+                  "sub": [
+                    {
+                      "type": "text",
+                      "name": "content-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "content-type"
+                    },
+                    {
+                      "type": "text",
+                      "name": "date"
+                    },
+                    {
+                      "type": "text",
+                      "name": "strict-transport-security"
+                    },
+                    {
+                      "type": "text",
+                      "name": "transfer-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "vary"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-correlation-id"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-powered-by"
+                    }
+                  ]
+                }
+              ],
+              "outputType": "object",
+              "collapsed": true,
+              "output": true
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "safe2pay",
+              "module": "api",
+              "action": "send",
+              "options": {
+                "method": "POST",
+                "dataType": "json",
+                "data": {
+                  "IsSandbox": false,
+                  "Application": "{{evento.titulo}}",
+                  "Vendor": "{{organizador.nome}}",
+                  "CallbackUrl": "https://62f9-192-144-124-59.ngrok-free.app/api/safe2pay/webhook",
+                  "PaymentMethod": "6",
+                  "Reference": "{{evento.titulo}}",
+                  "Customer": {
+                    "Name": "{{usuario.usuario_nome}}",
+                    "Identity": "{{usuario.usuario_cpf}}",
+                    "Phone": "{{usuario.usuario_telefone}}",
+                    "Email": "{{usuario.usuario_email}}",
+                    "Address": {
+                      "ZipCode": "{{usuario.end_cep}}",
+                      "Street": "{{usuario.end_rua}}",
+                      "Number": "{{usuario.end_numero}}",
+                      "District": "{{usuario.end_bairro}}",
+                      "CityName": "{{usuario.end_cidade}}",
+                      "StateInitials": "{{usuario.end_estado}}",
+                      "CountryName": "Brasil"
+                    }
+                  },
+                  "Products": "{{Products}}",
+                  "Splits": [
+                    {
+                      "CodeTaxType": 1,
+                      "IdReceiver": "404810",
+                      "Name": "EWERTON LUIZ OLIVEIRA",
+                      "IsPayTax": false,
+                      "Amount": 3
+                    }
+                  ]
+                },
+                "url": "https://payment.safe2pay.com.br/v2/Payment",
+                "headers": {
+                  "ContentType": "application/json",
+                  "x-api-key": "4C8ADD5A097B4F50BE93F7EF72AB873C"
+                },
+                "schema": [
+                  {
+                    "type": "object",
+                    "name": "data",
+                    "sub": [
+                      {
+                        "type": "boolean",
+                        "name": "HasError"
+                      },
+                      {
+                        "type": "text",
+                        "name": "ErrorCode"
+                      },
+                      {
+                        "type": "text",
+                        "name": "Error"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "name": "headers",
+                    "sub": [
+                      {
+                        "type": "text",
+                        "name": "content-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "content-type"
+                      },
+                      {
+                        "type": "text",
+                        "name": "date"
+                      },
+                      {
+                        "type": "text",
+                        "name": "strict-transport-security"
+                      },
+                      {
+                        "type": "text",
+                        "name": "transfer-encoding"
+                      },
+                      {
+                        "type": "text",
+                        "name": "vary"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-correlation-id"
+                      },
+                      {
+                        "type": "text",
+                        "name": "x-powered-by"
+                      }
+                    ]
+                  }
+                ],
+                "timeout": 20000,
+                "passErrors": false
+              },
+              "meta": [
+                {
+                  "type": "object",
+                  "name": "data",
+                  "sub": [
+                    {
+                      "type": "boolean",
+                      "name": "HasError"
+                    },
+                    {
+                      "type": "text",
+                      "name": "ErrorCode"
+                    },
+                    {
+                      "type": "text",
+                      "name": "Error"
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "name": "headers",
+                  "sub": [
+                    {
+                      "type": "text",
+                      "name": "content-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "content-type"
+                    },
+                    {
+                      "type": "text",
+                      "name": "date"
+                    },
+                    {
+                      "type": "text",
+                      "name": "strict-transport-security"
+                    },
+                    {
+                      "type": "text",
+                      "name": "transfer-encoding"
+                    },
+                    {
+                      "type": "text",
+                      "name": "vary"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-correlation-id"
+                    },
+                    {
+                      "type": "text",
+                      "name": "x-powered-by"
+                    }
+                  ]
+                }
+              ],
+              "outputType": "object",
+              "collapsed": true,
+              "output": true
+            }
+          }
+        },
+        "outputType": "boolean",
+        "output": false
+      },
+      {
+        "name": "transacao",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "number"
+      },
+      {
+        "name": "qrcode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data.ResponseDetail.QrCode}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "key",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data.ResponseDetail.Key}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "transacao",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "number"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{safe2pay.data.HasError==true}}",
+          "then": {
+            "steps": {
+              "name": "carrinho_recusado",
+              "module": "dbupdater",
+              "action": "update",
+              "options": {
+                "connection": "db",
+                "sql": {
+                  "type": "update",
+                  "values": [
+                    {
+                      "table": "carrinho",
+                      "column": "transacao_id",
+                      "type": "number",
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "erro",
+                      "type": "boolean",
+                      "value": "{{safe2pay.data.HasError}}"
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "json",
+                      "type": "text",
+                      "value": "{{safe2pay.data.ResponseDetail}}"
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "status_pagamento_id",
+                      "type": "number",
+                      "value": "{{safe2pay.data.ResponseDetail.Status}}"
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "resposta_pagamento",
+                      "type": "text",
+                      "value": "{{safe2pay.data.ResponseDetail.Description}}"
+                    }
+                  ],
+                  "table": "carrinho",
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "id",
+                        "field": "id",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": "{{carrinho.identity}}",
+                        "data": {
+                          "column": "id"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "returning": "id",
+                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ?, \"json\" = ?, \"status_pagamento_id\" = ?, \"resposta_pagamento\" = ? where \"id\" = ? returning \"id\"",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.HasError}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.ResponseDetail}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.ResponseDetail.Status}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P5",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.ResponseDetail.Description}}",
+                      "test": ""
+                    },
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P6",
+                      "value": "{{carrinho.identity}}",
+                      "test": ""
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ],
+              "collapsed": true
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "carrinho_aceito",
+              "module": "dbupdater",
+              "action": "update",
+              "options": {
+                "connection": "db",
+                "sql": {
+                  "type": "update",
+                  "values": [
+                    {
+                      "table": "carrinho",
+                      "column": "transacao_id",
+                      "type": "number",
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}"
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "erro",
+                      "type": "boolean",
+                      "value": "false"
+                    },
+                    {
+                      "table": "carrinho",
+                      "column": "cupom",
+                      "type": "boolean",
+                      "value": "{{cupom_aplicado}}"
+                    }
+                  ],
+                  "table": "carrinho",
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "id",
+                        "field": "id",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": "{{carrinho.identity}}",
+                        "data": {
+                          "column": "id"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "returning": "id",
+                  "query": "update \"carrinho\" set \"transacao_id\" = ?, \"erro\" = ?, \"cupom\" = ? where \"id\" = ? returning \"id\"",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{safe2pay.data.ResponseDetail.IdTransaction}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{cupom_aplicado}}",
+                      "test": ""
+                    },
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P3",
+                      "value": "{{carrinho.identity}}",
+                      "test": ""
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

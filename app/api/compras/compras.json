@@ -1,0 +1,313 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "minhas_compras",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "limit": 10,
+          "columns": [
+            {
+              "table": "carrinho",
+              "column": "id"
+            },
+            {
+              "table": "carrinho",
+              "column": "criado_em"
+            },
+            {
+              "table": "carrinho",
+              "column": "transacao_id"
+            },
+            {
+              "table": "carrinho",
+              "column": "forma_pagamento"
+            },
+            {
+              "table": "carrinho",
+              "column": "total_bruto",
+              "alias": "total_carrinho"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{identity}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "carrinho"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select \"id\", \"criado_em\", \"transacao_id\", \"forma_pagamento\", \"total_bruto\" as \"total_carrinho\" from \"carrinho\" where \"carrinho\".\"usuario_id\" = ? and \"carrinho\".\"status_pagamento_id\" = ? order by \"criado_em\" DESC limit ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "carrinho.usuario_id",
+                "field": "carrinho.usuario_id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{identity}}",
+                "data": {
+                  "table": "carrinho",
+                  "column": "usuario_id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "reference",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": false,
+                    "references": "id",
+                    "inTable": "usuarios",
+                    "referenceType": "integer",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "name": "usuario_id"
+                  }
+                },
+                "operation": "=",
+                "table": "carrinho"
+              },
+              {
+                "id": "carrinho.status_pagamento_id",
+                "field": "carrinho.status_pagamento_id",
+                "type": "double",
+                "operator": "equal",
+                "value": 3,
+                "data": {
+                  "table": "carrinho",
+                  "column": "status_pagamento_id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "reference",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": false,
+                    "references": "id",
+                    "inTable": "status_pagamento",
+                    "referenceType": "integer",
+                    "onUpdate": "NO ACTION",
+                    "onDelete": "NO ACTION",
+                    "name": "status_pagamento_id"
+                  }
+                },
+                "operation": "=",
+                "table": "carrinho"
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "sub": {
+            "vendas": {
+              "type": "select",
+              "table": {
+                "name": "vendas",
+                "alias": "vendas"
+              },
+              "key": "carrinho",
+              "columns": [
+                {
+                  "table": "vendas",
+                  "column": "participante_nome"
+                },
+                {
+                  "table": "vendas",
+                  "column": "participante_telefone"
+                },
+                {
+                  "table": "vendas",
+                  "column": "participante_cpf"
+                },
+                {
+                  "table": "vendas",
+                  "column": "participante_email"
+                },
+                {
+                  "table": "vendas",
+                  "column": "check_in"
+                },
+                {
+                  "table": "vendas",
+                  "column": "hora_check_in"
+                },
+                {
+                  "table": "vendas",
+                  "column": "qrcode"
+                },
+                {
+                  "table": "vendas",
+                  "column": "id",
+                  "alias": "vendas_id"
+                },
+                {
+                  "table": "vendas",
+                  "column": "valor_final"
+                }
+              ],
+              "params": [],
+              "primary": "id",
+              "joins": [],
+              "query": "select \"participante_nome\", \"participante_telefone\", \"participante_cpf\", \"participante_email\", \"check_in\", \"hora_check_in\", \"qrcode\", \"id\" as \"vendas_id\", \"valor_final\" from \"vendas\" as \"vendas\""
+            }
+          },
+          "orders": [
+            {
+              "table": "carrinho",
+              "column": "criado_em",
+              "direction": "DESC"
+            }
+          ]
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "id"
+            },
+            {
+              "type": "datetime",
+              "name": "criado_em"
+            },
+            {
+              "type": "number",
+              "name": "transacao_id"
+            },
+            {
+              "type": "number",
+              "name": "forma_pagamento"
+            },
+            {
+              "type": "number",
+              "name": "total_carrinho"
+            },
+            {
+              "name": "vendas",
+              "type": "array",
+              "sub": [
+                {
+                  "type": "text",
+                  "name": "participante_nome"
+                },
+                {
+                  "type": "text",
+                  "name": "participante_telefone"
+                },
+                {
+                  "type": "text",
+                  "name": "participante_cpf"
+                },
+                {
+                  "type": "text",
+                  "name": "participante_email"
+                },
+                {
+                  "type": "boolean",
+                  "name": "check_in"
+                },
+                {
+                  "type": "datetime",
+                  "name": "hora_check_in"
+                },
+                {
+                  "type": "text",
+                  "name": "qrcode"
+                },
+                {
+                  "type": "number",
+                  "name": "vendas_id"
+                },
+                {
+                  "type": "number",
+                  "name": "valor_final"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

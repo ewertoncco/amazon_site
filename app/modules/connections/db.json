@@ -13,7 +13,7 @@
     },
     "meta": {}
   },
-  "actionFilePath": "file:///G:/github/amazon_ingressos/app/modules/connections/db.json",
   "serverType": "node",
-  "fileName": "db.json"
+  "fileName": "db.json",
+  "actionFilePath": "file:///G:/github/amazon_ingressos/app/modules/connections/db.json"
 }

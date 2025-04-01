@@ -1,0 +1,189 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "TransactionStatus.Id"
+      },
+      {
+        "type": "number",
+        "name": "NetValue"
+      },
+      {
+        "type": "number",
+        "name": "TaxValue"
+      },
+      {
+        "type": "number",
+        "name": "Amount"
+      },
+      {
+        "type": "number",
+        "name": "IdTransaction"
+      },
+      {
+        "type": "text",
+        "name": "TransactionStatus.Name"
+      },
+      {
+        "type": "number",
+        "name": "TransactionStatus"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "carrinho",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "carrinho",
+                "column": "atualizado_em",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "resposta_pagamento",
+                "type": "text",
+                "value": "{{$_POST.TransactionStatus.Name}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "status_pagamento_id",
+                "type": "number",
+                "value": "{{$_POST.TransactionStatus.Id}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "total_bruto",
+                "type": "number",
+                "value": "{{$_POST.Amount}}",
+                "condition": "{{$_POST.Amount}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "total_taxas_transacao",
+                "type": "number",
+                "value": "{{$_POST.TaxValue}}",
+                "condition": "{{$_POST.TaxValue}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "total_plataforma",
+                "type": "number",
+                "value": "{{$_POST.NetValue}}",
+                "condition": "{{$_POST.NetValue}}"
+              },
+              {
+                "table": "carrinho",
+                "column": "json",
+                "type": "text",
+                "value": "{{$_POST}}",
+                "condition": "{{$_POST}}"
+              }
+            ],
+            "table": "carrinho",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "transacao_id",
+                  "field": "transacao_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.IdTransaction}}",
+                  "data": {
+                    "column": "transacao_id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "id",
+            "query": "update \"carrinho\" set \"atualizado_em\" = ?, \"resposta_pagamento\" = ?, \"status_pagamento_id\" = ?, \"total_bruto\" = ?, \"total_taxas_transacao\" = ?, \"total_plataforma\" = ?, \"json\" = ? where \"transacao_id\" = ? returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.TransactionStatus.Name}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.TransactionStatus.Id}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.Amount}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.TaxValue}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.NetValue}}",
+                "test": ""
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P8",
+                "value": "{{$_POST.IdTransaction}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "emit",
+        "module": "sockets",
+        "action": "emit",
+        "options": {
+          "eventName": "status_pagamento",
+          "params": {
+            "transacao": "{{$_POST.IdTransaction}}",
+            "status_pagamento": "{{$_POST.TransactionStatus.Id}}",
+            "mensagem": "{{$_POST.TransactionStatus.Name}}"
+          }
+        },
+        "collapsed": true
+      }
+    ]
+  }
+}

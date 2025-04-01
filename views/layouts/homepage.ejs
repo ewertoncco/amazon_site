@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" data-layout="topnav" data-topbar-color="light">
+<html lang="pt-br" data-layout="topnav" data-topbar-color="light">
 
 <head>
   <script src="/dmxAppConnect/dmxAppConnect.js"></script>
   <base href="/">
   <meta charset="utf-8" />
-  <title>Amazon | </title>
+  <title>Amazon | Compre seu ingresso </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+  <meta content="Site de ingresso" name="description">
   <meta content="Coderthemes" name="author" />
 
   <!-- App favicon -->
   <link rel="shortcut icon" href="assets/images/favicon.ico">
 
   <link href="assets/vendor/c3/c3.min.css" rel="stylesheet" type="text/css" />
-
 
   <!-- Vendor css -->
   <link href="/assets/css/vendor.min.css" rel="stylesheet" />
@@ -24,8 +23,10 @@
 
   <!-- Icons css -->
   <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/vendor/node-waves/waves.min.css" rel="stylesheet" type="text/css" />
 
   <!-- Theme Config Js -->
+  <script src="/js/moment.js/2/moment-with-locales.min.js"></script>
   <script src="assets/js/config.js"></script>
   <link rel="stylesheet" href="/fontawesome5/css/all.min.css" />
   <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
@@ -50,402 +51,322 @@
   <script src="/dmxAppConnect/dmxScheduler/dmxScheduler.js" defer></script>
   <link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
   <script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
+  <script src="/dmxAppConnect/dmxPdfCreator/dmxPdfCreator.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.9/build/pdfmake.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.9/build/vfs_fonts.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake@2.5.2/browser.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
+  <script src="/dmxAppConnect/dmxMoment/dmxMoment.js" defer></script>
+
+  <!-- Tema personalizado - deve ser o último para sobrescrever as outras definições -->
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <style>
+    .navbar-nav .nav-item {
+      margin: 0 5px;
+    }
+
+    .navbar-nav .nav-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      color: #2c3e50;
+      transition: all 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--bs-primary);
+      background-color: rgba(var(--bs-primary-rgb), 0.1);
+      transform: translateY(-1px);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: var(--bs-primary);
+      background-color: rgba(var(--bs-primary-rgb), 0.1);
+    }
+
+    @media (max-width: 991.98px) {
+      .navbar-nav .nav-item {
+        margin: 5px 0;
+      }
+
+      .navbar-nav .nav-link {
+        padding: 0.8rem 1rem;
+      }
+    }
+
+    /* Preloader para SPA */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+    }
+
+    .preloader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .preloader-content {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--bs-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Efeito de blur no conteúdo enquanto carrega */
+    .content-loading {
+      filter: blur(1px);
+      pointer-events: none;
+    }
+  </style>
+  <script src="/dmxAppConnect/dmxBootstrap5Alert/dmxBootstrap5Alert.js" defer></script>
 </head>
 
-<body is="dmx-app" id="homepage">
+<body is="dmx-app" id="homepage" spa="true" base="true">
+  <dmx-serverconnect id="parcelamento" url="/api/eventos/parcelamento" dmx-param:limit="parcelamento.data.parcelamento.limit"></dmx-serverconnect>
+  <dmx-session-manager id="global"></dmx-session-manager>
+  <div id="app-preloader" class="preloader">
+    <div class="preloader-content">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <form id="logout" is="dmx-serverconnect-form" method="post" action="/api/usuarios/logout" dmx-on:success="browser1.goto('/',true);user.reset();notifies1.info('Você foi desconectado!')"></form>
+  <dmx-datetime id="hoje"></dmx-datetime>
 
   <dmx-datastore id="datastore_carrinho"></dmx-datastore>
-  <dmx-serverconnect id="sc_parcelamento" url="/api/parcelamento/parcelamento" dmx-param:evento_id="query.id_evento"></dmx-serverconnect>
-  <dmx-datetime id="data_hora" interval="minutes"></dmx-datetime>
-  <dmx-value id="validade_carrinho"></dmx-value>
-  <dmx-scheduler id="temporizador_carrinho" dmx-on:tick="run({condition:{outputType:'boolean',if:`data_hora.datetime.minutesUntil(validade_carrinho.value)&lt;=0`,then:{steps:{run:{outputType:'text',action:`datastore_carrinho.clear()`}}}}})" unit="minutes"></dmx-scheduler>
-  <dmx-value id="step" dmx-bind:value="1"></dmx-value>
-  <dmx-serverconnect id="sc_logout" url="/api/usuarios/logout" noload="true"></dmx-serverconnect>
-  <dmx-serverconnect id="sc_listar_eventos" url="/api/eventos/listar_eventos"></dmx-serverconnect>
-  <dmx-notifications id="notifies1"></dmx-notifications>
-  <dmx-serverconnect id="sc_usuario_logado" url="/api/usuarios/usuario_logado"></dmx-serverconnect>
+  <dmx-serverconnect id="eventos" url="/api/eventos/eventos"></dmx-serverconnect>
+  <dmx-notifications id="notifies1" position="bottom"></dmx-notifications>
+  <dmx-serverconnect id="user" url="/api/usuarios/user"></dmx-serverconnect>
+  <dmx-value id="var_contador" dmx-bind:value="0"></dmx-value>
   <div is="dmx-browser" id="browser1"></div>
-  <!-- Begin page -->
+
   <div class="wrapper">
-    <div class="modal" id="carrinho" is="dmx-bs5-modal" tabindex="-1">
-      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-light-subtle">
-            <h5 class="modal-title text-black">CARRINHO</h5>
-
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body pt-0 pb-0 ps-3 pe-3" dmx-hide="datastore_carrinho.data.isEmpty()">
-            <div class="card-body pt-2">
-              <div class="table-responsive">
-                <table class="table table-hover m-0 table-actions-bar">
-
-                  <thead>
-                  </thead>
-                  <tbody is="dmx-repeat" id="itens_carrinho" dmx-bind:repeat="datastore_carrinho.data">
-                    <tr>
-                      <td class="w-70 w-75">
-                        <h3 class="m-0 fw-medium">{{item_nome}}</h3>
-                      </td>
-
-                      <td class="text-center w-15 w-25">
-                        <span class="text-warning">R$</span>{{(item_valor.toNumber() / 100).formatCurrency(' ', ',', '.', 2)}}
-                      </td>
-
-                      <td class="text-center">
-                        <button id="btn1" class="btn" dmx-on:click="datastore_carrinho.delete({$id: $id});sc_parcelamento.reset();sc_parcelamento.load({})"><i class="fas fa-trash-alt text-danger"></i></button>
-                      </td>
-                    </tr>
-
-
-                    <tr>
-
-                      <td colspan="3">
-
-                        <div class="row g-2 justify-content-start">
-                          <button id="btn2" class="btn text-start w-50 text-bg-light text-primary" dmx-on:click="participante_nome.setValue(sc_usuario_logado.data.query.usuario_nome);participante_cpf.setValue(sc_usuario_logado.data.query.usuario_cpf);participante_email.setValue(sc_usuario_logado.data.query.usuario_email);participante_telefone.setValue(sc_usuario_logado.data.query.usuario_telefone)" dmx-hide="datastore_carrinho.data[0].cpf.contains(sc_usuario_logado.data.query.usuario_cpf)">Completar com meus dados</button>
-                          <div class="col-7">
-                            <input id="participante_nome" name="participante_nome" type="text" class="form-control" placeholder="Digite o nome do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_nome: value, nome: value})" dmx-bind:value="nome" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
-                          </div>
-                          <div class="col-5">
-                            <input id="participante_cpf" name="participante_cpf" type="text" onkeyup="formatCPF(this)" class="form-control" placeholder="Digite o CPF do titular .." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_cpf: participante_cpf.value, cpf: value})" dmx-bind:value="cpf" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
-                          </div>
-                          <div class="col-7">
-                            <input id="participante_email" name="participante_email" type="text" class="form-control" placeholder="Digite o email do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_email: participante_email.value, email: value})" dmx-bind:value="email" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
-                          </div>
-                          <div class="col-5">
-                            <input id="participante_telefone" name="participante_telefone" type="text" onkeyup="formatTelefone(this)" class="form-control" placeholder="Digite o telefone do titular ..." dmx-on:updated="datastore_carrinho.update({$id: $id},{participante_telefone: value, telefone: value})" dmx-bind:value="telefone" dmx-bind:style="{'border': (!value ? '1px solid rgba(220, 53, 69, 0.8)' : '1px solid #ced4da')}">
-                          </div>
-
-                        </div>
-
-
-                      </td>
-
-
-
-
-                    </tr>
-
-
-                  </tbody>
-                </table>
-              </div>
-              <div class="row mt-4 mb-1">
-                <div class="col">
-                  <div class="d-flex flex-row gap-1 justify-content-end">
-                    <h4>Total</h4>
-                    <h4>{{(datastore_carrinho.data.sum(`item_valor`).toNumber() / 100).formatCurrency(' R$ ', ',', '.', 2)}}</h4>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-body pt-0 pb-0 ps-3 pe-3" dmx-show="datastore_carrinho.data.isEmpty()">
-            <div class="card-body pt-2">
-              <div class="row mt-4 mb-1">
-                <div class="col">
-                  <div class="d-flex flex-row gap-1 justify-content-center mb-5">
-                    <h3>O carrinho está vazio</h3>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer mt-0" dmx-hide="datastore_carrinho.data.isEmpty()">
-            <button type="button" class="btn btn-info gap-1" dmx-on:click="carrinho.hide();step.setValue(1)">
-              <i class="fas fa-cart-plus"></i>ADICIONAR MAIS ITENS</button>
-            <button type="button" class="btn btn-success" dmx-on:click="step.setValue(2);carrinho.hide();sc_parcelamento.reset();sc_parcelamento.load({})">PAGAR</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Topbar Start -->
-    <header class="app-topbar">
-      <div class="page-container topbar-menu">
-        <div class="d-flex align-items-center gap-1">
-
-          <!-- Brand Logo -->
-          <a href="index.html" class="logo">
-            <span class="logo-light">
-              <span class="logo-lg"><img src="assets/images/logo-light.png" alt="logo" width="100" class="img"></span>
-              <span class="logo-sm"><img src="assets/images/logo-sm.png" alt="small logo" width="100" class="img"></span>
-            </span>
-
-            <span class="logo-dark">
-              <span><img src="assets/images/logo-dark.png" alt="dark logo" class="img" width="100"></span>
-              <span class="logo-sm"><img src="assets/images/logo-sm.png" alt="small logo" width="100" class="img"></span>
-            </span>
+    <!-- Header -->
+    <header class="fixed-top bg-white shadow">
+      <nav class="navbar navbar-expand-lg navbar-light py-2">
+        <div class="container">
+          <a class="navbar-brand" dmx-bind:href="/" internal="true">
+            <img src="/assets/images/logo-dark.png" alt="Logo" height="40">
           </a>
-
-
-        </div>
-        <div class="row align-items-center justify-content-start d-none d-md-flex" id="menu">
-          <div class="col-auto align-self-center">
-            <button id="home" class="btn btn-link waves-effect" style="width: 100px; height: 40px;" dmx-on:click="browser1.goto('/index')">
-              <i class="fas fa-home" style="margin-right: 5px;"></i> Home
+          <div class="d-flex d-lg-none align-items-center">
+            <button class="btn position-relative me-2 p-1" type="button">
+              <i class="fas fa-bell fa-lg"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6 fw-medium">3</span>
+            </button>
+            <button class="btn position-relative me-3 p-1" type="button" data-bs-toggle="modal" data-bs-target="#carrinho" dmx-show="!datastore_carrinho.data.isEmpty()">
+              <i class="fas fa-shopping-cart fa-lg"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary fs-6 fw-medium">{{datastore_carrinho.data.length}}</span>
+            </button>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+              <span class="navbar-toggler-icon"></span>
             </button>
           </div>
-          <div class="col-auto align-self-center" id="eventos">
-            <button id="btn3" class="btn btn-link waves-effect" style="width: 110px; height: 40px;">
-              <i class="fas fa-glass-cheers" style="margin-right: 5px;"></i> Eventos
-            </button>
-          </div>
-          <div class="col-auto align-self-center">
-            <button id="faq" class="btn btn-link waves-effect" style="width: 100px; height: 40px;">
-              <i class="fas fa-question" style="margin-right: 5px;"></i> Faq
-            </button>
-          </div>
-          <div class="col-auto align-self-center">
-            <button id="meus_ingressos" class="btn btn-link waves-effect" style="width: 160px; height: 40px;" dmx-on:click="browser1.goto('/meus_ingressos')" dmx-show="!sc_usuario_logado.data.query.usuario_email.isEmpty()">
-              <i class="fas fa-ticket-alt" style="margin-right: 5px;"></i> Meus Ingressos
-            </button>
-          </div>
-        </div>
-
-
-
-
-
-        <div class="d-flex align-items-center gap-1 me-5">
-
-
-          <div class="topbar-item d-none d-sm-flex">
-            <button class="topbar-link" id="light-dark-mode" type="button">
-              <i data-lucide="moon" class="font-22 light-mode"></i>
-              <i data-lucide="sun" class="font-22 dark-mode"></i>
-            </button>
-          </div>
-
-          <!-- Language Dropdown -->
-
-          <!-- Notification Dropdown -->
-          <div class="topbar-item">
-            <div class="d-flex gap-3 align-items-center" dmx-show="!sc_usuario_logado.data.query.usuario_email.isEmpty()">
-              <div class="dropdown">
-                <button class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,25" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
-                  <i data-lucide="bell" class="font-22"></i>
-                  <span class="badge bg-pink rounded-circle noti-icon-badge">4</span>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/#evento" dmx-on:click="browser1.goto('/#evento'); return false;" dmx-class:active="browser1.location.hash == '#evento'">Eventos</a>
+              </li>
+              <li class="nav-item" dmx-show="!user.data.identity.isEmpty()">
+                <a class="nav-link" href="/compras" dmx-on:click="browser1.goto('/compras',true)" dmx-class:active="browser1.location.pathname == '/compras'">Minhas compras</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/#faq" dmx-on:click="browser1.goto('/#faq'); return false;" dmx-class:active="browser1.location.hash == '#faq'">Dúvidas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/#contato" dmx-on:click="browser1.goto('/#contato'); return false;" dmx-class:active="browser1.location.hash == '#contato'">Contato</a>
+              </li>
+            </ul>
+            <div class="d-flex align-items-center">
+              <div class="d-none d-lg-flex me-3">
+                <button class="btn position-relative me-2 p-1" type="button">
+                  <i class="fas fa-bell fa-lg"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6 fw-medium">3</span>
                 </button>
-
-                <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg" style="min-height: 300px; min-width: 300px; width: 450px; max-width: 100vw;" dmx-repeat:info="sc_usuario_logado.data.informacoes">
-                  <!-- Cabeçalho -->
-                  <div class="p-3 border-bottom bg-primary w-100">
-                    <div class="d-flex align-items-center w-100">
-                      <h6 class="m-0 font-16 fw-medium text-white flex-grow-1 me-3">Informações</h6>
-                      <div class="dropdown flex-shrink-0">
-                        <a href="#" class="dropdown-toggle drop-arrow-none link-dark" data-bs-toggle="dropdown" data-bs-offset="0,15" aria-expanded="false">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                          <a href="javascript:void(0);" class="dropdown-item">Configurações</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Lista de notificações -->
-                  <div class="position-relative z-2" style="max-height: 400px;" data-simplebar>
-                    <div dmx-repeat:notification="info">
-                      <div class="dropdown-item notification-item p-3 text-wrap" id="notification-{{id}}">
-                        <div class="d-flex align-items-start">
-                          <!-- Avatar dinâmico -->
-                          <div class="me-3 position-relative flex-shrink-0">
-                            <img alt="Avatar" class="avatar avatar-md rounded-circle" style="width: 50px; height: 50px;" dmx-bind:src="imagem_url">
-                          </div>
-                          <!-- Conteúdo da notificação -->
-                          <div class="flex-grow-1 text-muted">
-                            <p class="fw-medium mb-1 text-dark" dmx-text="titulo"></p>
-                            <span class="font-12 d-block" dmx-text="conteudo"></span>
-                          </div>
-                          <!-- Botão de ação (Excluir) -->
-                          <div class="ms-2 flex-shrink-0">
-                            <button type="button" class="btn btn-danger rounded-circle btn-sm btn-icon" title="Excluir">
-                              <i class="mdi mdi-trash-can-outline font-18"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-
-              </div>
-
-
-              <div class="dropdown" dmx-show="datastore_carrinho.data.count()&gt;0" dmx-on:click="carrinho.show();sc_parcelamento.reset()">
-                <button class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,25" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
-                  <i class="fas fa-shopping-cart fa-2x text-info"></i>
-                  <span class="badge bg-pink rounded-circle noti-icon-badge">{{datastore_carrinho.data.count()}}</span>
+                <button class="btn position-relative me-2 p-1" type="button" data-bs-toggle="modal" data-bs-target="#carrinho" dmx-show="!datastore_carrinho.data.isEmpty()">
+                  <i class="fas fa-shopping-cart fa-lg"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary fs-6 fw-medium">{{datastore_carrinho.data.length}}</span>
                 </button>
-
-
               </div>
-              <div class="dropdown">
-                <a class="topbar-link dropdown-toggle drop-arrow-none px-0" data-bs-toggle="dropdown" data-bs-offset="0,19" type="button" aria-haspopup="false" aria-expanded="false">
-                  <img src="/assets/images/users/avatar-6.jpg" width="35" class="rounded-circle me-lg-2 d-flex" alt="user-image" dmx-bind:src="sc_usuario_logado.data.query.foto" height="35">
-                  <span class="d-lg-flex flex-column gap-1 d-none">
-                    <span class="my-0">{{sc_usuario_logado.data.query.usuario_apelido}}</span>
-                  </span>
-                  <i data-lucide="chevron-down" class="d-none d-sm-flex" height="12"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <!-- item-->
-
-                  <!-- item-->
-                  <a href="javascript:void(0);" class="dropdown-item">
-                    <i class="mdi mdi-account-circle-outline me-1 font-17 align-middle"></i>
-                    <span class="align-middle">Perfil</span>
-                  </a>
-                  <a href="javascript:void(0);" class="dropdown-item">
-                    <i class="mdi mdi-account-circle-outline me-1 font-17 align-middle"></i>
-                    <span class="align-middle">Eventos</span>
-                  </a>
-                  <a href="javascript:void(0);" class="dropdown-item">
-                    <i class="mdi mdi-account-circle-outline me-1 font-17 align-middle"></i>
-                    <span class="align-middle">Faq</span>
-                  </a>
-
-                  <!-- item-->
-                  <a href="javascript:void(0);" class="dropdown-item">
-                    <i class="mdi mdi-ticket-confirmation-outline me-1 font-17 align-middle"></i>
-                    <span class="align-middle">Meus ingressos</span>
-                  </a>
-
-                  <!-- item-->
-
-                  <!-- item-->
-
-                  <div class="dropdown-divider"></div>
-
-                  <!-- item-->
-
-                  <!-- item-->
-                  <a class="dropdown-item active fw-semibold text-danger" dmx-on:click="sc_logout.load({});sc_usuario_logado.reset();notifies1.success('Você está desconectado!')">
-                    <i class="mdi mdi-logout me-1 font-17 align-middle"></i>
-                    <span class="align-middle">Sair</span>
-                  </a>
-                </div>
+              <button id="btn1" class="btn text-bg-primary" dmx-on:click="browser1.goto('/login')" dmx-show="user.data.identity.isEmpty()">Login</button>
+              <div class="dropdown" dmx-show="!user.data.identity.isEmpty()">
+                <button class="btn dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">
+                  <img alt="User" class="rounded-circle me-2" width="32" height="32" dmx-bind:src="user.data.user.foto||'https://images.unsplash.com/photo-1633332755192-727a05c4013d'">
+                  <span class="d-none d-lg-inline">{{user.data.user.usuario_apelido}}</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="/perfil" dmx-on:click="browser1.goto('/perfil'); return false;"><i class="fas fa-user me-2"></i>Perfil</a></li>
+                  <li dmx-show="user.data.user.adm == 1"></li>
+                  <li><a class="dropdown-item" href="#" dmx-on:click="logout.submit()"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
+                </ul>
               </div>
             </div>
-            <div class="d-flex">
-              <button btn1"="" class="btn text-bg-primary ms-3 me-3" data-bs-toggle="button" dmx-on:click="browser1.goto('/login')" dmx-show="sc_usuario_logado.data.query.usuario_email.isEmpty()">Login</button>
-            </div>
           </div>
-
-          <!-- User Dropdown -->
-          <div class="topbar-item nav-user">
-
-          </div>
-
-          <!-- Button Trigger Customizer Offcanvas -->
         </div>
-      </div>
+      </nav>
     </header>
-    <!-- Topbar End -->
 
-    <!-- Horizontal Menu Start -->
-    <div class="container">
-      <%- await include(content, locals) %>
+    <!-- Main Content -->
+    <div class="container mt-5 pt-4">
+      <div is="dmx-view" id="content">
+        <%- await include(content, locals) %>
+      </div>
     </div>
-    <!-- Horizontal Menu End -->
 
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
-
-
-    <!-- Footer Start -->
-    <footer class="footer">
-      <div class="page-container">
+    <!-- Footer -->
+    <footer class="footer bg-light mt-5">
+      <div class="container py-3">
         <div class="row">
-          <div class="col-md-12">
-            <div class="d-flex flex-row justify-content-between">
-              <div class="d-flex align-items-center">
-                <h6 class="mt-0 mb-0 "><i class="fas fa-map-marker-alt"></i>&nbsp;Endereço</h6>
+          <div class="col-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+              <div class="mb-2 mb-md-0">
+                <i class="fas fa-map-marker-alt"></i> Av. Brasil, 1500 - Centro
               </div>
-              <div class="d-flex">
-                <h6 class="mt-0 mb-0"><i class="fas fa-phone-square-alt"></i>&nbsp;49 99978-7984</h6>
+              <div class="mb-2 mb-md-0">
+                <i class="fas fa-phone-alt"></i> (49) 99978-7984
               </div>
-              <div class="d-flex">
-                <h6 class="mt-0 mb-0"><i class="fas fa-envelope"></i>&nbsp;support@yourmail.com</h6>
+              <div>
+                <i class="fas fa-envelope"></i> contato@eventosapp.com
               </div>
             </div>
           </div>
         </div>
       </div>
     </footer>
-    <!-- end Footer -->
-
   </div>
-  <!-- ============================================================== -->
-  <!-- End Page content -->
-  <!-- ============================================================== -->
-
-  </div>
-  <!-- END wrapper -->
-
-
-  <!-- Theme Settings -->
-
-  <!-- Vendor js -->
-  <script src="/assets/js/vendor.min.js"></script>
 
   <!-- App js -->
+  <script src="/assets/vendor/node-waves/waves.min.js"></script>
+  <script src="/assets/js/vendor.min.js"></script>
   <script src="/assets/js/app.js"></script>
 
-  <!--C3 Chart-->
-  <script src="assets/vendor/d3/d3.min.js"></script>
-  <script src="assets/vendor/c3/c3.min.js"></script>
-
-
-  <script src="assets/vendor/echarts/echarts.min.js"></script>
-
-  <!-- Projects Analytics Dashboard App js -->
-  <script src="assets/js/pages/dashboard-sales.js"></script>
-
   <script>
-    function formatTelefone(input) {
-        let value = input.value;
+    document.addEventListener('DOMContentLoaded', function() {
+      const preloader = document.getElementById('app-preloader');
+      const content = document.querySelector('.container');
 
-        // Remove todos os caracteres que não são dígitos
-        value = value.replace(/[\D]+/g, "");
+      // Adiciona classe de blur ao conteúdo
+      if (content) content.classList.add('content-loading');
 
-        // Aplica a máscara de telefone
-        if (value.length <= 10) {
-            value = value.replace(/(\d{2})(\d)/, "($1) $2");
-            value = value.replace(/(\d{4})(\d{1,4})$/, "$1-$2");
+      let loadingTimeout;
+
+      function hidePreloader() {
+        preloader.classList.add('loaded');
+        if (content) content.classList.remove('content-loading');
+      }
+
+      function checkAllRequestsComplete() {
+        clearTimeout(loadingTimeout);
+
+        // Verifica serverConnects que estão carregando
+        const pendingRequests = Array.from(document.querySelectorAll('[is="dmx-serverconnect"]'))
+          .filter(el => el.hasAttribute('url') && !el.hasAttribute('noload'))
+          .map(el => dmx.app.get(el.id))
+          .filter(sc => sc);
+
+        if (pendingRequests.length === 0) {
+          hidePreloader();
+          return;
+        }
+
+        // Verifica se todas as requisições foram completadas
+        const allComplete = pendingRequests.every(sc => 
+          sc.data || sc.lastError || !sc.loading
+        );
+
+        if (allComplete) {
+          setTimeout(hidePreloader, 300);
         } else {
-            value = value.replace(/(\d{2})(\d)/, "($1) $2");
-            value = value.replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+          // Fallback para garantir que o preloader não fique preso
+          loadingTimeout = setTimeout(hidePreloader, 3000);
         }
+      }
 
-        // Atualiza o valor do campo de entrada
-        input.value = value;
-    }
+      // Monitora mudanças no DOM para serverConnects
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList') {
+            const serverConnects = mutation.target.querySelectorAll('[is="dmx-serverconnect"]');
+            serverConnects.forEach(sc => {
+              const component = dmx.app.get(sc.id);
+              if (component && !component._preloaderBound) {
+                component._preloaderBound = true;
+                component.addEventListener('success', checkAllRequestsComplete);
+                component.addEventListener('error', checkAllRequestsComplete);
+              }
+            });
+          }
+        });
+      });
+
+      // Observa mudanças no DOM
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+
+      // Checa as requisições iniciais
+      setTimeout(checkAllRequestsComplete, 500);
+
+      // Fallback final
+      window.addEventListener('load', function() {
+        setTimeout(hidePreloader, 3000);
+      });
+      
+      // Função para processar links internos
+      function setupInternalLinks() {
+        // Processa todos os links internos no documento
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+          if (!link.hasAttribute('dmx-on:click') && !link.getAttribute('href').startsWith('//') && !link.getAttribute('href').includes('://')) {
+            const href = link.getAttribute('href');
+            link.setAttribute('dmx-on:click', `browser1.goto('${href}'); return false;`);
+            link.setAttribute('internal', 'true');
+          }
+        });
+      }
+      
+      // Configura links internos após carregamento
+      setupInternalLinks();
+      
+      // Observe navegação para configurar links em conteúdo dinâmico
+      const contentObserver = new MutationObserver(setupInternalLinks);
+      contentObserver.observe(document.getElementById('content'), { 
+        childList: true, 
+        subtree: true 
+      });
+    });
   </script>
-  <script>
-    function formatCPF(input) {
-        let value = input.value;
-
-        // Remove todos os caracteres que não são dígitos
-        value = value.replace(/[\D]+/g, "");
-
-        // Aplica a máscara de CPF
-        if (value.length <= 11) {
-            value = value.replace(/(\d{3})(\d)/, "$1.$2");
-            value = value.replace(/(\d{3})(\d)/, "$1.$2");
-            value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-        }
-
-        // Atualiza o valor do campo de entrada
-        input.value = value;
-    }
-  </script>
-
 
 </body>
 
