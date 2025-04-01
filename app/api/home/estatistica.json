@@ -1,0 +1,118 @@
+[
+  {
+    "name": "estatistica",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "select",
+        "columns": [],
+        "params": [],
+        "table": {
+          "name": "view_estatisticas"
+        },
+        "joins": [],
+        "query": "select * from \"view_estatisticas\""
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "number",
+        "name": "organizador_id"
+      },
+      {
+        "type": "number",
+        "name": "total_vendas"
+      },
+      {
+        "type": "number",
+        "name": "total_credito"
+      },
+      {
+        "type": "number",
+        "name": "total_pix"
+      },
+      {
+        "type": "number",
+        "name": "qtide_vendas"
+      },
+      {
+        "type": "number",
+        "name": "qtide_pix"
+      },
+      {
+        "type": "number",
+        "name": "qtide_credito"
+      },
+      {
+        "type": "number",
+        "name": "qtide_devolucoes"
+      },
+      {
+        "type": "number",
+        "name": "qtide_cortesias"
+      },
+      {
+        "type": "number",
+        "name": "qtide_usuarios"
+      },
+      {
+        "type": "number",
+        "name": "qtide_eventos"
+      }
+    ],
+    "outputType": "object"
+  },
+  {
+    "name": "grafico",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "select",
+        "columns": [],
+        "params": [],
+        "table": {
+          "name": "view_grafico"
+        },
+        "joins": [],
+        "query": "select * from \"view_grafico\""
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "number",
+        "name": "organizador_id"
+      },
+      {
+        "type": "object",
+        "name": "total_vendas"
+      },
+      {
+        "type": "object",
+        "name": "total_geral"
+      },
+      {
+        "type": "object",
+        "name": "total_vendas_hoje"
+      },
+      {
+        "type": "object",
+        "name": "total_geral_hoje"
+      },
+      {
+        "type": "object",
+        "name": "top_vendas"
+      },
+      {
+        "type": "object",
+        "name": "ultimas_vendas"
+      }
+    ],
+    "outputType": "object"
+  }
+]

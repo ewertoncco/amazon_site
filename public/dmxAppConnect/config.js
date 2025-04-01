@@ -305,29 +305,8 @@ dmx.config({
   },
   "home": {
     "ultimas_vendas": {
-      "meta": [
-        {
-          "type": "datetime",
-          "name": "data_criacao"
-        },
-        {
-          "type": "text",
-          "name": "nome_participante"
-        },
-        {
-          "type": "text",
-          "name": "evento_nome"
-        },
-        {
-          "type": "text",
-          "name": "produto_nome"
-        },
-        {
-          "type": "number",
-          "name": "forma_pagamento_id"
-        }
-      ],
-      "outputType": "array"
+      "meta": null,
+      "outputType": "object"
     }
   },
   "comeco": {

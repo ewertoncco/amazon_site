@@ -304,6 +304,9 @@
     }
   </style>
   <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootstrap5Theme/dmxBootstrap5Theme.js" defer></script>
+  <script src="/dmxAppConnect/dmxCharts/Chart.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxCharts/dmxCharts.js" defer></script>
 </head>
 
 <body is="dmx-app" id="admin" spa="true" base="true">
@@ -334,11 +337,11 @@
       <div class="ps-3 mb-4">
         <div class="d-flex align-items-center">
           <div class="avatar me-3">
-            <img dmx-bind:src="sc_user.data.identity.isEmpty() ? 'assets/images/users/avatar-1.jpg' : sc_user.data.user.foto || 'assets/images/users/avatar-1.jpg'" alt="Avatar">
+            <img dmx-bind:src="sc_user.data.identity.isEmpty() ? 'assets/images/users/avatar-1.jpg' : sc_user.data.user.foto || 'assets/images/users/avatar-1.jpg'" alt="Avatar" class="img-fluid">
           </div>
           <div>
             <h6 class="mb-0" dmx-text="sc_user.data.identity.isEmpty() ? 'Administrador' : sc_user.data.user.usuario_apelido">Administrador</h6>
-            <p class="mb-0 text-muted small">Admin</p>
+            <p class="mb-0 text-muted small">{{sc_user.data.user.usuario_email}}</p>
           </div>
         </div>
       </div>

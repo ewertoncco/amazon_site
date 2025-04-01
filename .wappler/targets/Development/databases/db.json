@@ -14,7 +14,9 @@
     ],
     "tables": {
       "logs": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -106,7 +108,9 @@
         }
       },
       "eventos_despesas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -211,7 +215,9 @@
         "parent": "eventos"
       },
       "eventos_itens": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -361,7 +367,9 @@
         }
       },
       "categoria_item": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -387,7 +395,9 @@
         }
       },
       "noticias": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -452,7 +462,9 @@
         }
       },
       "forma_pagamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -477,7 +489,9 @@
         }
       },
       "notificacoes": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -580,7 +594,9 @@
         }
       },
       "notificacoes_nao_lidas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -630,7 +646,9 @@
         "parent": "notificacoes"
       },
       "genero": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -655,7 +673,9 @@
         }
       },
       "organizador_dados": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -781,7 +801,9 @@
         "parent": "organizador"
       },
       "status_pagamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -806,7 +828,9 @@
         }
       },
       "vendas": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1048,7 +1072,9 @@
         ]
       },
       "tipo_despesa": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1073,7 +1099,9 @@
         }
       },
       "evento_checklist": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1170,7 +1198,9 @@
         "parent": "eventos"
       },
       "status_publicacao": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1196,7 +1226,9 @@
         }
       },
       "usuarios": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1428,7 +1460,9 @@
         }
       },
       "eventos": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1701,7 +1735,9 @@
         }
       },
       "carrinho": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1875,7 +1911,9 @@
         }
       },
       "organizador": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1934,7 +1972,9 @@
         }
       },
       "parcelamento": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -1972,7 +2012,9 @@
         }
       },
       "meus_indicados": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -2021,7 +2063,9 @@
         }
       },
       "sessions": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "sid": {
             "db": {
@@ -2187,7 +2231,9 @@
         }
       },
       "view_itens": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -2285,7 +2331,9 @@
         }
       },
       "view_eventos_adm": {
-        "db": {},
+        "db": {
+          "schema": "public"
+        },
         "columns": {
           "id": {
             "db": {
@@ -2554,6 +2602,146 @@
             }
           },
           "itens": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "view_estatisticas": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "organizador_id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_vendas": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_credito": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_pix": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_vendas": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_pix": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_credito": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_devolucoes": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_cortesias": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_usuarios": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_eventos": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "view_grafico": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "organizador_id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_vendas": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_geral": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_vendas_hoje": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_geral_hoje": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "top_vendas": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "ultimas_vendas": {
             "db": {
               "type": "json",
               "primary": false,
