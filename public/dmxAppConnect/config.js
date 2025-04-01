@@ -662,5 +662,11 @@ dmx.config({
         "name": "evento"
       }
     ]
+  },
+  "evento_adm": {
+    "lista_ingressos": {
+      "meta": null,
+      "outputType": "object"
+    }
   }
 });

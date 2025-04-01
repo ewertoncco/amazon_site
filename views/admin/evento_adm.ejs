@@ -1,6 +1,6 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="adm_eventos" appConnect="local" -->
+<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="evento_adm" appConnect="local" components="{dmxFormatter:{}}" -->
 <dmx-serverconnect id="evento" url="/api/eventos/evento_adm" dmx-param:evento="query.evento"></dmx-serverconnect>
-<meta name="ac:route" content="/adm_evento/:evento">
+<meta name="ac:route" content="/admin/evento_adm/:evento">
 
 <div class="page-heading">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -24,7 +24,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Transações</h6>
-                            <h3 class="fw-bold mb-0">28</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.quantidade_vendas}}</h3>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Valor</h6>
-                            <h3 class="fw-bold mb-0">R$ 1.175,00</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_vendas}}</h3>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Qtide PIX</h6>
-                            <h3 class="fw-bold mb-0">22</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.qtide_pix}}</h3>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Total Pix</h6>
-                            <h3 class="fw-bold mb-0">R$ 868,50</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_pix}}</h3>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Qtide Crédito</h6>
-                            <h3 class="fw-bold mb-0">6</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.qtide_credito}}</h3>
                         </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Valor Crédito</h6>
-                            <h3 class="fw-bold mb-0">R$ 189,00</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_credito}}</h3>
                         </div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Cortesias</h6>
-                            <h3 class="fw-bold mb-0">47</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_cortesias}}</h3>
                         </div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-0">Devoluções</h6>
-                            <h3 class="fw-bold mb-0">0</h3>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_devolucoes}}</h3>
                         </div>
                     </div>
                 </div>
@@ -173,78 +173,24 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody is="dmx-repeat" id="lista_ingressos" key="id" dmx-bind:repeat="evento.data.evento.itens">
                                 <tr>
-                                    <td>Mesa Promo (4 ingressos)</td>
-                                    <td>R$ 200,00</td>
-                                    <td>12/10 20:04</td>
-                                    <td>31/10 20:04</td>
+                                    <td>{{nome}}</td>
+                                    <td>{{valor.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</td>
+                                    <td>{{inicio_vendas.formatDate('dd/MM/yy HH:mm')}}</td>
+                                    <td>{{final_vendas.formatDate('dd/MM/yy HH:mm')}}</td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">4 / 100</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 4%"></div>
+                                        <div class="d-flex align-items-center flex-row">
+                                            <span class="me-2">{{total_vendas}}/{{qtide_cadastrada}}</span>
+                                            <div class="progress w-100" style="height: 10px;">
+                                                <div class="progress-bar" role="progressbar" dmx-bind:style="width: {{porcentagem_vendas}}%" dmx-bind:class="porcentagem_vendas < 30 ? 'bg-danger' : (porcentagem_vendas < 70 ? 'bg-warning' : 'bg-success')">
+                                                </div>
                                             </div>
+
+
                                         </div>
                                     </td>
-                                    <td>200</td>
-                                    <td>0</td>
-                                    <td>
-                                        <a href="#"><i class="fas fa-edit text-primary"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Backstage DJ</td>
-                                    <td>R$ 0,00</td>
-                                    <td>25/10 15:53</td>
-                                    <td>25/10 15:53</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">1 de 20</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 5%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>
-                                        <a href="#"><i class="fas fa-edit text-primary"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Ingresso Área VIP Promo</td>
-                                    <td>R$ 60,00</td>
-                                    <td>12/10 19:59</td>
-                                    <td>30/10 15:00</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">0 de 40</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>
-                                        <a href="#"><i class="fas fa-edit text-primary"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Camarote (R$500 consumação + 15 pulseiras)</td>
-                                    <td>R$ 2.500,00</td>
-                                    <td>12/10 20:06</td>
-                                    <td>09/11 20:06</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2">0 de 100</span>
-                                            <div class="progress w-100" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>0</td>
+                                    <td>{{total_vendas}}</td>
                                     <td>0</td>
                                     <td>
                                         <a href="#"><i class="fas fa-edit text-primary"></i></a>

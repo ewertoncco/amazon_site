@@ -4,5 +4,8 @@
   },
   "dashboard.ejs": {
     "description": ""
+  },
+  "adm.ejs": {
+    "description": ""
   }
 }

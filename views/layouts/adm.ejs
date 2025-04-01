@@ -346,21 +346,21 @@
       <div class="menu-header">Geral</div>
       <ul class="menu">
         <li class="sidebar-item">
-          <a href="/home" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/home'" internal="true">
+          <a href="/admin/home" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/home'" internal="true">
             <i class="fas fa-home"></i>
             <span class="sidebar-title">Dashboard</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a href="/adm_eventos" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm_eventos'" internal="true">
+          <a href="/admin/eventos_adm" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm_eventos'" internal="true">
             <i class="fas fa-calendar-days"></i>
             <span class="sidebar-title">Eventos</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a href="/adm/estorno" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/estorno'" internal="true">
+          <a href="#" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/estorno'" internal="true">
             <i class="fas fa-life-ring"></i>
             <span class="sidebar-title">Estorno</span>
             <span class="badge bg-danger rounded-pill ms-auto">01</span>
@@ -430,7 +430,6 @@
       <!-- Footer Start -->
       <footer class="mt-5">
         <div class="text-center text-muted">
-          <p class="mb-0 small">&copy; 2024 Amazon Ingressos. Todos os direitos reservados.</p>
         </div>
       </footer>
       <!-- end Footer -->
@@ -479,6 +478,7 @@
       }
       
       let initialRequestsChecked = false;
+      let navigationCounter = 0;
       
       function checkAllRequestsComplete() {
         // Verifica serverConnects que estão carregando
@@ -549,10 +549,63 @@
         document.querySelectorAll('a[href^="/"]').forEach(link => {
           if (!link.hasAttribute('dmx-on:click') && !link.getAttribute('href').startsWith('//') && !link.getAttribute('href').includes('://')) {
             const href = link.getAttribute('href');
-            link.setAttribute('dmx-on:click', `browser1.goto('${href}'); return false;`);
+            link.setAttribute('dmx-on:click', `navigateToPage('${href}'); return false;`);
             link.setAttribute('internal', 'true');
           }
         });
+      }
+      
+      // Função de navegação para resolver problemas de cache
+      window.navigateToPage = function(url) {
+        navigationCounter++;
+        if (navigationCounter > 30) {
+          // Verificar se estamos navegando para a mesma página atual
+          if (url === window.location.pathname) {
+            // Apenas resetar o contador sem recarregar
+            navigationCounter = 0;
+            
+            // Limpar caches de requisições anteriores
+            Array.from(document.querySelectorAll('[is="dmx-serverconnect"]'))
+              .map(el => dmx.app.get(el.id))
+              .filter(sc => sc && typeof sc.reset === 'function')
+              .forEach(sc => sc.reset());
+              
+            // Atualizar apenas o conteúdo atual se possível
+            try {
+              // Tentar recarregar apenas os componentes serverconnect visíveis
+              Array.from(document.querySelectorAll('[is="dmx-serverconnect"]:not([noload])'))
+                .map(el => dmx.app.get(el.id))
+                .filter(sc => sc && typeof sc.load === 'function')
+                .forEach(sc => sc.load({}));
+            } catch (e) {
+              console.log('Erro ao atualizar componentes:', e);
+            }
+            
+            return;
+          }
+          
+          // Limitar contagem e forçar recarregamento completo
+          window.location.href = url;
+          navigationCounter = 0;
+          return;
+        }
+        
+        // Limpar caches de requisições anteriores
+        Array.from(document.querySelectorAll('[is="dmx-serverconnect"]'))
+          .map(el => dmx.app.get(el.id))
+          .filter(sc => sc && typeof sc.reset === 'function')
+          .forEach(sc => sc.reset());
+          
+        // Usar o browser1.goto apenas após limpeza
+        browser1.goto(url, true);
+        
+        // Adicionar evento para resetar o contador quando a página carregar completamente
+        if (navigationCounter > 25) {
+          setTimeout(function() {
+            // Resetar parcialmente o contador a cada carregamento bem sucedido
+            navigationCounter = Math.max(0, navigationCounter - 5);
+          }, 1000);
+        }
       }
       
       // Configura links internos
@@ -571,7 +624,7 @@
         if (link) {
           e.preventDefault();
           const href = link.getAttribute('href');
-          browser1.goto(href);
+          navigateToPage(href);
         }
       });
       

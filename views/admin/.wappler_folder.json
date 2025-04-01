@@ -4,7 +4,7 @@
     "description": ""
   },
   "home.ejs": {
-    "layoutPage": "admin",
+    "layoutPage": "adm",
     "description": ""
   },
   "adm_evento.ejs": {
@@ -20,7 +20,11 @@
     "description": ""
   },
   "eventos_adm.ejs": {
-    "layoutPage": "layoutadm",
+    "layoutPage": "adm",
+    "description": ""
+  },
+  "evento_adm.ejs": {
+    "layoutPage": "adm",
     "description": ""
   }
 }

@@ -14,9 +14,7 @@
     ],
     "tables": {
       "logs": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -108,9 +106,7 @@
         }
       },
       "eventos_despesas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -215,9 +211,7 @@
         "parent": "eventos"
       },
       "eventos_itens": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -367,9 +361,7 @@
         }
       },
       "categoria_item": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -395,9 +387,7 @@
         }
       },
       "noticias": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -462,9 +452,7 @@
         }
       },
       "forma_pagamento": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -489,9 +477,7 @@
         }
       },
       "notificacoes": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -594,9 +580,7 @@
         }
       },
       "notificacoes_nao_lidas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -646,9 +630,7 @@
         "parent": "notificacoes"
       },
       "genero": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -673,9 +655,7 @@
         }
       },
       "organizador_dados": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -801,9 +781,7 @@
         "parent": "organizador"
       },
       "status_pagamento": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -828,9 +806,7 @@
         }
       },
       "vendas": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1072,9 +1048,7 @@
         ]
       },
       "tipo_despesa": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1099,9 +1073,7 @@
         }
       },
       "evento_checklist": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1198,9 +1170,7 @@
         "parent": "eventos"
       },
       "status_publicacao": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1226,9 +1196,7 @@
         }
       },
       "usuarios": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1460,9 +1428,7 @@
         }
       },
       "eventos": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1735,9 +1701,7 @@
         }
       },
       "carrinho": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1889,7 +1853,7 @@
               "nullable": true
             }
           },
-          "total_plataforma": {
+          "liquido": {
             "db": {
               "type": "decimal",
               "primary": false,
@@ -1911,9 +1875,7 @@
         }
       },
       "organizador": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -1972,9 +1934,7 @@
         }
       },
       "parcelamento": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -2012,9 +1972,7 @@
         }
       },
       "meus_indicados": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -2063,9 +2021,7 @@
         }
       },
       "sessions": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "sid": {
             "db": {
@@ -2097,10 +2053,239 @@
       }
     },
     "views": {
+      "view_itens_evento": {
+        "db": {},
+        "columns": {
+          "id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "criado_em": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "atualizado_em": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "criado_por": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "evento_id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_cadastrada": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "inicio_vendas": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "final_vendas": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "valor": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "ordem": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "ativo": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "is_mesa": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_mesa": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "tipo_item": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "total_vendas": {
+            "db": {
+              "type": "bigInteger",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "quase_acabando": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "contagem_regressiva": {
+            "db": {
+              "type": "float",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "view_itens": {
+        "db": {},
+        "columns": {
+          "id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "evento_id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_cadastrada": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "inicio_vendas": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "final_vendas": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "valor": {
+            "db": {
+              "type": "decimal",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "ordem": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "is_mesa": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "qtide_mesa": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "tipo_item": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "quase_acabando": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "contagem_regressiva": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
       "view_eventos_adm": {
-        "db": {
-          "schema": "public"
-        },
+        "db": {},
         "columns": {
           "id": {
             "db": {
@@ -2318,238 +2503,59 @@
               "primary": false,
               "nullable": true
             }
-          }
-        }
-      },
-      "view_itens": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
           },
-          "evento_id": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "nome": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "qtide_cadastrada": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "inicio_vendas": {
-            "db": {
-              "type": "timestamp",
-              "useTz": true,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "final_vendas": {
-            "db": {
-              "type": "timestamp",
-              "useTz": true,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "valor": {
+          "total_cortesias": {
             "db": {
               "type": "decimal",
               "primary": false,
               "nullable": true
             }
           },
-          "ordem": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "is_mesa": {
-            "db": {
-              "type": "boolean",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "qtide_mesa": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "tipo_item": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "quase_acabando": {
-            "db": {
-              "type": "boolean",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "contagem_regressiva": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        }
-      },
-      "view_itens_evento": {
-        "db": {
-          "schema": "public"
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "criado_em": {
-            "db": {
-              "type": "timestamp",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "atualizado_em": {
-            "db": {
-              "type": "timestamp",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "criado_por": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "evento_id": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "nome": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "qtide_cadastrada": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "inicio_vendas": {
-            "db": {
-              "type": "timestamp",
-              "useTz": true,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "final_vendas": {
-            "db": {
-              "type": "timestamp",
-              "useTz": true,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "valor": {
+          "qtide_pix": {
             "db": {
               "type": "decimal",
               "primary": false,
               "nullable": true
             }
           },
-          "ordem": {
+          "total_pix": {
             "db": {
-              "type": "integer",
+              "type": "decimal",
               "primary": false,
               "nullable": true
             }
           },
-          "ativo": {
+          "qtide_credito": {
             "db": {
-              "type": "boolean",
+              "type": "decimal",
               "primary": false,
               "nullable": true
             }
           },
-          "is_mesa": {
+          "total_credito": {
             "db": {
-              "type": "boolean",
+              "type": "decimal",
               "primary": false,
               "nullable": true
             }
           },
-          "qtide_mesa": {
+          "total_devolucoes": {
             "db": {
-              "type": "integer",
+              "type": "decimal",
               "primary": false,
               "nullable": true
             }
           },
-          "tipo_item": {
+          "porcentagem_geral_vendas": {
             "db": {
-              "type": "integer",
+              "type": "decimal",
               "primary": false,
               "nullable": true
             }
           },
-          "total_vendas": {
+          "itens": {
             "db": {
-              "type": "bigInteger",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "quase_acabando": {
-            "db": {
-              "type": "boolean",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "contagem_regressiva": {
-            "db": {
-              "type": "float",
+              "type": "json",
               "primary": false,
               "nullable": true
             }

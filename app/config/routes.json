@@ -37,34 +37,19 @@
       "layout": "homepage"
     },
     {
-      "path": "/home",
+      "path": "/admin/home",
       "page": "admin/home",
-      "layout": "admin"
+      "layout": "adm"
     },
     {
-      "path": "/adm",
-      "page": "admin/home",
-      "layout": "admin"
-    },
-    {
-      "path": "/adm_evento/:evento",
-      "page": "admin/adm_evento",
-      "layout": "admin"
-    },
-    {
-      "path": "/adm_eventos",
-      "page": "admin/adm_eventos",
-      "layout": "admin"
-    },
-    {
-      "path": "/homepage",
-      "page": "admin/homepage",
-      "layout": "layoutadm"
-    },
-    {
-      "path": "/eventos_adm",
+      "path": "/admin/eventos_adm",
       "page": "admin/eventos_adm",
-      "layout": "layoutadm"
+      "layout": "adm"
+    },
+    {
+      "path": "/admin/evento_adm/:evento",
+      "page": "admin/evento_adm",
+      "layout": "adm"
     }
   ],
   "layouts": {
