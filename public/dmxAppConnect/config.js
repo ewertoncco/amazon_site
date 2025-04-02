@@ -646,6 +646,26 @@ dmx.config({
     "lista_ingressos": {
       "meta": null,
       "outputType": "object"
+    },
+    "inpt_evento_id": {
+      "meta": null,
+      "outputType": "number"
+    },
+    "data_item": {
+      "meta": null,
+      "outputType": "object"
+    },
+    "edit_id": {
+      "meta": null,
+      "outputType": "text"
     }
+  },
+  "admin": {
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "item_id"
+      }
+    ]
   }
 });

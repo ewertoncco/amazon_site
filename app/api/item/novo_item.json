@@ -1,0 +1,225 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "evento_id"
+      },
+      {
+        "type": "text",
+        "name": "nome"
+      },
+      {
+        "type": "number",
+        "name": "qtide_cadastrada"
+      },
+      {
+        "type": "datetime",
+        "name": "inicio_vendas"
+      },
+      {
+        "type": "datetime",
+        "name": "final_vendas"
+      },
+      {
+        "type": "number",
+        "name": "valor"
+      },
+      {
+        "type": "number",
+        "name": "ordem"
+      },
+      {
+        "type": "boolean",
+        "name": "ativo"
+      },
+      {
+        "type": "boolean",
+        "name": "is_mesa"
+      },
+      {
+        "type": "number",
+        "name": "qtide_mesa"
+      },
+      {
+        "type": "number",
+        "name": "tipo_item"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "novo_item",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "evento_itens",
+              "column": "evento_id",
+              "type": "number",
+              "value": "{{$_POST.evento_id}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "nome",
+              "type": "text",
+              "value": "{{$_POST.nome}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "qtide_cadastrada",
+              "type": "number",
+              "value": "{{$_POST.qtide_cadastrada}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "inicio_vendas",
+              "type": "datetime",
+              "value": "{{$_POST.inicio_vendas}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "final_vendas",
+              "type": "datetime",
+              "value": "{{$_POST.final_vendas}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "valor",
+              "type": "number",
+              "value": "{{$_POST.valor.replace('.', '').replace(',', '.')}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "ordem",
+              "type": "number",
+              "value": "{{$_POST.ordem || 1}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "ativo",
+              "type": "boolean",
+              "value": "{{$_POST.ativo || false}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "is_mesa",
+              "type": "boolean",
+              "value": "{{$_POST.is_mesa || false}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "qtide_mesa",
+              "type": "number",
+              "value": "{{$_POST.qtide_mesa || 0}}",
+              "condition": "{{$_POST.is_mesa}}"
+            },
+            {
+              "table": "evento_itens",
+              "column": "tipo_item",
+              "type": "number",
+              "value": "{{$_POST.tipo_item}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "criado_por",
+              "type": "number",
+              "value": "{{identity}}"
+            }
+          ],
+          "table": "eventos_itens",
+          "returning": "id",
+          "query": "insert into \"eventos_itens\" (\"ativo\", \"criado_por\", \"evento_id\", \"final_vendas\", \"inicio_vendas\", \"is_mesa\", \"nome\", \"ordem\", \"qtide_cadastrada\", \"qtide_mesa\", \"tipo_item\", \"valor\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.evento_id}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.nome}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.qtide_cadastrada}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.inicio_vendas}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.final_vendas}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.valor.replace('.', '').replace(',', '.')}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.ordem || 1}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.ativo || false}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.is_mesa || false}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.qtide_mesa || 0}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.tipo_item}}",
+              "test": ""
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{identity}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

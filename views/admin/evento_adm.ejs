@@ -1,4 +1,6 @@
-<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="evento_adm" appConnect="local" components="{dmxFormatter:{}}" -->
+<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="evento_adm" appConnect="local" components="{dmxFormatter:{},dmxValidator:{},dmxMoment:{},dmxDataTraversal:{}}" moment_2="local with locales" -->
+<dmx-moment id="moment1" locale="pt-br"></dmx-moment>
+<dmx-datetime id="hoje" interval="hours"></dmx-datetime>
 <dmx-serverconnect id="evento" url="/api/eventos/evento_adm" dmx-param:evento="query.evento"></dmx-serverconnect>
 <meta name="ac:route" content="/admin/evento_adm/:evento">
 
@@ -156,7 +158,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header pt-2 pb-0">
-                    <h3>Ingressos cadastrados</h3>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Ingressos cadastrados</h3>
+                        <button class="btn btn-primary btn-sm" dmx-on:click="novoItemModal.show()">
+                            <i class="fas fa-plus me-1"></i> Adicionar Item
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body pt-0">
                     <div class="table-responsive">
@@ -191,9 +198,9 @@
                                         </div>
                                     </td>
                                     <td>{{total_vendas}}</td>
-                                    <td>0</td>
-                                    <td>
-                                        <a href="#"><i class="fas fa-edit text-primary"></i></a>
+                                    <td>{{cortesias}}</td>
+                                    <td class="text-center">
+                                        <a href="#" dmx-on:click="session.set('item_id',id);editarItemModal.show();editarItemModal.carregarItem.load({})"><i class="fas fa-edit text-primary"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -290,4 +297,297 @@
     .text-primary {
         color: #4489e4 !important;
     }
+
+    /* Correção para o estilo dos switches (toggles) */
+    .form-check-input:checked {
+        background-color: #4489e4;
+        border-color: #4489e4;
+    }
+
+    .form-switch .form-check-input {
+        width: 2em;
+        margin-left: -2.5em;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+        background-position: left center;
+        border-radius: 2em;
+        transition: background-position 0.15s ease-in-out;
+    }
+
+    .form-switch .form-check-input:checked {
+        background-position: right center;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+    }
+
+    .form-switch .form-check-input:focus {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%2386b7fe'/%3e%3c/svg%3e");
+    }
 </style>
+
+<!-- Modal para Adicionar Novo Item -->
+<div class="modal fade" id="novoItemModal" is="dmx-bs5-modal" tabindex="-1" aria-labelledby="novoItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white" style="background-color: #4489e4 !important;">
+                <h5 class="modal-title text-white" id="novoItemModalLabel"><i class="fas fa-plus-circle me-2"></i>Adicionar Novo Item</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoItemForm" is="dmx-serverconnect-form" method="post" action="/api/item/novo_item" dmx-param:evento_id="evento.data.evento.id" dmx-on:success="notifies1.success('Item adicionado com sucesso!');evento.load({evento: query.evento});novoItemModal.hide();novoItemForm.reset()">
+                    <dmx-form-data id="inpt_evento_id" name="evento_id" dmx-bind:data="evento.data.evento.id"></dmx-form-data>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="nome" class="form-label">Nome do Item*</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex:  VIP (1º Lote)" required="" data-msg-required="Obrigatório">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="tipo_item" class="form-label">Tipo do Item*</label>
+                            <select class="form-select" id="tipo_item" name="tipo_item" required>
+                                <option value="">Selecione...</option>
+                                <option selected="" value="1">Ingresso</option>
+                                <option value="2">Camiseta</option>
+                                <option value="3">Chaveiro</option>
+                                <option value="4">Copo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="valor" class="form-label">Valor (R$)*</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="text" class="form-control" id="valor" name="valor" placeholder="0,00" required="" data-mask="money" data-msg-required="Obrigatório">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="qtide_cadastrada" class="form-label">Quantidade Disponível*</label>
+                            <input type="number" class="form-control" id="qtide_cadastrada" name="qtide_cadastrada" placeholder="Ex: 100" min="1" required="" data-msg-required="Obrigatório" data-msg-min="Introduza um valor maior ou igual a {0}.">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ordem" class="form-label">Ordem de Exibição</label>
+                            <input type="number" class="form-control" id="ordem" name="ordem" placeholder="Ex: 3" min="1" value="1" data-msg-min="Introduza um valor maior ou igual a {0}." required="" data-msg-required="Obrigatório">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="inicio_vendas" class="form-label">Início das Vendas*</label>
+                            <input type="datetime-local" class="form-control" id="inicio_vendas" name="inicio_vendas" required="" data-msg-required="Obrigatório" dmx-bind:value="hoje.datetime">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="final_vendas" class="form-label">Final das Vendas*</label>
+                            <input type="datetime-local" class="form-control" id="final_vendas" name="final_vendas" required="" data-msg-required="Obrigatório" dmx-bind:value="hoje.datetime.addDays(5)">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="is_mesa" name="is_mesa" value="true" dmx-on:change="$('#mesa_config').toggle(this.checked)">
+                                <label class="form-check-label" for="is_mesa">É uma mesa?</label>
+                            </div>
+                            <div id="mesa_config" style="display: none; margin-top: 10px;">
+                                <label for="qtide_mesa" class="form-label">Lugares por Mesa</label>
+                                <input type="number" class="form-control" id="qtide_mesa" name="qtide_mesa" placeholder="4" min="1" value="4">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="ativo" name="ativo" value="true" checked>
+                                <label class="form-check-label" for="ativo">Ativo</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" dmx-on:click="novoItemForm.submit()"><i class="fas fa-check me-1"></i> Adicionar Item</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Item -->
+<div class="modal fade" id="editarItemModal" is="dmx-bs5-modal" tabindex="-1" aria-labelledby="editarItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white" style="background-color: #4489e4 !important;">
+                <h5 class="modal-title text-white" id="editarItemModalLabel"><i class="fas fa-edit me-2"></i>Editar Item</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <dmx-serverconnect id="carregarItem" url="/api/item/item" dmx-param:id="session.data.item_id" noload="true"></dmx-serverconnect>
+                <form id="formEditarItem" is="dmx-serverconnect-form" method="post" action="/api/item/editar_item" dmx-on:success="notifies1.success('Item atualizado com sucesso!');evento.load({evento: query.evento});editarItemModal.hide()">
+                    <dmx-form-data id="edit_id" name="id" dmx-bind:data="session.data.item_id"></dmx-form-data>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="edit_nome" class="form-label">Nome do Item*</label>
+                            <input type="text" class="form-control" id="edit_nome" name="nome" placeholder="Ex:  VIP (1º Lote)" required="" data-msg-required="Obrigatório" dmx-bind:value="carregarItem.data.item.nome">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edit_tipo_item" class="form-label">Tipo do Item*</label>
+                            <select class="form-select" id="edit_tipo_item" name="tipo_item" required="" dmx-bind:value="carregarItem.data.item.tipo_item" data-msg-required="Obrigatório">
+                                <option value="">Selecione...</option>
+                                <option value="1">Ingresso</option>
+                                <option value="2">Camiseta</option>
+                                <option value="3">Chaveiro</option>
+                                <option value="4">Copo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="edit_valor" class="form-label">Valor (R$)*</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="text" class="form-control" id="edit_valor" name="valor" placeholder="0,00" required="" data-mask="money" data-msg-required="Obrigatório" dmx-bind:value="carregarItem.data.item.valor">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edit_qtide_cadastrada" class="form-label">Quantidade Disponível*</label>
+                            <input type="number" class="form-control" id="edit_qtide_cadastrada" name="qtide_cadastrada" placeholder="Ex: 100" min="1" required="" data-msg-required="Obrigatório" data-msg-min="Introduza um valor maior ou igual a {0}." dmx-bind:value="carregarItem.data.item.qtide_cadastrada">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edit_ordem" class="form-label">Ordem de Exibição</label>
+                            <input type="number" class="form-control" id="edit_ordem" name="ordem" placeholder="Ex: 3" min="1" data-msg-min="Introduza um valor maior ou igual a {0}." required="" data-msg-required="Obrigatório" dmx-bind:value="carregarItem.data.item.ordem">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit_inicio_vendas" class="form-label">Início das Vendas*</label>
+                            <input type="datetime-local" class="form-control" id="edit_inicio_vendas" name="inicio_vendas" required="" data-msg-required="Obrigatório" dmx-bind:value="carregarItem.data.item.inicio_vendas.formatDate('yyyy-MM-ddTHH:mm')">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit_final_vendas" class="form-label">Final das Vendas*</label>
+                            <input type="datetime-local" class="form-control" id="edit_final_vendas" name="final_vendas" required="" data-msg-required="Obrigatório" dmx-bind:value="carregarItem.data.item.final_vendas.formatDate('yyyy-MM-ddTHH:mm')">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_is_mesa" name="is_mesa" value="true" dmx-bind:checked="carregarItem.data.item.is_mesa" dmx-on:change="$('#edit_mesa_config').toggle(this.checked)">
+                                <label class="form-check-label" for="edit_is_mesa">É uma mesa?</label>
+                            </div>
+                            <div id="edit_mesa_config" dmx-bind:style="'display:' + (carregarItem.data.item.is_mesa ? 'block' : 'none') + '; margin-top: 10px;'">
+                                <label for="edit_qtide_mesa" class="form-label">Lugares por Mesa</label>
+                                <input type="number" class="form-control" id="edit_qtide_mesa" name="qtide_mesa" placeholder="4" min="1" dmx-bind:value="carregarItem.data.item.qtide_mesa || 4">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_ativo" name="ativo" value="true" dmx-bind:checked="carregarItem.data.item.ativo">
+                                <label class="form-check-label" for="edit_ativo">Ativo</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i> Cancelar</button>
+                <button type="button" class="btn btn-primary" dmx-on:click="formEditarItem.submit()"><i class="fas fa-save me-1"></i> Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para inicializar o formulário -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle para configuração de mesa
+        document.getElementById('is_mesa').addEventListener('change', function() {
+            document.getElementById('mesa_config').style.display = this.checked ? 'block' : 'none';
+            if (this.checked) {
+                document.getElementById('qtide_mesa').setAttribute('required', 'required');
+            } else {
+                document.getElementById('qtide_mesa').removeAttribute('required');
+            }
+        });
+
+        // Toggle para configuração de mesa na edição
+        document.getElementById('edit_is_mesa').addEventListener('change', function() {
+            document.getElementById('edit_mesa_config').style.display = this.checked ? 'block' : 'none';
+            if (this.checked) {
+                document.getElementById('edit_qtide_mesa').setAttribute('required', 'required');
+            } else {
+                document.getElementById('edit_qtide_mesa').removeAttribute('required');
+            }
+        });
+        
+        // Função para formatar o valor como moeda
+        function formatarMoeda(valor) {
+            // Remove tudo que não é dígito
+            valor = valor.replace(/\D/g, '');
+            
+            // Converte para número e divide por 100 para obter o valor em reais
+            const valorNumerico = parseFloat(valor) / 100;
+            
+            // Formata o número com 2 casas decimais
+            return valorNumerico.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        
+        // Aplicar máscara para os campos de valor
+        const camposValor = ['valor', 'edit_valor'];
+        
+        camposValor.forEach(function(campoId) {
+            const campoValor = document.getElementById(campoId);
+            if (campoValor) {
+                // Aplica a formatação quando o valor é alterado
+                campoValor.addEventListener('input', function(e) {
+                    // Guarda a posição do cursor
+                    const cursorPos = this.selectionStart;
+                    const valorOriginal = this.value;
+                    
+                    // Formata o valor
+                    this.value = formatarMoeda(valorOriginal);
+                    
+                    // Tenta manter o cursor em uma posição sensível
+                    const novaPosicao = this.value.length - (valorOriginal.length - cursorPos);
+                    if (novaPosicao >= 0) {
+                        this.selectionStart = novaPosicao;
+                        this.selectionEnd = novaPosicao;
+                    } else {
+                        this.selectionStart = this.value.length;
+                        this.selectionEnd = this.value.length;
+                    }
+                });
+            }
+        });
+        
+        // Converter os valores para o formato aceito pelo servidor antes do envio
+        const formularios = ['novoItemForm', 'formEditarItem'];
+        
+        formularios.forEach(function(formId) {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // Encontrar o campo de valor correspondente
+                    const campoId = formId === 'novoItemForm' ? 'valor' : 'edit_valor';
+                    const valorInput = document.getElementById(campoId);
+                    
+                    // Verificar se o campo existe
+                    if (valorInput) {
+                        // Remove a formatação e converte para formato com ponto decimal
+                        const valorTexto = valorInput.value.replace(/\./g, '').replace(',', '.');
+                        const valorNumerico = parseFloat(valorTexto);
+                        
+                        // Cria um campo hidden para enviar o valor formatado
+                        const hiddenValor = document.createElement('input');
+                        hiddenValor.type = 'hidden';
+                        hiddenValor.name = 'valor';
+                        hiddenValor.value = valorNumerico.toFixed(2); // Garante 2 casas decimais
+                        
+                        // Remove o valor original e adiciona o hidden
+                        valorInput.removeAttribute('name');
+                        this.appendChild(hiddenValor);
+                    }
+                });
+            }
+        });
+    });
+</script>

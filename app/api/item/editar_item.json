@@ -1,0 +1,237 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "nome"
+      },
+      {
+        "type": "number",
+        "name": "qtide_cadastrada"
+      },
+      {
+        "type": "datetime",
+        "name": "inicio_vendas"
+      },
+      {
+        "type": "datetime",
+        "name": "final_vendas"
+      },
+      {
+        "type": "number",
+        "name": "valor"
+      },
+      {
+        "type": "number",
+        "name": "ordem"
+      },
+      {
+        "type": "boolean",
+        "name": "ativo"
+      },
+      {
+        "type": "boolean",
+        "name": "is_mesa"
+      },
+      {
+        "type": "number",
+        "name": "qtide_mesa"
+      },
+      {
+        "type": "number",
+        "name": "tipo_item"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "evento_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update_item",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "eventos_itens",
+              "column": "atualizado_em",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "nome",
+              "type": "text",
+              "value": "{{$_POST.nome}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "qtide_cadastrada",
+              "type": "number",
+              "value": "{{$_POST.qtide_cadastrada}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "inicio_vendas",
+              "type": "datetime",
+              "value": "{{$_POST.inicio_vendas}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "final_vendas",
+              "type": "datetime",
+              "value": "{{$_POST.final_vendas}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "valor",
+              "type": "number",
+              "value": "{{$_POST.valor}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "ordem",
+              "type": "number",
+              "value": "{{$_POST.ordem}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "ativo",
+              "type": "boolean",
+              "value": "{{$_POST.ativo}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "is_mesa",
+              "type": "boolean",
+              "value": "{{$_POST.is_mesa}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "qtide_mesa",
+              "type": "number",
+              "value": "{{$_POST.qtide_mesa}}"
+            },
+            {
+              "table": "eventos_itens",
+              "column": "tipo_item",
+              "type": "number",
+              "value": "{{$_POST.tipo_item}}"
+            }
+          ],
+          "table": "eventos_itens",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id",
+                "field": "id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.evento_id}}",
+                "data": {
+                  "column": "id"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "id",
+          "query": "update \"eventos_itens\" set \"atualizado_em\" = ?, \"nome\" = ?, \"qtide_cadastrada\" = ?, \"inicio_vendas\" = ?, \"final_vendas\" = ?, \"valor\" = ?, \"ordem\" = ?, \"ativo\" = ?, \"is_mesa\" = ?, \"qtide_mesa\" = ?, \"tipo_item\" = ? where \"id\" = ? returning \"id\"",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.nome}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.qtide_cadastrada}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.inicio_vendas}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.final_vendas}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.valor}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.ordem}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.ativo}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.is_mesa}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.qtide_mesa}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.tipo_item}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P12",
+              "value": "{{$_POST.evento_id}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

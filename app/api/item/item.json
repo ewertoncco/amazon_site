@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "item",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.id}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "eventos_itens"
+          },
+          "primary": "id",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "eventos_itens.id",
+                "field": "eventos_itens.id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.id}}",
+                "data": {
+                  "table": "eventos_itens",
+                  "column": "id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "increments",
+                    "default": "",
+                    "primary": true,
+                    "unique": true,
+                    "nullable": false,
+                    "name": "id"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select * from \"eventos_itens\" where \"eventos_itens\".\"id\" = ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "datetime",
+          "name": "criado_em"
+        },
+        {
+          "type": "datetime",
+          "name": "atualizado_em"
+        },
+        {
+          "type": "number",
+          "name": "criado_por"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "nome"
+        },
+        {
+          "type": "number",
+          "name": "qtide_cadastrada"
+        },
+        {
+          "type": "datetime",
+          "name": "inicio_vendas"
+        },
+        {
+          "type": "datetime",
+          "name": "final_vendas"
+        },
+        {
+          "type": "number",
+          "name": "valor"
+        },
+        {
+          "type": "number",
+          "name": "ordem"
+        },
+        {
+          "type": "boolean",
+          "name": "ativo"
+        },
+        {
+          "type": "boolean",
+          "name": "is_mesa"
+        },
+        {
+          "type": "number",
+          "name": "qtide_mesa"
+        },
+        {
+          "type": "number",
+          "name": "tipo_item"
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}
