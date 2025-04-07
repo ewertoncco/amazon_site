@@ -1,0 +1,17 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# CSS na pasta adequada
+
+- Tente manter os CSS em uma unica pasta e evite criar um arquivo para cada página. Quando criar um estilo para um botão por exemplo, identifique e comente ele para que possa ser utilizada por outras páginas
+
+# Pesquise antes de criar scripts
+
+- Scripts: Evite criar scripts dentro dos arquivos de código-fonte principais, especialmente se forem para execução única (ex: migrações de dados pontuais devem ser tratadas separadamente).
+
+
+# Simplicidade: Prefira soluções diretas e simples sempre que possível (KISS).
+
+Reutilização (DRY - Don't Repeat Yourself): Evite a duplicação de código. Antes de implementar, verifique se funcionalidades semelhantes já existem em outras partes do sistema.

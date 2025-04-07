@@ -39,17 +39,60 @@
     {
       "path": "/admin/home",
       "page": "admin/home",
-      "layout": "adm"
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
     },
     {
       "path": "/admin/eventos_adm",
       "page": "admin/eventos_adm",
-      "layout": "adm"
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
     },
     {
       "path": "/admin/evento_adm/:evento",
       "page": "admin/evento_adm",
-      "layout": "adm"
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
+    },
+    {
+      "path": "/admin/estorno",
+      "page": "admin/estorno",
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
+    },
+    {
+      "path": "/admin/vendas",
+      "page": "admin/vendas",
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
+    },
+    {
+      "path": "/admin/usuarios",
+      "page": "admin/usuarios",
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
+    },
+    {
+      "path": "/admin/cortesias",
+      "page": "admin/cortesias",
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
+    },
+    {
+      "path": "/admin/notificacoes",
+      "page": "admin/notificacoes",
+      "layout": "adm",
+      "exec": "/api/permissoes/organizador"
+    },
+    {
+      "path": "/forbiden",
+      "page": "forbiden",
+      "layout": "main"
+    },
+    {
+      "path": "/404",
+      "page": "404",
+      "layout": "main"
     }
   ],
   "layouts": {

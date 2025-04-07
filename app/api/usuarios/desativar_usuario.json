@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "desativar",
+      "module": "dbconnector",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "usuarios",
+              "column": "ativo",
+              "type": "boolean",
+              "value": false
+            }
+          ],
+          "table": "usuarios",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id",
+                "field": "id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.id}}",
+                "data": {
+                  "column": "id"
+                },
+                "operation": "="
+              }
+            ]
+          },
+          "query": "UPDATE usuarios SET ativo = false WHERE id = :P1",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.id}}"
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

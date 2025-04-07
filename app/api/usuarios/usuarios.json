@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "nome"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "usuarios",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "limit": 10,
+          "columns": [],
+          "params": [],
+          "table": {
+            "name": "usuarios"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select * from \"usuarios\" limit ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "id"
+            },
+            {
+              "type": "datetime",
+              "name": "criado_em"
+            },
+            {
+              "type": "text",
+              "name": "senha"
+            },
+            {
+              "type": "text",
+              "name": "usuario_email"
+            },
+            {
+              "type": "text",
+              "name": "usuario_nome"
+            },
+            {
+              "type": "text",
+              "name": "usuario_apelido"
+            },
+            {
+              "type": "text",
+              "name": "usuario_telefone"
+            },
+            {
+              "type": "text",
+              "name": "usuario_cpf"
+            },
+            {
+              "type": "boolean",
+              "name": "ativo"
+            },
+            {
+              "type": "text",
+              "name": "end_rua"
+            },
+            {
+              "type": "text",
+              "name": "end_numero"
+            },
+            {
+              "type": "text",
+              "name": "end_bairro"
+            },
+            {
+              "type": "text",
+              "name": "end_cidade"
+            },
+            {
+              "type": "text",
+              "name": "end_estado"
+            },
+            {
+              "type": "text",
+              "name": "end_cep"
+            },
+            {
+              "type": "boolean",
+              "name": "notificacoes_email"
+            },
+            {
+              "type": "boolean",
+              "name": "notificacoes_push"
+            },
+            {
+              "type": "boolean",
+              "name": "notificacoes_whats"
+            },
+            {
+              "type": "text",
+              "name": "fcm_token"
+            },
+            {
+              "type": "text",
+              "name": "foto"
+            },
+            {
+              "type": "date",
+              "name": "data_nascimento"
+            },
+            {
+              "type": "number",
+              "name": "permissao"
+            },
+            {
+              "type": "number",
+              "name": "genero_id"
+            },
+            {
+              "type": "boolean",
+              "name": "senha_atualizada"
+            },
+            {
+              "type": "text",
+              "name": "uuid"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

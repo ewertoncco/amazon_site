@@ -25,72 +25,63 @@
     <script src="assets/js/config.js"></script>
 </head>
 
-<body class="authentication-bg bg-primary authentication-bg-pattern d-flex align-items-center pb-0 vh-100">
-
-
-    <div class="account-pages w-100 mt-5 mb-5">
-        <div class="container">
-
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6 col-xl-5">
-                    <div class="card mb-0">
-
-                        <div class="card-body p-4">
-
-                            <div class="account-box">
-                                <div class="account-logo-box">
-                                    <div class="text-center">
-                                        <a href="index.html">
-                                            <img src="assets/images/logo-dark.png" alt="" height="80">
-                                        </a>
-                                    </div>
-                                    <h5 class="text-uppercase mb-1 mt-4 fw-semibold text-center">Login</h5>
+<body class="bg-light">
+    <main class="mt-2 pt-2">
+        <section class="d-flex align-items-center" style="min-height: 80vh;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card shadow border-0 rounded-4 overflow-hidden hover-scale mb-3">
+                            <div class="card-body p-4">
+                                <div class="text-center mb-4">
+                                    <a href="/" internal="true">
+                                        <img src="assets/images/logo-dark.png" alt="" height="80" class="mb-3">
+                                    </a>
+                                    <h2 class="text-primary mb-3" style="font-family: 'Montserrat', sans-serif;">Login</h2>
                                 </div>
 
-                                <div class="account-content mt-4">
-
-                                    <div class="row">
-                                        <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="notifies1.success('Usuário logado');browser1.goto('/')">
-                                            <div class="form-group mb-3">
-                                                <label for="inp_email">E-mail</label>
-                                                <input type="text" class="form-control" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="">
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <label for="inp_senha">Senha</label>
-                                                <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="true" id="inp_lembre-me" name="lembre_me">
-                                                    <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3 text-end">
-                                                <button type="submit" class="btn btn-primary width-lg" dmx-bind:disabled="state.executing">Entrar <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="row mt-4 pt-2">
-                                        <div class="col-sm-12 text-center">
-                                            <p class="text-muted mb-0">Não tem conta? <a href="/cadastro" class="text-dark ms-1"><b>Cadastre-se</b></a></p>
+                                <form is="dmx-serverconnect-form" id="sc_login" method="post" action="/api/usuarios/login" dmx-generator="bootstrap5" dmx-form-type="vertical" dmx-on:error="notifies1.danger('erro')" dmx-on:unauthorized="notifies1.warning('Não autorizado')" dmx-on:success="run({condition:{outputType:'boolean',if:`sc_login.data.permissao.permissao==1`,then:{steps:[{run:{outputType:'text',action:`browser1.goto(\'/\')`}},{run:{outputType:'text',action:`notifies1.success(sc_login.data.permissao.usuario_apelido+\', Bem-vindo(a)!\')`}}]},else:{steps:[{run:{outputType:'text',action:`browser1.goto(\'/admin/home\')`}},{run:{outputType:'text',action:`notifies1.success(sc_login.data.permissao.usuario_apelido+\', Bem-vindo(a)!\')`}}]}}})">
+                                    <div class="form-group mb-3">
+                                        <label for="inp_email" class="form-label">E-mail</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                            <input type="email" class="form-control rounded-end" id="inp_email" name="email" aria-describedby="inp_email_help" required="" data-msg-required="Preenchimento Obrigatório" data-rule-email="" placeholder="seu@email.com">
                                         </div>
                                     </div>
+                                    <div class="form-group mb-3">
+                                        <label for="inp_senha" class="form-label">Senha</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                            <input type="password" class="form-control" id="inp_senha" name="senha" aria-describedby="inp_senha_help" required="" data-msg-required="Preenchimento Obrigatório">
+                                            <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword()">
+                                                <i class="fas fa-eye text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="true" id="inp_lembre-me" name="lembre_me">
+                                            <label class="form-check-label" for="inp_lembre-me">Lembre me</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <button type="submit" class="btn btn-primary w-100 rounded-3" dmx-bind:disabled="state.executing">
+                                            <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                                            <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span>
+                                        </button>
+                                    </div>
+                                </form>
 
+                                <div class="text-center mt-4">
+                                    <p class="text-muted mb-0">Não tem conta? <a href="/cadastro" class="text-primary fw-bold" internal="true">Cadastre-se</a></p>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <!-- end card-body -->
                 </div>
-                <!-- end card -->
             </div>
-            <!-- end row -->
-        </div>
-        <!-- end container -->
-    </div>
-    <!-- end page -->
+        </section>
+    </main>
 
     <!-- Vendor js -->
     <script src="assets/js/vendor.min.js"></script>
@@ -98,4 +89,20 @@
     <!-- App js -->
     <script src="assets/js/app.js"></script>
 
+    <script>
+        function togglePassword() {
+            const senhaInput = document.getElementById('inp_senha');
+            const eyeIcon = document.querySelector('.fa-eye');
+            
+            if (senhaInput.type === 'password') {
+                senhaInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                senhaInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </body>

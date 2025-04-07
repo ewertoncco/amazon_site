@@ -1,0 +1,184 @@
+<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="vendas" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxDatastore:{},dmxBootstrap5PagingGenerator:{}}" -->
+<dmx-array id="filtros" dmx-bind:items="3"></dmx-array>
+<dmx-datastore id="filtro"></dmx-datastore>
+<dmx-serverconnect id="transacoes" url="/api/vendas/transacoes" dmx-param:filtro="filtros.items" dmx-param:limit="transacoes.data.transacoes.limit" dmx-param:offset="transacoes.data.transacoes.offset" dmx-param:nome="busca_participante.value" dmx-param:transacao="busca_transacao.value"></dmx-serverconnect>
+<meta name="ac:route" content="/admin/vendas">
+
+
+<div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Transações</h2>
+        <div class="d-flex gap-3">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fas fa-user text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Nome do participante" name="busca_participante">
+            </div>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fas fa-hashtag text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Número da transação" name="busca_transacao">
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-4" id="vendasTabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#" data-filter="aprovados" data-bs-toggle="tab" dmx-on:click="filtros.empty()"><i class="fas fa-list"></i> Todas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="recusados" data-bs-toggle="tab" dmx-on:click="filtros.empty();filtros.add(3)">
+                <i class="fas fa-check-circle"></i> Aprovadas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="devolvidos" data-bs-toggle="tab" dmx-on:click="filtros.empty();filtros.add(8)">
+                <i class="fas fa-times-circle"></i> Recusadas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="devolvidos" data-bs-toggle="tab" dmx-on:click="filtros.empty();filtros.add(1)">
+                <i class="fas fa-clock"></i>&nbsp;Pendentes
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="devolvidos" data-bs-toggle="tab" dmx-on:click="filtros.empty();filtros.add(10)">
+                <i class="fas fa-sync"></i>&nbsp;Solicitação Reembolso
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="devolvidos" data-bs-toggle="tab" dmx-on:click="filtros.empty();filtros.add(6)">
+                <i class="fas fa-undo-alt"></i>&nbsp;Devolvidas
+            </a>
+        </li>
+    </ul>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Data da Compra</th>
+                    <th class="text-center">Transação</th>
+                    <th>Item</th>
+                    <th>Categoria</th>
+                    <th>Participante</th>
+                    <th>Check-in</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" id="lista_transacoes" dmx-bind:repeat="transacoes.data.transacoes.data">
+                <tr>
+                    <td><a href="#" class="text-decoration-none">{{evento_titulo}}</a></td>
+                    <td>{{carrinho_criado_em}}</td>
+                    <td class="text-center">
+                        <div>
+                            <small class="text-muted">Nº {{transacao_id}}</small>
+                        </div>
+                        <small>
+                            <span class="badge" dmx-class:bg-success="status_pagamento_id==3" dmx-class:bg-secondary="status_pagamento_id==1" dmx-class:bg-danger="status_pagamento_id==8" dmx-class:bg-warning="status_pagamento_id==10||status_pagamento_id==6">{{resposta_pagamento}}</span>
+                        </small>
+                    </td>
+                    <td>{{evento_item_nome}}</td>
+                    <td>{{categoria}}</td>
+                    <td>
+                        <div>{{participante_nome}}</div>
+                        <small class="text-muted">CPF: {{participante_telefone}}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-secondary" dmx-class:bg-success="check_in">{{check_in == true ? 'Sim' : 'Não'}}</span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" title="Ver detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" title="Cancelar ingresso">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination" dmx-populate="transacoes.data.transacoes" dmx-generator="bs5paging">
+            <li class="page-item" dmx-class:disabled="transacoes.data.transacoes.page.current == 1" aria-label="First">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="transacoes.load({offset: transacoes.data.transacoes.page.offset.first})"><span aria-hidden="true">&lsaquo;&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="transacoes.data.transacoes.page.current == 1" aria-label="Previous">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="transacoes.load({offset: transacoes.data.transacoes.page.offset.prev})"><span aria-hidden="true">&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:active="title == transacoes.data.transacoes.page.current" dmx-class:disabled="!active" dmx-repeat="transacoes.data.transacoes.getServerConnectPagination(2,1,'...')">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="transacoes.load({offset: (page-1)*transacoes.data.transacoes.limit})">{{title}}</a>
+            </li>
+            <li class="page-item" dmx-class:disabled="transacoes.data.transacoes.page.current ==  transacoes.data.transacoes.page.total" aria-label="Next">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="transacoes.load({offset: transacoes.data.transacoes.page.offset.next})"><span aria-hidden="true">&rsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="transacoes.data.transacoes.page.current ==  transacoes.data.transacoes.page.total" aria-label="Last">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="transacoes.load({offset: transacoes.data.transacoes.page.offset.last})"><span aria-hidden="true">&rsaquo;&rsaquo;</span></a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const app = new Wappler.App();
+        
+        app.defineData({
+            currentTab: 'aprovados',
+            search: ''
+        });
+
+        app.defineComputed({
+            filteredVendas() {
+                return this.view_vendas.rows.filter(venda => {
+                    const matchesTab = (
+                        (this.currentTab === 'aprovados' && venda.status_pagamento === 'Autorizado') ||
+                        (this.currentTab === 'recusados' && venda.status_pagamento === 'Recusado') ||
+                        (this.currentTab === 'devolvidos' && venda.status_pagamento === 'Devolvido')
+                    );
+
+                    const searchTerm = this.search.toLowerCase();
+                    const matchesSearch = !this.search || 
+                        venda.evento_titulo.toLowerCase().includes(searchTerm) ||
+                        venda.participante_nome.toLowerCase().includes(searchTerm) ||
+                        venda.participante_telefone.includes(searchTerm) ||
+                        venda.transacao_id.toString().includes(searchTerm);
+
+                    return matchesTab && matchesSearch;
+                });
+            }
+        });
+
+        // Manipulador para mudança de abas
+        document.querySelectorAll('#vendasTabs .nav-link').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                app.data.currentTab = this.dataset.filter;
+                
+                // Atualiza classes ativas
+                document.querySelectorAll('#vendasTabs .nav-link').forEach(t => {
+                    t.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Manipulador para busca
+        const searchInput = document.querySelector('[name="search_input"]');
+        const searchButton = document.querySelector('[name="search_button"]');
+
+        function handleSearch() {
+            app.data.search = searchInput.value;
+        }
+
+        searchInput.addEventListener('input', handleSearch);
+        searchButton.addEventListener('click', handleSearch);
+    });
+</script>

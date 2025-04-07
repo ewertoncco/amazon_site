@@ -5,7 +5,9 @@
   "options": {
     "provider": "auth",
     "permissions": [
-      "participante"
-    ]
+      "cliente"
+    ],
+    "loginUrl": "/login",
+    "forbiddenUrl": "/forbiden"
   }
 }

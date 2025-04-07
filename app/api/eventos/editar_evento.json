@@ -1,101 +1,194 @@
 {
   "meta": {
+    "options": {
+      "linkedFile": "/views/admin/evento_adm.ejs",
+      "linkedForm": "editarEventoForm"
+    },
     "$_POST": [
       {
-        "type": "number",
-        "name": "status_id"
-      },
-      {
         "type": "text",
+        "fieldName": "titulo",
+        "options": {
+          "rules": {}
+        },
         "name": "titulo"
       },
       {
         "type": "text",
+        "fieldName": "sub_titulo",
         "name": "sub_titulo"
       },
       {
-        "type": "boolean",
-        "name": "mostrar_descricao"
-      },
-      {
         "type": "text",
-        "name": "descricao"
-      },
-      {
-        "type": "datetime",
+        "fieldName": "data_hora",
+        "options": {
+          "rules": {}
+        },
         "name": "data_hora"
       },
       {
         "type": "text",
+        "fieldName": "local",
+        "options": {
+          "rules": {}
+        },
         "name": "local"
       },
       {
         "type": "text",
-        "name": "banner"
+        "fieldName": "slug",
+        "options": {
+          "rules": {}
+        },
+        "name": "slug"
       },
       {
-        "type": "boolean",
+        "type": "text",
+        "fieldName": "banner",
+        "options": {
+          "rules": {}
+        },
+        "name": "banner",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "fieldName": "tem_mapa",
         "name": "tem_mapa"
       },
       {
         "type": "text",
-        "name": "mapa_imagem"
+        "fieldName": "mapa_imagem",
+        "options": {
+          "rules": {}
+        },
+        "name": "mapa_imagem",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ]
       },
       {
-        "type": "boolean",
+        "type": "text",
+        "fieldName": "mostrar_descricao",
+        "name": "mostrar_descricao"
+      },
+      {
+        "type": "text",
+        "fieldName": "destaque",
         "name": "destaque"
       },
       {
-        "type": "boolean",
-        "name": "pode_alterar_ingresso"
+        "type": "number",
+        "fieldName": "segundos_destaque",
+        "options": {
+          "rules": {}
+        },
+        "name": "segundos_destaque"
       },
       {
-        "type": "boolean",
-        "name": "pode_devolver_ingresso"
-      },
-      {
-        "type": "boolean",
+        "type": "text",
+        "fieldName": "aceita_pix",
         "name": "aceita_pix"
       },
       {
-        "type": "boolean",
+        "type": "text",
+        "fieldName": "aceita_cartao",
         "name": "aceita_cartao"
       },
       {
-        "type": "number",
-        "name": "parcelas_cartao"
-      },
-      {
         "type": "text",
-        "name": "slug"
-      },
-      {
-        "type": "boolean",
-        "name": "tem_whatsapp"
-      },
-      {
-        "type": "text",
-        "name": "numero_whatsapp"
-      },
-      {
-        "type": "boolean",
+        "fieldName": "tem_cupom",
         "name": "tem_cupom"
       },
       {
         "type": "text",
+        "fieldName": "codigo_cupom",
         "name": "codigo_cupom"
       },
       {
         "type": "number",
+        "fieldName": "valor_cupom",
+        "options": {
+          "rules": {}
+        },
         "name": "valor_cupom"
       },
       {
-        "type": "boolean",
+        "type": "text",
+        "fieldName": "pode_alterar_ingresso",
+        "name": "pode_alterar_ingresso"
+      },
+      {
+        "type": "text",
+        "fieldName": "pode_devolver_ingresso",
+        "name": "pode_devolver_ingresso"
+      },
+      {
+        "type": "text",
+        "fieldName": "tem_whatsapp",
+        "name": "tem_whatsapp"
+      },
+      {
+        "type": "text",
+        "fieldName": "numero_whatsapp",
+        "name": "numero_whatsapp"
+      },
+      {
+        "type": "text",
+        "fieldName": "divulgacao",
         "name": "divulgacao"
       },
       {
-        "type": "number",
-        "name": "segundos_destaque"
+        "type": "text",
+        "fieldName": "parcelas_cartao",
+        "name": "parcelas_cartao"
+      },
+      {
+        "type": "text",
+        "fieldName": "status_id",
+        "name": "status_id"
+      },
+      {
+        "type": "text",
+        "fieldName": "descricao",
+        "name": "descricao"
+      },
+      {
+        "type": "text",
+        "fieldName": "id",
+        "name": "id"
       }
     ]
   },
@@ -136,7 +229,7 @@
             "type": "number"
           }
         ],
-        "outputType": "array"
+        "outputType": "file"
       },
       {
         "name": "upload_mapa",
@@ -173,30 +266,18 @@
             "type": "number"
           }
         ],
-        "outputType": "array",
+        "outputType": "file",
         "collapsed": true
       },
       {
-        "name": "novo_evento",
+        "name": "update",
         "module": "dbupdater",
-        "action": "insert",
+        "action": "update",
         "options": {
           "connection": "db",
           "sql": {
-            "type": "insert",
+            "type": "update",
             "values": [
-              {
-                "table": "eventos",
-                "column": "organizador_id",
-                "type": "number",
-                "value": "{{organizador.organizador_id}}"
-              },
-              {
-                "table": "eventos",
-                "column": "usuario_id",
-                "type": "number",
-                "value": "{{identity}}"
-              },
               {
                 "table": "eventos",
                 "column": "status_id",
@@ -219,7 +300,7 @@
                 "table": "eventos",
                 "column": "mostrar_descricao",
                 "type": "boolean",
-                "value": "{{$_POST.mostrar_descricao || faslse}}"
+                "value": "{{$_POST.mostrar_descricao || false}}"
               },
               {
                 "table": "eventos",
@@ -250,51 +331,50 @@
                 "table": "eventos",
                 "column": "tem_mapa",
                 "type": "boolean",
-                "value": "{{$_POST.tem_mapa || faslse}}"
+                "value": "{{$_POST.tem_mapa || false}}"
               },
               {
                 "table": "eventos",
                 "column": "mapa_imagem",
                 "type": "text",
-                "value": "{{upload_mapa.url}}",
+                "value": "{{$_POST.mapa_imagem}}",
                 "condition": "{{$_POST.mapa_imagem}}"
               },
               {
                 "table": "eventos",
                 "column": "destaque",
                 "type": "boolean",
-                "value": "{{$_POST.destaque || faslse}}"
+                "value": "{{$_POST.destaque || false}}"
               },
               {
                 "table": "eventos",
                 "column": "pode_alterar_ingresso",
                 "type": "boolean",
-                "value": "{{$_POST.pode_alterar_ingresso || faslse}}"
+                "value": "{{$_POST.pode_alterar_ingresso || false}}"
               },
               {
                 "table": "eventos",
                 "column": "pode_devolver_ingresso",
                 "type": "boolean",
-                "value": "{{$_POST.pode_devolver_ingresso || faslse}}"
+                "value": "{{$_POST.pode_devolver_ingresso || false}}"
               },
               {
                 "table": "eventos",
                 "column": "aceita_pix",
                 "type": "boolean",
-                "value": "{{$_POST.aceita_pix || faslse}}"
+                "value": "{{$_POST.aceita_pix || false}}"
               },
               {
                 "table": "eventos",
                 "column": "aceita_cartao",
                 "type": "boolean",
-                "value": "{{$_POST.aceita_cartao || faslse}}"
+                "value": "{{$_POST.aceita_cartao || false}}"
               },
               {
                 "table": "eventos",
                 "column": "parcelas_cartao",
                 "type": "number",
-                "value": "{{$_POST.parcelas_cartao}}",
-                "condition": "{{$_POST.parcelas_cartao}}"
+                "value": "{{$_POST.parcelas_cartao}}"
               },
               {
                 "table": "eventos",
@@ -306,7 +386,7 @@
                 "table": "eventos",
                 "column": "tem_whatsapp",
                 "type": "boolean",
-                "value": "{{$_POST.tem_whatsapp || faslse}}"
+                "value": "{{$_POST.tem_whatsapp || false}}"
               },
               {
                 "table": "eventos",
@@ -318,13 +398,14 @@
                 "table": "eventos",
                 "column": "tem_cupom",
                 "type": "boolean",
-                "value": "{{$_POST.tem_cupom || faslse}}"
+                "value": "{{$_POST.tem_cupom || false}}"
               },
               {
                 "table": "eventos",
                 "column": "codigo_cupom",
                 "type": "text",
-                "value": "{{$_POST.codigo_cupom}}"
+                "value": "{{$_POST.codigo_cupom}}",
+                "condition": "{{$_POST.codigo_cupom}}"
               },
               {
                 "table": "eventos",
@@ -337,7 +418,7 @@
                 "table": "eventos",
                 "column": "divulgacao",
                 "type": "boolean",
-                "value": "{{$_POST.divulgacao || faslse}}"
+                "value": "{{$_POST.divulgacao || false}}"
               },
               {
                 "table": "eventos",
@@ -347,163 +428,176 @@
               }
             ],
             "table": "eventos",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.id}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
             "returning": "id",
-            "query": "insert into \"eventos\" (\"aceita_cartao\", \"aceita_pix\", \"banner\", \"codigo_cupom\", \"data_hora\", \"descricao\", \"destaque\", \"divulgacao\", \"local\", \"mapa_imagem\", \"mostrar_descricao\", \"numero_whatsapp\", \"organizador_id\", \"parcelas_cartao\", \"pode_alterar_ingresso\", \"pode_devolver_ingresso\", \"segundos_destaque\", \"slug\", \"status_id\", \"sub_titulo\", \"tem_cupom\", \"tem_mapa\", \"tem_whatsapp\", \"titulo\", \"usuario_id\", \"valor_cupom\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+            "query": "update \"eventos\" set \"status_id\" = ?, \"titulo\" = ?, \"sub_titulo\" = ?, \"mostrar_descricao\" = ?, \"descricao\" = ?, \"data_hora\" = ?, \"local\" = ?, \"banner\" = ?, \"tem_mapa\" = ?, \"mapa_imagem\" = ?, \"destaque\" = ?, \"pode_alterar_ingresso\" = ?, \"pode_devolver_ingresso\" = ?, \"aceita_pix\" = ?, \"aceita_cartao\" = ?, \"parcelas_cartao\" = ?, \"slug\" = ?, \"tem_whatsapp\" = ?, \"numero_whatsapp\" = ?, \"tem_cupom\" = ?, \"codigo_cupom\" = ?, \"valor_cupom\" = ?, \"divulgacao\" = ?, \"segundos_destaque\" = ? where \"id\" = ? returning \"id\"",
             "params": [
               {
                 "name": ":P1",
-                "type": "expression",
-                "value": "{{organizador.organizador_id}}",
-                "test": ""
-              },
-              {
-                "name": ":P2",
-                "type": "expression",
-                "value": "{{identity}}",
-                "test": ""
-              },
-              {
-                "name": ":P3",
                 "type": "expression",
                 "value": "{{$_POST.status_id}}",
                 "test": ""
               },
               {
-                "name": ":P4",
+                "name": ":P2",
                 "type": "expression",
                 "value": "{{$_POST.titulo}}",
                 "test": ""
               },
               {
-                "name": ":P5",
+                "name": ":P3",
                 "type": "expression",
                 "value": "{{$_POST.sub_titulo}}",
                 "test": ""
               },
               {
-                "name": ":P6",
+                "name": ":P4",
                 "type": "expression",
-                "value": "{{$_POST.mostrar_descricao || faslse}}",
+                "value": "{{$_POST.mostrar_descricao || false}}",
                 "test": ""
               },
               {
-                "name": ":P7",
+                "name": ":P5",
                 "type": "expression",
                 "value": "{{$_POST.descricao}}",
                 "test": ""
               },
               {
-                "name": ":P8",
+                "name": ":P6",
                 "type": "expression",
                 "value": "{{$_POST.data_hora}}",
                 "test": ""
               },
               {
-                "name": ":P9",
+                "name": ":P7",
                 "type": "expression",
                 "value": "{{$_POST.local}}",
                 "test": ""
               },
               {
-                "name": ":P10",
+                "name": ":P8",
                 "type": "expression",
                 "value": "{{upload_banner.url}}",
                 "test": ""
               },
               {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.tem_mapa || false}}",
+                "test": ""
+              },
+              {
+                "name": ":P10",
+                "type": "expression",
+                "value": "{{$_POST.mapa_imagem}}",
+                "test": ""
+              },
+              {
                 "name": ":P11",
                 "type": "expression",
-                "value": "{{$_POST.tem_mapa || faslse}}",
+                "value": "{{$_POST.destaque || false}}",
                 "test": ""
               },
               {
                 "name": ":P12",
                 "type": "expression",
-                "value": "{{upload_mapa.url}}",
+                "value": "{{$_POST.pode_alterar_ingresso || false}}",
                 "test": ""
               },
               {
                 "name": ":P13",
                 "type": "expression",
-                "value": "{{$_POST.destaque || faslse}}",
+                "value": "{{$_POST.pode_devolver_ingresso || false}}",
                 "test": ""
               },
               {
                 "name": ":P14",
                 "type": "expression",
-                "value": "{{$_POST.pode_alterar_ingresso || faslse}}",
+                "value": "{{$_POST.aceita_pix || false}}",
                 "test": ""
               },
               {
                 "name": ":P15",
                 "type": "expression",
-                "value": "{{$_POST.pode_devolver_ingresso || faslse}}",
+                "value": "{{$_POST.aceita_cartao || false}}",
                 "test": ""
               },
               {
                 "name": ":P16",
                 "type": "expression",
-                "value": "{{$_POST.aceita_pix || faslse}}",
+                "value": "{{$_POST.parcelas_cartao}}",
                 "test": ""
               },
               {
                 "name": ":P17",
                 "type": "expression",
-                "value": "{{$_POST.aceita_cartao || faslse}}",
+                "value": "{{$_POST.slug}}",
                 "test": ""
               },
               {
                 "name": ":P18",
                 "type": "expression",
-                "value": "{{$_POST.parcelas_cartao}}",
+                "value": "{{$_POST.tem_whatsapp || false}}",
                 "test": ""
               },
               {
                 "name": ":P19",
                 "type": "expression",
-                "value": "{{$_POST.slug}}",
+                "value": "{{$_POST.numero_whatsapp}}",
                 "test": ""
               },
               {
                 "name": ":P20",
                 "type": "expression",
-                "value": "{{$_POST.tem_whatsapp || faslse}}",
+                "value": "{{$_POST.tem_cupom || false}}",
                 "test": ""
               },
               {
                 "name": ":P21",
                 "type": "expression",
-                "value": "{{$_POST.numero_whatsapp}}",
+                "value": "{{$_POST.codigo_cupom}}",
                 "test": ""
               },
               {
                 "name": ":P22",
                 "type": "expression",
-                "value": "{{$_POST.tem_cupom || faslse}}",
+                "value": "{{$_POST.valor_cupom}}",
                 "test": ""
               },
               {
                 "name": ":P23",
                 "type": "expression",
-                "value": "{{$_POST.codigo_cupom}}",
+                "value": "{{$_POST.divulgacao || false}}",
                 "test": ""
               },
               {
                 "name": ":P24",
                 "type": "expression",
-                "value": "{{$_POST.valor_cupom}}",
-                "test": ""
-              },
-              {
-                "name": ":P25",
-                "type": "expression",
-                "value": "{{$_POST.divulgacao || faslse}}",
-                "test": ""
-              },
-              {
-                "name": ":P26",
-                "type": "expression",
                 "value": "{{$_POST.segundos_destaque}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P25",
+                "value": "{{$_POST.id}}",
                 "test": ""
               }
             ]
@@ -511,15 +605,10 @@
         },
         "meta": [
           {
-            "name": "identity",
-            "type": "text"
-          },
-          {
             "name": "affected",
             "type": "number"
           }
-        ],
-        "output": true
+        ]
       }
     ]
   }

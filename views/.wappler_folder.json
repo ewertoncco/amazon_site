@@ -57,5 +57,13 @@
   },
   "adm.ejs": {
     "layoutPage": "admin"
+  },
+  "forbiden.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "404.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

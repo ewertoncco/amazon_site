@@ -1,5 +1,5 @@
 <!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="home" appConnect="local" components="{dmxCharts:{}}" -->
-<dmx-serverconnect id="dados" url="/api/home/estatistica"></dmx-serverconnect>
+
 <meta name="ac:route" content="/admin/home">
 <div class="page-heading">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -11,7 +11,7 @@
     <div class="row mb-2">
         <!-- Receita Total -->
         <div class="col-12 col-md-6 col-lg-3 ">
-            <div class="card ">
+            <div class="card h-100">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon rounded-circle bg-primary-light me-3">
@@ -28,7 +28,7 @@
 
         <!-- Novos Pedidos -->
         <div class="col-12 col-md-6 col-lg-3 ">
-            <div class="card ">
+            <div class="card h-100">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon rounded-circle bg-info-light me-3">
@@ -45,7 +45,7 @@
 
         <!-- Sessões -->
         <div class="col-12 col-md-6 col-lg-3 ">
-            <div class="card ">
+            <div class="card h-100">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon rounded-circle bg-warning-light me-3">
@@ -62,7 +62,7 @@
 
         <!-- Valor Médio do Pedido -->
         <div class="col-12 col-md-6 col-lg-3">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
                         <div class="stats-icon rounded-circle bg-success-light me-3">
@@ -81,7 +81,7 @@
     <div class="row">
         <!-- Gráfico Visão Geral de Audiência -->
         <div class="col-12 col-lg-8 mb-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Últimas Vendas</h5>
                     <div class="dropdown">
@@ -131,7 +131,7 @@
 
         <!-- Gráfico Renda Média Mensal -->
         <div class="col-12 col-lg-4 mb-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Vendas ( Forma Pagamento )</h5>
                     <div class="dropdown">
@@ -142,9 +142,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="monthly-income-chart" style="height:300px;">
-                        <div class="d-flex justify-content-between">
-                            <dmx-chart id="chart1" point-size="" type="pie" dataset-1:value="quantidade" dmx-bind:data="dados.data.grafico.total_vendas" dataset-1:tooltip="forma_pag" thickness="0" colors="colors2" width="300" height="300" legend="bottom" labels="forma_pag" responsive="true"></dmx-chart>
+                    <div class="monthly-income-chart">
+                        <div class="d-flex justify-content-center">
+                            <dmx-chart id="chart1" point-size="" type="pie" dataset-1:value="quantidade" dmx-bind:data="dados.data.grafico.total_vendas" dataset-1:tooltip="forma_pag" thickness="0" colors="colors2" width="100%" legend="bottom" labels="forma_pag" responsive="true"></dmx-chart>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
     <div class="row">
         <!-- Tabela de Produtos Populares -->
         <div class="col-12 col-lg-8 mb-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Mais vendidos</h5>
                     <div class="dropdown">
@@ -259,7 +259,7 @@
 
         <!-- Clientes -->
         <div class="col-12 col-lg-4 mb-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Clientes</h5>
                     <div>

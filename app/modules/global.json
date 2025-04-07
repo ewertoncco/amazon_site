@@ -1,10 +1,92 @@
-{
-  "name": "identity",
-  "module": "auth",
-  "action": "identify",
-  "options": {
-    "provider": "auth"
+[
+  {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "auth"
+    },
+    "output": true,
+    "meta": []
   },
-  "output": true,
-  "meta": []
-}
+  {
+    "name": "",
+    "module": "core",
+    "action": "condition",
+    "options": {
+      "if": "{{identity}}",
+      "then": {
+        "steps": {
+          "name": "organizador",
+          "module": "dbconnector",
+          "action": "single",
+          "options": {
+            "connection": "db",
+            "sql": {
+              "type": "select",
+              "columns": [
+                {
+                  "table": "organizador_usuarios",
+                  "column": "organizador_id"
+                }
+              ],
+              "params": [
+                {
+                  "operator": "equal",
+                  "type": "expression",
+                  "name": ":P1",
+                  "value": "{{identity}}",
+                  "test": ""
+                }
+              ],
+              "table": {
+                "name": "organizador_usuarios"
+              },
+              "primary": "id",
+              "joins": [],
+              "wheres": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "id": "organizador_usuarios.id",
+                    "field": "organizador_usuarios.id",
+                    "type": "double",
+                    "operator": "equal",
+                    "value": "{{identity}}",
+                    "data": {
+                      "table": "organizador_usuarios",
+                      "column": "id",
+                      "type": "number",
+                      "columnObj": {
+                        "type": "increments",
+                        "default": "",
+                        "primary": true,
+                        "unique": true,
+                        "nullable": false,
+                        "name": "id"
+                      }
+                    },
+                    "operation": "=",
+                    "table": "organizador_usuarios"
+                  }
+                ],
+                "conditional": null,
+                "valid": true
+              },
+              "query": "select \"organizador_id\" from \"organizador_usuarios\" where \"organizador_usuarios\".\"id\" = ?"
+            }
+          },
+          "output": true,
+          "meta": [
+            {
+              "type": "number",
+              "name": "organizador_id"
+            }
+          ],
+          "outputType": "object"
+        }
+      }
+    },
+    "outputType": "boolean"
+  }
+]

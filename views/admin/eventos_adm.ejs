@@ -1,147 +1,170 @@
 <!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="eventos_adm" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
 <meta name="ac:route" content="/admin/eventos_adm">
 
+<style>
+    .nowrap {
+        white-space: nowrap;
+    }
+</style>
 
 <!-- Estilos específicos para esta página -->
 
-<dmx-serverconnect id="eventos" url="/api/eventos/eventos_lista" dmx-param:status="status_evento.value"></dmx-serverconnect>
+<dmx-serverconnect id="eventos" url="/api/eventos/eventos_lista" dmx-param:status="status_evento.value" dmx-param:limit="eventos.data.eventos_lista.limit" dmx-param:offset="eventos.data.eventos_lista.offset"></dmx-serverconnect>
 <dmx-value id="status_evento" dmx-bind:value="2"></dmx-value>
 
-<div class="page-heading">
+<div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0">Eventos</h3>
-        <div>
-            <a class="btn btn-primary" dmx-on:click="novoEventoModal.show()"><i class="fas fa-plus me-1"></i> Novo Evento</a>
+        <h2>Eventos</h2>
+        <div class="d-flex gap-2">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar evento..." name="busca_evento">
+            </div>
+            <button class="btn btn-primary nowrap" dmx-on:click="novoEventoModal.show()">
+                <i class="fas fa-plus me-2"></i>Novo Evento
+            </button>
         </div>
     </div>
 
-    <!-- Nav tabs para alternar entre as categorias de eventos -->
-    <ul class="nav nav-tabs mb-4" id="eventTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="online-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue(2)">
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" href="#" dmx-class:active="status_evento.value==2" dmx-on:click="status_evento.setValue(2)">
                 <i class="fas fa-globe me-1"></i> Eventos Online
-            </button>
+            </a>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="rascunho-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue(1)">
+        <li class="nav-item">
+            <a class="nav-link" href="#" dmx-class:active="status_evento.value==1" dmx-on:click="status_evento.setValue(1)">
                 <i class="fas fa-edit me-1"></i> Rascunhos
-            </button>
+            </a>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="finished-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue(4)">
+        <li class="nav-item">
+            <a class="nav-link" href="#" dmx-class:active="status_evento.value==4" dmx-on:click="status_evento.setValue(4)">
                 <i class="fas fa-calendar-check me-1"></i> Finalizados
-            </button>
+            </a>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="all-tab" data-bs-toggle="tab" type="button" role="tab" dmx-on:click="status_evento.setValue()">
+        <li class="nav-item">
+            <a class="nav-link" href="#" dmx-class:active="!status_evento.value" dmx-on:click="status_evento.setValue()">
                 <i class="fas fa-calendar-alt me-1"></i> Todos os Eventos
-            </button>
-        </li>
-        <li class="nav-item ms-auto">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Buscar evento...">
-                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-            </div>
+            </a>
         </li>
     </ul>
 
-    <!-- Conteúdo único que será atualizado via filtro -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
-                        <tr>
-                            <th width="60">Banner</th>
-                            <th>Nome do Evento</th>
-                            <th class="text-center">Data e Horário</th>
-                            <th>Público</th>
-                            <th>Status</th>
-                            <th>Destaque</th>
-                            <th width="120">Exibição</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody is="dmx-repeat" id="lista_eventos" dmx-bind:repeat="eventos.data.eventos_lista.data" key="id">
-                        <tr>
-                            <td>
-                                <img alt="Evento 1" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" dmx-bind:src="banner">
-                            </td>
-                            <td>
-                                <h5 class="mb-0">{{titulo}}</h5>
-                            </td>
-                            <td class="text-center">
-                                <div><i class="far fa-calendar-alt me-1"></i>{{data_hora.formatDate('dd/MM/yy')}}</div>
-                                <small><i class="far fa-clock me-1"></i>{{data_hora.formatDate('HH:mm')}}</small>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-users me-2"></i>
-                                    <span>{{quantidade_vendas}} vendas</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="status1" checked="" dmx-bind:checked="status_id==2" value="true">
-                                    <label class="form-check-label" for="status1"><i class="fas fa-circle me-1" style="color: #28a745; font-size: 10px;"></i>Ativo</label>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="destaque1" checked="" value="true" dmx-bind:checked="destaque">
-                                    <label class="form-check-label" for="destaque1"><i class="fas fa-star me-1" style="color: #ffc107;"></i>Sim</label>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group input-group-sm">
-                                    <input type="number" class="form-control" value="5" dmx-bind:value="segundos_destaque">
-                                    <span class="input-group-text">seg</span>
-                                </div>
-                            </td>
-                            <td>
-                                <button id="btn_ver" class="btn btn-light" dmx-on:click="browser1.goto('/admin/evento_adm/'+uuid)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="60">Banner</th>
+                    <th>Nome do Evento</th>
+                    <th class="text-center">Data e Horário</th>
+                    <th>Público</th>
+                    <th>Status</th>
+                    <th>Destaque</th>
+                    <th width="120">Exibição</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" id="lista_eventos" dmx-bind:repeat="eventos.data.eventos_lista.data" key="id">
+                <tr>
+                    <td>
+                        <img alt="Evento 1" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" dmx-bind:src="banner">
+                    </td>
+                    <td>
+                        <h5 class="mb-0">{{titulo}}</h5>
+                    </td>
+                    <td class="text-center">
+                        <div><i class="far fa-calendar-alt me-1"></i>{{data_hora.formatDate('dd/MM/yy')}}</div>
+                        <small><i class="far fa-clock me-1"></i>{{data_hora.formatDate('HH:mm')}}</small>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-users me-2"></i>
+                            <span>{{quantidade_vendas}} vendas</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span dmx-bind:class="'badge ' + (status_id == 1 ? 'bg-info' : status_id == 2 ? 'bg-success' : status_id == 3 ? 'bg-danger' : status_id == 4 ? 'bg-primary' : 'bg-secondary')">
+                            {{ status_id == 1 ? 'Rascunho' : status_id == 2 ? 'Online' : status_id == 3 ? 'Cancelado' : status_id == 4 ? 'Finalizado' : 'Desconhecido' }}
+                        </span>
 
-                <!-- Mensagem para quando não há eventos -->
-                <div class="text-center py-5" dmx-show="!eventos.data.eventos_lista.data.length">
-                    <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
-                    <h4 class="text-muted">Nenhum evento encontrado</h4>
-                    <p class="text-muted">Não existem eventos com o filtro selecionado</p>
-                    <button class="btn btn-primary mt-2" dmx-on:click="novoEventoModal.show()">
-                        <i class="fas fa-plus me-1"></i> Criar novo evento
-                    </button>
-                </div>
-            </div>
 
-            <!-- Paginação - só exibir quando há eventos -->
-            <div class="d-flex justify-content-between align-items-center mt-3" dmx-show="eventos.data.eventos_lista.data.length">
-                <small class="text-muted">Mostrando 1-10 de 50 eventos</small>
-                <nav aria-label="Navegação da lista">
-                    <ul class="pagination pagination-sm mb-0">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                <i class="fas fa-chevron-left"></i>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                    </td>
+                    <td>
+                        <form id="destacar_evento" is="dmx-serverconnect-form" method="post" action="/api/eventos/destaque" dmx-on:success="eventos.load({})">
+                            <dmx-form-data id="inp_evento" name="id" dmx-bind:data="id"></dmx-form-data>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="inp_destaque" checked="" value="true" dmx-bind:checked="evento_destaque" dmx-on:changed="destacar_evento.submit()" name="destaque" dmx-hide="status_id&gt;2">
+                                <label class="form-check-label" for="inp_destaque">
+                                    <i class="fas fa-star" dmx-class:text-warning="evento_destaque==true" dmx-class:text-muted="evento_destaque==false"></i>
+                                    <span class="ms-1">{{evento_destaque==true?'Sim':'Não'}}</span>
+                                </label>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control" value="5" dmx-bind:value="segundos_destaque" id="input_seg_{{id}}">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-outline-primary" id="btn_edit" type="button">
+                                <i class="fas fa-save"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <button id="btn_ver" class="btn btn-sm btn-info" dmx-on:click="browser1.goto('/admin/evento_adm/'+uuid)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Mensagem para quando não há eventos -->
+        <div class="text-center pt-2 pb-2" dmx-show="!eventos.data.eventos_lista.data.length">
+            <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">Nenhum evento encontrado</h4>
+            <p class="text-muted">Não existem eventos com o filtro selecionado</p>
+            <button class="btn btn-primary mt-2" dmx-on:click="novoEventoModal.show()">
+                <i class="fas fa-plus me-1"></i> Criar novo evento
+            </button>
         </div>
     </div>
+
+    <div class="row" dmx-show="eventos.data.eventos_lista.page.total&gt;5">
+        <ul class="pagination justify-content-end mb-0" dmx-populate="eventos.data.eventos_lista" dmx-generator="bs5paging">
+            <li class="page-item" dmx-class:disabled="eventos.data.eventos_lista.page.current == 1" aria-label="First">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="eventos.load({offset: eventos.data.eventos_lista.page.offset.first})">
+                    <span aria-hidden="true">&lsaquo;&lsaquo;</span>
+                </a>
+            </li>
+            <li class="page-item" dmx-class:disabled="eventos.data.eventos_lista.page.current == 1" aria-label="Previous">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="eventos.load({offset: eventos.data.eventos_lista.page.offset.prev})">
+                    <span aria-hidden="true">&lsaquo;</span>
+                </a>
+            </li>
+            <li class="page-item" dmx-class:active="title == eventos.data.eventos_lista.page.current" dmx-class:disabled="!active" dmx-repeat="eventos.data.eventos_lista.getServerConnectPagination(2,1,'...')">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="eventos.load({offset: (page-1)*eventos.data.eventos_lista.limit})">{{title}}</a>
+            </li>
+            <li class="page-item" dmx-class:disabled="eventos.data.eventos_lista.page.current == eventos.data.eventos_lista.page.total" aria-label="Next">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="eventos.load({offset: eventos.data.eventos_lista.page.offset.next})">
+                    <span aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li class="page-item" dmx-class:disabled="eventos.data.eventos_lista.page.current == eventos.data.eventos_lista.page.total" aria-label="Last">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="eventos.load({offset: eventos.data.eventos_lista.page.offset.last})">
+                    <span aria-hidden="true">&rsaquo;&rsaquo;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
+
+<!-- Formulário para atualizar o tempo de exibição -->
+<form id="atualizar_tempo_exibicao" is="dmx-serverconnect-form" method="post" action="/api/eventos/atualizar_tempo_exibicao" dmx-on:success="eventos.load({})">
+    <dmx-value id="atualizar_tempo_destaque"></dmx-value>
+    <input type="hidden" name="id" dmx-bind:value="atualizar_tempo_destaque.id">
+    <input type="hidden" name="segundos_destaque" dmx-bind:value="atualizar_tempo_destaque.value">
+</form>
 
 <!-- Modal para Adicionar Novo Evento -->
 <div class="modal fade" id="novoEventoModal" is="dmx-bs5-modal" tabindex="-1" aria-labelledby="novoEventoModalLabel" aria-hidden="true">
@@ -270,7 +293,7 @@
                                         <div class="col-md-6">
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input" type="checkbox" id="destaque" name="destaque" checked="" value="true">
-                                                <label class="form-check-label" for="destaque">Destacar na página inicial</label>
+                                                <label class="form-check-label" for="inp_destaque">Destacar na página inicial</label>
                                             </div>
                                             <div id="destaqueConfigContainer">
 

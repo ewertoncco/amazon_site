@@ -16,18 +16,97 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "identity",
-      "module": "auth",
-      "action": "login",
-      "options": {
-        "provider": "auth",
-        "username": "{{$_POST.email}}",
-        "password": "{{$_POST.senha.sha256('ingressos')}}",
-        "remember": "{{$_POST.lembre_me}}"
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "login",
+        "options": {
+          "provider": "auth",
+          "username": "{{$_POST.email}}",
+          "password": "{{$_POST.senha.sha256('ingressos')}}",
+          "remember": "{{$_POST.lembre_me}}"
+        },
+        "output": true,
+        "meta": []
       },
-      "output": true,
-      "meta": []
-    }
+      {
+        "name": "permissao",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "usuarios",
+                "column": "permissao"
+              },
+              {
+                "table": "usuarios",
+                "column": "usuario_apelido"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "usuarios"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "usuarios.id",
+                  "field": "usuarios.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "usuarios",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "unique": true,
+                      "nullable": false,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "usuarios"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select \"permissao\", \"usuario_apelido\" from \"usuarios\" where \"usuarios\".\"id\" = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "permissao"
+          },
+          {
+            "type": "text",
+            "name": "usuario_apelido"
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
   }
 }

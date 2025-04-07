@@ -80,6 +80,8 @@
       z-index: 10;
       overflow-y: auto;
       border-radius: 0 15px 15px 0;
+      display: flex;
+      flex-direction: column;
     }
 
     .sidebar.active {
@@ -117,6 +119,7 @@
 
     .sidebar-item {
       list-style: none;
+      margin-bottom: 5px;
     }
 
     .sidebar-link {
@@ -303,6 +306,11 @@
     .text-success {
       color: #32c861 !important;
     }
+
+    .sidebar .menu {
+      padding-left: 0;
+      margin-bottom: 15px;
+    }
   </style>
   <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
   <script src="/dmxAppConnect/dmxBootstrap5Theme/dmxBootstrap5Theme.js" defer></script>
@@ -313,11 +321,22 @@
   <script src="/dmxAppConnect/dmxMoment/dmxMoment.js" defer></script>
 
   <script src="/dmxAppConnect/dmxDataTraversal/dmxDataTraversal.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.9/build/pdfmake.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.9/build/vfs_fonts.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake@2.5.2/browser.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxPdfCreator/dmxPdfCreator.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootstrap5PagingGenerator/dmxBootstrap5PagingGenerator.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@4.17.7/dist/tagify.min.js" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@4.17.7/dist/tagify.css" />
+  <script src="/dmxAppConnect/dmxTagify/dmxTagify.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxAutocomplete/dmxAutocomplete.css" />
+  <script src="/dmxAppConnect/dmxAutocomplete/dmxAutocomplete.js" defer></script>
 </head>
 
 <body is="dmx-app" id="admin" spa="true" base="true">
   <dmx-socket id="socket_notificacoes"></dmx-socket>
   <dmx-session-manager id="session"></dmx-session-manager>
+  <dmx-serverconnect id="dados" url="/api/home/estatistica"></dmx-serverconnect>
   <dmx-notifications id="notifies1" position="bottom"></dmx-notifications>
   <dmx-datetime id="hoje" interval="hours"></dmx-datetime>
   <div is="dmx-browser" id="browser1"></div>
@@ -334,87 +353,81 @@
   <div id="app">
     <!-- Sidebar Menu Start -->
     <div class="sidebar">
-      <div class="sidebar-header">
+      <div class="sidebar-header text-center pt-2 pb-0 ps-3 pe-2">
         <a href="/home" internal="true">
-          <img src="assets/images/logo-dark.png" alt="Logo" height="50">
+          <img src="assets/images/logo-dark.png" alt="Logo" height="50" class="mt-2">
         </a>
       </div>
 
-      <div class="ps-3 mb-4">
-        <div class="d-flex align-items-center">
-          <div class="avatar me-3">
-            <img dmx-bind:src="sc_user.data.identity.isEmpty() ? 'assets/images/users/avatar-1.jpg' : sc_user.data.user.foto || 'assets/images/users/avatar-1.jpg'" alt="Avatar" class="img-fluid">
-          </div>
-          <div>
-            <h6 class="mb-0" dmx-text="sc_user.data.identity.isEmpty() ? 'Administrador' : sc_user.data.user.usuario_apelido">Administrador</h6>
-            <p class="mb-0 text-muted small">{{sc_user.data.user.usuario_email}}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="menu-header">Geral</div>
-      <ul class="menu">
+      <ul class="menu mt-3">
         <li class="sidebar-item">
-          <a href="/admin/home" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/home'" internal="true">
+          <a href="/admin/home" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/admin/home'" internal="true">
             <i class="fas fa-home"></i>
             <span class="sidebar-title">Dashboard</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a href="/admin/eventos_adm" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm_eventos'" internal="true">
+          <a href="/admin/eventos_adm" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/admin/eventos_adm'" internal="true">
             <i class="fas fa-calendar-days"></i>
             <span class="sidebar-title">Eventos</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a href="#" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/estorno'" internal="true">
+          <a href="/admin/estorno" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/admin/estorno'" internal="true">
             <i class="fas fa-life-ring"></i>
-            <span class="sidebar-title">Estorno</span>
-            <span class="badge bg-danger rounded-pill ms-auto">01</span>
+            <span class="sidebar-title">Solicitações Estorno</span>
+            <span class="badge bg-danger rounded-pill ms-auto">{{dados.data.estatistica.solicitacoes_estorno}}</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a href="/adm/financeiro" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/financeiro'" internal="true">
+          <a href="/admin/vendas" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/admin/vendas'" internal="true">
             <i class="fas fa-file-invoice"></i>
-            <span class="sidebar-title">Financeiro</span>
+            <span class="sidebar-title">Transações</span>
           </a>
         </li>
-      </ul>
-
-      <div class="menu-header">Usuários</div>
-      <ul class="menu">
         <li class="sidebar-item">
-          <a href="/adm/clientes" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/clientes'" internal="true">
+          <a href="/admin/usuarios" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/admin/usuarios'" internal="true">
             <i class="fas fa-users"></i>
             <span class="sidebar-title">Clientes</span>
           </a>
+          <a href="/admin/cortesias" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/admin/cortesias'" internal="true">
+            <i class="fas fa-gifts"></i>
+            <span class="sidebar-title">Cortesias</span>
+          </a>
         </li>
 
         <li class="sidebar-item">
-          <a href="/adm/notificacoes" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/adm/notificacoes'" internal="true">
+          <a href="/admin/notificacoes" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/admin/notificacoes'" internal="true">
             <i class="fas fa-bell"></i>
             <span class="sidebar-title">Notificações</span>
-            <span class="badge bg-primary rounded-pill ms-auto">12</span>
           </a>
         </li>
       </ul>
 
-      <div class="menu-header">Configurações</div>
+
+      <div class="menu-header"></div>
       <ul class="menu">
+        <li class="sidebar-item mb-2">
+          <div class="ps-3">
+            <div class="d-flex align-items-center">
+              <div class="avatar me-3">
+                <img dmx-bind:src="sc_user.data.identity.isEmpty() ? 'assets/images/users/avatar-1.jpg' : sc_user.data.user.foto || 'assets/images/users/avatar-1.jpg'" alt="Avatar" class="img-fluid">
+              </div>
+              <div>
+                <h6 class="mb-0" dmx-text="sc_user.data.identity.isEmpty() ? 'Administrador' : sc_user.data.user.usuario_apelido">Administrador</h6>
+                <p class="mb-0 text-muted small">{{sc_user.data.user.usuario_email}}</p>
+              </div>
+            </div>
+          </div>
+        </li>
+
         <li class="sidebar-item">
           <a href="/perfil" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/perfil'" internal="true">
             <i class="fas fa-user-cog"></i>
             <span class="sidebar-title">Meu Perfil</span>
-          </a>
-        </li>
-
-        <li class="sidebar-item">
-          <a href="/site" class="sidebar-link" dmx-class:active="browser1.location.pathname === '/site'" internal="true">
-            <i class="fas fa-globe"></i>
-            <span class="sidebar-title">Ver Site</span>
           </a>
         </li>
 
@@ -466,12 +479,6 @@
         toggleSidebar.addEventListener('click', function() {
           sidebar.classList.toggle('active');
         });
-      }
-      
-      // Initialize Perfect Scrollbar
-      const sidebarContainer = document.querySelector('.sidebar');
-      if (sidebarContainer) {
-        new PerfectScrollbar(sidebarContainer);
       }
       
       // Gerenciamento do preloader

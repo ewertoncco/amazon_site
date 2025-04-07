@@ -1,0 +1,349 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "array",
+        "name": "filtro"
+      },
+      {
+        "type": "text",
+        "name": "nome"
+      },
+      {
+        "type": "text",
+        "name": "transacao"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "transacoes",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "limit": 5,
+          "columns": [],
+          "params": [
+            {
+              "operator": "contains",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.nome}}",
+              "test": ""
+            },
+            {
+              "operator": "contains",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_GET.nome.lowercase().capitalize()}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P3",
+              "value": "{{$_GET.transacao}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "view_transacoes"
+          },
+          "joins": [],
+          "query": "select * from \"view_transacoes\" where (\"view_transacoes\".\"status_pagamento_id\" in ?) and (\"view_transacoes\".\"participante_nome\" like ? or \"view_transacoes\".\"participante_nome\" like ?) and (\"view_transacoes\".\"transacao_id\" = ?) limit ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "id": "view_transacoes.status_pagamento_id",
+                    "field": "view_transacoes.status_pagamento_id",
+                    "type": "double",
+                    "operator": "in",
+                    "value": "{{$_GET.filtro.split(',')}}",
+                    "data": {
+                      "table": "view_transacoes",
+                      "column": "status_pagamento_id",
+                      "type": "number",
+                      "columnObj": {
+                        "type": "integer",
+                        "primary": false,
+                        "nullable": true,
+                        "name": "status_pagamento_id"
+                      }
+                    },
+                    "operation": "IN"
+                  }
+                ],
+                "conditional": "{{$_GET.filtro}}"
+              },
+              {
+                "condition": "OR",
+                "rules": [
+                  {
+                    "id": "view_transacoes.participante_nome",
+                    "field": "view_transacoes.participante_nome",
+                    "type": "string",
+                    "operator": "contains",
+                    "value": "{{$_GET.nome}}",
+                    "data": {
+                      "table": "view_transacoes",
+                      "column": "participante_nome",
+                      "type": "text",
+                      "columnObj": {
+                        "type": "text",
+                        "primary": false,
+                        "nullable": true,
+                        "name": "participante_nome"
+                      }
+                    },
+                    "operation": "LIKE"
+                  },
+                  {
+                    "id": "view_transacoes.participante_nome",
+                    "field": "view_transacoes.participante_nome",
+                    "type": "string",
+                    "operator": "contains",
+                    "value": "{{$_GET.nome.lowercase().capitalize()}}",
+                    "data": {
+                      "table": "view_transacoes",
+                      "column": "participante_nome",
+                      "type": "text",
+                      "columnObj": {
+                        "type": "text",
+                        "primary": false,
+                        "nullable": true,
+                        "name": "participante_nome"
+                      }
+                    },
+                    "operation": "LIKE"
+                  }
+                ],
+                "conditional": "{{$_GET.nome}}"
+              },
+              {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "id": "view_transacoes.transacao_id",
+                    "field": "view_transacoes.transacao_id",
+                    "type": "double",
+                    "operator": "equal",
+                    "value": "{{$_GET.transacao}}",
+                    "data": {
+                      "table": "view_transacoes",
+                      "column": "transacao_id",
+                      "type": "number",
+                      "columnObj": {
+                        "type": "integer",
+                        "primary": false,
+                        "nullable": true,
+                        "name": "transacao_id"
+                      }
+                    },
+                    "operation": "="
+                  }
+                ],
+                "conditional": "{{$_GET.transacao}}"
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "organizador_id"
+            },
+            {
+              "type": "text",
+              "name": "evento_titulo"
+            },
+            {
+              "type": "text",
+              "name": "evento_data_hora"
+            },
+            {
+              "type": "text",
+              "name": "evento_local"
+            },
+            {
+              "type": "text",
+              "name": "evento_uuid"
+            },
+            {
+              "type": "number",
+              "name": "evento_id"
+            },
+            {
+              "type": "text",
+              "name": "carrinho_criado_em"
+            },
+            {
+              "type": "number",
+              "name": "status_pagamento_id"
+            },
+            {
+              "type": "text",
+              "name": "status_pagamento"
+            },
+            {
+              "type": "text",
+              "name": "forma_pagamento"
+            },
+            {
+              "type": "number",
+              "name": "transacao_id"
+            },
+            {
+              "type": "text",
+              "name": "categoria"
+            },
+            {
+              "type": "text",
+              "name": "participante_nome"
+            },
+            {
+              "type": "text",
+              "name": "participante_telefone"
+            },
+            {
+              "type": "text",
+              "name": "participante_cpf"
+            },
+            {
+              "type": "text",
+              "name": "participante_email"
+            },
+            {
+              "type": "boolean",
+              "name": "check_in"
+            },
+            {
+              "type": "text",
+              "name": "hora_check_in"
+            },
+            {
+              "type": "number",
+              "name": "valor_final"
+            },
+            {
+              "type": "text",
+              "name": "qrcode"
+            },
+            {
+              "type": "boolean",
+              "name": "trocou_nome"
+            },
+            {
+              "type": "text",
+              "name": "evento_item_nome"
+            },
+            {
+              "type": "text",
+              "name": "resposta_pagamento"
+            },
+            {
+              "type": "number",
+              "name": "total_bruto"
+            },
+            {
+              "type": "number",
+              "name": "total_taxas_transacao"
+            },
+            {
+              "type": "number",
+              "name": "liquido"
+            },
+            {
+              "type": "boolean",
+              "name": "cupom"
+            },
+            {
+              "type": "number",
+              "name": "qtide_parcelas"
+            }
+          ]
+        }
+      ],
+      "outputType": "object",
+      "collapsed": true
+    }
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "titulo"
+      },
+      {
+        "type": "text",
+        "name": "conteudo"
+      },
+      {
+        "type": "text",
+        "name": "imagem"
+      },
+      {
+        "type": "boolean",
+        "name": "interna"
+      },
+      {
+        "type": "boolean",
+        "name": "push"
+      },
+      {
+        "type": "boolean",
+        "name": "especifico"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.email}}",
+          "then": {
+            "steps": {
+              "name": "usuario",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "db",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "usuarios",
+                      "column": "id"
+                    }
+                  ],
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_POST.email}}",
+                      "test": ""
+                    }
+                  ],
+                  "table": {
+                    "name": "usuarios"
+                  },
+                  "primary": "id",
+                  "joins": [],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "usuarios.usuario_email",
+                        "field": "usuarios.usuario_email",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_POST.email}}",
+                        "data": {
+                          "table": "usuarios",
+                          "column": "usuario_email",
+                          "type": "text",
+                          "columnObj": {
+                            "type": "text",
+                            "primary": false,
+                            "unique": true,
+                            "nullable": false,
+                            "name": "usuario_email"
+                          }
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "query": "select \"id\" from \"usuarios\" where \"usuarios\".\"usuario_email\" = ?"
+                }
+              },
+              "meta": [
+                {
+                  "type": "number",
+                  "name": "id"
+                }
+              ],
+              "outputType": "object"
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "notificacoes",
+                "column": "titulo",
+                "type": "text",
+                "value": "{{$_POST.titulo}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "conteudo",
+                "type": "text",
+                "value": "{{$_POST.conteudo}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "imagem",
+                "type": "text",
+                "value": "{{$_POST.imagem}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "criado_por",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "interna",
+                "type": "boolean",
+                "value": "{{$_POST.interna || false}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "push",
+                "type": "boolean",
+                "value": "{{$_POST.push || false}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "especifico",
+                "type": "boolean",
+                "value": "{{$_POST.especifico || false}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "destinatario_id",
+                "type": "number",
+                "value": "{{usuario.id}}",
+                "condition": "{{$_POST.email}}"
+              },
+              {
+                "table": "notificacoes",
+                "column": "organizador",
+                "type": "number",
+                "value": "{{organizador.organizador_id}}"
+              }
+            ],
+            "table": "notificacoes",
+            "returning": "id",
+            "query": "insert into \"notificacoes\" (\"conteudo\", \"criado_por\", \"destinatario_id\", \"especifico\", \"imagem\", \"interna\", \"organizador\", \"push\", \"titulo\") values (?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id\"",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.titulo}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.conteudo}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.imagem}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.interna || false}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.push || false}}",
+                "test": ""
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST.especifico || false}}",
+                "test": ""
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{usuario.id}}",
+                "test": ""
+              },
+              {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{organizador.organizador_id}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

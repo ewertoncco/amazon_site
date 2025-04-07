@@ -5,7 +5,9 @@
   "options": {
     "provider": "auth",
     "permissions": [
-      "super_gestor"
-    ]
+      "admin"
+    ],
+    "loginUrl": "/login",
+    "forbiddenUrl": "/forbiden"
   }
 }

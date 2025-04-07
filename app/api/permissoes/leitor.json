@@ -6,6 +6,8 @@
     "provider": "auth",
     "permissions": [
       "leitor"
-    ]
+    ],
+    "loginUrl": "/login",
+    "forbiddenUrl": "/forbiden"
   }
 }

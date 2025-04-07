@@ -35,7 +35,160 @@
           "columns": [
             {
               "table": "view_eventos_adm",
-              "column": "*"
+              "column": "id"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "organizador_id"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "criado_em"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "usuario_id"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "status_id"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "titulo"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "sub_titulo"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "mostrar_descricao"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "descricao"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "data_hora"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "local"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "banner"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "tem_mapa"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "mapa_imagem"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "destaque",
+              "alias": "evento_destaque"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "pode_alterar_ingresso"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "pode_devolver_ingresso"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "aceita_pix"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "aceita_cartao"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "parcelas_cartao"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "slug"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "tem_whatsapp"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "numero_whatsapp"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "tem_cupom"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "codigo_cupom"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "valor_cupom"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "uuid"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "divulgacao"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "segundos_destaque"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "quantidade_vendas"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "total_vendas"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "total_cortesias"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "qtide_pix"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "total_pix"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "qtide_credito"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "total_credito"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "total_devolucoes"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "porcentagem_geral_vendas"
+            },
+            {
+              "table": "view_eventos_adm",
+              "column": "itens"
             }
           ],
           "params": [
@@ -52,7 +205,7 @@
           },
           "primary": "id",
           "joins": [],
-          "query": "select * from \"view_eventos_adm\" where \"view_eventos_adm\".\"status_id\" = ?",
+          "query": "select \"id\", \"organizador_id\", \"criado_em\", \"usuario_id\", \"status_id\", \"titulo\", \"sub_titulo\", \"mostrar_descricao\", \"descricao\", \"data_hora\", \"local\", \"banner\", \"tem_mapa\", \"mapa_imagem\", \"destaque\" as \"evento_destaque\", \"pode_alterar_ingresso\", \"pode_devolver_ingresso\", \"aceita_pix\", \"aceita_cartao\", \"parcelas_cartao\", \"slug\", \"tem_whatsapp\", \"numero_whatsapp\", \"tem_cupom\", \"codigo_cupom\", \"valor_cupom\", \"uuid\", \"divulgacao\", \"segundos_destaque\", \"quantidade_vendas\", \"total_vendas\", \"total_cortesias\", \"qtide_pix\", \"total_pix\", \"qtide_credito\", \"total_credito\", \"total_devolucoes\", \"porcentagem_geral_vendas\", \"itens\" from \"view_eventos_adm\" where \"view_eventos_adm\".\"status_id\" = ?",
           "wheres": {
             "condition": "AND",
             "rules": [
@@ -78,7 +231,8 @@
             ],
             "conditional": "{{$_GET.status}}",
             "valid": true
-          }
+          },
+          "limit": 5
         }
       },
       "output": true,
@@ -193,7 +347,7 @@
             },
             {
               "type": "boolean",
-              "name": "destaque"
+              "name": "evento_destaque"
             },
             {
               "type": "boolean",
@@ -258,6 +412,38 @@
             {
               "type": "number",
               "name": "total_vendas"
+            },
+            {
+              "type": "number",
+              "name": "total_cortesias"
+            },
+            {
+              "type": "number",
+              "name": "qtide_pix"
+            },
+            {
+              "type": "number",
+              "name": "total_pix"
+            },
+            {
+              "type": "number",
+              "name": "qtide_credito"
+            },
+            {
+              "type": "number",
+              "name": "total_credito"
+            },
+            {
+              "type": "number",
+              "name": "total_devolucoes"
+            },
+            {
+              "type": "number",
+              "name": "porcentagem_geral_vendas"
+            },
+            {
+              "type": "object",
+              "name": "itens"
             }
           ]
         }

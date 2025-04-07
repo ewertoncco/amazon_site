@@ -1,0 +1,218 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "solicitacoes_estorno",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{organizador.organizador_id}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "view_estorno"
+          },
+          "joins": [],
+          "query": "select * from \"view_estorno\" where \"view_estorno\".\"organizador_id\" = ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "view_estorno.organizador_id",
+                "field": "view_estorno.organizador_id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{organizador.organizador_id}}",
+                "data": {
+                  "table": "view_estorno",
+                  "column": "organizador_id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "organizador_id"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "organizador_id"
+            },
+            {
+              "type": "text",
+              "name": "evento_titulo"
+            },
+            {
+              "type": "text",
+              "name": "evento_data_hora"
+            },
+            {
+              "type": "text",
+              "name": "evento_local"
+            },
+            {
+              "type": "text",
+              "name": "evento_uuid"
+            },
+            {
+              "type": "number",
+              "name": "evento_id"
+            },
+            {
+              "type": "text",
+              "name": "carrinho_criado_em"
+            },
+            {
+              "type": "text",
+              "name": "status_pagamento"
+            },
+            {
+              "type": "text",
+              "name": "forma_pagamento"
+            },
+            {
+              "type": "number",
+              "name": "transacao_id"
+            },
+            {
+              "type": "text",
+              "name": "categoria"
+            },
+            {
+              "type": "text",
+              "name": "participante_nome"
+            },
+            {
+              "type": "text",
+              "name": "participante_telefone"
+            },
+            {
+              "type": "text",
+              "name": "participante_cpf"
+            },
+            {
+              "type": "text",
+              "name": "participante_email"
+            },
+            {
+              "type": "boolean",
+              "name": "check_in"
+            },
+            {
+              "type": "text",
+              "name": "hora_check_in"
+            },
+            {
+              "type": "number",
+              "name": "valor_final"
+            },
+            {
+              "type": "text",
+              "name": "qrcode"
+            },
+            {
+              "type": "boolean",
+              "name": "trocou_nome"
+            },
+            {
+              "type": "text",
+              "name": "evento_item_nome"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

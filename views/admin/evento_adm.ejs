@@ -1,17 +1,43 @@
-<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="evento_adm" appConnect="local" components="{dmxFormatter:{},dmxValidator:{},dmxMoment:{},dmxDataTraversal:{}}" moment_2="local with locales" -->
+<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="evento_adm" appConnect="local" components="{dmxFormatter:{},dmxValidator:{},dmxMoment:{},dmxDataTraversal:{},dmxBootstrap5Modal:{}}" moment_2="local with locales" -->
+<div class="modal" id="deletarEvento" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger fw-bold text-center">Deletar um evento Não é indicado se você ja vendeu algo</p>
+                <p class="text-center lh-sm">Quando você deletar um evento. Todos os itens cadastrados e vendas serão apagados. Voce pode alterar o Status do evento,</p>
+                <h3 class="text-center">Tem certeza que quer deletar?</h3>
+            </div>
+            <div class="modal-footer">
+                <form id="deletar" is="dmx-serverconnect-form" method="post" action="/api/eventos/deletar_evento" dmx-on:success="deletarEvento.hide();notifies1.success('Evento deletado!');browser1.goto('/admin/eventos_adm',true)">
+                    <dmx-form-data id="input_id" name="id" dmx-bind:data="query.evento"></dmx-form-data>
+                    <button type="submit" class="btn btn-danger">Deletar</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<dmx-serverconnect id="compradores" url="/api/vendas/lista_compradores" noload="true" dmx-param:uuid="query.evento"></dmx-serverconnect>
 <dmx-moment id="moment1" locale="pt-br"></dmx-moment>
 <dmx-datetime id="hoje" interval="hours"></dmx-datetime>
 <dmx-serverconnect id="evento" url="/api/eventos/evento_adm" dmx-param:evento="query.evento"></dmx-serverconnect>
 <meta name="ac:route" content="/admin/evento_adm/:evento">
 
+<!-- Scripts para PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js"></script>
+
 <div class="page-heading">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0">{{evento.data.evento.titulo}}</h3>
+        <h2 class="mb-0">{{evento.data.evento.titulo}}</h2>
         <div>
-            <a href="#" class="btn btn-primary me-2"><i class="fas fa-edit me-1"></i> Editar</a>
-            <a href="#" class="btn btn-primary me-2"><i class="fas fa-edit me-1"></i> Editar</a>
-            <a href="#" class="btn btn-warning me-2"><i class="fas fa-download me-1"></i> Lista compradores</a>
-            <a href="#" class="btn btn-danger"><i class="fas fa-power-off me-1"></i> DESATIVAR</a>
+
+
+            <a href="#" class="btn btn-primary me-2" dmx-on:click="editarEventoModal.show()"><i class="fas fa-edit me-1"></i> Editar</a><a class="btn btn-warning me-2" id="btn-gerar-pdf" dmx-on:click="compradores.load({}); setTimeout(gerarPDF, 100)"><i class="fas fa-download me-1"></i> Lista compradores</a><a href="#" class="btn me-2 btn-danger" dmx-on:click="deletarEvento.show()"><i class="fas fa-trash me-1"></i> Deletar</a>
         </div>
     </div>
 
@@ -42,8 +68,8 @@
                             <i class="fas fa-dollar-sign"></i>
                         </div>
                         <div>
-                            <h6 class="text-muted mb-0">Valor</h6>
-                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_vendas}}</h3>
+                            <h6 class="text-muted mb-1">Valor</h6>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_vendas.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</h3>
                         </div>
                     </div>
                 </div>
@@ -59,7 +85,7 @@
                             <i class="fas fa-qrcode"></i>
                         </div>
                         <div>
-                            <h6 class="text-muted mb-0">Qtide PIX</h6>
+                            <h6 class="text-muted mb-1">Qtide PIX</h6>
                             <h3 class="fw-bold mb-0">{{evento.data.evento.qtide_pix}}</h3>
                         </div>
                     </div>
@@ -76,8 +102,8 @@
                             <i class="fas fa-dollar-sign"></i>
                         </div>
                         <div>
-                            <h6 class="text-muted mb-0">Total Pix</h6>
-                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_pix}}</h3>
+                            <h6 class="text-muted mb-1">Total Pix</h6>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_pix.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</h3>
                         </div>
                     </div>
                 </div>
@@ -110,8 +136,8 @@
                             <i class="fas fa-credit-card"></i>
                         </div>
                         <div>
-                            <h6 class="text-muted mb-0">Valor Crédito</h6>
-                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_credito}}</h3>
+                            <h6 class="text-muted mb-1">Valor Crédito</h6>
+                            <h3 class="fw-bold mb-0">{{evento.data.evento.total_credito.toNumber().formatCurrency('R$ ', ',', '.', 2)}}</h3>
                         </div>
                     </div>
                 </div>
@@ -127,7 +153,7 @@
                             <i class="fas fa-gift"></i>
                         </div>
                         <div>
-                            <h6 class="text-muted mb-0">Cortesias</h6>
+                            <h6 class="text-muted mb-1">Cortesias</h6>
                             <h3 class="fw-bold mb-0">{{evento.data.evento.total_cortesias}}</h3>
                         </div>
                     </div>
@@ -144,7 +170,7 @@
                             <i class="fas fa-undo"></i>
                         </div>
                         <div>
-                            <h6 class="text-muted mb-0">Devoluções</h6>
+                            <h6 class="text-muted mb-1">Devoluções</h6>
                             <h3 class="fw-bold mb-0">{{evento.data.evento.total_devolucoes}}</h3>
                         </div>
                     </div>
@@ -158,7 +184,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header pt-2 pb-0">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <h3 class="mb-0">Ingressos cadastrados</h3>
                         <button class="btn btn-primary btn-sm" dmx-on:click="novoItemModal.show()">
                             <i class="fas fa-plus me-1"></i> Adicionar Item
@@ -177,6 +203,8 @@
                                     <th>Progresso</th>
                                     <th>Vendas</th>
                                     <th>Cortesias</th>
+                                    <th>É Mesa</th>
+                                    <th>Lugares/Mesa</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -199,6 +227,14 @@
                                     </td>
                                     <td>{{total_vendas}}</td>
                                     <td>{{cortesias}}</td>
+                                    <td class="text-center">
+                                        <span dmx-bind:class="is_mesa ? 'badge bg-success' : 'badge bg-secondary'">
+                                            {{is_mesa ? 'Sim' : 'Não'}}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        {{is_mesa ? qtide_mesa : '-'}}
+                                    </td>
                                     <td class="text-center">
                                         <a href="#" dmx-on:click="session.set('item_id',id);editarItemModal.show();editarItemModal.carregarItem.load({})"><i class="fas fa-edit text-primary"></i></a>
                                     </td>
@@ -493,6 +529,271 @@
     </div>
 </div>
 
+<!-- Modal para Editar Evento -->
+<div class="modal fade" id="editarEventoModal" is="dmx-bs5-modal" tabindex="-1" aria-labelledby="editarEventoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white" style="background-color: #4489e4 !important;">
+                <h5 class="modal-title text-white" id="editarEventoModalLabel"><i class="fas fa-edit me-2"></i>Editar Evento</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body p-0">
+                <!-- Progress Bar -->
+                <div class="px-3 pt-3">
+                    <div class="progress mb-2" style="height: 8px;">
+                        <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <form id="editarEventoForm" is="dmx-serverconnect-form" method="post" action="/api/eventos/editar_evento" dmx-on:success="notifies1.success('Evento atualizado com sucesso!');editarEventoModal.hide();evento.load({evento: query.evento})" novalidate>
+                    <dmx-form-data id="evento_id" name="id" dmx-bind:data="evento.data.evento.id"></dmx-form-data>
+
+                    <!-- Steps Container -->
+                    <div class="steps-container">
+                        <!-- Step 1: Informações Básicas -->
+                        <div class="step active" id="edit_step1">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4"><i class="fas fa-info-circle me-2"></i>Informações Básicas</h5>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="edit_titulo" class="form-label">Título do Evento*</label>
+                                            <input type="text" class="form-control" id="edit_titulo" name="titulo" placeholder="Ex: Feira de Tecnologia 2025" required dmx-bind:value="evento.data.evento.titulo">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="edit_sub_titulo" class="form-label">Subtítulo</label>
+                                            <input type="text" class="form-control" id="edit_sub_titulo" name="sub_titulo" placeholder="Ex: Inovações e tendências" dmx-bind:value="evento.data.evento.sub_titulo">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="edit_data_hora" class="form-label">Data e Hora*</label>
+                                            <input type="datetime-local" class="form-control" id="edit_data_hora" name="data_hora" required dmx-bind:value="evento.data.evento.data_hora.formatDate('yyyy-MM-ddTHH:mm')">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="edit_local" class="form-label">Local*</label>
+                                            <input type="text" class="form-control" id="edit_local" name="local" placeholder="Ex: Centro de Convenções SP" required dmx-bind:value="evento.data.evento.local">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="edit_slug" class="form-label">Slug URL*</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">evento/</span>
+                                                <input type="text" class="form-control" id="edit_slug" name="slug" placeholder="feira-tecnologia-2025" required dmx-bind:value="evento.data.evento.slug">
+                                            </div>
+                                            <div class="form-text">URL amigável do evento (sem espaços ou caracteres especiais)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Elementos Gráficos -->
+                        <div class="step" id="edit_step2" style="display: none;">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4"><i class="fas fa-images me-2"></i>Elementos Gráficos</h5>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="edit_banner" class="form-label">Banner do Evento</label>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="flex-grow-1">
+                                                    <input type="file" class="form-control" id="edit_banner" name="banner" accept="image/*" onchange="previewEditImage(this, 'editBannerPreview')">
+                                                </div>
+                                                <div id="editBannerPreview" style="width: 60px; height: 106px; overflow: hidden; display: block;">
+                                                    <img dmx-bind:src="evento.data.evento.banner" class="img-fluid border rounded" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                            </div>
+                                            <div class="form-text">1080 x 1920 pixels (Igual Stories do Insta). Tam. Max. 1MB</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_tem_mapa" name="tem_mapa" value="true" dmx-bind:checked="evento.data.evento.tem_mapa">
+                                                <label class="form-check-label" for="edit_tem_mapa">Incluir mapa do evento</label>
+                                            </div>
+                                            <div id="editMapaUploadContainer" dmx-bind:style="'display:' + (evento.data.evento.tem_mapa ? 'block' : 'none')">
+                                                <label for="edit_mapa_imagem" class="form-label">Imagem do Mapa</label>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div class="flex-grow-1">
+                                                        <input type="file" class="form-control" id="edit_mapa_imagem" name="mapa_imagem" accept="image/*" onchange="previewEditImage(this, 'editMapaPreview')">
+                                                    </div>
+                                                    <div id="editMapaPreview" style="width: 106px; height: 60px; overflow: hidden; display: block;" dmx-bind:style="'display:' + (evento.data.evento.mapa_imagem ? 'block' : 'none')">
+                                                        <img dmx-bind:src="evento.data.evento.mapa_imagem" class="img-fluid border rounded" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-text">1920 x 1080 pixels. Tam. Max. 1MB</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Descrição e Detalhes -->
+                        <div class="step" id="edit_step3" style="display: none;">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4"><i class="fas fa-align-left me-2"></i>Descrição e Detalhes</h5>
+
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_mostrar_descricao" name="mostrar_descricao" value="true" dmx-bind:checked="evento.data.evento.mostrar_descricao">
+                                                <label class="form-check-label" for="edit_mostrar_descricao">Mostrar descrição na página do evento</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="edit_descricao" class="form-label">Descrição Detalhada</label>
+                                            <textarea class="form-control" id="edit_descricao" name="descricao" rows="6" placeholder="Descreva seu evento com detalhes, emojis são bem-vindos!" dmx-bind:value="evento.data.evento.descricao"></textarea>
+                                            <div class="invalid-feedback">A descrição detalhada é obrigatória quando "Mostrar descrição" está ativado</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_destaque" name="destaque" value="true" dmx-bind:checked="evento.data.evento.destaque">
+                                                <label class="form-check-label" for="edit_destaque">Destacar na página inicial</label>
+                                            </div>
+                                            <div id="editDestaqueConfigContainer" dmx-bind:style="'display:' + (evento.data.evento.destaque ? 'block' : 'none')">
+                                                <div class="form-text">Tempo que o evento ficará visível no carrossel de destaques</div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" class="form-control" id="edit_segundos_destaque" name="segundos_destaque" min="1000" step="500" dmx-bind:value="evento.data.evento.segundos_destaque">
+                                            <label for="edit_segundos_destaque" class="form-label">Tempo de exibição (milissegundos)</label>
+                                            <div class="invalid-feedback">O tempo de exibição é obrigatório quando "Destacar na página inicial" está ativado</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Configurações de Pagamento -->
+                        <div class="step" id="edit_step4" style="display: none;">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4"><i class="fas fa-credit-card me-2"></i>Configurações de Pagamento</h5>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_aceita_pix" name="aceita_pix" value="true" dmx-bind:checked="evento.data.evento.aceita_pix">
+                                                <label class="form-check-label" for="edit_aceita_pix">Aceitar pagamento via PIX</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_aceita_cartao" name="aceita_cartao" value="true" dmx-bind:checked="evento.data.evento.aceita_cartao">
+                                                <label class="form-check-label" for="edit_aceita_cartao">Aceitar pagamento via Cartão</label>
+                                            </div>
+                                            <div id="editCartoesConfigContainer" dmx-bind:style="'display:' + (evento.data.evento.aceita_cartao ? 'block' : 'none')">
+                                                <label for="edit_parcelas_cartao" class="form-label">Número máximo de parcelas</label>
+                                                <select class="form-select" id="edit_parcelas_cartao" name="parcelas_cartao" dmx-bind:value="evento.data.evento.parcelas_cartao">
+                                                    <option value="1">1x (à vista)</option>
+                                                    <option value="2">2x</option>
+                                                    <option value="3">3x</option>
+                                                    <option value="6">6x</option>
+                                                    <option value="12">12x</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_tem_cupom" name="tem_cupom" value="true" dmx-bind:checked="evento.data.evento.tem_cupom">
+                                                <label class="form-check-label" for="edit_tem_cupom">Oferecer cupom de desconto</label>
+                                            </div>
+                                            <div id="editCupomConfigContainer" dmx-bind:style="'display:' + (evento.data.evento.tem_cupom ? 'block' : 'none')">
+                                                <div class="mb-2">
+                                                    <label for="edit_codigo_cupom" class="form-label">Código do cupom</label>
+                                                    <input type="text" class="form-control" id="edit_codigo_cupom" name="codigo_cupom" placeholder="Ex: TECH2025" oninput="this.value = this.value.replace(/\s+/g, '').toUpperCase()" dmx-bind:value="evento.data.evento.codigo_cupom" data-rule-required="edit_tem_cupom.checked" data-msg-required="Código do cupom é obrigatório">
+                                                    <div class="invalid-feedback">Código do cupom é obrigatório</div>
+                                                </div>
+                                                <div>
+                                                    <label for="edit_valor_cupom" class="form-label">Valor do desconto (%)</label>
+                                                    <input type="number" class="form-control" id="edit_valor_cupom" name="valor_cupom" min="1" max="100" placeholder="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dmx-bind:value="evento.data.evento.valor_cupom" data-rule-required="edit_tem_cupom.checked" data-rule-range="[1, 100]" data-msg-required="Valor do desconto é obrigatório" data-msg-range="O valor deve estar entre 1% e 100%">
+                                                    <div class="invalid-feedback">Valor do desconto é obrigatório (apenas números entre 1 e 100)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Opções Adicionais -->
+                        <div class="step" id="edit_step5" style="display: none;">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4"><i class="fas fa-cog me-2"></i>Opções Adicionais</h5>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6>Políticas de Ingressos</h6>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_pode_alterar_ingresso" name="pode_alterar_ingresso" value="true" dmx-bind:checked="evento.data.evento.pode_alterar_ingresso">
+                                                <label class="form-check-label" for="edit_pode_alterar_ingresso">Permitir alteração de ingressos</label>
+                                            </div>
+                                            <div class="form-check form-switch mt-4 mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_pode_devolver_ingresso" name="pode_devolver_ingresso" value="true" dmx-bind:checked="evento.data.evento.pode_devolver_ingresso">
+                                                <label class="form-check-label" for="edit_pode_devolver_ingresso">Permitir devolução de ingressos</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Suporte via WhatsApp</h6>
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_tem_whatsapp" name="tem_whatsapp" value="true" dmx-bind:checked="evento.data.evento.tem_whatsapp">
+                                                <label class="form-check-label" for="edit_tem_whatsapp">Oferecer suporte via WhatsApp</label>
+                                            </div>
+                                            <div id="editWhatsappConfigContainer" dmx-bind:style="'display:' + (evento.data.evento.tem_whatsapp ? 'block' : 'none')">
+                                                <label for="edit_numero_whatsapp" class="form-label">Número do WhatsApp</label>
+                                                <input type="tel" class="form-control" id="edit_numero_whatsapp" name="numero_whatsapp" placeholder="Ex: 11912345678" dmx-bind:value="evento.data.evento.numero_whatsapp" data-rule-required="edit_tem_whatsapp.checked" data-rule-digits="true" data-rule-minlength="10" data-rule-maxlength="11" data-msg-required="Número de WhatsApp é obrigatório" data-msg-digits="Digite apenas números" data-msg-minlength="O número deve ter no mínimo 10 dígitos" data-msg-maxlength="O número deve ter no máximo 11 dígitos">
+                                                <div class="form-text">Digite apenas números</div>
+                                                <div class="invalid-feedback">Forneça um número de WhatsApp válido (10 ou 11 dígitos)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input" type="checkbox" id="edit_divulgacao" name="divulgacao" value="true" dmx-bind:checked="evento.data.evento.divulgacao">
+                                                <label class="form-check-label" for="edit_divulgacao">Apenas divulgação</label>
+                                            </div>
+                                            <div class="form-text">Quando não há vendas, selecionar essa opção</div>
+                                        </div>
+                                        <div class="col">
+                                            <select id="edit_status_id" class="form-select" name="status_id" dmx-bind:value="evento.data.evento.status_id">
+                                                <option value="1">Rascunho</option>
+                                                <option value="2">Publicar agora</option>
+                                                <option value="4">Finalizado</option>
+                                                <option value="3">Cancelado</option>
+                                            </select>
+                                            <small class="form-text text-muted">Rascunho o evento é criado, mas não fica visível publicamente</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between text-end">
+                <div>
+                    <button type="button" class="btn btn-primary" id="editPrevStepBtn"><i class="fas fa-arrow-left me-1"></i> Anterior</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" id="editNextStepBtn">Próximo <i class="fas fa-arrow-right ms-1"></i></button>
+                    <button class="btn btn-primary" id="editSubmitBtn" style="display: none;" dmx-on:click="editarEventoForm.submit()"><i class="fas fa-check me-1"></i> Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Script para inicializar o formulário -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -589,5 +890,568 @@
                 });
             }
         });
+
+        // Função para preview de imagens na edição
+        window.previewEditImage = function(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const previewImg = preview.querySelector('img');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+        
+        // Modal de edição de evento
+        const editModal = document.getElementById('editarEventoModal');
+        const editSteps = document.querySelectorAll('#editarEventoModal .step');
+        const editProgressBar = document.querySelector('#editarEventoModal .progress-bar');
+        const editPrevBtn = document.getElementById('editPrevStepBtn');
+        const editNextBtn = document.getElementById('editNextStepBtn');
+        const editSubmitBtn = document.getElementById('editSubmitBtn');
+        
+        // Toggle para campos condicionais no modal de edição
+        document.getElementById('edit_tem_mapa').addEventListener('change', function() {
+            document.getElementById('editMapaUploadContainer').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('edit_destaque').addEventListener('change', function() {
+            document.getElementById('editDestaqueConfigContainer').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('edit_aceita_cartao').addEventListener('change', function() {
+            document.getElementById('editCartoesConfigContainer').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('edit_tem_cupom').addEventListener('change', function() {
+            document.getElementById('editCupomConfigContainer').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('edit_tem_whatsapp').addEventListener('change', function() {
+            document.getElementById('editWhatsappConfigContainer').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Navegação entre etapas no modal de edição
+        let editCurrentStep = 0;
+        const editTotalSteps = editSteps.length;
+        
+        function updateEditStepDisplay() {
+            editSteps.forEach((step, index) => {
+                step.style.display = index === editCurrentStep ? 'block' : 'none';
+            });
+            
+            // Atualizar a barra de progresso
+            const progressPercentage = ((editCurrentStep + 1) / editTotalSteps) * 100;
+            editProgressBar.style.width = `${progressPercentage}%`;
+            editProgressBar.setAttribute('aria-valuenow', progressPercentage);
+            
+            // Atualizar os botões de navegação
+            editPrevBtn.style.visibility = editCurrentStep === 0 ? 'hidden' : 'visible';
+            editPrevBtn.disabled = editCurrentStep === 0;
+            
+            if (editCurrentStep === editTotalSteps - 1) {
+                editNextBtn.style.display = 'none';
+                editSubmitBtn.style.display = 'inline-block';
+            } else {
+                editNextBtn.style.display = 'inline-block';
+                editSubmitBtn.style.display = 'none';
+            }
+        }
+        
+        // Botão Próximo
+        editNextBtn.addEventListener('click', function() {
+            if (validateEditCurrentStep()) {
+                editCurrentStep++;
+                if (editCurrentStep >= editTotalSteps) {
+                    editCurrentStep = editTotalSteps - 1;
+                }
+                updateEditStepDisplay();
+            }
+        });
+        
+        // Botão Anterior
+        editPrevBtn.addEventListener('click', function() {
+            editCurrentStep--;
+            if (editCurrentStep < 0) {
+                editCurrentStep = 0;
+            }
+            updateEditStepDisplay();
+        });
+        
+        // Validação básica do formulário por passo
+        function validateEditCurrentStep() {
+            const currentStepEl = editSteps[editCurrentStep];
+            const requiredFields = currentStepEl.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            // Validações específicas para o passo atual
+            if (editCurrentStep === 2) { // Step 3: Descrição e Detalhes
+                const mostrarDescricao = document.getElementById('edit_mostrar_descricao').checked;
+                const descricao = document.getElementById('edit_descricao');
+                
+                if (mostrarDescricao && (!descricao.value || descricao.value.trim() === '')) {
+                    descricao.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    descricao.classList.remove('is-invalid');
+                }
+                
+                const destaque = document.getElementById('edit_destaque').checked;
+                const segundosDestaque = document.getElementById('edit_segundos_destaque');
+                
+                if (destaque && (!segundosDestaque.value || segundosDestaque.value < 1000)) {
+                    segundosDestaque.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    segundosDestaque.classList.remove('is-invalid');
+                }
+            }
+            else if (editCurrentStep === 3) { // Step 4: Configurações de Pagamento
+                const temCupom = document.getElementById('edit_tem_cupom').checked;
+                
+                if (temCupom) {
+                    const codigoCupom = document.getElementById('edit_codigo_cupom');
+                    const valorCupom = document.getElementById('edit_valor_cupom');
+                    
+                    if (!codigoCupom.value || codigoCupom.value.trim() === '') {
+                        codigoCupom.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        codigoCupom.classList.remove('is-invalid');
+                    }
+                    
+                    if (!valorCupom.value || valorCupom.value < 1 || valorCupom.value > 100) {
+                        valorCupom.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        valorCupom.classList.remove('is-invalid');
+                    }
+                }
+            }
+            else if (editCurrentStep === 4) { // Step 5: Opções Adicionais
+                const temWhatsapp = document.getElementById('edit_tem_whatsapp').checked;
+                
+                if (temWhatsapp) {
+                    const numeroWhatsapp = document.getElementById('edit_numero_whatsapp');
+                    
+                    if (!numeroWhatsapp.value || !/^\d{10,11}$/.test(numeroWhatsapp.value)) {
+                        numeroWhatsapp.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        numeroWhatsapp.classList.remove('is-invalid');
+                    }
+                }
+            }
+            
+            return isValid;
+        }
+        
+        // Resetar navegação ao fechar o modal
+        editModal.addEventListener('hidden.bs.modal', function() {
+            editCurrentStep = 0;
+            updateEditStepDisplay();
+        });
+        
+        // Inicializar a visualização do passo
+        updateEditStepDisplay();
+
+        // Garantir que o app Wappler está disponível globalmente
+        if (typeof window.app === 'undefined' && typeof dmx !== 'undefined' && dmx.app) {
+            window.app = dmx.app;
+            console.log("Inicializando app global a partir do dmx.app");
+        }
+        
+        // Adicionar evento de click manualmente (fallback)
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnGerarPDF = document.getElementById('btn-gerar-pdf');
+            if (btnGerarPDF) {
+                btnGerarPDF.addEventListener('click', function(e) {
+                    console.log("Click manual no botão de gerar PDF");
+                    // Se o Wappler não processar o evento, tentamos manualmente
+                    if (typeof app === 'undefined' || !app.compradores || !app.compradores.load) {
+                        console.log("Tentando carregar dados manualmente...");
+                        // Usar fetch para carregar os dados
+                        fetch('/api/vendas/lista_compradores?uuid=' + encodeURIComponent(new URLSearchParams(window.location.search).get('evento')))
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("Dados carregados manualmente:", data);
+                                // Simular a estrutura que o Wappler criaria
+                                if (!window.app) window.app = {};
+                                window.app.compradores = {
+                                    state: 'success',
+                                    data: data
+                                };
+                                window.app.evento = {
+                                    data: {
+                                        evento: {
+                                            titulo: document.querySelector('h2.mb-0').textContent,
+                                            data_hora: new Date(),
+                                            local: 'Local do evento'
+                                        }
+                                    }
+                                };
+                                window.app.moment1 = {
+                                    moment: function(date) {
+                                        return {
+                                            format: function(fmt) {
+                                                const d = new Date(date);
+                                                return d.toLocaleDateString('pt-BR') + ' ' + 
+                                                       d.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                                            }
+                                        };
+                                    }
+                                };
+                                criarPDF();
+                                return;
+                            })
+                            .catch(error => {
+                                console.error("Erro ao carregar dados manualmente:", error);
+                                alert("Erro ao carregar dados: " + error.message);
+                            });
+                    }
+                });
+            }
+        });
+        
+        // Função para gerar PDF com a lista de compradores
+        function gerarPDF() {
+            try {
+                console.log("Iniciando geração de PDF...");
+                
+                // Verificar se os dados estão disponíveis
+                if (!window.jspdf) {
+                    console.log("Biblioteca jsPDF não encontrada, tentando carregar dinamicamente...");
+                    carregarBibliotecas().then(() => {
+                        console.log("Bibliotecas carregadas com sucesso, continuando...");
+                        verificarDados();
+                    }).catch(erro => {
+                        console.error("Falha ao carregar bibliotecas:", erro);
+                        alert("Não foi possível carregar as bibliotecas necessárias: " + erro.message);
+                    });
+                    return;
+                }
+                
+                verificarDados();
+            } catch (err) {
+                console.error("Erro na função gerarPDF:", err);
+                alert("Erro ao iniciar geração do PDF. Verifique o console para detalhes.");
+            }
+            
+            // Carregar bibliotecas dinâmicamente
+            function carregarBibliotecas() {
+                return new Promise((resolve, reject) => {
+                    try {
+                        // Carregar jsPDF
+                        const scriptJsPDF = document.createElement('script');
+                        scriptJsPDF.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js';
+                        
+                        scriptJsPDF.onload = function() {
+                            console.log("jsPDF carregado, carregando autoTable...");
+                            // Carregar autoTable
+                            const scriptAutoTable = document.createElement('script');
+                            scriptAutoTable.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js';
+                            
+                            scriptAutoTable.onload = function() {
+                                console.log("autoTable carregado com sucesso");
+                                resolve();
+                            };
+                            
+                            scriptAutoTable.onerror = function(error) {
+                                reject(new Error("Falha ao carregar autoTable"));
+                            };
+                            
+                            document.head.appendChild(scriptAutoTable);
+                        };
+                        
+                        scriptJsPDF.onerror = function(error) {
+                            reject(new Error("Falha ao carregar jsPDF"));
+                        };
+                        
+                        document.head.appendChild(scriptJsPDF);
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            }
+            
+            // Verificar dados e iniciar processo quando disponíveis
+            function verificarDados() {
+                // Verificar se o app Wappler está disponível
+                if (!window.app || !window.app.compradores) {
+                    console.error("App Wappler não inicializado corretamente!");
+                    
+                    // Tentativa de usar o dmx Wappler
+                    if (window.dmx && dmx.app && dmx.app.compradores) {
+                        window.app = dmx.app;
+                        console.log("Usando dmx.app como fallback");
+                    } else {
+                        console.log("Tentando carregar dados manualmente...");
+                        // Usar fetch para carregar os dados
+                        fetch('/api/vendas/lista_compradores?uuid=' + encodeURIComponent(new URLSearchParams(window.location.search).get('evento')))
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("Dados carregados manualmente:", data);
+                                // Simular a estrutura que o Wappler criaria
+                                if (!window.app) window.app = {};
+                                window.app.compradores = {
+                                    state: 'success',
+                                    data: data
+                                };
+                                window.app.evento = {
+                                    data: {
+                                        evento: {
+                                            titulo: document.querySelector('h2.mb-0').textContent,
+                                            data_hora: new Date(),
+                                            local: 'Local do evento'
+                                        }
+                                    }
+                                };
+                                window.app.moment1 = {
+                                    moment: function(date) {
+                                        return {
+                                            format: function(fmt) {
+                                                const d = new Date(date);
+                                                return d.toLocaleDateString('pt-BR') + ' ' + 
+                                                       d.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                                            }
+                                        };
+                                    }
+                                };
+                                criarPDF();
+                                return;
+                            })
+                            .catch(error => {
+                                console.error("Erro ao carregar dados manualmente:", error);
+                                alert("Erro ao carregar dados: " + error.message);
+                            });
+                    }
+                }
+                
+                // Esperar os dados serem carregados
+                console.log("Verificando dados dos compradores...");
+                let tempoDeEspera = 0;
+                const checkData = setInterval(() => {
+                    try {
+                        // Se demorar mais de 5 segundos, tentamos o método alternativo
+                        if (tempoDeEspera > 5000) {
+                            console.log("Tempo de espera excedido, tentando método alternativo");
+                            clearInterval(checkData);
+                            
+                            // Tentar o método alternativo via fetch
+                            fetch('/api/vendas/lista_compradores?uuid=' + encodeURIComponent(new URLSearchParams(window.location.search).get('evento')))
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log("Dados carregados via fetch:", data);
+                                    if (!window.app) window.app = {};
+                                    window.app.compradores = {
+                                        state: 'success',
+                                        data: data
+                                    };
+                                    criarPDF();
+                                })
+                                .catch(error => {
+                                    console.error("Erro ao carregar dados via fetch:", error);
+                                    alert("Não foi possível carregar os dados dos compradores. Erro: " + error.message);
+                                });
+                            return;
+                        }
+                        
+                        if (app.compradores && app.compradores.state === 'success' && app.compradores.data && app.compradores.data.vendas) {
+                            console.log("Dados recebidos com sucesso:", app.compradores.data.vendas.length, "registros");
+                            clearInterval(checkData);
+                            criarPDF();
+                        } else {
+                            console.log("Aguardando dados...", app.compradores ? app.compradores.state : "não inicializado");
+                            tempoDeEspera += 500;
+                        }
+                    } catch (err) {
+                        console.error("Erro ao verificar dados:", err);
+                        clearInterval(checkData);
+                        alert("Erro ao verificar dados dos compradores. Verifique o console para detalhes.");
+                    }
+                }, 500);
+            }
+            
+            function criarPDF() {
+                console.log("Iniciando criação do PDF...");
+                
+                // Tentar usar método alternativo se jsPDF não estiver disponível
+                if (!window.jspdf) {
+                    console.log("jsPDF não encontrado, tentando método alternativo com CDN");
+                    var script = document.createElement('script');
+                    script.src = 'https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js';
+                    script.onload = function() {
+                        var autoTable = document.createElement('script');
+                        autoTable.src = 'https://unpkg.com/jspdf-autotable@latest/dist/jspdf.plugin.autotable.js';
+                        autoTable.onload = criarPDFComBibliotecas;
+                        document.head.appendChild(autoTable);
+                    };
+                    document.head.appendChild(script);
+                    return;
+                }
+                
+                criarPDFComBibliotecas();
+                
+                // Função para criar PDF depois de garantir que as bibliotecas estão carregadas
+                function criarPDFComBibliotecas() {
+                    // Inicialização do jsPDF conforme a versão 3.0.1
+                    let doc;
+                    
+                    try {
+                        console.log("Tentando inicializar jsPDF...");
+                        
+                        // Tentar diferentes formas de inicialização
+                        if (typeof window.jspdf === 'object' && typeof window.jspdf.jsPDF === 'function') {
+                            console.log("Usando jspdf.jsPDF");
+                            doc = new window.jspdf.jsPDF();
+                        } else if (typeof window.jsPDF === 'function') {
+                            console.log("Usando window.jsPDF");
+                            doc = new window.jsPDF();
+                        } else if (typeof jsPDF === 'function') {
+                            console.log("Usando jsPDF global");
+                            doc = new jsPDF();
+                        } else {
+                            throw new Error("Nenhum construtor jsPDF válido encontrado");
+                        }
+                        
+                        console.log("jsPDF inicializado com sucesso");
+                    } catch (error) {
+                        console.error("Erro ao inicializar jsPDF:", error);
+                        alert("Não foi possível gerar o PDF. Erro: " + error.message);
+                        return;
+                    }
+                    
+                    try {
+                        // Obter dados do evento
+                        const eventoTitulo = app.evento.data.evento.titulo;
+                        const eventoData = app.moment1.moment(app.evento.data.evento.data_hora).format('DD/MM/YYYY HH:mm');
+                        const eventoLocal = app.evento.data.evento.local;
+                        
+                        console.log("Dados do evento obtidos:", eventoTitulo);
+                        
+                        // Adicionar cabeçalho
+                        doc.setFontSize(18);
+                        doc.text('Lista de Compradores', 105, 15, { align: 'center' });
+                        
+                        doc.setFontSize(12);
+                        doc.text(`Evento: ${eventoTitulo}`, 14, 25);
+                        doc.text(`Data: ${eventoData}`, 14, 32);
+                        doc.text(`Local: ${eventoLocal}`, 14, 39);
+                        
+                        // Preparar dados para a tabela
+                        const dados = app.compradores.data.vendas;
+                        console.log("Preparando", dados.length, "registros para a tabela");
+                        
+                        const colunas = [
+                            { header: 'Nome', dataKey: 'participante_nome' },
+                            { header: 'E-mail', dataKey: 'participante_email' },
+                            { header: 'Telefone', dataKey: 'participante_telefone' },
+                            { header: 'CPF', dataKey: 'participante_cpf' },
+                            { header: 'Ingresso', dataKey: 'evento_item_nome' },
+                            { header: 'Check-in', dataKey: 'check_in' }
+                        ];
+                        
+                        const dadosFormatados = dados.map(item => ({
+                            ...item,
+                            check_in: item.check_in ? 'Sim' : 'Não'
+                        }));
+                        
+                        // Verificar se autoTable está disponível
+                        if (typeof doc.autoTable !== 'function') {
+                            console.error("Plugin autoTable não encontrado!");
+                            alert("Plugin autoTable não está disponível. Gerando PDF sem tabela.");
+                            
+                            // Renderizar alternativa para tabela
+                            doc.setFontSize(10);
+                            doc.text("DADOS DOS COMPRADORES:", 14, 50);
+                            
+                            let y = 60;
+                            dadosFormatados.forEach((item, index) => {
+                                doc.setFontSize(9);
+                                doc.text(`${index + 1}. ${item.participante_nome || 'N/A'} - ${item.participante_email || 'N/A'} - ${item.evento_item_nome || 'N/A'}`, 14, y);
+                                y += 5;
+                                
+                                // Adicionar nova página se necessário
+                                if (y > 280) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                            });
+                        } else {
+                            console.log("Gerando tabela...");
+                            // Gerar tabela
+                            doc.autoTable({
+                                startY: 45,
+                                head: [colunas.map(col => col.header)],
+                                body: dadosFormatados.map(row => colunas.map(col => row[col.dataKey])),
+                                styles: { fontSize: 9, cellPadding: 3 },
+                                headStyles: { fillColor: [66, 66, 66] },
+                                alternateRowStyles: { fillColor: [245, 245, 245] },
+                                margin: { top: 45 }
+                            });
+                        }
+                        
+                        // Data de geração do relatório
+                        const dataGeracao = app.moment1.moment().format('DD/MM/YYYY HH:mm:ss');
+                        const pageCount = doc.internal.getNumberOfPages();
+                        doc.setFontSize(8);
+                        
+                        for (let i = 1; i <= pageCount; i++) {
+                            doc.setPage(i);
+                            doc.text(`Gerado em: ${dataGeracao} - Página ${i} de ${pageCount}`, 
+                                doc.internal.pageSize.width - 14, 
+                                doc.internal.pageSize.height - 10, 
+                                { align: 'right' });
+                        }
+                        
+                        console.log("PDF gerado com sucesso, iniciando download...");
+                        try {
+                            // Baixar o PDF
+                            doc.save(`Lista_Compradores_${eventoTitulo.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+                            console.log("Download do PDF concluído");
+                        } catch (saveError) {
+                            console.error("Erro ao salvar PDF:", saveError);
+                            alert("Erro ao baixar o PDF: " + saveError.message);
+                            
+                            // Tentativa alternativa usando Blob
+                            try {
+                                const pdfBlob = doc.output('blob');
+                                const url = URL.createObjectURL(pdfBlob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `Lista_Compradores_${eventoTitulo.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+                                a.style.display = 'none';
+                                document.body.appendChild(a);
+                                a.click();
+                                URL.revokeObjectURL(url);
+                                document.body.removeChild(a);
+                                console.log("Download alternativo do PDF realizado");
+                            } catch (blobError) {
+                                console.error("Erro no método alternativo:", blobError);
+                                alert("Todos os métodos de download falharam. Verifique o console para detalhes.");
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Erro ao gerar conteúdo do PDF:", error);
+                        alert("Erro ao gerar o PDF: " + error.message);
+                    }
+                }
+            }
+        }
     });
 </script>

@@ -667,5 +667,514 @@ dmx.config({
         "name": "item_id"
       }
     ]
+  },
+  "estorno": {
+    "lista-estorno": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "organizador_id"
+        },
+        {
+          "type": "text",
+          "name": "evento_titulo"
+        },
+        {
+          "type": "text",
+          "name": "evento_data_hora"
+        },
+        {
+          "type": "text",
+          "name": "evento_local"
+        },
+        {
+          "type": "text",
+          "name": "evento_uuid"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "carrinho_criado_em"
+        },
+        {
+          "type": "text",
+          "name": "status_pagamento"
+        },
+        {
+          "type": "text",
+          "name": "forma_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "transacao_id"
+        },
+        {
+          "type": "text",
+          "name": "categoria"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "boolean",
+          "name": "check_in"
+        },
+        {
+          "type": "text",
+          "name": "hora_check_in"
+        },
+        {
+          "type": "number",
+          "name": "valor_final"
+        },
+        {
+          "type": "text",
+          "name": "qrcode"
+        },
+        {
+          "type": "boolean",
+          "name": "trocou_nome"
+        },
+        {
+          "type": "text",
+          "name": "evento_item_nome"
+        }
+      ],
+      "outputType": "array"
+    }
+  },
+  "vendas": {
+    "lista_transacoes": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "organizador_id"
+        },
+        {
+          "type": "text",
+          "name": "evento_titulo"
+        },
+        {
+          "type": "text",
+          "name": "evento_data_hora"
+        },
+        {
+          "type": "text",
+          "name": "evento_local"
+        },
+        {
+          "type": "text",
+          "name": "evento_uuid"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "carrinho_criado_em"
+        },
+        {
+          "type": "text",
+          "name": "status_pagamento"
+        },
+        {
+          "type": "text",
+          "name": "forma_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "transacao_id"
+        },
+        {
+          "type": "text",
+          "name": "categoria"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "boolean",
+          "name": "check_in"
+        },
+        {
+          "type": "text",
+          "name": "hora_check_in"
+        },
+        {
+          "type": "number",
+          "name": "valor_final"
+        },
+        {
+          "type": "text",
+          "name": "qrcode"
+        },
+        {
+          "type": "boolean",
+          "name": "trocou_nome"
+        },
+        {
+          "type": "text",
+          "name": "evento_item_nome"
+        },
+        {
+          "type": "text",
+          "name": "resposta_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "total_bruto"
+        },
+        {
+          "type": "number",
+          "name": "total_taxas_transacao"
+        },
+        {
+          "type": "number",
+          "name": "liquido"
+        },
+        {
+          "type": "boolean",
+          "name": "cupom"
+        },
+        {
+          "type": "number",
+          "name": "qtide_parcelas"
+        }
+      ],
+      "outputType": "array"
+    },
+    "filtro": [
+      {
+        "type": "text",
+        "name": "aprovado"
+      },
+      {
+        "type": "array",
+        "name": "devolvidos"
+      },
+      {
+        "type": "text",
+        "name": "recusados"
+      }
+    ]
+  },
+  "usuarios": {
+    "lista_usuarios": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "datetime",
+          "name": "criado_em"
+        },
+        {
+          "type": "text",
+          "name": "senha"
+        },
+        {
+          "type": "text",
+          "name": "usuario_email"
+        },
+        {
+          "type": "text",
+          "name": "usuario_nome"
+        },
+        {
+          "type": "text",
+          "name": "usuario_apelido"
+        },
+        {
+          "type": "text",
+          "name": "usuario_telefone"
+        },
+        {
+          "type": "text",
+          "name": "usuario_cpf"
+        },
+        {
+          "type": "boolean",
+          "name": "ativo"
+        },
+        {
+          "type": "text",
+          "name": "end_rua"
+        },
+        {
+          "type": "text",
+          "name": "end_numero"
+        },
+        {
+          "type": "text",
+          "name": "end_bairro"
+        },
+        {
+          "type": "text",
+          "name": "end_cidade"
+        },
+        {
+          "type": "text",
+          "name": "end_estado"
+        },
+        {
+          "type": "text",
+          "name": "end_cep"
+        },
+        {
+          "type": "boolean",
+          "name": "notificacoes_email"
+        },
+        {
+          "type": "boolean",
+          "name": "notificacoes_push"
+        },
+        {
+          "type": "boolean",
+          "name": "notificacoes_whats"
+        },
+        {
+          "type": "text",
+          "name": "fcm_token"
+        },
+        {
+          "type": "text",
+          "name": "foto"
+        },
+        {
+          "type": "date",
+          "name": "data_nascimento"
+        },
+        {
+          "type": "number",
+          "name": "permissao"
+        },
+        {
+          "type": "number",
+          "name": "genero_id"
+        },
+        {
+          "type": "boolean",
+          "name": "senha_atualizada"
+        },
+        {
+          "type": "text",
+          "name": "uuid"
+        }
+      ],
+      "outputType": "array"
+    }
+  },
+  "cortesias": {
+    "lista_cortesias": {
+      "meta": [
+        {
+          "name": "$index",
+          "type": "number"
+        },
+        {
+          "name": "$key",
+          "type": "text"
+        },
+        {
+          "name": "$value",
+          "type": "object"
+        },
+        {
+          "type": "number",
+          "name": "organizador_id"
+        },
+        {
+          "type": "text",
+          "name": "evento_titulo"
+        },
+        {
+          "type": "text",
+          "name": "evento_data_hora"
+        },
+        {
+          "type": "text",
+          "name": "evento_local"
+        },
+        {
+          "type": "text",
+          "name": "evento_uuid"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "carrinho_criado_em"
+        },
+        {
+          "type": "number",
+          "name": "status_pagamento_id"
+        },
+        {
+          "type": "text",
+          "name": "status_pagamento"
+        },
+        {
+          "type": "text",
+          "name": "forma_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "transacao_id"
+        },
+        {
+          "type": "text",
+          "name": "categoria"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "boolean",
+          "name": "check_in"
+        },
+        {
+          "type": "text",
+          "name": "hora_check_in"
+        },
+        {
+          "type": "number",
+          "name": "valor_final"
+        },
+        {
+          "type": "text",
+          "name": "qrcode"
+        },
+        {
+          "type": "boolean",
+          "name": "trocou_nome"
+        },
+        {
+          "type": "text",
+          "name": "evento_item_nome"
+        },
+        {
+          "type": "text",
+          "name": "resposta_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "total_bruto"
+        },
+        {
+          "type": "number",
+          "name": "total_taxas_transacao"
+        },
+        {
+          "type": "number",
+          "name": "liquido"
+        },
+        {
+          "type": "boolean",
+          "name": "cupom"
+        },
+        {
+          "type": "number",
+          "name": "qtide_parcelas"
+        }
+      ],
+      "outputType": "array"
+    }
+  },
+  "notificacoes": {
+    "lista_notificacoes": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "datetime",
+          "name": "criado_em"
+        },
+        {
+          "type": "text",
+          "name": "titulo"
+        },
+        {
+          "type": "text",
+          "name": "conteudo"
+        },
+        {
+          "type": "text",
+          "name": "imagem"
+        },
+        {
+          "type": "number",
+          "name": "criado_por"
+        },
+        {
+          "type": "boolean",
+          "name": "interna"
+        },
+        {
+          "type": "boolean",
+          "name": "push"
+        },
+        {
+          "type": "boolean",
+          "name": "especifico"
+        },
+        {
+          "type": "number",
+          "name": "destinatario_id"
+        }
+      ],
+      "outputType": "array"
+    },
+    "input_email": {
+      "meta": null,
+      "outputType": "text"
+    }
   }
 });

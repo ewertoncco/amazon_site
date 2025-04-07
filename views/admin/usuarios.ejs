@@ -1,0 +1,134 @@
+<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="usuarios" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxDatastore:{},dmxBootstrap5PagingGenerator:{}}" -->
+<dmx-serverconnect id="usuarios" url="/api/usuarios/usuarios" dmx-param:nome="busca_nome.value"></dmx-serverconnect>
+<meta name="ac:route" content="/admin/usuarios">
+
+<div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Usuários</h2>
+        <div class="d-flex gap-3">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fas fa-user text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Nome do usuário" name="busca_nome">
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>CPF</th>
+                    <th>Cidade</th>
+                    <th>UF</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" id="lista_usuarios" dmx-bind:repeat="usuarios.data.usuarios.data">
+                <tr>
+                    <td>{{usuario_nome}}</td>
+                    <td>{{usuario_email}}</td>
+                    <td>{{usuario_telefone}}</td>
+                    <td>{{usuario_cpf}}</td>
+                    <td>{{end_cidade}}</td>
+                    <td>{{end_estado}}</td>
+                    <td class="text-end">
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" dmx-on:click="modalVerUsuario.show()" title="Ver detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" dmx-on:click="modalDesativar.show()" title="Desativar usuário">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <ul class="pagination justify-content-center" dmx-populate="usuarios.data.usuarios" dmx-generator="bs5paging">
+            <li class="page-item" dmx-class:disabled="usuarios.data.usuarios.page.current == 1" aria-label="First">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="usuarios.load({offset: usuarios.data.usuarios.page.offset.first})"><span aria-hidden="true">&lsaquo;&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="usuarios.data.usuarios.page.current == 1" aria-label="Previous">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="usuarios.load({offset: usuarios.data.usuarios.page.offset.prev})"><span aria-hidden="true">&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:active="title == usuarios.data.usuarios.page.current" dmx-class:disabled="!active" dmx-repeat="usuarios.data.usuarios.getServerConnectPagination(2,1,'...')">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="usuarios.load({offset: (page-1)*usuarios.data.usuarios.limit})">{{title}}</a>
+            </li>
+            <li class="page-item" dmx-class:disabled="usuarios.data.usuarios.page.current == usuarios.data.usuarios.page.total" aria-label="Next">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="usuarios.load({offset: usuarios.data.usuarios.page.offset.next})"><span aria-hidden="true">&rsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="usuarios.data.usuarios.page.current == usuarios.data.usuarios.page.total" aria-label="Last">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="usuarios.load({offset: usuarios.data.usuarios.page.offset.last})"><span aria-hidden="true">&rsaquo;&rsaquo;</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal Ver Usuário -->
+<div class="modal fade" id="modalVerUsuario" tabindex="-1" aria-labelledby="modalVerUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVerUsuarioLabel">Detalhes do Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nome:</label>
+                    <p>{{usuarios.selected.usuario_nome}}</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email:</label>
+                    <p>{{usuarios.selected.usuario_email}}</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Telefone:</label>
+                    <p>{{usuarios.selected.usuario_telefone}}</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">CPF:</label>
+                    <p>{{usuarios.selected.usuario_cpf}}</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Cidade:</label>
+                    <p>{{usuarios.selected.end_cidade}}</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">UF:</label>
+                    <p>{{usuarios.selected.end_estado}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Desativar Usuário -->
+<div class="modal fade" id="modalDesativar" tabindex="-1" aria-labelledby="modalDesativarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDesativarLabel">Desativar Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja desativar o usuário <strong>{{usuarios.selected.usuario_nome}}</strong>?</p>
+                <p class="text-danger">Esta ação não poderá ser desfeita.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" dmx-on:click="desativarUsuario()">Desativar</button>
+            </div>
+        </div>
+    </div>
+</div>

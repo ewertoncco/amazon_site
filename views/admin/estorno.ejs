@@ -1,0 +1,134 @@
+<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="estorno" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
+<dmx-serverconnect id="estorno" url="/api/vendas/estorno"></dmx-serverconnect>
+<meta name="ac:route" content="/admin/estorno">
+
+<div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Estorno</h2>
+        <div class="d-flex gap-3">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fas fa-user text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Nome do participante" name="busca_participante">
+            </div>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fas fa-hashtag text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Número da transação" name="busca_transacao">
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-4" id="estornoTabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#" data-filter="solicitacoes" data-bs-toggle="tab">
+                <i class="fas fa-list"></i> Todas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="aprovados" data-bs-toggle="tab">
+                <i class="fas fa-check-circle"></i> Aprovadas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="recusados" data-bs-toggle="tab">
+                <i class="fas fa-times-circle"></i> Recusadas
+            </a>
+        </li>
+    </ul>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Data da Compra</th>
+                    <th class="text-center">Transação</th>
+                    <th>Item</th>
+                    <th>Categoria</th>
+                    <th>Participante</th>
+                    <th>Check-in</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" id="lista-estorno" dmx-bind:repeat="content.estorno.data.solicitacoes_estorno.data">
+                <tr>
+                    <td>{{evento_titulo}}</td>
+                    <td>{{carrinho_criado_em}}</td>
+                    <td class="text-center">
+                        <div>
+                            <small class="text-muted">Nº {{transacao_id}}</small>
+                        </div>
+                        <small>
+                            <span class="badge" dmx-class:bg-success="status_pagamento_id==3" dmx-class:bg-secondary="status_pagamento_id==1" dmx-class:bg-danger="status_pagamento_id==8" dmx-class:bg-warning="status_pagamento_id==10||status_pagamento_id==6">{{resposta_pagamento}}</span>
+                        </small>
+                    </td>
+                    <td>{{evento_item_nome}}</td>
+                    <td>{{categoria}}</td>
+                    <td>
+                        <div>{{participante_nome}}</div>
+                        <small class="text-muted">CPF: {{participante_cpf}}</small>
+                    </td>
+                    <td>
+                        <span class="badge" dmx-class:bg-success="check_in" dmx-class:bg-secondary="!check_in">
+                            {{check_in ? 'Sim' : 'Não'}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" title="Ver detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" title="Cancelar ingresso">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <ul class="pagination" dmx-populate="estorno.data" dmx-generator="bs5paging">
+            <li class="page-item" dmx-class:disabled="estorno.data.page.current == 1" aria-label="First">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="estorno.load({offset: estorno.data.page.offset.first})"><span aria-hidden="true">&lsaquo;&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="estorno.data.page.current == 1" aria-label="Previous">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="estorno.load({offset: estorno.data.page.offset.prev})"><span aria-hidden="true">&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:active="title == estorno.data.page.current" dmx-class:disabled="!active" dmx-repeat="estorno.data.getServerConnectPagination(2,1,'...')">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="estorno.load({offset: (page-1)*estorno.data.limit})">{{title}}</a>
+            </li>
+            <li class="page-item" dmx-class:disabled="estorno.data.page.current == estorno.data.page.total" aria-label="Next">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="estorno.load({offset: estorno.data.page.offset.next})"><span aria-hidden="true">&rsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="estorno.data.page.current == estorno.data.page.total" aria-label="Last">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="estorno.load({offset: estorno.data.page.offset.last})"><span aria-hidden="true">&rsaquo;&rsaquo;</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Notificações -->
+<dmx-notifications id="notifies"></dmx-notifications>
+
+<style>
+    .page-heading h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .badge {
+        padding: 0.35em 0.65em;
+        font-weight: 500;
+    }
+
+    .card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+    }
+</style>

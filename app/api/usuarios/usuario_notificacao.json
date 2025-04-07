@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "nome"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "usuario",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "usuarios",
+              "column": "usuario_email"
+            },
+            {
+              "table": "usuarios",
+              "column": "usuario_nome"
+            }
+          ],
+          "params": [
+            {
+              "operator": "contains",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.nome}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "usuarios"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select \"usuario_email\", \"usuario_nome\" from \"usuarios\" where \"usuarios\".\"usuario_nome\" like ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "usuarios.usuario_nome",
+                "field": "usuarios.usuario_nome",
+                "type": "string",
+                "operator": "contains",
+                "value": "{{$_GET.nome}}",
+                "data": {
+                  "table": "usuarios",
+                  "column": "usuario_nome",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "text",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": false,
+                    "name": "usuario_nome"
+                  }
+                },
+                "operation": "LIKE"
+              }
+            ],
+            "conditional": "{{$_GET.nome}}",
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "text",
+          "name": "usuario_email"
+        },
+        {
+          "type": "text",
+          "name": "usuario_nome"
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

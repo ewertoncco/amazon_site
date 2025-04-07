@@ -26,5 +26,33 @@
   "evento_adm.ejs": {
     "layoutPage": "adm",
     "description": ""
+  },
+  "estorno.ejs": {
+    "layoutPage": "adm",
+    "description": ""
+  },
+  "vendas.ejs": {
+    "layoutPage": "adm",
+    "description": ""
+  },
+  "usuarios.ejs": {
+    "layoutPage": "adm",
+    "description": ""
+  },
+  "cortesias.ejs": {
+    "layoutPage": "adm",
+    "description": ""
+  },
+  "notificacoes.ejs": {
+    "layoutPage": "adm",
+    "description": ""
+  },
+  "forbiden.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "404.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

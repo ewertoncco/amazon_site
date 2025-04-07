@@ -1,0 +1,278 @@
+<!-- Wappler include head-page="layouts/adm" fontawesome_5="cdn" bootstrap5="custom" is="dmx-app" id="notificacoes" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxDatastore:{},dmxBootstrap5PagingGenerator:{},dmxTagify:{},dmxAutocomplete:{}}" -->
+<dmx-serverconnect id="usuario_notificacao" url="/api/usuarios/usuario_notificacao" dmx-param:nome="formNotificacao.nomeUser.value" dmx-param:limit="10" noload="true"></dmx-serverconnect>
+<dmx-datastore id="filtro"></dmx-datastore>
+<dmx-serverconnect id="notificacoes" url="/api/notificacoes/lista_adm" dmx-param:filtro="filtros.items" dmx-param:limit="notificacoes.data.notificacoes.limit" dmx-param:offset="notificacoes.data.notificacoes.offset"></dmx-serverconnect>
+<meta name="ac:route" content="/admin/notificacoes">
+
+<div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Notificações</h2>
+        <div class="d-flex gap-3">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCriarNotificacao" style="min-width: 145px;">
+                <i class="fas fa-plus me-1"></i> Nova Notificação
+            </button>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Buscar notificações" name="busca_notificacao">
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-4" id="notificacoesTabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#" data-filter="todas" data-bs-toggle="tab" dmx-on:click="filtros.empty()">
+                <i class="fas fa-list"></i> Todas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="notificacoes" data-bs-toggle="tab" dmx-on:click="filtros.empty();filtros.add('push')">
+                <i class="fas fa-bell"></i> Notificações
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-filter="direct" data-bs-toggle="tab" dmx-on:click="filtros.empty();filtros.add('especifico')">
+                <i class="fas fa-envelope"></i> Direct
+            </a>
+        </li>
+    </ul>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="15%">Data</th>
+                    <th width="20%">Título</th>
+                    <th width="35%">Conteúdo</th>
+                    <th width="10%" class="text-center">Tipo</th>
+                    <th width="10%">Usuário</th>
+                    <th width="10%">Ações</th>
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" id="lista_notificacoes" dmx-bind:repeat="notificacoes.data.notificacoes.data" key="id">
+                <tr>
+                    <td>{{criado_em.formatDate('dd/MM/yy HH:mm')}}</td>
+                    <td>{{titulo}}</td>
+                    <td>{{conteudo}}</td>
+                    <td class="text-center">
+                        <span class="badge bg-primary" dmx-show="especifico">Direct</span>
+                        <span class="badge bg-info" dmx-show="push">Push</span>
+                        <span class="badge bg-secondary" dmx-show="interna">Interna</span>
+                    </td>
+                    <td class="text-center">{{usuario_nome}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" title="Ver detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" title="Excluir notificação">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination" dmx-populate="notificacoesData.data.notificacoes" dmx-generator="bs5paging">
+            <li class="page-item" dmx-class:disabled="notificacoesData.data.notificacoes.page.current == 1" aria-label="First">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="notificacoesData.load({offset: notificacoesData.data.notificacoes.page.offset.first})"><span aria-hidden="true">&lsaquo;&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="notificacoesData.data.notificacoes.page.current == 1" aria-label="Previous">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="notificacoesData.load({offset: notificacoesData.data.notificacoes.page.offset.prev})"><span aria-hidden="true">&lsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:active="title == notificacoesData.data.notificacoes.page.current" dmx-class:disabled="!active" dmx-repeat="notificacoesData.data.notificacoes.getServerConnectPagination(2,1,'...')">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="notificacoesData.load({offset: (page-1)*notificacoesData.data.notificacoes.limit})">{{title}}</a>
+            </li>
+            <li class="page-item" dmx-class:disabled="notificacoesData.data.notificacoes.page.current == notificacoesData.data.notificacoes.page.total" aria-label="Next">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="notificacoesData.load({offset: notificacoesData.data.notificacoes.page.offset.next})"><span aria-hidden="true">&rsaquo;</span></a>
+            </li>
+            <li class="page-item" dmx-class:disabled="notificacoesData.data.notificacoes.page.current == notificacoesData.data.notificacoes.page.total" aria-label="Last">
+                <a href="javascript:void(0)" class="page-link" dmx-on:click="notificacoesData.load({offset: notificacoesData.data.notificacoes.page.offset.last})"><span aria-hidden="true">&rsaquo;&rsaquo;</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal Criar Notificação -->
+<div class="modal fade" id="modalCriarNotificacao" tabindex="-1" aria-labelledby="modalCriarNotificacaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCriarNotificacaoLabel">Nova Notificação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNotificacao" is="dmx-serverconnect-form" method="post" action="/api/notificacoes/nova_notificacao" dmx-on:success="formNotificacao.reset();notifies1.success('Notificação enviada')">
+                    <dmx-form-data id="input_email" name="email" dmx-bind:data="usuario_notificacao.data.usuario.usuario_email"></dmx-form-data>
+                    <div class="mb-3">
+                        <label for="inp_titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="inp_titulo" required="" name="titulo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inp_conteudo" class="form-label">Conteúdo</label>
+                        <textarea class="form-control" id="inp_conteudo" rows="3" required="" name="conteudo"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagem" class="form-label">URL da Imagem (opcional)</label>
+                        <input id="file_imagem" name="imagem" type="file" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Notificação</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="push" id="tipoPush" dmx-bind:value="this.checked ? 'true' : 'false'" dmx-on:click="if(this.checked){tipoInterna.checked=false;tipoEspecifica.checked=false}" value="true">
+                            <label class="form-check-label" for="tipoPush">Push</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="interna" id="tipoInterna" dmx-bind:value="this.checked ? 'true' : 'false'" dmx-on:click="if(this.checked){tipoPush.checked=false;tipoEspecifica.checked=false}" checked="" value="true">
+                            <label class="form-check-label" for="tipoInterna">Interna</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="especifico" id="tipoEspecifica" dmx-bind:value="this.checked ? 'true' : 'false'" dmx-on:click="if(this.checked){tipoPush.checked=false;tipoInterna.checked=false}" value="true">
+                            <label class="form-check-label" for="tipoEspecifica">Específica (Direct)</label>
+                        </div>
+                    </div>
+                    <div class="mb-3" id="destinatarioGroup" dmx-show="tipoEspecifica.checked">
+                        <label for="nomeUsuario" class="form-label">Selecionar Destinatário</label>
+
+                        <input id="nomeUser" name="nome" type="text" class="form-control" dmx-on:changed="usuario_notificacao.load({})">
+                        <div class="d-flex flex-column gap-0 mt-2"><label for="nomeUsuario" class="form-label">{{usuario_notificacao.data.usuario.usuario_nome}}</label><label for="nomeUsuario" class="form-label">{{usuario_notificacao.data.usuario.usuario_email}}</label></div>
+
+                        <div class="form-text" id="emailUsuario"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-link" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnEnviarNotificacao" dmx-on:click="formNotificacao.submit()">Enviar Notificação</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const app = new Wappler.App();
+        
+        app.defineData({
+            currentTab: 'todas',
+            search: ''
+        });
+
+        // Manipulador para mudança de abas
+        document.querySelectorAll('#notificacoesTabs .nav-link').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                app.data.currentTab = this.dataset.filter;
+                
+                // Atualiza classes ativas
+                document.querySelectorAll('#notificacoesTabs .nav-link').forEach(t => {
+                    t.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Manipulador para busca
+        const searchInput = document.querySelector('[name="busca_notificacao"]');
+
+        function handleSearch() {
+            app.data.search = searchInput.value;
+        }
+
+        searchInput.addEventListener('input', handleSearch);
+
+        // Lógica do Modal de Notificações
+        const modalNotificacao = document.getElementById('modalCriarNotificacao');
+        const formNotificacao = document.getElementById('formNotificacao');
+        const tiposNotificacao = document.getElementsByName('tipoNotificacao');
+        const destinatarioGroup = document.getElementById('destinatarioGroup');
+        const inputNomeUsuario = document.getElementById('nomeUsuario');
+        const emailUsuario = document.getElementById('emailUsuario');
+        const btnEnviarNotificacao = document.getElementById('btnEnviarNotificacao');
+
+        // Mostrar/ocultar campo de destinatário baseado no tipo de notificação
+        tiposNotificacao.forEach(tipo => {
+            tipo.addEventListener('change', function() {
+                destinatarioGroup.style.display = this.value === 'especifica' ? 'block' : 'none';
+                if (this.value !== 'especifica') {
+                    inputNomeUsuario.value = '';
+                    emailUsuario.textContent = '';
+                }
+            });
+        });
+
+        // Atualizar email do usuário quando selecionar
+        inputNomeUsuario.addEventListener('change', function() {
+            const selectedUser = usuario_notificacao.data.usuario.find(u => u.id === this.value);
+            if (selectedUser) {
+                emailUsuario.textContent = selectedUser.usuario_email;
+            } else {
+                emailUsuario.textContent = '';
+            }
+        });
+
+        // Enviar notificação
+        btnEnviarNotificacao.addEventListener('click', async function() {
+            if (!formNotificacao.checkValidity()) {
+                formNotificacao.reportValidity();
+                return;
+            }
+
+            const tipoSelecionado = document.querySelector('input[name="tipoNotificacao"]:checked');
+            if (!tipoSelecionado) {
+                alert('Selecione um tipo de notificação');
+                return;
+            }
+
+            if (tipoSelecionado.value === 'especifica' && !inputNomeUsuario.value) {
+                alert('Selecione um destinatário');
+                return;
+            }
+
+            const notificacao = {
+                titulo: document.getElementById('titulo').value,
+                conteudo: document.getElementById('conteudo').value,
+                imagem: document.getElementById('imagem').value || null,
+                interna: tipoSelecionado.value === 'interna',
+                push: tipoSelecionado.value === 'push',
+                especifico: tipoSelecionado.value === 'especifica',
+                destinatario_id: tipoSelecionado.value === 'especifica' ? parseInt(inputNomeUsuario.value) : null
+            };
+
+            try {
+                const response = await fetch('/api/notificacoes/criar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(notificacao)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao criar notificação');
+                }
+
+                // Fechar modal e recarregar lista de notificações
+                const modal = bootstrap.Modal.getInstance(modalNotificacao);
+                modal.hide();
+                formNotificacao.reset();
+                notificacoes.load();
+
+                // Mostrar mensagem de sucesso
+                alert('Notificação enviada com sucesso!');
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao enviar notificação. Tente novamente.');
+            }
+        });
+
+        // Limpar formulário quando o modal for fechado
+        modalNotificacao.addEventListener('hidden.bs.modal', function() {
+            formNotificacao.reset();
+            emailUsuario.textContent = '';
+        });
+    });
+</script>

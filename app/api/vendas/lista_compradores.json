@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "uuid"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "vendas",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.uuid}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "view_vendas"
+          },
+          "joins": [],
+          "query": "select * from \"view_vendas\" where \"view_vendas\".\"evento_uuid\" = ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "view_vendas.evento_uuid",
+                "field": "view_vendas.evento_uuid",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.uuid}}",
+                "data": {
+                  "table": "view_vendas",
+                  "column": "evento_uuid",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "uuid",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "evento_uuid"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "text",
+          "name": "evento_titulo"
+        },
+        {
+          "type": "text",
+          "name": "evento_data_hora"
+        },
+        {
+          "type": "text",
+          "name": "evento_local"
+        },
+        {
+          "type": "text",
+          "name": "evento_uuid"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "carrinho_criado_em"
+        },
+        {
+          "type": "text",
+          "name": "status_pagamento"
+        },
+        {
+          "type": "text",
+          "name": "forma_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "transacao_id"
+        },
+        {
+          "type": "text",
+          "name": "categoria"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "boolean",
+          "name": "check_in"
+        },
+        {
+          "type": "text",
+          "name": "hora_check_in"
+        },
+        {
+          "type": "number",
+          "name": "valor_final"
+        },
+        {
+          "type": "text",
+          "name": "qrcode"
+        },
+        {
+          "type": "boolean",
+          "name": "trocou_nome"
+        },
+        {
+          "type": "text",
+          "name": "evento_item_nome"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}

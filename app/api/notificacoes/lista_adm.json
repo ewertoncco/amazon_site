@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "notificacoes",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "notificacoes",
+              "column": "id"
+            },
+            {
+              "table": "notificacoes",
+              "column": "criado_em"
+            },
+            {
+              "table": "notificacoes",
+              "column": "titulo"
+            },
+            {
+              "table": "notificacoes",
+              "column": "conteudo"
+            },
+            {
+              "table": "notificacoes",
+              "column": "imagem"
+            },
+            {
+              "table": "notificacoes",
+              "column": "criado_por"
+            },
+            {
+              "table": "notificacoes",
+              "column": "interna"
+            },
+            {
+              "table": "notificacoes",
+              "column": "push"
+            },
+            {
+              "table": "notificacoes",
+              "column": "especifico"
+            },
+            {
+              "table": "notificacoes",
+              "column": "destinatario_id"
+            },
+            {
+              "table": "usuario",
+              "column": "usuario_nome"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{organizador.organizador_id}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "notificacoes"
+          },
+          "primary": "id",
+          "joins": [
+            {
+              "table": "usuarios",
+              "column": "*",
+              "alias": "usuario",
+              "type": "LEFT",
+              "clauses": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "table": "usuario",
+                    "column": "id",
+                    "operator": "equal",
+                    "operation": "=",
+                    "value": {
+                      "table": "notificacoes",
+                      "column": "destinatario_id"
+                    }
+                  }
+                ]
+              },
+              "primary": "id"
+            }
+          ],
+          "query": "select \"notificacoes\".\"id\", \"notificacoes\".\"criado_em\", \"notificacoes\".\"titulo\", \"notificacoes\".\"conteudo\", \"notificacoes\".\"imagem\", \"notificacoes\".\"criado_por\", \"notificacoes\".\"interna\", \"notificacoes\".\"push\", \"notificacoes\".\"especifico\", \"notificacoes\".\"destinatario_id\", \"usuario\".\"usuario_nome\" from \"notificacoes\" left join \"usuarios\" as \"usuario\" on \"usuario\".\"id\" = \"notificacoes\".\"destinatario_id\" where \"notificacoes\".\"organizador\" = ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "notificacoes.organizador",
+                "field": "notificacoes.organizador",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{organizador.organizador_id}}",
+                "data": {
+                  "table": "notificacoes",
+                  "column": "organizador",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "reference",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "references": "id",
+                    "inTable": "organizador",
+                    "referenceType": "integer",
+                    "onUpdate": "NO ACTION",
+                    "onDelete": "NO ACTION",
+                    "name": "organizador"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "id"
+            },
+            {
+              "type": "datetime",
+              "name": "criado_em"
+            },
+            {
+              "type": "text",
+              "name": "titulo"
+            },
+            {
+              "type": "text",
+              "name": "conteudo"
+            },
+            {
+              "type": "text",
+              "name": "imagem"
+            },
+            {
+              "type": "number",
+              "name": "criado_por"
+            },
+            {
+              "type": "boolean",
+              "name": "interna"
+            },
+            {
+              "type": "boolean",
+              "name": "push"
+            },
+            {
+              "type": "boolean",
+              "name": "especifico"
+            },
+            {
+              "type": "number",
+              "name": "destinatario_id"
+            },
+            {
+              "type": "text",
+              "name": "usuario_nome"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

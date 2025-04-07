@@ -1,0 +1,235 @@
+{
+  "name": "cortesias",
+  "module": "dbconnector",
+  "action": "paged",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "SELECT",
+      "columns": [],
+      "params": [],
+      "table": {
+        "name": "view_transacoes"
+      },
+      "joins": [],
+      "query": "select * from \"view_transacoes\" where \"view_transacoes\".\"forma_pagamento\" = ? and \"view_transacoes\".\"status_pagamento_id\" = ? limit ?",
+      "wheres": {
+        "condition": "AND",
+        "rules": [
+          {
+            "id": "view_transacoes.forma_pagamento",
+            "field": "view_transacoes.forma_pagamento",
+            "type": "string",
+            "operator": "equal",
+            "value": "Cortesia",
+            "data": {
+              "table": "view_transacoes",
+              "column": "forma_pagamento",
+              "type": "text",
+              "columnObj": {
+                "type": "text",
+                "primary": false,
+                "nullable": true,
+                "name": "forma_pagamento"
+              }
+            },
+            "operation": "="
+          },
+          {
+            "id": "view_transacoes.status_pagamento_id",
+            "field": "view_transacoes.status_pagamento_id",
+            "type": "double",
+            "operator": "equal",
+            "value": 3,
+            "data": {
+              "table": "view_transacoes",
+              "column": "status_pagamento_id",
+              "type": "number",
+              "columnObj": {
+                "type": "integer",
+                "primary": false,
+                "nullable": true,
+                "name": "status_pagamento_id"
+              }
+            },
+            "operation": "="
+          }
+        ],
+        "conditional": null,
+        "valid": true
+      },
+      "limit": 10
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "name": "offset",
+      "type": "number"
+    },
+    {
+      "name": "limit",
+      "type": "number"
+    },
+    {
+      "name": "total",
+      "type": "number"
+    },
+    {
+      "name": "page",
+      "type": "object",
+      "sub": [
+        {
+          "name": "offset",
+          "type": "object",
+          "sub": [
+            {
+              "name": "first",
+              "type": "number"
+            },
+            {
+              "name": "prev",
+              "type": "number"
+            },
+            {
+              "name": "next",
+              "type": "number"
+            },
+            {
+              "name": "last",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "current",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "data",
+      "type": "array",
+      "sub": [
+        {
+          "type": "number",
+          "name": "organizador_id"
+        },
+        {
+          "type": "text",
+          "name": "evento_titulo"
+        },
+        {
+          "type": "text",
+          "name": "evento_data_hora"
+        },
+        {
+          "type": "text",
+          "name": "evento_local"
+        },
+        {
+          "type": "text",
+          "name": "evento_uuid"
+        },
+        {
+          "type": "number",
+          "name": "evento_id"
+        },
+        {
+          "type": "text",
+          "name": "carrinho_criado_em"
+        },
+        {
+          "type": "number",
+          "name": "status_pagamento_id"
+        },
+        {
+          "type": "text",
+          "name": "status_pagamento"
+        },
+        {
+          "type": "text",
+          "name": "forma_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "transacao_id"
+        },
+        {
+          "type": "text",
+          "name": "categoria"
+        },
+        {
+          "type": "text",
+          "name": "participante_nome"
+        },
+        {
+          "type": "text",
+          "name": "participante_telefone"
+        },
+        {
+          "type": "text",
+          "name": "participante_cpf"
+        },
+        {
+          "type": "text",
+          "name": "participante_email"
+        },
+        {
+          "type": "boolean",
+          "name": "check_in"
+        },
+        {
+          "type": "text",
+          "name": "hora_check_in"
+        },
+        {
+          "type": "number",
+          "name": "valor_final"
+        },
+        {
+          "type": "text",
+          "name": "qrcode"
+        },
+        {
+          "type": "boolean",
+          "name": "trocou_nome"
+        },
+        {
+          "type": "text",
+          "name": "evento_item_nome"
+        },
+        {
+          "type": "text",
+          "name": "resposta_pagamento"
+        },
+        {
+          "type": "number",
+          "name": "total_bruto"
+        },
+        {
+          "type": "number",
+          "name": "total_taxas_transacao"
+        },
+        {
+          "type": "number",
+          "name": "liquido"
+        },
+        {
+          "type": "boolean",
+          "name": "cupom"
+        },
+        {
+          "type": "number",
+          "name": "qtide_parcelas"
+        }
+      ]
+    }
+  ],
+  "outputType": "object",
+  "type": "dbconnector_paged_select"
+}
